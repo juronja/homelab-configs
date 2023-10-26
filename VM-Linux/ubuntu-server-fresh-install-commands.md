@@ -1,24 +1,13 @@
-# Installing linux the first time
+# First steps after installing Ubuntu Linux
 
-## Proxmox Cloudinit VM
+OpenSSH can be installed when installing Linux, on Ubuntu it is preinstalled; so after installation you can ssh {{username}}@{{IP}} straight into your machine via the terminal (e.g. Windows PowerShell)
 
-```bash
-wget https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img
-qm create 501 --cores 2 --cpu host --memory 4096 --name ubuntu-cloud-template --scsihw virtio-scsi-pci --net0 virtio,bridge=vmbr0,firewall=1 --serial0 socket --vga serial0 --ipconfig0 ip=dhcp,ip6=dhcp --agent enabled=1 --onboot 1
-qm disk import 501 jammy-server-cloudimg-amd64.img local --format qcow2
-qm set 501 --scsi0 local:501/vm-501-disk-0.qcow2,discard=on,ssd=1 --ide2 local:cloudinit && qm disk resize 501 scsi0 32G
-qm set 501 --boot order=scsi0
-
-```
-
-## Setting up linux
-OpenSSH can be installed when installing Linux, or is usually preinstalled; so after installation you can ssh {{username}}@{{IP}} straight into your machine via the terminal (e.g. Windows PowerShell)
-Working in Windows Powershell from here on.
-
-## STEP 1
+## STEP 1 - Setting up Ubuntu with Docker
 ### Install upgrades / Install guest agent / Change local timezone / Configure automatic updates / Configure firewall / Disable pings in firewall / Remove legacy Docker / Add Docker apt repository / Install Docker / Reboot
 
 ### Multiple setup steps
+Working in Windows PowerShell.
+
 ```bash
 sudo apt update -y && sudo apt upgrade -y \
   && chmod 700 ~/.ssh \
@@ -34,7 +23,7 @@ sudo apt update -y && sudo apt upgrade -y \
 
 ```
 
-## STEP 2 - SSH KEY PAIRS ON WINDOWS >> WindowsPowerShell <<
+## STEP 2 - SSH KEY PAIRS ON WINDOWS
 ### Create Public/Private keys on your computer/PC 
 ```bash
 ssh-keygen -t ed25519 -C "ubuntu-nameofserver"
