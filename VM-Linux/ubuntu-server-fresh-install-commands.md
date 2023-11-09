@@ -44,7 +44,7 @@ Host ubuntu-nameofserver2
   Hostname 192.168.xx.xx
   User username
   IdentityFile ~/.ssh/id_ubuntu-nameofserver2
-#  Port # if a custom ssh port is set
+#  Port # if a custom ssh port is set in /etc/ssh/sshd_config
 
 ```
 
