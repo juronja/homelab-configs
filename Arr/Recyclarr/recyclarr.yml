@@ -48,7 +48,7 @@ radarr:
 
     include:
       # Comment out any of the following includes to disable them
-      #- template: radarr-quality-definition-movie
+      - template: radarr-quality-definition-movie
 
     # Set to 'true' to automatically remove/replace custom formats from Radarr when they are removed from the guide or your configuration. This will NEVER delete custom formats you manually created!
     delete_old_custom_formats: true
@@ -56,26 +56,20 @@ radarr:
     
     # Quality profile setup
     quality_profiles:
-      - name: UHD Bluray + WEB
+      - name: HD Bluray + WEB
         upgrade:
           allowed: true
-          until_quality: Bluray-2160p
+          until_quality: Bluray-1080p
           until_score: 10000
         min_format_score: 0
         quality_sort: top
         qualities:
-          - name: Bluray-2160p
-          - name: WEB 2160p
-            qualities:
-              - WEBRip-2160p
-              - WEBDL-2160p
           - name: Bluray-1080p
           - name: WEB 1080p
             qualities:
               - WEBRip-1080p
               - WEBDL-1080p
-
-
+          
     custom_formats:
       # A list of custom formats to sync to Radarr.
       # Use `recyclarr list custom-formats radarr` for values you can put here.
@@ -85,24 +79,9 @@ radarr:
           - ed27ebfef2f323e964fb1f61391bcb35 # HD Bluray Tier 01
           - c20c8647f2746a1f4c4262b0fbbeeeae # HD Bluray Tier 02
           - 5608c71bcebba0a5e666223bae8c9227 # HD Bluray Tier 03
-          - 4d74ac4c4db0b64bff6ce0cffef99bf0 # UHD Bluray Tier 01
-          - a58f517a70193f8e578056642178419d # UHD Bluray Tier 02
-          - e71939fae578037e7aed3ee219bbe7c1 # UHD Bluray Tier 03
           - c20f169ef63c5f40c2def54abaf4438e # WEB Tier 01
           - 403816d65392c79236dcb6dd591aeda4 # WEB Tier 02
           - af94e0fe497124d1f9ce732069ec8c3b # WEB Tier 03
-
-          # HDR Formats
-          - 58d6a88f13e2db7f5059c41047876f00 # DV
-          - e23edd2482476e595fb990b12e7c609c # DV HDR10
-          - 55d53828b9d81cbe20b02efd00aa0efd # DV HLG
-          - a3e19f8f627608af0211acd02bf89735 # DV SDR
-          - e61e28db95d22bedcadf030b8f156d96 # HDR
-          - 2a4d9069cc1fe3242ff9bdaebed239bb # HDR (undefined)
-          - dfb86d5941bc9075d6af23b09c2aeecd # HDR10
-          - b974a6cd08c1066250f1f177d7aa1225 # HDR10+
-          - 9364dd386c9b4a1100dde8264690add7 # HLG
-          - 08d6d8834ad9ec87b1dc7ec8148e7a1f # PQ
 
           # Misc
           - 4b900e171accbfb172729b63323ea8ca # Multi
@@ -156,11 +135,10 @@ radarr:
           - e204b80c87be9497a8a6eaff48f72905 # LQ (Release Title)
           - 0a3f082873eb454bde444150b70253cc # Extras
           - bfd8eb01832d646a0a89c4deb46f8564 # Upscaled
-          - dc98083864ea246d05a42df0d05f81cc # x265 (HD)
 
         # Uncomment the below properties to specify one or more quality profiles that should be updated with scores from the guide for each custom format. Without this, custom formats are synced to Radarr but no scores are set in any quality profiles.
         quality_profiles:
-          - name: UHD Bluray + WEB
+          - name: HD Bluray + WEB
             #score: -9999 # Optional score to assign to all CFs. Overrides scores in the guide.
             #reset_unmatched_scores: true # Optionally set other scores to 0 if they are not listed in 'names' above.
 
@@ -170,6 +148,6 @@ radarr:
 #          - 90a6f9a284dff5103f6346090e6280c8 # LQ
 
         quality_profiles:
-          - name: UHD Bluray + WEB
+          - name: HD Bluray + WEB
             score: -10000
 
