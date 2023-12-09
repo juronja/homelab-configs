@@ -48,7 +48,7 @@ radarr:
 
     include:
       # Comment out any of the following includes to disable them
-      - template: radarr-quality-definition-movie
+      #- template: radarr-quality-definition-movie
 
     # Set to 'true' to automatically remove/replace custom formats from Radarr when they are removed from the guide or your configuration. This will NEVER delete custom formats you manually created!
     delete_old_custom_formats: true
@@ -93,8 +93,6 @@ radarr:
           # Movie Versions
           - eca37840c13c6ef2dd0262b141a5482f # 4K Remaster
           - e0c07d59beb37348e975a930d5e50319 # Criterion Collection
-          - eecf3a857724171f968a66cb5719e152 # IMAX
-          - 9f6cbff8cfe4ebbc1bde14c7b7bec0de # IMAX Enhanced
           - 9d27d9d2181838f76dee150882bdc58c # Masters of Cinema
           - 570bc9ebecd92723d2d21500f4be314c # Remaster
           - 957d0f44b592285f26449575e8b1167e # Special Edition
@@ -145,9 +143,18 @@ radarr:
       - trash_ids:
           # Custom Scoring for all items below
           - cae4ca30163749b891686f95532519bd # AV1
-#          - 90a6f9a284dff5103f6346090e6280c8 # LQ
+          - eecf3a857724171f968a66cb5719e152 # IMAX
+          - 9f6cbff8cfe4ebbc1bde14c7b7bec0de # IMAX Enhanced
+          - 09d9dd29a0fc958f9796e65c2a8864b4 # Open Matte
 
         quality_profiles:
           - name: HD Bluray + WEB
             score: -10000
 
+      - trash_ids:
+          # Custom Scoring for all items below
+          - 90a6f9a284dff5103f6346090e6280c8 # LQ
+
+        quality_profiles:
+          - name: HD Bluray + WEB
+            score: 1000
