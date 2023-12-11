@@ -19,7 +19,7 @@ uci set system.@system[0].hostname=AP-DEVICE-NAME #Change te device name here
 ## Setup Modes
 
 ### AP Mode
-Detailed info here: https://openwrt.org/docs/guide-user/network/wifi/dumbap
+Official documentation: https://openwrt.org/docs/guide-user/network/wifi/dumbap
 
 By default, the main router will have an address of 192.168.1.1
 
@@ -84,7 +84,7 @@ done
 
 
 ### Router Mode
-Detailed info here: https://openwrt.org/docs/guide-user/network/openwrt_as_routerdevice
+Official documentation: https://openwrt.org/docs/guide-user/network/openwrt_as_routerdevice
 
 By default, the LAN ports of the router will have an address of 192.168.1.1
 
