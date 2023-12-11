@@ -13,7 +13,8 @@ passwd
 ```bash
 uci set system.@system[0].zonename='Europe/Ljubljana'
 uci set system.@system[0].timezone='CET-1CEST,M3.5.0,M10.5.0/3'
-uci set system.@system[0].hostname=AP-DEVICE-NAME #Change te device name here
+uci set luci.main.mediaurlbase='/luci-static/bootstrap-dark'
+uci set system.@system[0].hostname=GW-TP-Link-Archer-C7 #Change te device name here
 ```
 
 ## Setup Modes
@@ -139,37 +140,6 @@ service dropbear restart
 
 ```
 
-#### Ports forwards
-
-UCI is useful to view the firewall configuration, but not to do any meaningful modifications. Add port forward rules in UI or configuration file in /etc/config/firewall
-
-```yml
-config redirect
-        option dest 'lan'
-        option target 'DNAT'
-        option name 'Plex'
-        list proto 'tcp'
-        option src 'wan'
-        option src_dport '32400'
-        option dest_ip '192.168.84.10'
-        option dest_port '32400'
-
-config redirect
-        option dest 'lan'
-        option target 'DNAT'
-        option name 'Wireguard'
-        list proto 'udp'
-        option src 'wan'
-        option src_dport '51820'
-        option dest_ip '192.168.84.25'
-        option dest_port '51820'
-
-```
-Restart firewall for effect
-```bash
-service firewall restart
-```
-
 #### Common router software
 
 ##### DDNS and Nano Full
@@ -206,6 +176,39 @@ uci commit
 service ddns restart
 
 ```
+
+#### Ports forwards
+
+UCI is useful to view the firewall configuration, but not to do any meaningful modifications. Add port forward rules in UI or configuration file in /etc/config/firewall
+
+```yml
+config redirect
+        option dest 'lan'
+        option target 'DNAT'
+        option name 'Plex'
+        list proto 'tcp'
+        option src 'wan'
+        option src_dport '32400'
+        option dest_ip '192.168.84.10'
+        option dest_port '32400'
+
+config redirect
+        option dest 'lan'
+        option target 'DNAT'
+        option name 'Wireguard'
+        list proto 'udp'
+        option src 'wan'
+        option src_dport '51820'
+        option dest_ip '192.168.84.25'
+        option dest_port '51820'
+
+```
+Restart firewall for effect
+```bash
+service firewall restart
+```
+
+
 
 ## Notes
 To see pending changes use:
