@@ -20,6 +20,7 @@ uci set system.@system[0].hostname=AP-DEVICE-NAME #Change te device name here
 
 ### AP Mode
 Detailed info here: https://openwrt.org/docs/guide-user/network/wifi/dumbap
+
 By default, the main router will have an address of 192.168.1.1
 
 #### Set dynamic IP, disable wan, wan6 and disable services to safe resources
@@ -84,6 +85,7 @@ done
 
 ### Router Mode
 Detailed info here: https://openwrt.org/docs/guide-user/network/openwrt_as_routerdevice
+
 By default, the LAN ports of the router will have an address of 192.168.1.1
 
 
@@ -139,9 +141,9 @@ service dropbear restart
 
 #### Ports forwards
 
-UCI is useful to view the firewall configuration, but not to do any meaningful modifications. add port forward rules in UI or configuration file in /etc/config/firewall
+UCI is useful to view the firewall configuration, but not to do any meaningful modifications. Add port forward rules in UI or configuration file in /etc/config/firewall
 
-```json
+```yml
 config redirect
         option dest 'lan'
         option target 'DNAT'
@@ -161,25 +163,28 @@ config redirect
         option src_dport '51820'
         option dest_ip '192.168.84.25'
         option dest_port '51820'
+
 ```
 Restart firewall for effect
 ```bash
 service firewall restart
 ```
 
-#### DDNS
+#### Common router software
 
-##### Install service
+##### DDNS and Nano Full
 
+Install:
 ```bash
 opkg update
 opkg install ddns-scripts
 opkg install ddns-scripts-services
 opkg install luci-app-ddns
 opkg install luci-i18n-ddns-en
+opkg install nano-full
 
 ```
-##### Configuration
+DDNS config:
 ```bash
 uci set ddns.duckdns=service
 uci set ddns.duckdns.service_name='duckdns.org'
@@ -207,9 +212,3 @@ To see pending changes use:
 ```bash
 uci changes
 ```
-
-
-Adguard DNS and dnsmasq issues
-If you use Adguard DNS as forwarder (to have a cheap and efficient network adblocker), you need to disable Rebind protection, to avoid lag or site unreachable due to Rebin protection.
-
-If not, you can see lot of this log in system.log, and have lag or host unreachable issue.
