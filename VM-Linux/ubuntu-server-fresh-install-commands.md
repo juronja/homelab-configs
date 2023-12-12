@@ -30,23 +30,33 @@ sudo apt update -y && sudo apt upgrade -y \
 ssh-keygen -t ed25519 -C "ubuntu-nameofserver"
 
 ```
-Rename the key eg. id_homelabserver
+Rename the key eg. C:\Users\Jure/.ssh/id_ubuntu-nameofserver
 
 ### Setup SSH Managing config in Windows
 To better manage multiple SSH keys, setup and edit the ssh config file like this.
 In "C:\Users\Jure\.ssh\" make a new empty Text Document file named "config.txt". Save and remove the .txt extension.
 Open the file with notepad and add this lines and edit what you need
 ```yaml
-Host ubuntu-nameofserver
-  Hostname 192.168.xx.xx
-  User username
-  IdentityFile ~/.ssh/id_ubuntu-nameofserver
+Host gateway
+  Hostname 192.168.84.1
+  User root
+  IdentityFile ~/.ssh/id_gateway
 
-Host ubuntu-nameofserver2
-  Hostname 192.168.xx.xx
-  User username
-  IdentityFile ~/.ssh/id_ubuntu-nameofserver2
-#  Port # if a custom ssh port is set in /etc/ssh/sshd_config
+Host proxmox
+  Hostname 192.168.84.20
+  User root
+  IdentityFile ~/.ssh/id_proxmox
+
+Host ubuntu-homelab
+  Hostname 192.168.84.25
+  User juronja
+  IdentityFile ~/.ssh/id_ubuntu-homelab
+
+Host ubuntu-server2
+  Hostname 192.168.84.24
+  User juronja
+#  IdentityFile ~/.ssh/id_ubuntu-server2
+#  Port if a custom ssh port is set
 
 ```
 
