@@ -1,5 +1,7 @@
 # SSH configuration
+
 ### Create Public/Private keys on your computer/PC 
+
 ```bash
 ssh-keygen -t ed25519 -C "ubuntu-nameofserver"
 
@@ -7,6 +9,7 @@ ssh-keygen -t ed25519 -C "ubuntu-nameofserver"
 Rename the key eg. C:\Users\Jure/.ssh/id_ubuntu-nameofserver
 
 ### Setup SSH Managing config in Windows
+
 To better manage multiple SSH keys, setup and edit the ssh config file like this.
 In "C:\Users\Jure\.ssh\" make a new empty Text Document file named "config.txt". Save and remove the .txt extension.
 Open the file with notepad and add this lines and edit what you need
@@ -35,11 +38,14 @@ Host ubuntu-server2
 ```
 
 ### Upload your Public key to your Linux Server (Windows)
+
 ```bash
 scp $env:USERPROFILE/.ssh/id_ubuntu-nameofserver.pub username@{IP}:~/.ssh/authorized_keys
 
 ```
+
 ### Disable password authentication in Linux. Uncomment "PasswordAuthentication" and change to "no"
+
 In Proxmox you can remove the sudo commands for this to work
 
 ```bash

@@ -31,6 +31,7 @@ Add-MpPreference -ExclusionPath "C:\Music_production","C:\Users\Jure\Downloads",
 ```
 
 ### Backup command for UAC
+
 ```bash
 reg ADD HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v EnableLUA /t REG_DWORD /d 0 /f
 ```

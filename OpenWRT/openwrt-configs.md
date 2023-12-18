@@ -20,11 +20,13 @@ uci set system.@system[0].hostname=GW-TP-Link-Archer-C7 #Change te device name h
 ## Setup Modes
 
 ### AP Mode
+
 Official documentation: https://openwrt.org/docs/guide-user/network/wifi/dumbap
 
 By default, the main router will have an address of 192.168.1.1
 
 #### Set dynamic IP, disable wan, wan6 and disable services to safe resources
+
 If you need static IP, better reserve in router.
 You can also delete the WAN and WAN& interfaces in UI.
 
@@ -47,9 +49,11 @@ service firewall stop # Note even though these services are now disabled, after 
 uci commit
 reboot
 ```
+
 After reboot reserve a static IP in gateway router and go to that IP to manage further.
 
 #### Enable Wifi 2G
+
 ```bash
 uci set wireless.radio0=wifi-device
 uci set wireless.radio0.band='2g'
@@ -70,6 +74,7 @@ wifi up #Turns Wifi ON
 ```
 
 #### Disable Daemons Persistently
+
 Add bellow for loop to /etc/rc.local. You can access this also in the UI. System > Startup > Local Startup
 
 ```bash
@@ -85,12 +90,13 @@ done
 
 
 ### Router Mode
+
 Official documentation: https://openwrt.org/docs/guide-user/network/openwrt_as_routerdevice
 
 By default, the LAN ports of the router will have an address of 192.168.1.1
 
-
 #### Static IP settings, DHCP, Firewall syn-flood
+
 ```bash
 # uci show dhcp.lan
 uci set network.lan.proto="static"
@@ -115,14 +121,17 @@ reboot
 ```
 
 #### SSH KEY Pair Generate and Upload
+
 Make a SSH keypair for easy management.
 
 ##### Windows shell
+
 ```bash
 ssh-keygen -t ed25519 -C "gateway"
 
 ```
-When asked rename to: **C:\Users\Jure/.ssh/id_gateway**
+
+When asked rename to: `C:\Users\Jure/.ssh/id_gateway`
 
 upload:
 
@@ -179,7 +188,7 @@ service ddns restart
 
 #### Ports forwards
 
-UCI is useful to view the firewall configuration, but not to do any meaningful modifications. Add port forward rules in UI or configuration file in /etc/config/firewall
+UCI is useful to view the firewall configuration, but not to do any meaningful modifications. Add port forward rules in UI or configuration file in `/etc/config/firewall`
 
 ```yml
 config redirect
@@ -211,6 +220,7 @@ service firewall restart
 
 
 ## Notes
+
 To see pending changes use:
 ```bash
 uci changes
