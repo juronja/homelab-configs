@@ -4,6 +4,8 @@ Checks the file system and file system metadata of a volume for logical and phys
 
 Official docs: https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/chkdsk?tabs=event-viewer
 
+## Parameters
+
 | Parameter | Description |
 | --- | --- |
 | <volume> | Specifies the drive letter (followed by a colon), mount point, or volume name. |
