@@ -12,7 +12,7 @@ powercfg /hibernate on
 powercfg /change monitor-timeout-ac 20
 powercfg /change standby-timeout-ac 0
 powercfg /change hibernate-timeout-ac 0
-powercfg /change disk-timeout-ac 30
+powercfg /change disk-timeout-ac 0
 Rename-Computer -NewName "PC-Pernica"
 # Disable UAC
 Set-itemproperty "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System" -Name "EnableLUA" -Value "0" -Type DWord
