@@ -21,6 +21,7 @@ Official docs: https://learn.microsoft.com/en-us/windows-server/administration/w
 chkdsk d: /f
 ```
 
+
 ## Clear-Disk
 
 Cleans a disk by removing all partition information and un-initializing it, erasing all data on the disk.
@@ -42,6 +43,7 @@ This example clears the disk regardless of whether it contains data or OEM parti
 ```bash
 Clear-Disk -Number 5 -RemoveData -RemoveOEM
 ```
+
 
 ## Format-Volume
 
