@@ -211,12 +211,22 @@ config redirect
         option dest_ip '192.168.84.25'
         option dest_port '51820'
 
+config redirect
+        option dest 'lan'
+        option target 'DNAT'
+        option name 'Storj'
+        list proto 'tcp'
+        list proto 'udp'
+        option src 'wan'
+        option src_dport '28967'
+        option dest_ip '192.168.84.10'
+        option dest_port '28967'
+
 ```
 Restart firewall for effect
 ```bash
 service firewall restart
 ```
-
 
 
 ## Notes
