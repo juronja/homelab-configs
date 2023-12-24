@@ -14,6 +14,9 @@ powercfg /change standby-timeout-ac 0
 powercfg /change hibernate-timeout-ac 0
 powercfg /change disk-timeout-ac 0
 Rename-Computer -NewName "PC-Pernica"
+# Install Windows Subsystem for Linux
+wsl --install
+
 # Disable UAC
 Set-itemproperty "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System" -Name "EnableLUA" -Value "0" -Type DWord
 # TASKBAR - Removes Widgets and Task View from the Taskbar / Alligns the taskbar to the left
