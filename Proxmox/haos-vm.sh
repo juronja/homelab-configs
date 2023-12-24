@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Copyright (c) 2021-2023 tteck
-# Author: tteck (tteckster), Edited by juronja
+# Author: tteck (tteckster), CPU Types edited by juronja
 # License: MIT
 # https://github.com/tteck/Proxmox/raw/main/LICENSE
 
