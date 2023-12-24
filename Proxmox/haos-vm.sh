@@ -235,7 +235,7 @@ function advanced_settings() {
     exit-script
   fi
 
-  if CPU_TYPE1=$(whiptail --backtitle "Proxmox VE Helper Scripts" --title "CPU MODEL" --radiolist "Choose" --cancel-button Exit-Script 20 58 2 \
+  if CPU_TYPE1=$(whiptail --backtitle "Proxmox VE Helper Scripts" --title "CPU MODEL" --radiolist "Choose" --cancel-button Exit-Script 10 58 4 \
     "0" "x86-64-v2-AES (Default)" ON \
     "1" "Host" OFF \
     "2" "kvm64" OFF \
