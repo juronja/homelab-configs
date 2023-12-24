@@ -235,7 +235,7 @@ function advanced_settings() {
     exit-script
   fi
 
-  if CPU_TYPE1=$(whiptail --backtitle "Proxmox VE Helper Scripts" --title "CPU MODEL" --radiolist "Choose" --cancel-button Exit-Script 8 58 4 \
+  if CPU_TYPE1=$(whiptail --backtitle "Proxmox VE Helper Scripts" --title "CPU MODEL" --radiolist "Choose" --cancel-button Exit-Script 8 58 \
     "0" "x86-64-v2-AES (Default)" ON \
     "1" "Host" OFF \
     "2" "kvm64" OFF \
@@ -245,7 +245,7 @@ function advanced_settings() {
       echo -e "${DGN}Using CPU Model: ${BGN}x86-64-v2${CL}"
       CPU_TYPE=" -cpu x86-64-v2"
     elif [ $CPU_TYPE1 = "2" ]; then
-      echo -e "${DGN}Using CPU Model: ${BGN}kvm64${CL}"
+      echo -e "${DGN}Using CPU Model: ${BGN}kvm64${CL}" 
       CPU_TYPE=" -cpu kvm64"
     elif [ $CPU_TYPE1 = "1" ]; then
       echo -e "${DGN}Using CPU Model: ${BGN}Host${CL}"
