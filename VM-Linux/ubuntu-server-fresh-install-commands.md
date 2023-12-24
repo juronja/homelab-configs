@@ -78,6 +78,25 @@ sudo sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/
 cd /etc/netplan/
 
 ```
+Example config:
+
+```yml
+# This file describes the network interfaces available on your system
+# For more information, see netplan(5).
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    ens160:  # Your ethernet name.
+     dhcp4: no
+     addresses: [192.168.84.25/24]
+     gateway4: 192.168.84.1
+     nameservers:
+       addresses: [1.1.1.2,8.8.8.8]
+
+```
+
+
 ### Restart the netplan
 
 ```bash
