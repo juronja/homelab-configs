@@ -244,10 +244,10 @@ function advanced_settings() {
     if [ $CPU_TYPE1 = "3" ]; then
       echo -e "${DGN}Using CPU Model: ${BGN}x86-64-v2${CL}"
       CPU_TYPE=" -cpu x86-64-v2"
-    if [ $CPU_TYPE1 = "2" ]; then
+    elif [ $CPU_TYPE1 = "2" ]; then
       echo -e "${DGN}Using CPU Model: ${BGN}kvm64${CL}"
       CPU_TYPE=" -cpu kvm64"
-    if [ $CPU_TYPE1 = "1" ]; then
+    elif [ $CPU_TYPE1 = "1" ]; then
       echo -e "${DGN}Using CPU Model: ${BGN}Host${CL}"
       CPU_TYPE=" -cpu host"
     else

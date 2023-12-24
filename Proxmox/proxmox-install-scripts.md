@@ -3,4 +3,7 @@
 Official docs: https://tteck.github.io/Proxmox/
 
 
-bash -c "$(wget -qLO - https://github.com/tteck/Proxmox/raw/main/vm/haos-vm.sh)"
+bash -c "$(wget -qLO - https://raw.githubusercontent.com/juronja/homelab-configs/main/Proxmox/haos-vm.sh)"
+
+
+
