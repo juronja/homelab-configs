@@ -14,7 +14,8 @@ powercfg /change standby-timeout-ac 0
 powercfg /change hibernate-timeout-ac 0
 powercfg /change disk-timeout-ac 0
 Rename-Computer -NewName "PC-Pernica"
-# Install Windows Subsystem for Linux
+# Enable VMP and Install Windows Subsystem for Linux
+Enable-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform -all
 wsl --install
 
 # Disable UAC
