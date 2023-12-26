@@ -1,6 +1,6 @@
 # Useful Proxmox configurations
 
-When installing I use `pve1.local@repina.eu` hostname.
+When installing I use `pve1.lan.repina.eu` hostname.
 
 ## First time setup
 
@@ -24,7 +24,7 @@ apt-get update
 ```
 Step 2
 ```bash
-apt-get dist-upgrade && reboot
+apt-get dist-upgrade -y && reboot
 
 ```
 
@@ -41,7 +41,7 @@ pvecm nodes
 ```
 At this point, you must power off hp4 and ensure that it will not power on again (in the network) with its current configuration.
 
-2. Set the quorum votes to the last node to 1. 
+2. IMPORTANT: Set the quorum votes on the last node to 1!! 
 
 ```bash
 pvecm expected 1
@@ -51,6 +51,6 @@ pvecm expected 1
 3. We can safely remove it from the cluster now. error = CS_ERR_NOT_EXIST can be ignored.
 
 ```bash
-pvecm delnode hp4
+pvecm delnode pve-nodename
 ```
 
