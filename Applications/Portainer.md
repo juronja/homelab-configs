@@ -14,39 +14,42 @@ Restore settings from backup
 
 ## Stacks
 
-### wireguard-pihole
-
-Setup instructions: https://nginxproxymanager.com/setup/#full-setup-instructions
+### wireguard-proxy
 
 ```yml
 version: '3.8'
+volumes:
+  etc_wireguard:
+  
 services:
   wg-easy:
     environment:
       # ⚠️ Required:
       # Change this to your host's public address
-      - WG_HOST=192.168.84.x
+      - WG_HOST=192.168.84.X
 
       # Optional:
-      - PASSWORD=ENTER-PASSWORD
+      - PASSWORD=ENTERPASS*
       # - WG_PORT=51820
+      # - WG_INTERFACE=wg0
       # - WG_DEFAULT_ADDRESS=10.8.0.x
       # - WG_DEFAULT_DNS=1.1.1.1
       # - WG_MTU=1420
       # - WG_ALLOWED_IPS=192.168.15.0/24, 10.0.1.0/24
+      # - WG_PERSISTENT_KEEPALIVE=25
       # - WG_PRE_UP=echo "Pre Up" > /etc/wireguard/pre-up.txt
       # - WG_POST_UP=echo "Post Up" > /etc/wireguard/post-up.txt
       # - WG_PRE_DOWN=echo "Pre Down" > /etc/wireguard/pre-down.txt
       # - WG_POST_DOWN=echo "Post Down" > /etc/wireguard/post-down.txt
       
-    image: weejewel/wg-easy
+    image: ghcr.io/wg-easy/wg-easy
     container_name: wg-easy
+    volumes:
+      - etc_wireguard:/etc/wireguard
     restart: unless-stopped
     ports:
       - "51820:51820/udp"
       - "51821:51821/tcp"
-    volumes:
-      - .:/etc/wireguard
     networks:
       - sol
     cap_add:
@@ -84,4 +87,22 @@ networks:
   sol:
     name: sol
     external: true
+
 ```
+
+### Services notes
+
+#### Official notes
+
+Nginx
+instructions: https://nginxproxymanager.com/setup/#full-setup-instructions
+
+Wireguard
+https://github.com/wg-easy/wg-easy
+
+#### Default logins
+
+| Service | username | Password |
+| --- | --- | --- |
+| Nginx | admin@example.com | changeme |
+| Wireguard | --- | setup in the stack |
