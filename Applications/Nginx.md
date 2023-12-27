@@ -28,10 +28,10 @@ Domain names: wg.repina.eu
 Scheme: choose
 IP: Server IP
 FWD port: app port
-- [*] block common exploits
+- [x] block common exploits
+- [x] Websockets # Home Assistant needs it
 
 ### SSL
 Choose the cert
-- [*] Force SSL
-- [*] HTTP/2 Support
-- [*] 
+- [x] Force SSL
+- [x] HTTP/2 Support
