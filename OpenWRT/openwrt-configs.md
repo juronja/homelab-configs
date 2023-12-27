@@ -13,7 +13,6 @@ passwd
 ```bash
 uci set system.@system[0].zonename='Europe/Ljubljana'
 uci set system.@system[0].timezone='CET-1CEST,M3.5.0,M10.5.0/3'
-uci set luci.main.mediaurlbase='/luci-static/bootstrap-dark'
 uci set system.@system[0].hostname=GW-TP-Link-Archer-C7 #Change te device name here
 ```
 
@@ -95,6 +94,17 @@ Official documentation: https://openwrt.org/docs/guide-user/network/openwrt_as_r
 
 By default, the LAN ports of the router will have an address of 192.168.1.1
 
+#### When Flashing a device use customized packages
+
+![Alt text](image.png)
+
+Add this packages to the installer:
+
+```bash
+nano-full etherwake luci-app-wol ddns-scripts ddns-scripts-services luci-app-ddns
+
+```
+
 #### Static IP settings, DHCP, Firewall syn-flood
 
 ```bash
@@ -159,8 +169,10 @@ opkg update
 opkg install ddns-scripts
 opkg install ddns-scripts-services
 opkg install luci-app-ddns
-opkg install luci-i18n-ddns-en
+#opkg install luci-i18n-ddns-en
 opkg install nano-full
+opkg install etherwake
+opkg install luci-app-wol
 
 ```
 DDNS config:
@@ -234,4 +246,10 @@ service firewall restart
 To see pending changes use:
 ```bash
 uci changes
+```
+
+Make a restore:
+
+```bash
+firstboot -y && reboot
 ```
