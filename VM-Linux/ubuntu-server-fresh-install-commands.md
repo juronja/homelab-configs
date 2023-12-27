@@ -109,9 +109,3 @@ sudo usermod -aG sudo username
 ```bash
 sudo mkdir ~/.ssh && chmod 700 ~/.ssh
 ```
-
-## TO DO Windows setup ##
-Firewall exclude folders
-User account control
-disable sounds
-Install power toys

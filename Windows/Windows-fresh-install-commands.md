@@ -42,5 +42,7 @@ reg ADD HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v Enable
 
 
 
-To-Do:
+## TO DO Windows setup ##
+- [ ] disable sounds
+- [ ] Install power toys
 - [ ] Add for laptop in the future if you need. Some of the tweaks are specific for DC powered plan. 
