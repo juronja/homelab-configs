@@ -25,3 +25,11 @@ Pi-hole Interface is at: IP/admin
 pihole -a -p
 
 ```
+
+## Unifi Network Application
+
+```bash
+bash -c "$(wget -qLO - https://github.com/tteck/Proxmox/raw/main/ct/unifi.sh)"
+```
+
+UniFi Interface: (https)IP:8443
