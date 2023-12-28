@@ -16,6 +16,7 @@ powercfg /change disk-timeout-ac 0
 Rename-Computer -NewName "PC-Pernica"
 # Enable VMP and Install Windows Subsystem for Linux
 Enable-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform -all
+wsl --update
 wsl --install -d Ubuntu
 
 # Disable UAC
