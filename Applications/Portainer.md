@@ -6,7 +6,7 @@ Setup instructions: https://docs.portainer.io/start/install-ce/server/docker/lin
 
 
 ```bash
-sudo docker volume create portainer_data && sudo docker network create sol && sudo docker run -d -p 8000:8000 -p 9443:9443 --name portainer --network sol --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:latest
+sudo docker volume create portainer_data && sudo docker network create proxy && sudo docker run -d -p 8000:8000 -p 9443:9443 --name portainer --network proxy --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:latest
 
 ```
 
@@ -26,10 +26,10 @@ services:
     environment:
       # ⚠️ Required:
       # Change this to your host's public address
-      - WG_HOST=pernica.duckdns.org
+      - WG_HOST=⚠️WAN address / ddns name
 
       # Optional:
-      - PASSWORD=ENTERPASS*
+      - PASSWORD=⚠️ENTERPASS*
       # - WG_PORT=51820
       # - WG_INTERFACE=wg0
       # - WG_DEFAULT_ADDRESS=10.8.0.x
