@@ -26,7 +26,7 @@ services:
     environment:
       # ⚠️ Required:
       # Change this to your host's public address
-      - WG_HOST=192.168.84.X
+      - WG_HOST=pernica.duckdns.org
 
       # Optional:
       - PASSWORD=ENTERPASS*
@@ -51,7 +51,7 @@ services:
       - "51820:51820/udp"
       - "51821:51821/tcp"
     networks:
-      - sol
+      - proxy
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
@@ -82,10 +82,10 @@ services:
       - ./data:/data
       - ./letsencrypt:/etc/letsencrypt
     networks:
-      - sol
+      - proxy
 networks:
-  sol:
-    name: sol
+  proxy:
+    name: proxy
     external: true
 
 ```
