@@ -190,7 +190,6 @@ opkg update
 opkg install ddns-scripts
 opkg install ddns-scripts-services
 opkg install luci-app-ddns
-#opkg install luci-i18n-ddns-en
 opkg install nano-full
 opkg install etherwake
 opkg install luci-app-wol
@@ -207,13 +206,13 @@ uci set ddns.duckdns.password='789f7e15-17fd-49ef-8e8b-2a0b6487c0c5'
 uci set ddns.duckdns.ip_source='network'
 uci set ddns.duckdns.ip_network='wan'
 uci set ddns.duckdns.use_syslog='2'
+uci set ddns.duckdns.check_interval='10'
 uci set ddns.duckdns.check_unit='hours'
-uci set ddns.duckdns.force_unit='hours'
 uci set ddns.duckdns.retry_unit='seconds'
 uci set ddns.duckdns.interface='wan'
 uci set ddns.duckdns.lookup_host='pernica.duckdns.org'
 uci set ddns.duckdns.enabled='1'
-uci set ddns.duckdns.check_interval='6'
+
 uci commit
 service ddns restart
 
