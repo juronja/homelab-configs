@@ -105,6 +105,27 @@ nano-full etherwake luci-app-wol ddns-scripts ddns-scripts-services luci-app-ddn
 
 ```
 
+##### or use client builder
+
+```bash
+mkdir openwrtbuild
+cd openwrtbuild/
+wget https://downloads.openwrt.org/releases/23.05.2/targets/ath79/generic/openwrt-imagebuilder-23.05.2-ath79-generic.Linux-x86_64.tar.xz
+tar -J -x -f openwrt-imagebuilder-*.tar.xz
+rm openwrt-imagebuilder-23.05.2-ath79-generic.Linux-x86_64.tar.xz
+cd openwrt-imagebuilder-*/
+make image PROFILE=tplink_tl-wr1043nd-v2 PACKAGES="nano-full etherwake luci-app-wol ddns-scripts ddns-scripts-services luci-app-ddns"
+cd bin/targets/ath79/generic/
+ls
+openwrt-23.05.2-ath79-generic-tplink_tl-wr1043nd-v2.manifest
+openwrt-23.05.2-ath79-generic-tplink_tl-wr1043nd-v2-squashfs-factory.bin
+openwrt-23.05.2-ath79-generic-tplink_tl-wr1043nd-v2-squashfs-sysupgrade.bin
+profiles.json
+sha256sums
+```
+
+
+
 #### Static IP settings, DHCP, Firewall syn-flood
 
 ```bash
