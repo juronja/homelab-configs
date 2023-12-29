@@ -7,20 +7,31 @@ Use Windows Terminal with Admin privileges.
 Disable UAC, Change power settings, update taskbar, start and file explorer, Windows defender exclusions.
 
 ```bash
+# Disable UAC, rename PC
+Set-itemproperty "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System" -Name "EnableLUA" -Value "0" -Type DWord
+Rename-Computer -NewName "PC-Pernica"
+
+# Install Apps
+winget install Microsoft.PowerToys --source winget
+winget install -e --id Microsoft.VisualStudioCode
+winget install -e --id Plex.Plex
+winget install -e --id Plex.Plexamp
+winget install -e --id Telegram.TelegramDesktop
+winget install -e --id Nvidia.GeForceExperience
+
+
+# Enable VMP and Install Windows Subsystem for Linux
+Enable-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform -all
+wsl --update
+wsl --install -d Ubuntu
+
+# Power settings
 powercfg /setactive SCHEME_MIN # (Min power saving)
 powercfg /hibernate on
 powercfg /change monitor-timeout-ac 20
 powercfg /change standby-timeout-ac 0
 powercfg /change hibernate-timeout-ac 0
 powercfg /change disk-timeout-ac 0
-Rename-Computer -NewName "PC-Pernica"
-# Enable VMP and Install Windows Subsystem for Linux
-Enable-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform -all
-wsl --update
-wsl --install -d Ubuntu
-
-# Disable UAC
-Set-itemproperty "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System" -Name "EnableLUA" -Value "0" -Type DWord
 # TASKBAR - Removes Widgets and Task View from the Taskbar / Alligns the taskbar to the left
 Set-itemproperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "TaskbarDa" -Value "0" -Type DWord
 Set-itemproperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ShowTaskViewButton" -Value "0" -Type DWord
@@ -32,6 +43,8 @@ Set-itemproperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\Start" -Name "
 Set-itemproperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "HideFileExt" -Value "0" -Type DWord
 Set-itemproperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "Hidden" -Value "1" -Type DWord
 Add-MpPreference -ExclusionPath "C:\Music_production","C:\Users\Jure\Downloads","C:\Windows","D:\","E:\","F:\","H:\","I:\"
+
+
 
 ```
 
