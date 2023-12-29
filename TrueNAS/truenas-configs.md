@@ -8,7 +8,7 @@ zpool status -v #check for errors in pools
 zpool clear media-pool 0aac1d05-e336-4dda-acb6-bd5fedfa477b #clears the pool errors for a specific device
 ```
 
-Setup SMB Share Auxiliary Parameters
+## Setup SMB Share Auxiliary Parameters (For TrueCharts)
 
 With the release of Cobia the Auxiliary Parameters has been removed from the WebUI. The below will guide you through the use of API calls and the system shell to add the correct parameters.
 
