@@ -24,15 +24,15 @@ Host proxmox
   User root
   IdentityFile ~/.ssh/id_proxmox
 
+Host truenas
+  Hostname 192.168.84.10
+  User jure
+  IdentityFile ~/.ssh/id_truenas
+
 Host ubuntu-homelab
   Hostname 192.168.84.25
   User juronja
   IdentityFile ~/.ssh/id_ubuntu-homelab
-
-Host ubuntu-server2
-  Hostname 192.168.84.24
-  User juronja
-#  IdentityFile ~/.ssh/id_ubuntu-server2
 #  Port if a custom ssh port is set
 
 ```
