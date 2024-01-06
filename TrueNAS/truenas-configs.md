@@ -35,3 +35,22 @@ The output should include the following if it was done correctly:
 ```
 
 Repeat for any additional SMB Shares.
+
+
+## Heavy script install (auto backup and update)
+
+Official docs: https://github.com/Heavybullets8/heavy_script
+
+```bash
+curl -s https://raw.githubusercontent.com/Heavybullets8/heavy_script/main/functions/deploy.sh | bash && source "$HOME/.bashrc" 2>/dev/null && source "$HOME/.zshrc" 2>/dev/null
+```
+
+Your example cronjob:
+```bash
+sudo bash /mnt/app-pool/homedirectory/jure/heavy_script/heavy_script.sh update --backup 7 --concurrent 10 --rollback --sync --self-update
+```
+
+To edit run:
+```bash
+sudo heavyscript
+```
