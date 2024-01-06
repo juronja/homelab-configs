@@ -46,15 +46,20 @@ radarr:
     base_url: !secret radarr_url
     api_key: !secret radarr_apikey
 
+# Media Naming
+
+    media_naming:
+      folder: default
+      movie:
+        rename: true
+        standard: default
+
+# Quality Definitions
     include:
       # Comment out any of the following includes to disable them
-      #- template: radarr-quality-definition-movie
-
-    # Set to 'true' to automatically remove/replace custom formats from Radarr when they are removed from the guide or your configuration. This will NEVER delete custom formats you manually created!
-    delete_old_custom_formats: true
-    replace_existing_custom_formats: true
+      - template: radarr-quality-definition-movie
     
-    # Quality profile setup
+# Quality Profiles
     quality_profiles:
       - name: HD Bluray + WEB
         upgrade:
@@ -70,6 +75,11 @@ radarr:
               - WEBRip-1080p
               - WEBDL-1080p
           
+# Custom Formats
+    # Set to 'true' to automatically remove/replace custom formats from Radarr when they are removed from the guide or your configuration. This will NEVER delete custom formats you manually created!
+    delete_old_custom_formats: true
+    replace_existing_custom_formats: true
+    
     custom_formats:
       # A list of custom formats to sync to Radarr.
       # Use `recyclarr list custom-formats radarr` for values you can put here.
