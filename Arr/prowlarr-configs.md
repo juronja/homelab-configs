@@ -12,3 +12,4 @@ YTS
 ## Add Apps
 
 Radarr
+Sonarr
