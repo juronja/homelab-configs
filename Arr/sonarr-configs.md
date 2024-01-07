@@ -1,4 +1,4 @@
-# Radarr configurations
+# Sonarr configurations
 
 Add host path in TrueNas: /mnt/media-pool/media
 
