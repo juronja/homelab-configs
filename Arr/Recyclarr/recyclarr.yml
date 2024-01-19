@@ -125,7 +125,6 @@ sonarr:
           - 9b27ab6498ec0f31a3353992e19434ca # DV (WEBDL)
           - 5ab46ff851b76c337e13e81a4353875f # INTERNAL
           - e1a997ddb54e3ecbfe06341ad323c458 # Obfuscated
-          - 1b3994c551cbb92a2c781af061f4ab44 # Scene
           - 90501962793d580d011511155c97e4e5 # VP9
 
           # Series Versions
