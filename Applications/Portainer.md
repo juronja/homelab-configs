@@ -26,7 +26,7 @@ services:
     environment:
       # ⚠️ Required:
       # Change this to your host's public address
-      - WG_HOST=⚠️WAN address / ddns name
+      - WG_HOST=⚠️.duckdns.org # WAN address / ddns name
 
       # Optional:
       - PASSWORD=⚠️ENTERPASS*
