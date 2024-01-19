@@ -47,6 +47,7 @@ Add-MpPreference -ExclusionPath "C:\Music_production","C:\Users\Jure\Downloads",
 # Install Apps
 ```bash
 winget install Microsoft.PowerToys --source winget
+winget install -e --id Adobe.Acrobat.Reader.64-bit
 winget install -e --id Microsoft.VisualStudioCode
 winget install -e --id Plex.Plex
 winget install -e --id Plex.Plexamp
