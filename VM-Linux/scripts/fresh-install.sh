@@ -37,5 +37,7 @@ sudo apt-get update && sudo apt-get install docker-ce docker-ce-cli containerd.i
 sudo usermod -aG docker $user
 sudo docker run --name hello hello-world && sudo docker rm hello && sudo docker rmi hello-world
 
+echo "Script finished!"
+
 # Reboot system
 sudo reboot
