@@ -2,7 +2,7 @@
 
 Official docs: https://tteck.github.io/Proxmox/
 
-## Install HAOS-VM - edited by me.
+## Install HAOS-VM
 
 ```bash
 bash -c "$(wget -qLO - https://github.com/tteck/Proxmox/raw/main/vm/haos-vm.sh)"
@@ -24,6 +24,22 @@ Pi-hole Interface is at: IP/admin
 ```bash
 pihole -a -p
 
+```
+
+## Install WireGuard LXC
+
+```bash
+bash -c "$(wget -qLO - https://github.com/tteck/Proxmox/raw/main/ct/wireguard.sh)"
+
+```
+Host Configuration
+```bash
+nano /etc/pivpn/wireguard/setupVars.conf
+
+```
+Add Clients
+```bash
+pivpn add
 ```
 
 ## Unifi Network Application
