@@ -14,7 +14,7 @@ http:
     - 192.168.84.0/24
 
 ```
-# Customize.yaml
+## Customize.yaml
 
 ```yml
 sensor.toplotna_energy_total:
