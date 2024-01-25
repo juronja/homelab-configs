@@ -4,14 +4,15 @@
 
 Official docs: https://github.com/gethomepage/homepage
 
-### compose stack
+### Compose stack
 
 
 ### Portainer stack
 
-Portainer creates a default app network, and prepends volume data. Eg
+Portainer creates a default app network, and prepends volume data.
 
 Network: `homepage_default`
+
 Volume: `homepage_` (With the example below the final volume name will be **homepage_**data)
 
 
