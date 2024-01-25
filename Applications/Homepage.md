@@ -13,7 +13,7 @@ Portainer creates a default app network, and prepends volume data.
 
 Network: `homepage_default`
 
-Volume: `homepage_` (With the example below the final volume name will be **homepage_**data)
+Volume: `homepage_` (With the example below the final volume name will be *homepage_*data)
 
 
 ```yml
