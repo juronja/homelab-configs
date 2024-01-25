@@ -9,10 +9,11 @@ Official docs: https://github.com/gethomepage/homepage
 
 ### Portainer stack
 
-Portainer creates a default app network, and prepends volume data
+Portainer creates a default app network, and prepends volume data. Eg
 
-`**homepage_**data`
-`**homepage_default**`
+Network: `homepage_default`
+Volume: `homepage_` (With the example below the final volume name will be **homepage_**data)
+
 
 ```yml
 version: "3.3"
