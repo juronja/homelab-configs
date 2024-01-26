@@ -1,19 +1,8 @@
 # Homepage configurations
 
-## Install
-
 Official docs: https://github.com/gethomepage/homepage
 
-### Compose stack
-
-
-### Portainer stack
-
-Portainer creates a default app network, and prepends volume data.
-
-Network: `homepage_default`
-
-Volume: `homepage_` (With the example below the final volume name will be *homepage_*data)
+## Install
 
 
 ```yml
@@ -28,9 +17,8 @@ services:
     ports:
       - 3000:3000
     volumes:
-      - data:/app/config # Make sure your local config directory exists
+      - /home/juronja/appstorage/homepage_data:/app/config # Make sure your local config directory exists
       - /var/run/docker.sock:/var/run/docker.sock:ro # optional, for docker integrations
     restart: unless-stopped
-volumes:
-  data:
+
 ```
