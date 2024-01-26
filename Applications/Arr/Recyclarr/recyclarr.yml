@@ -305,11 +305,15 @@ radarr:
             #reset_unmatched_scores: true # Optionally set other scores to 0 if they are not listed in 'names' above.
 
       - trash_ids:
-          # Custom Scoring for all items below
+          # Custom Scoring for all unwanted items
           - cae4ca30163749b891686f95532519bd # AV1
           - eecf3a857724171f968a66cb5719e152 # IMAX
           - 9f6cbff8cfe4ebbc1bde14c7b7bec0de # IMAX Enhanced
           - 09d9dd29a0fc958f9796e65c2a8864b4 # Open Matte
+          - dcf3ec6938fa32445f590a4da84256cd # DTS-HD MA
+          - 6fd7b090c3f7317502ab3b63cc7f51e3 # 6.1 Surround
+          - f2aacebe2c932337fe352fa6e42c1611 # 9.1 Surround
+
 
         quality_profiles:
           - name: HD Bluray + WEB
