@@ -4,7 +4,6 @@ Official docs: https://github.com/gethomepage/homepage
 
 ## Install
 
-
 ```yml
 version: "3.3"
 services:
@@ -22,3 +21,8 @@ services:
     restart: unless-stopped
 
 ```
+
+## Configuration
+
+Copy paste the yaml files to the docker volume on Linux. 
+Example: `/home/juronja/appstorage/homepage_data`
