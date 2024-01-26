@@ -5,11 +5,14 @@
 background:
   image: https://images.unsplash.com/photo-1538435740860-67bd8f4e8eb8
   blur: none # sm, "", md, xl... see https://tailwindcss.com/docs/backdrop-blur
-  saturate: 100 # 0, 50, 100... see https://tailwindcss.com/docs/backdrop-saturate
-  brightness: 75 # 0, 50, 75... see https://tailwindcss.com/docs/backdrop-brightness
+  saturate: 75 # 0, 50, 100... see https://tailwindcss.com/docs/backdrop-saturate
+  brightness: 50 # 0, 50, 75... see https://tailwindcss.com/docs/backdrop-brightness
   opacity: 100 # 0-100
 
+headerStyle: clean
 color: slate
+theme: dark # or light
+useEqualHeights: true
 
 providers:
   openweathermap: openweathermapapikey
