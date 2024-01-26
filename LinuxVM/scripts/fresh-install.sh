@@ -47,6 +47,10 @@ sudo usermod -aG docker $user
 # Verify
 sudo docker run --name hello hello-world && sudo docker rm hello && sudo docker rmi hello-world
 
+# Create custom app directory tree
+mkdir appstorage
+mkdir appstorage/{portainer,homepage}_data
+
 echo "Script finished!"
 
 # Reboot system
