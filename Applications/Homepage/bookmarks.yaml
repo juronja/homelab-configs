@@ -1,0 +1,16 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/latest/configs/bookmarks
+
+- Developer:
+    - My Github:
+        - icon: github.png
+          href: https://github.com/juronja
+    - Duckdns:
+        - icon: duckdns.png
+          href: https://www.duckdns.org/
+
+- Social:
+    - Reddit:
+        - abbr: RE
+          href: https://reddit.com/

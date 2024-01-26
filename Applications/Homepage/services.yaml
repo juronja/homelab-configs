@@ -1,0 +1,43 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/latest/configs/services
+
+- Servers:
+    - Proxmox:
+        icon: proxmox.svg
+        href: https://pve.repina.eu:8006/
+        #description: pve1
+    - Truenas Scale:
+        icon: truenas.svg
+        href: http://nas.repina.eu/
+        #description: pve1
+
+- Manage:
+    - Home Assistant:
+        icon: home-assistant.svg
+        href: http://ha.repina.eu:8123/
+        #description: Homepage is 😎
+    - Portainer:
+        icon: portainer.svg
+        href: https://portainer.repina.eu:9443/
+    - Pihole:
+        icon: pi-hole.svg
+        href: http://pihole.repina.eu/admin/login.php
+
+- Media:
+    - qBittorrent:
+        icon: qbittorrent.svg
+        href: http://192.168.84.10:10095/
+        #description: Homepage is the best
+    - Radarr:
+        icon: radarr.svg
+        href: http://192.168.84.10:7878/
+        #description: Homepage is the best
+    - Sonarr:
+        icon: sonarr.svg
+        href: http://192.168.84.10:8989/
+        #description: Homepage is the best
+    - Audiobookshelf:
+        icon: audiobookshelf.svg
+        href: http://192.168.84.10:10223/
+        #description: Homepage is the best
