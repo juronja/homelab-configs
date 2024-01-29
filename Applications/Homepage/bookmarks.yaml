@@ -4,8 +4,11 @@
 
 - Bookmarks:
     - My Github:
-        - icon: github.png
+        - icon: github.svg
           href: https://github.com/juronja
     - Duckdns:
-        - icon: duckdns.png
+        - icon: duckdns.svg
           href: https://www.duckdns.org/
+    - Cubbit:
+        - icon: cubbit.png
+          href: https://console.cubbit.eu/signin          
