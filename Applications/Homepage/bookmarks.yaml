@@ -7,8 +7,8 @@
         - icon: github.svg
           href: https://github.com/juronja
     - Duckdns:
-        - icon: duckdns.svg
+        - icon: duckdns.png
           href: https://www.duckdns.org/
     - Cubbit:
-        - icon: https://github.com/juronja/homelab-configs/blob/main/Applications/Homepage/images/cubbit.png
+        - icon: https://raw.githubusercontent.com/juronja/homelab-configs/b8cd24a18861b12cff2f051a6538a551f8517ae9/Applications/Homepage/images/cubbit.png
           href: https://console.cubbit.eu/signin          
