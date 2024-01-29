@@ -10,5 +10,5 @@
         - icon: duckdns.svg
           href: https://www.duckdns.org/
     - Cubbit:
-        - icon: cubbit.png
+        - icon: https://github.com/juronja/homelab-configs/blob/main/Applications/Homepage/images/cubbit.png
           href: https://console.cubbit.eu/signin          
