@@ -23,6 +23,9 @@
     - Pihole:
         icon: pi-hole.svg
         href: http://pihole.repina.eu/admin/login.php
+    - Unifi Site Manager:
+        icon: unifi.svg
+        href: https://unifi.ui.com/
 
 - Media:
     - qBittorrent:
