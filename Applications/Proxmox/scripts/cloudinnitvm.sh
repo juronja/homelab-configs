@@ -7,10 +7,10 @@
 id=501
 cores=2
 ram=4096
-ubuntu_release="jammy"
+ubuntuRelease="jammy"
 
 # Dowload the Ubuntu cloud innit image
-wget -nc --directory-prefix=/var/lib/vz/template/iso/ https://cloud-images.ubuntu.com/$ubuntu_release/current/$ubuntu_release-server-cloudimg-amd64.img
+wget -nc --directory-prefix=/var/lib/vz/template/iso/ https://cloud-images.ubuntu.com/$ubuntuRelease/current/$ubuntuRelease-server-cloudimg-amd64.img
 
 # Create a VM
 qm create $id --cores $cores --cpu x86-64-v2-AES --memory $ram --balloon 1 --name ubuntu-cloud-template --scsihw virtio-scsi-pci --net0 virtio,bridge=vmbr0,firewall=1 --serial0 socket --vga serial0 --ipconfig0 ip=dhcp,ip6=dhcp --agent enabled=1 --onboot 1

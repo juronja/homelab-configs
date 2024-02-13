@@ -6,8 +6,8 @@
 
 # Variables:
 user="$(whoami)"
-allowtcp="22,81"
-allowudp="51820"
+allowTcp="22,81"
+allowUdp="51820"
 
 # Update and install upgrades
 sudo apt update -y && sudo apt upgrade
@@ -22,10 +22,10 @@ sudo timedatectl set-timezone Europe/Ljubljana
 sudo sed -i 's/\/\/Unattended-Upgrade::Automatic-Reboot-Time/Unattended-Upgrade::Automatic-Reboot-Time/' /etc/apt/apt.conf.d/50unattended-upgrades
 
 # Configure firewall
-#sudo ufw default allow outgoing && sudo ufw default deny incoming && sudo ufw allow $allowtcp/tcp && sudo ufw allow $allowudp/udp && sudo ufw enable
+sudo ufw default allow outgoing && sudo ufw default deny incoming && sudo ufw allow $allowTcp/tcp && sudo ufw allow $allowUdp/udp && sudo ufw enable
 
 # Disable pings in firewall
-#sudo sed -i 's/-A ufw-before-input -p icmp --icmp-type echo-request -j ACCEPT/-A ufw-before-input -p icmp --icmp-type echo-request -j DROP/' /etc/ufw/before.rules
+sudo sed -i 's/-A ufw-before-input -p icmp --icmp-type echo-request -j ACCEPT/-A ufw-before-input -p icmp --icmp-type echo-request -j DROP/' /etc/ufw/before.rules
 
 # Install guest agent
 sudo apt install qemu-guest-agent -y
