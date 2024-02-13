@@ -124,8 +124,6 @@ profiles.json
 sha256sums
 ```
 
-
-
 #### Static IP settings, DHCP, Firewall syn-flood
 
 ```bash
@@ -195,6 +193,7 @@ opkg install etherwake
 opkg install luci-app-wol
 
 ```
+
 DDNS config:
 ```bash
 uci set ddns.duckdns=service
@@ -202,7 +201,7 @@ uci set ddns.duckdns.service_name='duckdns.org'
 uci set ddns.duckdns.use_ipv6='0'
 uci set ddns.duckdns.domain='pernica.duckdns.org'
 uci set ddns.duckdns.username='pernica'
-uci set ddns.duckdns.password='789f7e15-17fd-49ef-8e8b-2a0b6487c0c5'
+uci set ddns.duckdns.password='ENTER API PASS'
 uci set ddns.duckdns.ip_source='network'
 uci set ddns.duckdns.ip_network='wan'
 uci set ddns.duckdns.use_syslog='2'
