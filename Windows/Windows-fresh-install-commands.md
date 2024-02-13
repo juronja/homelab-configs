@@ -11,7 +11,10 @@ To disable windows defender you have to manually toggle the Tamper Protection OF
 Set-itemproperty "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender" -Name "DisableAntiSpyware" -Value "1" -Type DWord -Force
 # Disable Defender
 Set-itemproperty "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System" -Name "EnableLUA" -Value "0" -Type DWord
+# Dynamic Lightning - turn uff because it is screwing with the Logitech G hub settings
+Set-itemproperty "HKLM:\SOFTWARE\Microsoft\Lighting" -Name "AmbientLightingEnabled" -Value "0" -Type DWord #-Force
 
+# Renames the computer
 Rename-Computer -NewName "PC-Pernica"
 
 # Enable VMP and Install Windows Subsystem for Linux
