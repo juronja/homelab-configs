@@ -49,6 +49,8 @@ Add-MpPreference -ExclusionPath "C:\Music_production","C:\Users\Jure\Downloads",
 
 # Install Apps
 ```bash
+
+winget install -e --id Google.Chrome
 winget install Microsoft.PowerToys --source winget
 winget install -e --id Adobe.Acrobat.Reader.64-bit
 winget install -e --id Microsoft.VisualStudioCode
@@ -59,6 +61,9 @@ winget install -e --id Discord.Discord
 winget install -e --id Nvidia.GeForceExperience
 winget install -e --id Valve.Steam
 winget install -e --id Skillbrains.Lightshot
+
+# For NPM if needed )after install run the node.JS command prompt to initialise)
+#winget install -e --id OpenJS.NodeJS.LTS
 ```
 
 
