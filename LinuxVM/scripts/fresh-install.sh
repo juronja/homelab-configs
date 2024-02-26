@@ -10,7 +10,7 @@ allowTcp="22,81"
 allowUdp="51820"
 
 # Update and install upgrades
-sudo apt update -y && sudo apt upgrade
+sudo apt update -y && sudo apt upgrade -y
 
 # Create the Public Key Directory for SSH on your Linux Server. This is not needed in Ubuntu distro
 #sudo mkdir ~/.ssh && chmod 700 ~/.ssh 
