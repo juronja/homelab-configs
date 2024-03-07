@@ -6,7 +6,7 @@
 
 # Variables
 user="$(whoami)"
-allowTcp="22,81"
+allowTcp="81"
 allowUdp="51820"
 
 
@@ -27,7 +27,7 @@ sudo timedatectl set-timezone Europe/Ljubljana
 sudo sed -i 's/\/\/Unattended-Upgrade::Automatic-Reboot-Time/Unattended-Upgrade::Automatic-Reboot-Time/' /etc/apt/apt.conf.d/50unattended-upgrades
 
 # Configure firewall
-sudo ufw default allow outgoing && sudo ufw default deny incoming && sudo ufw allow $allowTcp/tcp && sudo ufw allow $allowUdp/udp && sudo ufw enable
+sudo ufw default allow outgoing && sudo ufw default deny incoming && sudo ufw allow 22,$allowTcp/tcp && sudo ufw allow $allowUdp/udp && sudo ufw enable
 
 # Disable pings in firewall
 sudo sed -i 's/-A ufw-before-input -p icmp --icmp-type echo-request -j ACCEPT/-A ufw-before-input -p icmp --icmp-type echo-request -j DROP/' /etc/ufw/before.rules
