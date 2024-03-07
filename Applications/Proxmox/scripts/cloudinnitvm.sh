@@ -4,11 +4,15 @@
 # Author: juronja
 # License: MIT
 
+echo "Starting VM script .."
+read -p "How many cores?: " cores
+read -p "How much RAM? Write whole numbers (e.g. 1,4,8,..): " raminput
+
 id=501
-cores=2
-ram=4096
-disk=32G
+ram=$(($raminput * 1024))
+disk="32G"
 ubuntuRelease="jammy"
+
 
 # Dowload the Ubuntu cloud innit image
 wget -nc --directory-prefix=/var/lib/vz/template/iso/ https://cloud-images.ubuntu.com/$ubuntuRelease/current/$ubuntuRelease-server-cloudimg-amd64.img
