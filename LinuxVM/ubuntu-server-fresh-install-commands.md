@@ -8,7 +8,7 @@ OpenSSH can be installed when installing Linux, on Ubuntu it is preinstalled; so
 SSH via Terminal
 
 ```bash
-bash -c "$(wget -qLO - https://raw.githubusercontent.com/juronja/homelab-configs/main/VM-Linux/scripts/fresh-install.sh)"
+bash -c "$(wget -qLO - https://raw.githubusercontent.com/juronja/homelab-configs/main/LinuxVM/scripts/fresh-install.sh)"
 
 ```
 

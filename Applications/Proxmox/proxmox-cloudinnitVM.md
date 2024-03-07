@@ -5,7 +5,7 @@ How to setup a cloud VM with Cloudinit.
 Copy this line in the Proxmox CLI. Edit what is needed.
 
 ```bash
-bash -c "$(wget -qLO - https://raw.githubusercontent.com/juronja/homelab-configs/main/Proxmox/scripts/cloudinnitvm.sh)"
+bash -c "$(wget -qLO - https://raw.githubusercontent.com/juronja/homelab-configs/main/Applications/Proxmox/scripts/cloudinnitvm.sh)"
 
 ```
 

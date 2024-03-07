@@ -1,6 +1,6 @@
 #! /bin/bash
 
-# Copyright (c) 2024-2024 juronja
+# Copyright (c) 2024-present juronja
 # Author: juronja
 # License: MIT
 
