@@ -1,18 +1,19 @@
-#! /bin/bash
+#!/bin/bash
 
 # Copyright (c) 2024-2024 juronja
 # Author: juronja
 # License: MIT
 
-# Variables:
+# Variables
 user="$(whoami)"
 allowTcp="22,81"
 allowUdp="51820"
 
+
 # Update and install upgrades
 sudo apt update -y && sudo apt upgrade -y
 
-# Create the Public Key Directory for SSH on your Linux Server. This is not needed in Ubuntu distro
+# Create the Public Key Directory for SSH on your Linux Server. This is not needed in Official Ubuntu distro.
 #sudo mkdir ~/.ssh && chmod 700 ~/.ssh 
 
 # Set local timezone
@@ -44,14 +45,14 @@ sudo apt-get update
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
 # Append user to docker group
 sudo usermod -aG docker $user
-# Verify
-sudo docker run --name hello hello-world && sudo docker rm hello && sudo docker rmi hello-world
+# Verify - run hello image and delete
+sudo docker run --rm hello-world && sudo docker rmi hello-world
 
 # Create custom app directory tree
 mkdir appstorage
 mkdir appstorage/{portainer,homepage}_data
 
-echo "Script finished!"
+echo "Script finished! Rebooting system .."
 
 # Reboot system
 sudo reboot
