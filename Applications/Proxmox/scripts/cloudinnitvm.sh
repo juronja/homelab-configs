@@ -7,6 +7,7 @@
 id=501
 cores=2
 ram=4096
+disk=32G
 ubuntuRelease="jammy"
 
 # Dowload the Ubuntu cloud innit image
@@ -19,7 +20,7 @@ qm create $id --cores $cores --cpu x86-64-v2-AES --memory $ram --balloon 1 --nam
 qm disk import $id /var/lib/vz/template/iso/jammy-server-cloudimg-amd64.img local-lvm --format qcow2
 
 # Map cloud image disk
-qm set $id --scsi0 local-lvm:vm-501-disk-0,discard=on,ssd=1 --ide2 local-lvm:cloudinit
+qm set $id --scsi0 local-lvm:vm-$id-disk-0,discard=on,ssd=1 --ide2 local-lvm:cloudinit
 
 # Resize the disk to 32 GB.
-qm disk resize $id scsi0 32G && qm set $id --boot order=scsi0
+qm disk resize $id scsi0 $disk && qm set $id --boot order=scsi0
