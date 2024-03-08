@@ -5,7 +5,7 @@
 # License: MIT
 
 # Variables
-user="$(whoami)"
+user="$(WHOAMI)"
 allowTcp="81"
 allowUdp="51820"
 
