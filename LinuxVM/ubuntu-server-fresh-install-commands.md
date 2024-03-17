@@ -99,6 +99,11 @@ sudo netplan apply
 sudo apt install unattended-upgrades && sudo dpkg-reconfigure --priority=low unattended-upgrades
 ```
 
+### Add a user
+
+adduser username
+
+
 ### Add user to sudo group
 ```bash
 sudo usermod -aG sudo username
