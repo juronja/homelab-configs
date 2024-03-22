@@ -14,11 +14,7 @@ allowUdp="51820"
 sudo apt update -y && sudo apt upgrade -y
 
 # Create the Public Key Directory for SSH on your Linux Server. This is not needed in Official Ubuntu distro.
-if [[ $(uname -v) == *"Ubuntu"* ]]; then
-  echo "It's Ubuntu alright!"
-else
-  sudo mkdir ~/.ssh && chmod 700 ~/.ssh
-fi
+sudo mkdir -m 700 ~/.ssh && sudo chown -R $(WHOAMI):$(WHOAMI) ~/.ssh/ && cd ~/.ssh && touch authorized_keys
 
 # Set local timezone
 sudo timedatectl set-timezone Europe/Ljubljana

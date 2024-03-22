@@ -111,5 +111,8 @@ sudo usermod -aG sudo username
 
 ### Create the Public Key Directory for SSH on your Linux Server.
 ```bash
-sudo mkdir ~/.ssh && chmod 700 ~/.ssh
+sudo mkdir -m 700 ~/.ssh 
+#Add user and group as owner and create authorized_keys file
+sudo chown -R user:user ~/.ssh/
+cd ~/.ssh && touch authorized_keys
 ```
