@@ -8,7 +8,7 @@ systemctl status mongod
 nohup systemctl start mongod
 ```
 
-Login to monogdb:
+Login to mongodb:
 ```bash
 mongosh
 ```
