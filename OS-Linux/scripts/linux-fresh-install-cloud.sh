@@ -8,7 +8,7 @@
 rootUser="$(whoami)"
 
 # User input variables
-echo "Please answer a few questions next:"
+echo "Please answer a few questions first:"
 
 read -p "Do you want to add UFW TCP rules? (y/n): " tcpYesNo
 if [[ $tcpYesNo == "y" ]]; then
@@ -71,11 +71,11 @@ if [[ $userYesNo == "y" ]]; then
   # Add user to sudo group
   sudo usermod -aG sudo $newUser
 
-  # Create the Public Key Directory for SSH on your Linux Server.
-  sudo mkdir -m 700 /home/$newUser/.ssh && sudo chown -R $newUser:$newUser /home/$newUser/.ssh/ && cd /home/$newUser/.ssh/ && touch authorized_keys
-  
   # Create custom app folder for deployment
-  mkdir /home/$newUser/app
+  sudo mkdir -m 750 /home/$newUser/app && sudo chown -R $newUser:$newUser /home/$newUser/app
+
+  # Create the Public Key Directory for SSH on your Linux Server.
+  sudo mkdir -m 700 /home/$newUser/.ssh && sudo chown -R $newUser:$newUser /home/$newUser/.ssh && cd /home/$newUser/.ssh && nano authorized_keys
 fi
 
 echo "Script finished! Rebooting system .."
