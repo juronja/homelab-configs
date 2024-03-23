@@ -4,16 +4,29 @@
 # Author: juronja
 # License: MIT
 
-# Variables
-# REFACTOR THIS SO THE SRIPT WILL ASK FOR INPUT
+# Constant variables
 rootUser="$(whoami)"
-mainUser="juronja"
-allowTcp="3000,8081,27017"
-allowUdp="" # E.g. - "&& sudo ufw allow 51820/udp"
 
+# User input variables
+echo "Please answer a few questions next:"
 
-# sudo ufw allow from 203.0.113.4
+read -p "Do you want to add UFW TCP rules? (y/n): " tcpYesNo
+if [[ $tcpYesNo == "y" ]]; then
+  read -p "Write comma seperated ports to open on TCP: " tcpPorts
+fi
 
+read -p "Do you want to add UFW UTP rules? (y/n): " utpYesNo
+if [[ $utpYesNo == "y" ]]; then
+  read -p "Write comma seperated ports to open on UTP: " utpPorts
+fi
+
+read -p "Do you want to add a maintenance user? (y/n): " userYesNo
+if [[ $userYesNo == "y" ]]; then
+  read -p "Write the user name: " newUser
+  adduser $newUser
+fi
+
+# sudo ufw allow from 176.57.95.182
 
 # Update and install upgrades
 sudo apt update -y && sudo apt upgrade -y
@@ -22,7 +35,15 @@ sudo apt update -y && sudo apt upgrade -y
 sudo sed -i 's/\/\/Unattended-Upgrade::Automatic-Reboot-Time/Unattended-Upgrade::Automatic-Reboot-Time/' /etc/apt/apt.conf.d/50unattended-upgrades
 
 # Configure firewall
-sudo ufw default allow outgoing && sudo ufw default deny incoming && sudo ufw allow 22,$allowTcp/tcp $allowUdp && sudo ufw enable
+sudo ufw default allow outgoing && sudo ufw default deny incoming && sudo ufw allow 22
+
+if [[ $tcpYesNo == "y" ]]; then
+  sudo ufw allow $tcpPorts/tcp
+fi
+if [[ $utpYesNo == "y" ]]; then
+  sudo ufw allow $utpPorts/udp
+fi
+sudo ufw enable
 
 # Disable pings in firewall
 sudo sed -i 's/-A ufw-before-input -p icmp --icmp-type echo-request -j ACCEPT/-A ufw-before-input -p icmp --icmp-type echo-request -j DROP/' /etc/ufw/before.rules
@@ -45,16 +66,17 @@ sudo usermod -aG docker $rootUser
 sudo docker run --rm hello-world && sudo docker rmi hello-world
 
 # Add a maintenance user
-adduser $mainUser
+if [[ $userYesNo == "y" ]]; then
 
-# Add user to sudo group
-sudo usermod -aG sudo $mainUser
+  # Add user to sudo group
+  sudo usermod -aG sudo $newUser
 
-# Create the Public Key Directory for SSH on your Linux Server. This is not needed in Official Ubuntu distro.
-sudo mkdir -m 700 /home/$mainUser/.ssh && sudo chown -R $mainUser:$mainUser /home/$mainUser/.ssh/ && cd /home/$mainUser/.ssh && touch authorized_keys
-
-# Create custom app folder for deployment
-mkdir /home/$mainUser/app
+  # Create the Public Key Directory for SSH on your Linux Server.
+  sudo mkdir -m 700 /home/$newUser/.ssh && sudo chown -R $newUser:$newUser /home/$newUser/.ssh/ && cd /home/$newUser/.ssh/ && touch authorized_keys
+  
+  # Create custom app folder for deployment
+  mkdir /home/$newUser/app
+fi
 
 echo "Script finished! Rebooting system .."
 
