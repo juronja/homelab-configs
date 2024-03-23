@@ -81,4 +81,4 @@ fi
 echo "Script finished! Rebooting system .."
 
 # Reboot system
-#sudo reboot
+sudo reboot
