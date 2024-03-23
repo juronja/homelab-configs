@@ -7,10 +7,21 @@ OpenSSH can be installed when installing Linux, on Ubuntu it is preinstalled; so
 
 SSH via Terminal
 
+### Homelab version
+
 ```bash
 bash -c "$(wget -qLO - https://raw.githubusercontent.com/juronja/homelab-configs/main/LinuxVM/scripts/linux-fresh-install-homelab.sh)"
 
 ```
+
+### Cloud version
+
+```bash
+bash -c "$(wget -qLO - https://raw.githubusercontent.com/juronja/homelab-configs/main/LinuxVM/scripts/linux-fresh-install-cloud.sh)"
+
+```
+
+
 
 ## STEP 2 - SSH KEY PAIRS ON WINDOWS
 ### Create Public/Private keys on your computer/PC 
