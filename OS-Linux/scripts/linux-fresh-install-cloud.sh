@@ -6,7 +6,7 @@
 
 # Variables
 # REFACTOR THIS SO THE SRIPT WILL ASK FOR INPUT
-rootUser="$(WHOAMI)"
+rootUser="$(whoami)"
 mainUser="juronja"
 allowTcp="3000,8081,27017"
 allowUdp="" # E.g. - "&& sudo ufw allow 51820/udp"
@@ -50,14 +50,11 @@ adduser $mainUser
 # Add user to sudo group
 sudo usermod -aG sudo $mainUser
 
-# Switch user
-su $mainUser
-
 # Create the Public Key Directory for SSH on your Linux Server. This is not needed in Official Ubuntu distro.
-sudo mkdir -m 700 ~/.ssh && sudo chown -R $mainUser:$mainUser ~/.ssh/ && cd ~/.ssh && touch authorized_keys
+sudo mkdir -m 700 /home/$mainUser/.ssh && sudo chown -R $mainUser:$mainUser /home/$mainUser/.ssh/ && cd /home/$mainUser/.ssh && touch authorized_keys
 
 # Create custom app folder for deployment
-mkdir ~/app
+mkdir /home/$mainUser/app
 
 echo "Script finished! Rebooting system .."
 

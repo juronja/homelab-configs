@@ -10,14 +10,14 @@ SSH via Terminal
 ### Homelab version
 
 ```bash
-bash -c "$(wget -qLO - https://raw.githubusercontent.com/juronja/homelab-configs/main/LinuxVM/scripts/linux-fresh-install-homelab.sh)"
+bash -c "$(wget -qLO - https://raw.githubusercontent.com/juronja/homelab-configs/main/OS-Linux/scripts/linux-fresh-install-homelab.sh)"
 
 ```
 
 ### Cloud version
 
 ```bash
-bash -c "$(wget -qLO - https://raw.githubusercontent.com/juronja/homelab-configs/main/LinuxVM/scripts/linux-fresh-install-cloud.sh)"
+bash -c "$(wget -qLO - https://raw.githubusercontent.com/juronja/homelab-configs/main/OS-Linux/scripts/linux-fresh-install-cloud.sh)"
 
 ```
 

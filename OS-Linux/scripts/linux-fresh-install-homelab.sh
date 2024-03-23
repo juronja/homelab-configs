@@ -5,7 +5,7 @@
 # License: MIT
 
 # Variables
-user="$(WHOAMI)"
+user="$(whoami)"
 allowTcp="81"
 allowUdp="51820"
 
@@ -14,7 +14,7 @@ allowUdp="51820"
 sudo apt update -y && sudo apt upgrade -y
 
 # Create the Public Key Directory for SSH on your Linux Server. This is not needed in Official Ubuntu distro.
-sudo mkdir -m 700 ~/.ssh && sudo chown -R $(WHOAMI):$(WHOAMI) ~/.ssh/ && cd ~/.ssh && touch authorized_keys
+sudo mkdir -m 700 ~/.ssh && sudo chown -R $(whoami):$(whoami) ~/.ssh/ && cd ~/.ssh && touch authorized_keys
 
 # Set local timezone
 sudo timedatectl set-timezone Europe/Ljubljana
