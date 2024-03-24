@@ -7,14 +7,14 @@ OpenSSH can be installed when installing Linux, on Ubuntu it is preinstalled; so
 
 SSH via Terminal
 
-### Homelab version
+### Homelab version with Docker
 
 ```bash
 bash -c "$(wget -qLO - https://raw.githubusercontent.com/juronja/homelab-configs/main/OS-Linux/scripts/linux-fresh-install-homelab.sh)"
 
 ```
 
-### Cloud version
+### Cloud version with Docker (Prompts)
 
 ```bash
 bash -c "$(wget -qLO - https://raw.githubusercontent.com/juronja/homelab-configs/main/OS-Linux/scripts/linux-fresh-install-cloud.sh)"
