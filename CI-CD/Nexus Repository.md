@@ -20,7 +20,16 @@ Admin pass is at: `/var/lib/docker/volumes/nexus_nexus/_data`
   ]
 }
 ```
-7. Authenticate with Docker CLI (user Nexus local user credentials):
+8. Check in linux cli if port is open `netstat -lnpt`. If installed with Docker container you have add this port to the exposed list.
+
+```yaml
+    ports:
+      - "8081:8081"
+      - "8082:8082"
+
+```
+
+9. Authenticate with Docker CLI (user Nexus local user credentials):
 
 `docker login 64.64.64.64:8082`
 
