@@ -26,6 +26,9 @@ if [[ $userYesNo == "y" ]]; then
   adduser $newUser
 fi
 
+read -p "Do you want to install Docker? (y/n): " dockerYesNo
+
+
 # sudo ufw allow from 176.57.95.182
 
 # Update and install upgrades
@@ -49,6 +52,8 @@ sudo ufw enable
 sudo sed -i 's/-A ufw-before-input -p icmp --icmp-type echo-request -j ACCEPT/-A ufw-before-input -p icmp --icmp-type echo-request -j DROP/' /etc/ufw/before.rules
 
 # Remove legacy Docker
+if [[ $dockerYesNo == "y" ]]; then
+
 for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove $pkg; done
 # Add Docker's official GPG key
 sudo apt-get update && sudo apt-get install ca-certificates curl gnupg && sudo install -m 0755 -d /etc/apt/keyrings && curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg && sudo chmod a+r /etc/apt/keyrings/docker.gpg
@@ -64,6 +69,8 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin 
 sudo usermod -aG docker $rootUser
 # Verify - run hello image and delete
 sudo docker run --rm hello-world && sudo docker rmi hello-world
+
+fi
 
 # Add a maintenance user
 if [[ $userYesNo == "y" ]]; then
