@@ -4,10 +4,6 @@
 
 Setup instructions: https://docs.portainer.io/start/install-ce/server/docker/linux
 
-
-```bash
-sudo docker network create portainer_default && sudo docker run -d -p 8000:8000 -p 9443:9443 --name portainer --network=portainer_default --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v /home/juronja/appstorage/portainer_data:/data portainer/portainer-ce:latest
-
-```
+Use compose file
 
 Restore settings from backup
