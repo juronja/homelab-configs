@@ -1,0 +1,14 @@
+name: portainer #will be used for network auto naming and image names
+services:
+  jenkins:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    restart: unless-stopped
+    volumes:
+      - "data:/data" #Volume mapping for persistency
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    ports:
+      - "8000:8000"
+      - "9443:9443"
+volumes:
+  data: # It will prepend the project name
