@@ -1,0 +1,19 @@
+name: jenkins # Will be used for network auto naming and image names
+services:
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins
+    restart: unless-stopped
+#    healthcheck:
+#      test: curl http://localhost:8081/
+#      interval: 10s
+#      start_period: 5s
+    volumes:
+      - "data:/var/jenkins_home" # Volume mapping for persistency
+      - "/var/run/docker.sock:/var/run/docker.sock" # Daemon access
+      - "/usr/bin/docker:/usr/bin/docker" # Access to binaries to run docker commands
+    ports:
+      - "8080:8080"
+      - "5000:5000" #That port will be used when you connect agents to the controller.
+volumes:
+  data: # It will prepend the project name
