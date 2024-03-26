@@ -69,7 +69,8 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin 
 sudo usermod -aG docker $rootUser
 # Verify - run hello image and delete
 sudo docker run --rm hello-world && sudo docker rmi hello-world
-
+# Create the daemon.json for insecure logins configs if needed
+cd /etc/docker/ && touch daemon.json
 fi
 
 # Add a maintenance user
