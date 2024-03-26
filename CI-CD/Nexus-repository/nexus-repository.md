@@ -22,7 +22,9 @@ Admin pass is at: `/var/lib/docker/volumes/nexus_nexus/_data`
 
 9. Authenticate with Docker CLI (user Nexus local user credentials):
 
-`docker login 64.64.64.64:8082`
+```bash
+docker login 64.64.64.64:8082
+```
 
 ### Allow docker login to insecure (http) repos {#insecure-repos}
 
@@ -35,4 +37,8 @@ Add "insecure-registries" line. In the app or on Linux in this file:
     "64.64.64.64:8082"
   ]
 }
+```
+Restart docker service:
+```bash
+systemctl restart docker
 ```
