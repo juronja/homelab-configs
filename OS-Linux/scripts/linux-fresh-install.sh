@@ -75,7 +75,7 @@ sudo usermod -aG docker $rootUser
 # Verify - run hello image and delete
 sudo docker run --rm hello-world && sudo docker rmi hello-world
 # Create the daemon.json for insecure (http) logins configs if needed
-cd /etc/docker/ && touch daemon.json
+cd /etc/docker/ && sudo touch daemon.json
 fi
 
 # Add a maintenance user
