@@ -8,7 +8,7 @@
 rootUser="$(whoami)"
 
 # User input variables
-printf "\n !! Please answer a few questions first: !!\n"
+printf "\n!! Please answer a few questions first: !!\n\n"
 
 read -p "Do you run the installer on Proxmox (1) or Digital Ocean (2)? " installPlace
 
@@ -39,6 +39,11 @@ sudo apt update -y && sudo apt upgrade -y
 
 # Configure automatic updates
 sudo sed -i 's/\/\/Unattended-Upgrade::Automatic-Reboot-Time/Unattended-Upgrade::Automatic-Reboot-Time/' /etc/apt/apt.conf.d/50unattended-upgrades
+echo "Automatic upgrades configured successfully!"
+
+# Disable pings in firewall
+sudo sed -i 's/-A ufw-before-input -p icmp --icmp-type echo-request -j ACCEPT/-A ufw-before-input -p icmp --icmp-type echo-request -j DROP/' /etc/ufw/before.rules
+echo "Disable pings in firewall configured successfully!"
 
 # Configure firewall
 sudo ufw default allow outgoing && sudo ufw default deny incoming && sudo ufw allow 22
@@ -50,9 +55,6 @@ if [[ $utpYesNo == "y" ]]; then
   sudo ufw allow $utpPorts/udp
 fi
 sudo ufw enable
-
-# Disable pings in firewall
-sudo sed -i 's/-A ufw-before-input -p icmp --icmp-type echo-request -j ACCEPT/-A ufw-before-input -p icmp --icmp-type echo-request -j DROP/' /etc/ufw/before.rules
 
 # Remove legacy Docker
 if [[ $dockerYesNo == "y" ]]; then
@@ -76,7 +78,7 @@ sudo docker run --rm hello-world && sudo docker rmi hello-world
 cd /etc/docker/ && touch daemon.json
 fi
 
-# Add a extra maintenance user
+# Add a maintenance user
 if [[ $userYesNo == "y" ]]; then
 
   # Add user to sudo group
@@ -87,6 +89,7 @@ if [[ $userYesNo == "y" ]]; then
 
   # Create the Public Key Directory for SSH on your Linux Server.
   sudo mkdir -m 700 /home/$newUser/.ssh && sudo chown -R $newUser:$newUser /home/$newUser/.ssh && cd /home/$newUser/.ssh && nano authorized_keys
+  echo "Maintenance user added successfully!"
 fi
 
 # Proxmox install specifics
@@ -99,12 +102,13 @@ if [[ $installPlace == 1 ]]; then
 
   # Set local timezone
   sudo timedatectl set-timezone Europe/Ljubljana
+  echo "Local timezone set successfully!"
 
   # Install guest agent
   sudo apt install qemu-guest-agent -y
 fi
 
-printf "\n ## Script finished! Rebooting system .. ##\n"
+printf "\n## Script finished! Rebooting system .. ##\n\n"
 
 # Reboot system
 sudo reboot
