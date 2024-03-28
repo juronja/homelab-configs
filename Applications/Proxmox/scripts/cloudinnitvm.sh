@@ -55,9 +55,8 @@ else
 fi
 
 if RAM_COUNT=$(whiptail --backtitle "Proxmox Ubuntu VM install Script" --title "RAM COUNT" --radiolist "\nAllocate number of RAM\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 3 \
-    "1" "GB" OFF \
-    "2" "GB" ON \
-    "4" "GB" OFF \
+    "2" "GB" OFF \
+    "4" "GB" ON \
     3>&1 1>&2 2>&3); then
         echo -e "Allocated RAM: $RAM_COUNT GB"
 else
