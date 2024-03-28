@@ -8,25 +8,28 @@
 rootUser="$(whoami)"
 
 # User input variables
-echo "Please answer a few questions first:"
+printf "\n !! Please answer a few questions first: !!\n"
 
-read -p "Do you want to add UFW TCP rules? (y/n): " tcpYesNo
+read -p "Do you run the installer on Proxmox (1) or Digital Ocean (2)? " installPlace
+
+read -p "Do you want to add UFW TCP rules? (y/n) " tcpYesNo
 if [[ $tcpYesNo == "y" ]]; then
   read -p "Write comma seperated ports to open on TCP: " tcpPorts
 fi
 
-read -p "Do you want to add UFW UTP rules? (y/n): " utpYesNo
+read -p "Do you want to add UFW UTP rules? (y/n) " utpYesNo
 if [[ $utpYesNo == "y" ]]; then
   read -p "Write comma seperated ports to open on UTP: " utpPorts
 fi
 
-read -p "Do you want to add a maintenance user? (y/n): " userYesNo
-if [[ $userYesNo == "y" ]]; then
-  read -p "Write the user name: " newUser
-  adduser $newUser
+if [[ $installPlace != 1 ]]; then
+  read -p "Do you want to add a maintenance user? (y/n) " userYesNo # skip this for proxmox
+  if [[ $userYesNo == "y" ]]; then
+    read -p "Write the user name: " newUser
+    adduser $newUser
+  fi
 fi
-
-read -p "Do you want to install Docker? (y/n): " dockerYesNo
+read -p "Do you want to install Docker? (y/n) " dockerYesNo
 
 
 # sudo ufw allow from 176.57.95.182
@@ -73,20 +76,35 @@ sudo docker run --rm hello-world && sudo docker rmi hello-world
 cd /etc/docker/ && touch daemon.json
 fi
 
-# Add a maintenance user
+# Add a extra maintenance user
 if [[ $userYesNo == "y" ]]; then
 
   # Add user to sudo group
   sudo usermod -aG sudo $newUser
 
   # Create custom app folder for deployment
-  sudo mkdir -m 750 /home/$newUser/app && sudo chown -R $newUser:$newUser /home/$newUser/app
+  sudo mkdir -m 750 /home/$newUser/apps && sudo chown -R $newUser:$newUser /home/$newUser/apps
 
   # Create the Public Key Directory for SSH on your Linux Server.
   sudo mkdir -m 700 /home/$newUser/.ssh && sudo chown -R $newUser:$newUser /home/$newUser/.ssh && cd /home/$newUser/.ssh && nano authorized_keys
 fi
 
-echo "Script finished! Rebooting system .."
+# Proxmox install specifics
+if [[ $installPlace == 1 ]]; then
+  
+  # Create custom app folder for deployment
+  sudo mkdir -m 750 /home/$rootUser/apps && sudo chown -R $rootUser:$rootUser /home/$rootUser/apps
+
+  #sudo mkdir apps/{portainer,homepage}_data # Create custom app directory tree
+
+  # Set local timezone
+  sudo timedatectl set-timezone Europe/Ljubljana
+
+  # Install guest agent
+  sudo apt install qemu-guest-agent -y
+fi
+
+printf "\n ## Script finished! Rebooting system .. ##\n"
 
 # Reboot system
 sudo reboot
