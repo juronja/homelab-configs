@@ -15,3 +15,19 @@ chmod 666 /var/run/docker.sock
 ```
 
 NOTE: Each reboot or restart of docker service this will reset back to defaults.
+
+### Migrate server configurations
+
+1. Create a tar from docker volume:
+
+```bash
+tar -czvf jdata.tar.gz /var/lib/docker/volumes/jenkins_data/_data/
+```
+
+2. Copy tar to other server:
+
+scp jdata.tar.gz root@homelab:/root
+
+3. Unpack the tar
+
+tar -xzvf jdata.tar.gz -C /var/lib/docker/volumes/jenkins_data/_data/
