@@ -17,6 +17,9 @@
         icon: home-assistant.svg
         href: http://ha.repina.eu:8123/
         #description: Homepage is 😎
+    - Jenkins:
+        icon: jenkins.svg
+        href: http://192.168.84.25:8080/
     - Portainer:
         icon: portainer.svg
         href: https://portainer.repina.eu:9443/
