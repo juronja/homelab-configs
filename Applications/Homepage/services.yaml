@@ -33,21 +33,21 @@
 - Media:
     - qBittorrent:
         icon: qbittorrent.svg
-        href: http://192.168.84.10:10095/
+        href: http://nas.repina.eu:10095/
         #description: Homepage is the best
     - Prowlarr:
         icon: prowlarr.svg
-        href: http://192.168.84.10:9696/
+        href: http://nas.repina.eu:9696/
         #description: Homepage is the best
     - Radarr:
         icon: radarr.svg
-        href: http://192.168.84.10:7878/
+        href: http://nas.repina.eu:7878/
         #description: Homepage is the best
     - Sonarr:
         icon: sonarr.svg
-        href: http://192.168.84.10:8989/
+        href: http://nas.repina.eu:8989/
         #description: Homepage is the best
     - Audiobookshelf:
         icon: audiobookshelf.svg
-        href: http://192.168.84.10:10223/
+        href: http://nas.repina.eu:10223/
         #description: Homepage is the best
