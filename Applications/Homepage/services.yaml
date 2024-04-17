@@ -47,9 +47,9 @@
         icon: sonarr.svg
         href: http://nas.repina.eu:8989/
         #description: Homepage is the best
-    - Lidarr:
-        icon: lidarr.svg
-        href: http://nas.repina.eu:8686/
+    - Readarr:
+        icon: readarr.svg
+        href: http://nas.repina.eu:30045/
         #description: Homepage is the best
     - Audiobookshelf:
         icon: audiobookshelf.svg
