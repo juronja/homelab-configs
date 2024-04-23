@@ -7,7 +7,7 @@
         icon: proxmox.svg
         href: https://pve.repina.eu:8006
         siteMonitor: https://pve.repina.eu:8006
-        #description: pve1
+        description: pve
         #widget:
         #  type: proxmox
         #  url: https://pve.repina.eu:8006
@@ -19,6 +19,18 @@
         siteMonitor: http://nas.repina.eu
         #description: pve1
 
+- Networking:
+    - OpenWRT:
+        icon: openwrt.svg
+        href: http://router.repina.eu
+        description: Main router
+    - Unifi Site Manager:
+        icon: unifi.svg
+        href: https://unifi.ui.com
+    - Pihole:
+        icon: pi-hole.svg
+        href: http://pihole.repina.eu/admin/login.php
+
 - Manage:
     - Home Assistant:
         icon: home-assistant.svg
@@ -26,16 +38,10 @@
         #description: Homepage is 😎
     - Jenkins:
         icon: jenkins.svg
-        href: http://192.168.84.25:8080
+        href: http://ubuntu.repina.eu:8080
     - Portainer:
         icon: portainer.svg
         href: https://portainer.repina.eu:9443
-    - Pihole:
-        icon: pi-hole.svg
-        href: http://pihole.repina.eu/admin/login.php
-    - Unifi Site Manager:
-        icon: unifi.svg
-        href: https://unifi.ui.com
 
 - Media:
     - qBittorrent:
