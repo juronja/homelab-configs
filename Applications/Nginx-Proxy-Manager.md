@@ -1,4 +1,4 @@
-# Nginx configurations
+# Nginx Proxy Manager configurations
 
 ## Install
 
@@ -45,6 +45,16 @@ P: `changeme`
 Good guide: https://www.youtube.com/watch?v=qlcVx-k-02E
 
 ### SSL Certificates
+
+
+#### Cloudflare Origin Certificates
+
+!! It is totally better to setup the Cloudflare Origin Certificates !!
+
+Official guide: https://developers.cloudflare.com/ssl/origin-configuration/origin-ca/
+
+
+#### Let's Encrypt via NPM
 
 Create a cert with DNS challenge.
 
