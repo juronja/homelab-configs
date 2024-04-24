@@ -34,7 +34,7 @@
 - Manage:
     - Home Assistant:
         icon: home-assistant.svg
-        href: http://ha.repina.eu:8123
+        href: http://ha.repina.eu
         #description: Homepage is 😎
     - Jenkins:
         icon: jenkins.svg
