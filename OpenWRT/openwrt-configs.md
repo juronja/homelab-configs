@@ -231,6 +231,7 @@ config redirect
         option src_dport '32400'
         option dest_ip '192.168.84.10'
         option dest_port '32400'
+        option enabled '0'
 
 config redirect
         option dest 'lan'
@@ -245,13 +246,68 @@ config redirect
 config redirect
         option dest 'lan'
         option target 'DNAT'
-        option name 'Storj'
-        list proto 'tcp'
-        list proto 'udp'
+        option name 'qBittorrent'
         option src 'wan'
-        option src_dport '28967'
+        option src_dport '50413'
         option dest_ip '192.168.84.10'
-        option dest_port '28967'
+        list proto 'tcp'
+        option dest_port '50413'
+
+```
+Restart firewall for effect
+```bash
+service firewall restart
+```
+
+#### Cloudflare & Nginx Proxy Manager conditional port forwarding rules
+
+Cloudflare IPs: https://www.cloudflare.com/en-in/ips/
+
+Add conditions in the configuration file `/etc/config/firewall`
+
+```yml
+config	ipset
+        option name 'cloudflare-ips'
+	option match 'src_net'
+	option enabled '1'
+	list entry '173.245.48.0/20'
+        list entry '103.21.244.0/22'
+        list entry '103.22.200.0/22'
+        list entry '103.31.4.0/22'
+        list entry '141.101.64.0/18'
+        list entry '108.162.192.0/18'
+        list entry '190.93.240.0/20'
+        list entry '188.114.96.0/20'
+        list entry '197.234.240.0/22'
+        list entry '198.41.128.0/17'
+        list entry '162.158.0.0/15'
+        list entry '104.16.0.0/13'
+        list entry '104.24.0.0/14'
+        list entry '172.64.0.0/13'
+        list entry '131.0.72.0/22'
+
+config redirect
+        option dest 'lan'
+        option target 'DNAT'
+        option name 'Nginx Proxy Manager 80'
+        option family 'ipv4'
+        option ipset 'cloudflare-ips'
+        list proto 'tcp'
+        option src 'wan'
+        option src_dport '80'
+        option dest_ip '192.168.84.24'
+
+config redirect
+        option dest 'lan'
+        option target 'DNAT'
+        option name 'Nginx Proxy Manager 443'
+        option family 'ipv4'
+        option ipset 'cloudflare-ips'
+        list proto 'tcp'
+        option src 'wan'
+        option src_dport '443'
+        option dest_ip '192.168.84.24'
+
 
 ```
 Restart firewall for effect
