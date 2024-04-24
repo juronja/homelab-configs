@@ -1,5 +1,11 @@
 # Home assistant configurations
 
+# Remote access
+
+- Add the domain in Nginx Proxy Manager with Websocket support
+- In `Settings > System > Network > Home Assistant URL > Internet` add the HA domain url.
+
+
 ## Configuartion.yaml
 
 ```yml
