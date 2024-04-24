@@ -18,6 +18,8 @@ http:
   use_x_forwarded_for: true
   trusted_proxies:
     - 192.168.84.0/24
+  ip_ban_enabled: true # This will block an IP after x unsuccessfull login attempts.
+  login_attempts_threshold: 10
 
 ```
 ## Customize.yaml
