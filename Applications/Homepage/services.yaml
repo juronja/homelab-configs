@@ -24,6 +24,9 @@
         icon: openwrt.svg
         href: http://router.repina.eu
         description: Main router
+    - Nginx Proxy Manager:
+        icon: nginx-proxy-manager.svg
+        href: http://proxy.repina.eu:81/login
     - Unifi Site Manager:
         icon: unifi.svg
         href: https://unifi.ui.com
@@ -36,12 +39,12 @@
         icon: home-assistant.svg
         href: http://ha.repina.eu
         #description: Homepage is 😎
-    - Jenkins:
-        icon: jenkins.svg
-        href: http://ubuntu.repina.eu:8080
     - Portainer:
         icon: portainer.svg
         href: https://portainer.repina.eu:9443
+    - Jenkins:
+        icon: jenkins.svg
+        href: http://jenkins.repina.eu
 
 - Media:
     - qBittorrent:
@@ -66,5 +69,5 @@
         #description: Homepage is the best
     - Audiobookshelf:
         icon: audiobookshelf.svg
-        href: http://nas.repina.eu:10223
+        href: http://audiobook.repina.eu
         #description: Homepage is the best
