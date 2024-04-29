@@ -231,7 +231,6 @@ config redirect
         option src_dport '32400'
         option dest_ip '192.168.84.10'
         option dest_port '32400'
-        option enabled '0'
 
 config redirect
         option dest 'lan'
