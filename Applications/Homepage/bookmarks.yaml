@@ -13,5 +13,5 @@
         - icon: https://raw.githubusercontent.com/juronja/homelab-configs/b8cd24a18861b12cff2f051a6538a551f8517ae9/Applications/Homepage/images/cubbit.png
           href: https://console.cubbit.eu/signin
     - DiluteRight:
-        - icon: #https://raw.githubusercontent.com/juronja/homelab-configs/b8cd24a18861b12cff2f051a6538a551f8517ae9/Applications/Homepage/images/cubbit.png
+        - icon: https://raw.githubusercontent.com/juronja/DiluteRight/main/app/assets/images/favicons/android-chrome-512x512.png
           href: https://dilute.repina.eu/
