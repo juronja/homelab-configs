@@ -23,7 +23,7 @@
     - OpenWRT:
         icon: openwrt.svg
         href: http://router.repina.eu
-        description: Main router
+        description: Gateway
     - Nginx Proxy Manager:
         icon: nginx-proxy-manager.svg
         href: http://proxy.repina.eu:81/login
