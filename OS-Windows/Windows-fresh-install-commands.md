@@ -66,10 +66,12 @@ winget install -e --id Microsoft.VisualStudioCode
 winget install -e --id Plex.Plex
 winget install -e --id Plex.Plexamp
 winget install -e --id Telegram.TelegramDesktop
+winget install -e --id WhatsApp.WhatsApp
 winget install -e --id Discord.Discord
 winget install -e --id Nvidia.GeForceExperience
 winget install -e --id Valve.Steam
 winget install -e --id Docker.DockerDesktop
+winget install -e --id WireGuard.WireGuard
 
 # For NPM if needed after install run the node.JS command prompt to initialize
 #winget install -e --id OpenJS.NodeJS.LTS
