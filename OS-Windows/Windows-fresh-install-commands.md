@@ -60,17 +60,21 @@ Add-MpPreference -ExclusionPath "C:\Music_production","C:\Users\Jure\Downloads",
 ```bash
 
 winget install -e --id Google.Chrome
+winget install -e --id Microsoft.VisualStudioCode
 winget install Microsoft.PowerToys --source winget
 winget install -e --id Adobe.Acrobat.Reader.64-bit
-winget install -e --id Microsoft.VisualStudioCode
 winget install -e --id Plex.Plex
 winget install -e --id Plex.Plexamp
 winget install -e --id Telegram.TelegramDesktop
 winget install -e --id WhatsApp.WhatsApp
 winget install -e --id Discord.Discord
+winget install -e --id Google.Drive
+winget install -e --id Logitech.GHUB
 winget install -e --id Nvidia.GeForceExperience
 winget install -e --id Valve.Steam
 winget install -e --id Docker.DockerDesktop
+winget install -e --id Logitech.OptionsPlus
+winget install -e --id Amazon.AWSCLI
 winget install -e --id WireGuard.WireGuard
 
 # For NPM if needed after install run the node.JS command prompt to initialize
