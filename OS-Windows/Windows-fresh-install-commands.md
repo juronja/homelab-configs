@@ -61,7 +61,7 @@ Add-MpPreference -ExclusionPath "C:\Music_production","C:\Users\Jure\Downloads",
 
 winget install -e --id Google.Chrome
 winget install -e --id Microsoft.VisualStudioCode
-winget install Microsoft.PowerToys --source winget
+winget install -e --id Microsoft.PowerToys --source winget
 winget install -e --id Adobe.Acrobat.Reader.64-bit
 winget install -e --id Plex.Plex
 winget install -e --id Plex.Plexamp
