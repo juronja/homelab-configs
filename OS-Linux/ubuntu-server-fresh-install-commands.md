@@ -3,14 +3,13 @@
 OpenSSH can be installed when installing Linux, on Ubuntu it is preinstalled; so after installation you can ssh {{username}}@{{IP}} straight into your machine via the terminal (e.g. Windows PowerShell)
 
 ## STEP 1 - Setting up Ubuntu with Docker
-### Install upgrades / Install guest agent / Change local timezone / Configure automatic updates / Configure firewall / Disable pings in firewall / Remove legacy Docker / Add Docker apt repository / Install Docker / Reboot
 
 SSH via Terminal
 
 ### Setup script (Prompts)
 
 ```bash
-bash -c "$(wget -qLO - https://raw.githubusercontent.com/juronja/homelab-configs/main/OS-Linux/scripts/linux-fresh-install.sh)"
+bash -c "$(wget -qLO - https://raw.githubusercontent.com/juronja/homelab-configs/main/OS-Linux/scripts/ubuntu-bootstrap-script.sh)"
 
 ```
 
