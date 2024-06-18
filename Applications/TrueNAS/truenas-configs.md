@@ -4,9 +4,17 @@
 ```bash
 smartctl --scan #check SMART for all devices
 smartctl -i -A --log=selftest /dev/sda #check SMART (info, attributes, selftest)
+```
+
+## ZFS
+
+Sometimes you can get ZFS DEGRADED status if you move a data cable. Run the scrub, and if no errors you can clear the ZFS status.
+
+```bash
 zpool status -v #check for errors in pools
 zpool clear media-pool 0aac1d05-e336-4dda-acb6-bd5fedfa477b #clears the pool errors for a specific device
 ```
+
 
 ## Setup SMB Share Auxiliary Parameters (For TrueCharts)
 
