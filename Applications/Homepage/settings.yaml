@@ -9,12 +9,12 @@ iconStyle: theme # optional, defaults to gradient
 disableCollapse: true
 
 background:
-  #image: https://images.unsplash.com/photo-1538435740860-67bd8f4e8eb8
-  #image: https://images.unsplash.com/photo-1488295169303-659d6d9a5da5
-  image: https://images.unsplash.com/photo-1520052205864-92d242b3a76b
+  image: https://images.unsplash.com/photo-1532019333101-b0f43c16a912
+  #image: https://images.unsplash.com/photo-1485841890310-6a055c88698a
+  #image: https://images.unsplash.com/photo-1493382051629-7eb03ec93ea2
   blur: none # sm, "", md, xl... see https://tailwindcss.com/docs/backdrop-blur
-  saturate: 75 # 0, 50, 100... see https://tailwindcss.com/docs/backdrop-saturate
-  brightness: 75 # 0, 50, 75... see https://tailwindcss.com/docs/backdrop-brightness
+  saturate: 50 # 0, 50, 100... see https://tailwindcss.com/docs/backdrop-saturate
+  brightness: 100 # 0, 50, 75... see https://tailwindcss.com/docs/backdrop-brightness
   opacity: 100 # 0-100
 
 layout:
