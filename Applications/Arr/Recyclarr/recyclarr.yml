@@ -38,7 +38,7 @@ sonarr:
 
 # Quality Profiles
     quality_profiles:
-      - name: HD SD Bluray + WEB
+      - name: HD Bluray + WEB
         upgrade:
           allowed: true
           until_quality: Bluray-1080p
@@ -52,17 +52,6 @@ sonarr:
               - WEBDL-1080p
               - WEBRip-1080p
               - HDTV-1080p
-          - name: Bluray-720p
-          - name: WEB 720p
-            qualities:
-              - WEBDL-720p
-              - WEBRip-720p
-              - HDTV-720p
-          - name: Bluray-480p
-          - name: WEB 480p
-            qualities:
-              - WEBDL-480p
-              - WEBRip-480p
 
 # Custom Formats
     # Set to 'true' to automatically remove/replace custom formats from Sonarr when they are removed from the guide or your configuration. This will NEVER delete custom formats you manually created!
@@ -172,25 +161,25 @@ sonarr:
 
         # Uncomment the below properties to specify one or more quality profiles that should be updated with scores from the guide for each custom format. Without this, custom formats are synced to Sonarr but no scores are set in any quality profiles.
         quality_profiles:
-          - name: HD SD Bluray + WEB
+          - name: HD Bluray + WEB
             #score: -9999 # Optional score to assign to all CFs. Overrides scores in the guide.
             #reset_unmatched_scores: true # Optionally set other scores to 0 if they are not listed in 'names' above.
 
       - trash_ids:
           # Custom Scoring for all items below
           - 15a05bc7c1a36e2b57fd628f8977e2fc # AV1
-          - 3bc5f395426614e155e585a2f056cdf1 # Season Pack
 
         quality_profiles:
-          - name: HD SD Bluray + WEB
+          - name: HD Bluray + WEB
             score: -10000
 
       - trash_ids:
           # Custom Scoring for all items below
           - 9c11cd3f07101cdba90a2d81cf0e56b4 # LQ
+          - 3bc5f395426614e155e585a2f056cdf1 # Season Pack
 
         quality_profiles:
-          - name: HD SD Bluray + WEB
+          - name: HD Bluray + WEB
             score: 1000
 
 
@@ -243,6 +232,12 @@ radarr:
           - ed27ebfef2f323e964fb1f61391bcb35 # HD Bluray Tier 01
           - c20c8647f2746a1f4c4262b0fbbeeeae # HD Bluray Tier 02
           - 5608c71bcebba0a5e666223bae8c9227 # HD Bluray Tier 03
+          - 3a3ff47579026e76d6504ebea39390de # Remux Tier 01
+          - 9f98181fe5a3fbeb0cc29340da2a468a # Remux Tier 02
+          - 8baaf0b3142bf4d94c42a724f034e27a # Remux Tier 03
+          - 4d74ac4c4db0b64bff6ce0cffef99bf0 # UHD Bluray Tier 01
+          - a58f517a70193f8e578056642178419d # UHD Bluray Tier 02
+          - e71939fae578037e7aed3ee219bbe7c1 # UHD Bluray Tier 03
           - c20f169ef63c5f40c2def54abaf4438e # WEB Tier 01
           - 403816d65392c79236dcb6dd591aeda4 # WEB Tier 02
           - af94e0fe497124d1f9ce732069ec8c3b # WEB Tier 03
@@ -312,8 +307,6 @@ radarr:
           - 09d9dd29a0fc958f9796e65c2a8864b4 # Open Matte
           - dcf3ec6938fa32445f590a4da84256cd # DTS-HD MA
           - 6fd7b090c3f7317502ab3b63cc7f51e3 # 6.1 Surround
-          - f2aacebe2c932337fe352fa6e42c1611 # 9.1 Surround
-
 
         quality_profiles:
           - name: HD Bluray + WEB
@@ -322,6 +315,7 @@ radarr:
       - trash_ids:
           # Custom Scoring for all items below
           - 90a6f9a284dff5103f6346090e6280c8 # LQ
+          - 820b09bb9acbfde9c35c71e0e565dad8 # 1080p
 
         quality_profiles:
           - name: HD Bluray + WEB
