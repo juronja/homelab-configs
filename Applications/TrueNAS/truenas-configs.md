@@ -3,7 +3,7 @@
 ## S.M.A.R.T.
 ```bash
 sudo smartctl --scan #check SMART for all devices
-sudo smartctl -i -A --log=selftest /dev/sda #check SMART (info, attributes, selftest)
+sudo smartctl --info --attributes --log=selftest /dev/sda #check SMART (info, attributes, selftest)
 ```
 
 ## ZFS
