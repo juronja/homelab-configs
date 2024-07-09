@@ -94,35 +94,6 @@ Official documentation: https://openwrt.org/docs/guide-user/network/openwrt_as_r
 
 By default, the LAN ports of the router will have an address of 192.168.1.1
 
-#### When Flashing a device use customized packages
-
-![Alt text](image.png)
-
-Add this packages to the installer:
-
-```bash
-nano-full etherwake luci-app-wol ddns-scripts ddns-scripts-services luci-app-ddns
-
-```
-
-##### or use client builder
-
-```bash
-mkdir openwrtbuild
-cd openwrtbuild/
-wget https://downloads.openwrt.org/releases/23.05.2/targets/ath79/generic/openwrt-imagebuilder-23.05.2-ath79-generic.Linux-x86_64.tar.xz
-tar -J -x -f openwrt-imagebuilder-*.tar.xz
-rm openwrt-imagebuilder-23.05.2-ath79-generic.Linux-x86_64.tar.xz
-cd openwrt-imagebuilder-*/
-make image PROFILE=tplink_tl-wr1043nd-v2 PACKAGES="nano-full etherwake luci-app-wol ddns-scripts ddns-scripts-services luci-app-ddns"
-cd bin/targets/ath79/generic/
-ls
-openwrt-23.05.2-ath79-generic-tplink_tl-wr1043nd-v2.manifest
-openwrt-23.05.2-ath79-generic-tplink_tl-wr1043nd-v2-squashfs-factory.bin
-openwrt-23.05.2-ath79-generic-tplink_tl-wr1043nd-v2-squashfs-sysupgrade.bin
-profiles.json
-sha256sums
-```
 
 #### Static IP settings, DHCP, Firewall syn-flood
 
@@ -180,40 +151,12 @@ service dropbear restart
 
 #### Common router software
 
-##### DDNS and Nano Full
-
 Install:
 ```bash
 opkg update
-opkg install ddns-scripts
-opkg install ddns-scripts-services
-opkg install luci-app-ddns
 opkg install nano-full
 opkg install etherwake
 opkg install luci-app-wol
-
-```
-
-DDNS config:
-```bash
-uci set ddns.duckdns=service
-uci set ddns.duckdns.service_name='duckdns.org'
-uci set ddns.duckdns.use_ipv6='0'
-uci set ddns.duckdns.domain='pernica.duckdns.org'
-uci set ddns.duckdns.username='pernica'
-uci set ddns.duckdns.password='ENTER API PASS'
-uci set ddns.duckdns.ip_source='network'
-uci set ddns.duckdns.ip_network='wan'
-uci set ddns.duckdns.use_syslog='2'
-uci set ddns.duckdns.check_interval='10'
-uci set ddns.duckdns.check_unit='hours'
-uci set ddns.duckdns.retry_unit='seconds'
-uci set ddns.duckdns.interface='wan'
-uci set ddns.duckdns.lookup_host='pernica.duckdns.org'
-uci set ddns.duckdns.enabled='1'
-
-uci commit
-service ddns restart
 
 ```
 
@@ -316,6 +259,38 @@ service firewall restart
 
 
 ## Notes
+
+### When Flashing a device use customized packages
+
+![Alt text](image.png)
+
+Add this packages to the installer:
+
+```bash
+nano-full etherwake luci-app-wol ddns-scripts ddns-scripts-services luci-app-ddns
+
+```
+
+#### or use client builder
+
+```bash
+mkdir openwrtbuild
+cd openwrtbuild/
+wget https://downloads.openwrt.org/releases/23.05.2/targets/ath79/generic/openwrt-imagebuilder-23.05.2-ath79-generic.Linux-x86_64.tar.xz
+tar -J -x -f openwrt-imagebuilder-*.tar.xz
+rm openwrt-imagebuilder-23.05.2-ath79-generic.Linux-x86_64.tar.xz
+cd openwrt-imagebuilder-*/
+make image PROFILE=tplink_tl-wr1043nd-v2 PACKAGES="nano-full etherwake luci-app-wol ddns-scripts ddns-scripts-services luci-app-ddns"
+cd bin/targets/ath79/generic/
+ls
+openwrt-23.05.2-ath79-generic-tplink_tl-wr1043nd-v2.manifest
+openwrt-23.05.2-ath79-generic-tplink_tl-wr1043nd-v2-squashfs-factory.bin
+openwrt-23.05.2-ath79-generic-tplink_tl-wr1043nd-v2-squashfs-sysupgrade.bin
+profiles.json
+sha256sums
+```
+
+
 
 To see pending changes use:
 ```bash
