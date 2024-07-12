@@ -53,21 +53,27 @@ After reboot reserve a static IP in gateway router and go to that IP to manage f
 
 #### Enable Wifi 2G
 
+[!IMPORTANT]
+
+> :warning: **Warning:** Do not push the big red button.
+
+Double check which radio is 2g or 5g and replace accordingly.
+
 ```bash
-uci set wireless.radio0=wifi-device
-uci set wireless.radio0.band='2g'
-uci set wireless.radio0.htmode='HT20'
-uci set wireless.radio0.country='SI'
-uci set wireless.radio0.cell_density='0'
-uci set wireless.radio0.channel='auto'
-uci set wireless.radio0.disabled='0'
-uci set wireless.default_radio0=wifi-iface
-uci set wireless.default_radio0.device='radio0'
-uci set wireless.default_radio0.network='lan'
-uci set wireless.default_radio0.mode='ap'
-uci set wireless.default_radio0.key='PASSWORD' # Enter password here
-uci set wireless.default_radio0.encryption='sae-mixed'
-uci set wireless.default_radio0.ssid='rw_podstresje' # Enter SSID
+uci set wireless.radio1=wifi-device
+uci set wireless.radio1.band='2g'
+uci set wireless.radio1.htmode='HT20'
+uci set wireless.radio1.country='SI'
+uci set wireless.radio1.cell_density='0'
+uci set wireless.radio1.channel='auto'
+uci set wireless.radio1.disabled='0'
+uci set wireless.default_radio1=wifi-iface
+uci set wireless.default_radio1.device='radio1'
+uci set wireless.default_radio1.network='lan'
+uci set wireless.default_radio1.mode='ap'
+uci set wireless.default_radio1.key='PASSWORD' # Enter password here
+uci set wireless.default_radio1.encryption='sae-mixed'
+uci set wireless.default_radio1.ssid='rw' # Enter SSID
 uci commit
 wifi up #Turns Wifi ON
 ```
