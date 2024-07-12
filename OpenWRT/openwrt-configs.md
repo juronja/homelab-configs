@@ -188,7 +188,7 @@ opkg update
 opkg install nano-full
 opkg install etherwake
 opkg install luci-app-wol
-#opkg install wpad
+#opkg install wpad-openssl
 #opkg install usteer
 #opkg install luci-app-usteer
 
