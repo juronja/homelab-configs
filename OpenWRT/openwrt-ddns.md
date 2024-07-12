@@ -4,8 +4,8 @@ Install:
 ```bash
 opkg update
 opkg install ddns-scripts
-opkg install ddns-scripts-cloudflare
 opkg install ddns-scripts-services
+opkg install ddns-scripts-cloudflare
 opkg install luci-app-ddns
 
 ```
