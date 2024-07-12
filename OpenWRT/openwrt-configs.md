@@ -14,6 +14,7 @@ passwd
 uci set system.@system[0].zonename='Europe/Ljubljana'
 uci set system.@system[0].timezone='CET-1CEST,M3.5.0,M10.5.0/3'
 uci set system.@system[0].hostname=GW-TP-Link-Archer-C7 #Change te device name here
+
 ```
 
 ## Setup Modes
@@ -51,20 +52,16 @@ reboot
 
 After reboot reserve a static IP in gateway router and go to that IP to manage further.
 
-#### Enable Wifi 2G
+#### Enable Wifi band 2G/802.11b/g/n
 
-[!IMPORTANT]
+:warning: **Warning:** Double check which radio is 2g or 5g and replace accordingly.
 
-> :warning: **Warning:** Do not push the big red button.
-
-Double check which radio is 2g or 5g and replace accordingly.
 
 ```bash
 uci set wireless.radio1=wifi-device
 uci set wireless.radio1.band='2g'
 uci set wireless.radio1.htmode='HT20'
 uci set wireless.radio1.country='SI'
-uci set wireless.radio1.cell_density='0'
 uci set wireless.radio1.channel='auto'
 uci set wireless.radio1.disabled='0'
 uci set wireless.default_radio1=wifi-iface
@@ -74,9 +71,37 @@ uci set wireless.default_radio1.mode='ap'
 uci set wireless.default_radio1.key='PASSWORD' # Enter password here
 uci set wireless.default_radio1.encryption='sae-mixed'
 uci set wireless.default_radio1.ssid='rw' # Enter SSID
+#uci set wireless.default_radio1.ieee80211k='1' # For band-steering
+#uci set wireless.default_radio1.bss_transition='1' # For band-steering
 uci commit
 wifi up #Turns Wifi ON
 ```
+
+#### Enable Wifi band 5G/802.11ac/n
+
+:warning: **Warning:** Double check which radio is 2g or 5g and replace accordingly.
+
+
+```bash
+uci set wireless.radio0=wifi-device
+uci set wireless.radio0.band='5g'
+uci set wireless.radio0.htmode='VHT80'
+uci set wireless.radio0.country='SI'
+uci set wireless.radio0.channel='auto'
+uci set wireless.radio0.disabled='0'
+uci set wireless.default_radio0=wifi-iface
+uci set wireless.default_radio0.device='radio0'
+uci set wireless.default_radio0.network='lan'
+uci set wireless.default_radio0.mode='ap'
+uci set wireless.default_radio0.key='PASSWORD' # Enter password here
+uci set wireless.default_radio0.encryption='sae-mixed'
+uci set wireless.default_radio0.ssid='rw' # Enter SSID
+#uci set wireless.default_radio0.ieee80211k='1' # For band-steering
+#uci set wireless.default_radio0.bss_transition='1' # For band-steering
+uci commit
+wifi up #Turns Wifi ON
+```
+
 
 #### Disable Daemons Persistently
 
@@ -163,6 +188,9 @@ opkg update
 opkg install nano-full
 opkg install etherwake
 opkg install luci-app-wol
+#opkg install wpad
+#opkg install usteer
+#opkg install luci-app-usteer
 
 ```
 
@@ -265,38 +293,6 @@ service firewall restart
 
 
 ## Notes
-
-### When Flashing a device use customized packages
-
-![Alt text](image.png)
-
-Add this packages to the installer:
-
-```bash
-nano-full etherwake luci-app-wol ddns-scripts ddns-scripts-services luci-app-ddns
-
-```
-
-#### or use client builder
-
-```bash
-mkdir openwrtbuild
-cd openwrtbuild/
-wget https://downloads.openwrt.org/releases/23.05.2/targets/ath79/generic/openwrt-imagebuilder-23.05.2-ath79-generic.Linux-x86_64.tar.xz
-tar -J -x -f openwrt-imagebuilder-*.tar.xz
-rm openwrt-imagebuilder-23.05.2-ath79-generic.Linux-x86_64.tar.xz
-cd openwrt-imagebuilder-*/
-make image PROFILE=tplink_tl-wr1043nd-v2 PACKAGES="nano-full etherwake luci-app-wol ddns-scripts ddns-scripts-services luci-app-ddns"
-cd bin/targets/ath79/generic/
-ls
-openwrt-23.05.2-ath79-generic-tplink_tl-wr1043nd-v2.manifest
-openwrt-23.05.2-ath79-generic-tplink_tl-wr1043nd-v2-squashfs-factory.bin
-openwrt-23.05.2-ath79-generic-tplink_tl-wr1043nd-v2-squashfs-sysupgrade.bin
-profiles.json
-sha256sums
-```
-
-
 
 To see pending changes use:
 ```bash
