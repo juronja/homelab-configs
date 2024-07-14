@@ -300,8 +300,8 @@ uci set dhcp.@host[-1].name='homelab'
 uci add_list dhcp.@host[-1].mac='BC:24:11:1A:9F:DC'
 uci set dhcp.@host[-1].ip='192.168.84.25'
 uci commit
-```
 
+```
 
 
 ## Notes
