@@ -53,15 +53,15 @@
         #description: Homepage is the best
     - Prowlarr:
         icon: prowlarr.svg
-        href: http://nas.repina.eu:9696
+        href: http://nas.repina.eu:30050
         #description: Homepage is the best
     - Radarr:
         icon: radarr.svg
-        href: http://nas.repina.eu:7878
+        href: http://nas.repina.eu:30025
         #description: Homepage is the best
     - Sonarr:
         icon: sonarr.svg
-        href: http://nas.repina.eu:8989
+        href: http://nas.repina.eu:30027
         #description: Homepage is the best
     - Readarr:
         icon: readarr.svg
