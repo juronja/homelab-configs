@@ -49,7 +49,7 @@
 - Media:
     - qBittorrent:
         icon: qbittorrent.svg
-        href: http://nas.repina.eu:10095
+        href: http://nas.repina.eu:30024
         #description: Homepage is the best
     - Prowlarr:
         icon: prowlarr.svg
