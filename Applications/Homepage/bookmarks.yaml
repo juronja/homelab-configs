@@ -12,11 +12,14 @@
     - Cloudflare:
         - icon: cloudflare.svg
           href: https://dash.cloudflare.com/login
+    - Helper Scripts:
+        - icon: https://tteck.github.io/Proxmox/favicon.ico
+          href: https://tteck.github.io/Proxmox/
     - Duckdns:
         - icon: duckdns.png
           href: https://www.duckdns.org/
     - Cubbit:
-        - icon: https://raw.githubusercontent.com/juronja/homelab-configs/b8cd24a18861b12cff2f051a6538a551f8517ae9/Applications/Homepage/images/cubbit.png
+        - icon: https://cdn.prod.website-files.com/611f84142709f0e312100b42/63c168bf9422e01dac8e950b_cubbit_logo%40256.png
           href: https://console.cubbit.eu/signin
     - DiluteRight:
         - icon: https://raw.githubusercontent.com/juronja/DiluteRight/main/app/assets/images/favicons/android-chrome-512x512.png
