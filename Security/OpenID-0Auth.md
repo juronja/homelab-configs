@@ -3,7 +3,7 @@
 Example: Audiobookshelf <> Google Cloud Oauth
 
 Docs:
-- [Google Cloud setup article](https://www.itix.fr/blog/use-google-account-openid-connect-provider/) i sourced from
+- [Google Cloud setup article](https://www.itix.fr/blog/use-google-account-openid-connect-provider/) I sourced from
 - [Audiobookshelf docs](https://www.audiobookshelf.org/guides/oidc_authentication/)
 
 
@@ -20,7 +20,7 @@ Docs:
 3. Go to **Credentials** and add a **0Auth client ID** credential
     - select web application type
     - add name
-    - add redirect URIs (taken form [Audiobookshelf docs](https://www.audiobookshelf.org/guides/oidc_authentication/#configuring-your-oidc-provider)) and save to generate `ClientID` and `Secret`.
+    - add redirect URIs (taken from [Audiobookshelf docs](https://www.audiobookshelf.org/guides/oidc_authentication/#configuring-your-oidc-provider)) and save to generate `ClientID` and `Secret`
 
 ```markdown
 https://abs.yoursite.com/auth/openid/callback
@@ -34,6 +34,6 @@ https://abs.yoursite.com/auth/openid/mobile-redirect
 3. Fill out the `Client ID` and `Secret`
 4. Change Button Text (Optional)
 5. In **Match existing users by** select `Match by email`
-6. Enable **Auto Register** to auto create new users.
+6. Enable **Auto Register** to auto create new users
 
 
