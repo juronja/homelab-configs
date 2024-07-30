@@ -16,3 +16,12 @@ qm set 101 -scsi1 /dev/disk/by-id/ata-Hitachi_HTS547564A9E384_J2180053HELJ4C
 qm set 101 -scsi2 /dev/disk/by-id/ata-Hitachi_HTS727575A9E364_J3390084GMAGND
 
 ```
+
+## Install TrueNas Scale
+
+Copy this line in the Proxmox Shell.
+
+```bash
+bash -c "$(wget -qLO - https://raw.githubusercontent.com/juronja/homelab-configs/main/Applications/Proxmox/scripts/truenasscalevm.sh)"
+
+```
