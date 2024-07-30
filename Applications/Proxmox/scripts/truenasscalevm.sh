@@ -79,7 +79,7 @@ qm create $VMID --cores $CORE_COUNT --cpu x86-64-v2-AES --memory $RAM --balloon 
 qm disk import $VMID "${IMG_LOCATION}TrueNAS-SCALE-"$SCALE_VRS.iso local-lvm --format qcow2
 
 # Map cloud image disk
-qm set $VMID --scsi0 local-lvm:vm-$VMID-disk-0,ssd=1 --cdrom local-lvm:iso/TrueNAS-SCALE-$SCALE_VRS.iso
+qm set $VMID --scsi0 local-lvm:vm-$VMID-disk-0,ssd=1 --cdrom local:iso/TrueNAS-SCALE-$SCALE_VRS.iso
 
 # Resize the disk.
 qm disk resize $VMID scsi0 "${DISK_SIZE}G" && qm set $VMID --boot order=scsi0
