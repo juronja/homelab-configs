@@ -7,9 +7,9 @@
 # Functions
 NEXTID=$(pvesh get /cluster/nextid)
 
-function check_diskid() {
-
-}
+#function check_diskid() {
+#
+#}
 
 function check_root() {
   if [[ "$(id -u)" != 0 || $(ps -o comm= -p $PPID) == "sudo" ]]; then
@@ -68,7 +68,7 @@ fi
 
 #BETA
 if DISK_COUNT=$(whiptail --backtitle "Install - TrueNAS SCALE VM" --title "IMPORT DISKS" --checklist "\nSelect disk IDs to import\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 3 \
-    "8" "GB" OFF \
+    "ata-Hitachi_HTS727575A9E364_J3390084GMAGND" "GB" OFF \
     "16" "GB" ON \
     3>&1 1>&2 2>&3); then
         echo -e "Allocated RAM: $DISK_COUNT GB"
