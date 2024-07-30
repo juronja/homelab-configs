@@ -4,9 +4,9 @@
 # Author: juronja
 # License: MIT
 
+# Functions
 NEXTID=$(pvesh get /cluster/nextid)
 
-# Functions
 function check_root() {
   if [[ "$(id -u)" != 0 || $(ps -o comm= -p $PPID) == "sudo" ]]; then
     clear
@@ -39,8 +39,8 @@ function exit-script() {
 echo "Starting VM script .."
 
 # Whiptail inputs
-if VMID=$(whiptail --backtitle "Install - TrueNAS SCALE VM" --title "VM ID" --inputbox "\nType the VM ID to install\n" --cancel-button "Exit Script" 12 58 3>&1 1>&2 2>&3); then
-    echo -e "Release version: $VMID"
+if SCALE_RLS=$(whiptail --backtitle "Install - TrueNAS SCALE VM" --title "SCALE RELEASE" --inputbox "\nType the RELEASE NAME to install\n(Case sensitive)\n" --cancel-button "Exit Script" 12 58 3>&1 1>&2 2>&3); then
+    echo -e "Release version: $SCALE_RLS"
 else
     exit-script
 fi
