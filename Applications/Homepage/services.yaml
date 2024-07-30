@@ -3,16 +3,21 @@
 # https://gethomepage.dev/latest/configs/services
 
 - Infrastructure:
-    - Proxmox:
+    - Proxmox Old:
         icon: proxmox.svg
-        href: https://pve.repina.eu:8006
-        siteMonitor: https://pve.repina.eu:8006
-        description: pve
+        href: https://pve-old.repina.eu:8006
+        siteMonitor: https://pve-old.repina.eu:8006
+        description: pve-old
         #widget:
         #  type: proxmox
         #  url: https://pve.repina.eu:8006
         #  username: {{HOMEPAGE_VAR_PROXMOX_USER}}
         #  password: {{HOMEPAGE_VAR_PROXMOX_PASS}}
+    - Proxmox New:
+        icon: proxmox.svg
+        href: https://pve-new.repina.eu:8006
+        siteMonitor: https://pve-new.repina.eu:8006
+        description: pve-new
     - Truenas Scale:
         icon: truenas.svg
         href: http://nas.repina.eu
@@ -20,10 +25,10 @@
         #description: pve1
 
 - Networking:
-    - OpenWRT:
+    - Gateway Router:
         icon: openwrt.svg
         href: http://router.repina.eu
-        description: Gateway
+        description: OpenWRT OS
     - Nginx Proxy Manager:
         icon: nginx-proxy-manager.svg
         href: http://proxy.repina.eu:81/login
