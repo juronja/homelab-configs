@@ -47,8 +47,7 @@ else
 fi
 
 
-if SCALE_VRS=$(whiptail --backtitle "Install - TrueNAS SCALE VM" --title "SCALE VERSION" --radiolist "\nChoose the SCALE VERSION to install\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 2 \
-    "24.04.2" ON \
+if SCALE_VRS=$(whiptail --backtitle "Install - TrueNAS SCALE VM" --title "SCALE VERSION" --inputbox "\nType the SCALE VERSION NUMBER to install\n" --cancel-button "Exit Script" 12 58 2 \
     3>&1 1>&2 2>&3); then
         echo -e "SCALE VERSION: $SCALE_VRS"
 else
