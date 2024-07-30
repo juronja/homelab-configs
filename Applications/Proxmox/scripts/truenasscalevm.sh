@@ -73,13 +73,13 @@ IMG_LOCATION="/var/lib/vz/template/iso/"
 wget -nc --directory-prefix=$IMG_LOCATION https://download.truenas.com/TrueNAS-SCALE-$SCALE_RLS/$SCALE_VRS/TrueNAS-SCALE-$SCALE_VRS.iso
 
 # Create a VM
-qm create $VMID --cores $CORE_COUNT --cpu x86-64-v2-AES --memory $RAM --balloon 1 --name TrueNAS-Scale --scsihw virtio-scsi-pci --net0 virtio,bridge=vmbr0,firewall=1 --ipconfig0 ip=dhcp,ip6=dhcp --agent enabled=1 --onboot 1
+qm create $VMID --cores $CORE_COUNT --cpu x86-64-v2-AES --memory $RAM --balloon 0 --name truenas-scale --scsihw virtio-scsi-pci --net0 virtio,bridge=vmbr0,firewall=1 --ipconfig0 ip=dhcp,ip6=dhcp --agent enabled=1 --onboot 1
 
 # Import cloud image disk
 qm disk import $VMID "${IMG_LOCATION}TrueNAS-SCALE-"$SCALE_VRS.iso local-lvm --format qcow2
 
 # Map cloud image disk
-#qm set $VMID --scsi0 local-lvm:vm-$VMID-disk-0,discard=on,ssd=1 --ide2 local-lvm:cloudinit
+qm set $VMID --scsi0 local-lvm:vm-$VMID-disk-0,discard=on,ssd=1 --cdrom local-lvm:iso/TrueNAS-SCALE-$SCALE_VRS.iso
 
-# Resize the disk to 32 GB.
-#qm disk resize $VMID scsi0 "${DISK_SIZE}G" && qm set $VMID --boot order=scsi0
+# Resize the disk.
+qm disk resize $VMID scsi0 "${DISK_SIZE}G" && qm set $VMID --boot order=scsi0
