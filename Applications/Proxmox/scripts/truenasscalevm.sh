@@ -46,13 +46,7 @@ else
     exit-script
 fi
 
-if SCALE_RLS=$(whiptail --backtitle "Install - TrueNAS SCALE VM" --title "SCALE RELEASE" --radiolist "\nChoose the release to install\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 2 \
-    "Dragonfish" "test" ON \
-    3>&1 1>&2 2>&3); then
-        echo -e "SCALE RELEASE: $SCALE_RLS"
-else
-    exit-script
-fi
+#Dragonfish
 
 if SCALE_VRS=$(whiptail --backtitle "Install - TrueNAS SCALE VM" --title "SCALE VERSION" --radiolist "\nChoose the SCALE VERSION to install\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 2 \
     "24.04.2" ON \
