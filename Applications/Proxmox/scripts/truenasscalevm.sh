@@ -38,7 +38,7 @@ echo "Starting VM script .."
 
 # Whiptail inputs
 if SCALE_RLS=$(whiptail --backtitle "Install - TrueNAS SCALE VM" --title "SCALE RELEASE" --radiolist "\nChoose the release to install\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 2 \
-    "noble" "24.04 LTS" ON \
+    "Dragonfish" "24.04 LTS" ON \
     "jammy" "22.04 LTS" OFF \
     3>&1 1>&2 2>&3); then
         echo -e "Release version: $SCALE_RLS"
@@ -46,7 +46,6 @@ else
     exit-script
 fi
 
-#Dragonfish
 
 if SCALE_VRS=$(whiptail --backtitle "Install - TrueNAS SCALE VM" --title "SCALE VERSION" --radiolist "\nChoose the SCALE VERSION to install\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 2 \
     "24.04.2" ON \
