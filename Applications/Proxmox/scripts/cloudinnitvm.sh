@@ -41,7 +41,7 @@ if UBUNTU_RLS=$(whiptail --backtitle "Install - Ubuntu VM" --title "UBUNTU RELEA
     "noble" "24.04 LTS" ON \
     "jammy" "22.04 LTS" OFF \
     3>&1 1>&2 2>&3); then
-        echo -e "Ubuntu release version: $UBUNTU_RLS"
+        echo -e "Release version: $UBUNTU_RLS"
 else
     exit-script
 fi
