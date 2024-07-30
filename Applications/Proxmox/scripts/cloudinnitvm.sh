@@ -18,7 +18,7 @@ function check_root() {
 function ssh_check() {
   if command -v pveversion >/dev/null 2>&1; then
     if [ -n "${SSH_CLIENT:+x}" ]; then
-      if whiptail --backtitle "Proxmox Ubuntu VM install Script" --defaultno --title "SSH DETECTED" --yesno "It's suggested to use the Proxmox shell instead of SSH, since SSH can create issues while gathering variables. Would you like to proceed with using SSH?" 10 62; then
+      if whiptail --backtitle "Install - Ubuntu VM" --defaultno --title "SSH DETECTED" --yesno "It's suggested to use the Proxmox shell instead of SSH, since SSH can create issues while gathering variables. Would you like to proceed with using SSH?" 10 62; then
         echo "you've been warned"
       else
         clear
@@ -37,15 +37,16 @@ function exit-script() {
 echo "Starting VM script .."
 
 # Whiptail inputs
-if UBUNTU_RLS=$(whiptail --backtitle "Proxmox Ubuntu VM install Script" --title "UBUNTU RELEASE" --radiolist "\nChoose the Ubuntu release to install\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 2 \
-    "jammy" "22.04 LTS" ON \
+if UBUNTU_RLS=$(whiptail --backtitle "Install - Ubuntu VM" --title "UBUNTU RELEASE" --radiolist "\nChoose the Ubuntu release to install\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 2 \
+    "jammy" "22.04 LTS" OFF \
+    "noble" "24.04 LTS" ON \
     3>&1 1>&2 2>&3); then
         echo -e "Ubuntu release version: $UBUNTU_RLS"
 else
     exit-script
 fi
 
-if CORE_COUNT=$(whiptail --backtitle "Proxmox Ubuntu VM install Script" --title "CORE COUNT" --radiolist "\nAllocate number of CPU Cores\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 2 \
+if CORE_COUNT=$(whiptail --backtitle "Install - Ubuntu VM" --title "CORE COUNT" --radiolist "\nAllocate number of CPU Cores\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 2 \
     "2" "cores" ON \
     "4" "cores" OFF \
     3>&1 1>&2 2>&3); then
@@ -54,7 +55,7 @@ else
     exit-script
 fi
 
-if RAM_COUNT=$(whiptail --backtitle "Proxmox Ubuntu VM install Script" --title "RAM COUNT" --radiolist "\nAllocate number of RAM\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 3 \
+if RAM_COUNT=$(whiptail --backtitle "Install - Ubuntu VM" --title "RAM COUNT" --radiolist "\nAllocate number of RAM\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 3 \
     "2" "GB" OFF \
     "4" "GB" ON \
     3>&1 1>&2 2>&3); then
@@ -63,7 +64,7 @@ else
     exit-script
 fi
 
-if DISK_SIZE=$(whiptail --backtitle "Proxmox Ubuntu VM install Script" --inputbox "\nSet disk size in GB" 8 58 "50" --title "DISK SIZE" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
+if DISK_SIZE=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nSet disk size in GB" 8 58 "50" --title "DISK SIZE" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
     if [ -z $DISK_SIZE ]; then
         DISK_SIZE="50"
         echo -e "Disk size: $DISK_SIZE GB"
