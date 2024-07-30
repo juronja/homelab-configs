@@ -38,8 +38,8 @@ echo "Starting VM script .."
 
 # Whiptail inputs
 if UBUNTU_RLS=$(whiptail --backtitle "Install - Ubuntu VM" --title "UBUNTU RELEASE" --radiolist "\nChoose the Ubuntu release to install\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 2 \
-    "jammy" "22.04 LTS" OFF \
     "noble" "24.04 LTS" ON \
+    "jammy" "22.04 LTS" OFF \
     3>&1 1>&2 2>&3); then
         echo -e "Ubuntu release version: $UBUNTU_RLS"
 else
@@ -58,6 +58,7 @@ fi
 if RAM_COUNT=$(whiptail --backtitle "Install - Ubuntu VM" --title "RAM COUNT" --radiolist "\nAllocate number of RAM\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 3 \
     "2" "GB" OFF \
     "4" "GB" ON \
+    "8" "GB" OFF \
     3>&1 1>&2 2>&3); then
         echo -e "Allocated RAM: $RAM_COUNT GB"
 else
