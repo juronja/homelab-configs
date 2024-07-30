@@ -37,16 +37,15 @@ function exit-script() {
 echo "Starting VM script .."
 
 # Whiptail inputs
-if SCALE_RLS=$(whiptail --backtitle "Install - TrueNAS SCALE VM" --title "SCALE RELEASE" --inputbox "\nType the release NAME to install\n(Case sensitive)\n" --cancel-button "Exit Script" 12 58 3>&1 1>&2 2>&3); then
+if SCALE_RLS=$(whiptail --backtitle "Install - TrueNAS SCALE VM" --title "SCALE RELEASE" --inputbox "\nType the RELEASE NAME to install\n(Case sensitive)\n" --cancel-button "Exit Script" 12 58 3>&1 1>&2 2>&3); then
     echo -e "Release version: $SCALE_RLS"
 else
     exit-script
 fi
 
 
-if SCALE_VRS=$(whiptail --backtitle "Install - TrueNAS SCALE VM" --title "SCALE VERSION" --inputbox "\nType the SCALE VERSION NUMBER to install\n" --cancel-button "Exit Script" 12 58 2 \
-    3>&1 1>&2 2>&3); then
-        echo -e "SCALE VERSION: $SCALE_VRS"
+if SCALE_VRS=$(whiptail --backtitle "Install - TrueNAS SCALE VM" --title "SCALE VERSION" --inputbox "\nType the VERSION NUMBER to install\n" --cancel-button "Exit Script" 12 58 3>&1 1>&2 2>&3); then
+    echo -e "SCALE VERSION: $SCALE_VRS"
 else
     exit-script
 fi
