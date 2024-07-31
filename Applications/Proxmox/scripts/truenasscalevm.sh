@@ -78,7 +78,7 @@ VMID=$NEXTID
 wget -nc --directory-prefix=$IMG_LOCATION https://download.truenas.com/TrueNAS-SCALE-$SCALE_RLS/$SCALE_VRS/TrueNAS-SCALE-$SCALE_VRS.iso
 
 # Create a VM
-qm create $VMID --cores $CORE_COUNT --cpu x86-64-v2-AES --memory $RAM --balloon 0 --name truenas-scale --scsihw virtio-scsi-pci --net0 virtio,bridge=vmbr0,firewall=1 --ipconfig0 ip=dhcp,ip6=dhcp --agent enabled=1 --onboot 1
+qm create $VMID --cores $CORE_COUNT --cpu host --memory $RAM --balloon 0 --name truenas-scale --machine q35 --bios ovmf --efidisk0 local-lvm:1,efitype=4m,pre-enrolled-keys=1 --net0 virtio,bridge=vmbr0,firewall=1 --ipconfig0 ip=dhcp,ip6=dhcp --agent enabled=1 --onboot 1
 
 # Import disk
 qm disk import $VMID "${IMG_LOCATION}TrueNAS-SCALE-"$SCALE_VRS.iso local-lvm --format qcow2
