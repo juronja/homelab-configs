@@ -101,10 +101,10 @@ while read -r LSOUTPUT; do
   DISKARRAY+=("$LSOUTPUT" "" "OFF")
 done < <(ls /dev/disk/by-id | grep -E '^ata-|^nvme-' | grep -v 'part')
 
-SELECTIONS=$(whiptail --backtitle "Install - TrueNAS SCALE VM" --title "SELECT DISKS TO IMPORT" --checklist "\nSelect disk IDs to import. (Use Spacebar to select)\n" --cancel-button "Exit Script" 20 58 10 "${DISKARRAY[@]}" 3>&1 1>&2 2>&3) || exit
+SELECTIONS=$(whiptail --backtitle "Install - TrueNAS SCALE VM" --title "SELECT DISKS TO IMPORT" --checklist "\nSelect disk IDs to import. (Use Spacebar to select)\n" --cancel-button "Exit Script" 20 58 10 "${DISKARRAY[@]}" 3>&1 1>&2 2>&3) | tr -d '"'|| exit
 
 for SELECTION in $SELECTIONS; do
   ((SCSI_NR++))
-  echo "qm set 100 -scsi"$SCSI_NR" /dev/disk/by-id/"$SELECTION""
+  echo "qm set "$VMID" -scsi"$SCSI_NR" /dev/disk/by-id/"$SELECTION""
 done
 
