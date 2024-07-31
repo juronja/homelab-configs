@@ -81,14 +81,6 @@ wget -nc --directory-prefix=$IMG_LOCATION https://download.truenas.com/TrueNAS-S
 qm create $VMID --cores $CORE_COUNT --cpu host --memory $RAM --balloon 0 --name truenas-scale --machine q35 --scsihw virtio-scsi-single --scsi0 local-lvm:$DISK_SIZE,ssd=on,iothread=on --cdrom local:iso/TrueNAS-SCALE-$SCALE_VRS.iso --net0 virtio,bridge=vmbr0,firewall=1 --ipconfig0 ip=dhcp,ip6=dhcp --agent enabled=1 --onboot 1
 
 
-# Map disk
-#qm set $VMID --scsi0 local-lvm:vm-$VMID-disk-0,ssd=1 --cdrom local:iso/TrueNAS-SCALE-$SCALE_VRS.iso
-
-# Resize disk.
-#qm disk resize $VMID scsi0 "${DISK_SIZE}G" && qm set $VMID --boot order=scsi0
-
-
-
 # Importing disks specifics
 whiptail --backtitle "Install - TrueNAS SCALE VM" --defaultno --title "IMPORT DISKS?" --yesno "Would you like to import onboard disks?" 10 58 || exit
 
