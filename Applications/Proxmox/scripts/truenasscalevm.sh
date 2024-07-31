@@ -105,5 +105,5 @@ SELECTIONS=$(whiptail --backtitle "Install - TrueNAS SCALE VM" --title "SELECT D
 
 for SELECTION in $SELECTIONS; do
   ((SCSI_NR++))
-  echo "qm set "$VMID" -scsi"$SCSI_NR" /dev/disk/by-id/"$SELECTION""
+  qm set $VMID --scsi$SCSI_NR /dev/disk/by-id/$SELECTION
 done
