@@ -4,13 +4,17 @@
 # Author: juronja
 # License: MIT
 
-# Functions
+# Constant variables
+CORE_COUNT=4
+DISK_SIZE=32
+RAM=$(($RAM_COUNT * 1024))
+IMG_LOCATION="/var/lib/vz/template/iso/"
 NEXTID=$(pvesh get /cluster/nextid)
+VMID=$NEXTID
+NODE=$(hostname)
+DISKARRAY=()
 
-#function check_diskid() {
-#
-#}
-
+# Functions
 function check_root() {
   if [[ "$(id -u)" != 0 || $(ps -o comm= -p $PPID) == "sudo" ]]; then
     clear
@@ -66,34 +70,32 @@ else
     exit-script
 fi
 
-#BETA
-if DISK_COUNT=$(whiptail --backtitle "Install - TrueNAS SCALE VM" --title "IMPORT DISKS" --checklist "\nSelect disk IDs to import\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 3 \
-    "ata-Hitachi_HTS727575A9E364_J3390084GMAGND" "GB" OFF \
-    "16" "GB" ON \
-    3>&1 1>&2 2>&3); then
-        echo -e "Allocated RAM: $DISK_COUNT GB"
-else
-    exit-script
-fi
+whiptail --backtitle "Install - TrueNAS SCALE VM" --defaultno --title "IMPORT DISKS?" --yesno "Would you like to import MB disks?" 10 58 || exit
 
-# Constant variables
-VMID=$NEXTID
-CORE_COUNT=4
-DISK_SIZE=32
-RAM=$(($RAM_COUNT * 1024))
-IMG_LOCATION="/var/lib/vz/template/iso/"
+# Importing disks
+while read -r LSOUTPUT; do
+  DISKARRAY+=("$LSOUTPUT" "" "OFF")
+done < <(ls /dev/disk/by-id | grep -E '^ata-|^nvme-' | grep -v 'part')
 
-# Dowload the Ubuntu cloud innit image
+SELECTIONS=$(whiptail --backtitle "Install - TrueNAS SCALE VM" --title "IMPORT DISKS ON $NODE" --checklist "\nSelect disk IDs to import\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 20 58 10 "${DISKARRAY[@]}" 3>&1 1>&2 2>&3) || exit
+
+for SELECTION in $SELECTIONS; do
+  echo "qm set 100 -scsi1 /dev/disk/by-id/"$SELECTION""
+done
+
+# Execute following actions
+
+# Download the image
 wget -nc --directory-prefix=$IMG_LOCATION https://download.truenas.com/TrueNAS-SCALE-$SCALE_RLS/$SCALE_VRS/TrueNAS-SCALE-$SCALE_VRS.iso
 
 # Create a VM
 qm create $VMID --cores $CORE_COUNT --cpu x86-64-v2-AES --memory $RAM --balloon 0 --name truenas-scale --scsihw virtio-scsi-pci --net0 virtio,bridge=vmbr0,firewall=1 --ipconfig0 ip=dhcp,ip6=dhcp --agent enabled=1 --onboot 1
 
-# Import cloud image disk
+# Import disk
 qm disk import $VMID "${IMG_LOCATION}TrueNAS-SCALE-"$SCALE_VRS.iso local-lvm --format qcow2
 
-# Map cloud image disk
+# Map disk
 qm set $VMID --scsi0 local-lvm:vm-$VMID-disk-0,ssd=1 --cdrom local:iso/TrueNAS-SCALE-$SCALE_VRS.iso
 
-# Resize the disk.
+# Resize disk.
 qm disk resize $VMID scsi0 "${DISK_SIZE}G" && qm set $VMID --boot order=scsi0

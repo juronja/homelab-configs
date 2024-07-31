@@ -10,10 +10,10 @@ bash -c "$(wget -qLO - https://raw.githubusercontent.com/juronja/homelab-configs
 
 ## Attach Hard disks
 
-Find out the unique ID for hard disks
+Find out the unique ID for hard disks. Filtering results having "ata-"" and "nvme-"" but excluding results containing "part".
 
 ```bash
-ls /dev/disk/by-id
+ls /dev/disk/by-id | grep -E '^ata-|^nvme-' | grep -v 'part'
 ```
 
 Attach the disks -scsi1, -scsi2, -scsi3, etc
