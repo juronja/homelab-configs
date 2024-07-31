@@ -41,23 +41,24 @@ function exit-script() {
 echo "Starting VM script .."
 
 # Whiptail inputs
-if SCALE_RLS=$(whiptail --backtitle "Install - TrueNAS SCALE VM" --title "SCALE RELEASE" --inputbox "\nType the RELEASE NAME to install\n(Case sensitive)\n" --cancel-button "Exit Script" 12 58 3>&1 1>&2 2>&3); then
+if SCALE_RLS=$(whiptail --backtitle "Install - TrueNAS SCALE VM" --title "RELEASE NAME" --inputbox "\nType the RELEASE NAME to install. (Case sensitive)\n" --cancel-button "Exit Script" 12 58 3>&1 1>&2 2>&3); then
     echo -e "Release version: $SCALE_RLS"
 else
     exit-script
 fi
 
 
-if SCALE_VRS=$(whiptail --backtitle "Install - TrueNAS SCALE VM" --title "SCALE VERSION" --inputbox "\nType the VERSION NUMBER to install\n" --cancel-button "Exit Script" 12 58 3>&1 1>&2 2>&3); then
+if SCALE_VRS=$(whiptail --backtitle "Install - TrueNAS SCALE VM" --title "VERSION NUMBER" --inputbox "\nType the VERSION NUMBER to install.\n" --cancel-button "Exit Script" 12 58 3>&1 1>&2 2>&3); then
     echo -e "SCALE VERSION: $SCALE_VRS"
 else
     exit-script
 fi
 
 
-if RAM_COUNT=$(whiptail --backtitle "Install - TrueNAS SCALE VM" --title "RAM COUNT" --radiolist "\nAllocate number of RAM\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 3 \
+if RAM_COUNT=$(whiptail --backtitle "Install - TrueNAS SCALE VM" --title "RAM COUNT" --radiolist "\nAllocate amount of RAM. (Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 3 \
     "8" "GB" OFF \
     "16" "GB" ON \
+    "32" "GB" OFF \
     3>&1 1>&2 2>&3); then
         echo -e "Allocated RAM: $RAM_COUNT GB"
 else
@@ -90,10 +91,8 @@ qm disk resize $VMID scsi0 "${DISK_SIZE}G" && qm set $VMID --boot order=scsi0
 
 
 
-whiptail --backtitle "Install - TrueNAS SCALE VM" --defaultno --title "IMPORT DISKS?" --yesno "Would you like to import MB disks?" 10 58 || exit
-
-
-# Importing disks
+# Importing disks specifics
+whiptail --backtitle "Install - TrueNAS SCALE VM" --defaultno --title "IMPORT DISKS?" --yesno "Would you like to import onboard disks?" 10 58 || exit
 
 DISKARRAY=()
 SCSI_NR=0
@@ -102,7 +101,7 @@ while read -r LSOUTPUT; do
   DISKARRAY+=("$LSOUTPUT" "" "OFF")
 done < <(ls /dev/disk/by-id | grep -E '^ata-|^nvme-' | grep -v 'part')
 
-SELECTIONS=$(whiptail --backtitle "Install - TrueNAS SCALE VM" --title "SELECT DISKS TO IMPORT" --checklist "\nSelect disk IDs to import\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 20 58 10 "${DISKARRAY[@]}" 3>&1 1>&2 2>&3) || exit
+SELECTIONS=$(whiptail --backtitle "Install - TrueNAS SCALE VM" --title "SELECT DISKS TO IMPORT" --checklist "\nSelect disk IDs to import. (Use Spacebar to select)\n" --cancel-button "Exit Script" 20 58 10 "${DISKARRAY[@]}" 3>&1 1>&2 2>&3) || exit
 
 for SELECTION in $SELECTIONS; do
   ((SCSI_NR++))
