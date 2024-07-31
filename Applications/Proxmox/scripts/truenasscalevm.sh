@@ -4,13 +4,9 @@
 # Author: juronja
 # License: MIT
 
-# Constant variables
-IMG_LOCATION="/var/lib/vz/template/iso/"
+# Constant variables for dialogs
 NEXTID=$(pvesh get /cluster/nextid)
-VMID=$NEXTID
 NODE=$(hostname)
-DISKARRAY=()
-SCSI_NR=0
 
 # Functions
 function check_root() {
@@ -68,27 +64,14 @@ else
     exit-script
 fi
 
-whiptail --backtitle "Install - TrueNAS SCALE VM" --defaultno --title "IMPORT DISKS?" --yesno "Would you like to import MB disks?" 10 58 || exit
-
-# Importing disks
-while read -r LSOUTPUT; do
-  DISKARRAY+=("$LSOUTPUT" "" "OFF")
-done < <(ls /dev/disk/by-id | grep -E '^ata-|^nvme-' | grep -v 'part')
-
-SELECTIONS=$(whiptail --backtitle "Install - TrueNAS SCALE VM" --title "IMPORT DISKS ON $NODE" --checklist "\nSelect disk IDs to import\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 20 58 10 "${DISKARRAY[@]}" 3>&1 1>&2 2>&3) || exit
-
-for SELECTION in $SELECTIONS; do
-  ((SCSI_NR++))
-  echo "qm set 100 -scsi"$SCSI_NR" /dev/disk/by-id/"$SELECTION""
-done
-
 # Execute following actions
 
-# Constant variables
+# Constant variables for actions
 CORE_COUNT=4
 DISK_SIZE=32
 RAM=$(($RAM_COUNT * 1024))
-
+IMG_LOCATION="/var/lib/vz/template/iso/"
+VMID=$NEXTID
 
 # Download the image
 wget -nc --directory-prefix=$IMG_LOCATION https://download.truenas.com/TrueNAS-SCALE-$SCALE_RLS/$SCALE_VRS/TrueNAS-SCALE-$SCALE_VRS.iso
@@ -104,3 +87,25 @@ qm set $VMID --scsi0 local-lvm:vm-$VMID-disk-0,ssd=1 --cdrom local:iso/TrueNAS-S
 
 # Resize disk.
 qm disk resize $VMID scsi0 "${DISK_SIZE}G" && qm set $VMID --boot order=scsi0
+
+
+
+whiptail --backtitle "Install - TrueNAS SCALE VM" --defaultno --title "IMPORT DISKS?" --yesno "Would you like to import MB disks?" 10 58 || exit
+
+
+# Importing disks
+
+DISKARRAY=()
+SCSI_NR=0
+
+while read -r LSOUTPUT; do
+  DISKARRAY+=("$LSOUTPUT" "" "OFF")
+done < <(ls /dev/disk/by-id | grep -E '^ata-|^nvme-' | grep -v 'part')
+
+SELECTIONS=$(whiptail --backtitle "Install - TrueNAS SCALE VM" --title "SELECT DISKS TO IMPORT" --checklist "\nSelect disk IDs to import\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 20 58 10 "${DISKARRAY[@]}" 3>&1 1>&2 2>&3) || exit
+
+for SELECTION in $SELECTIONS; do
+  ((SCSI_NR++))
+  echo "qm set 100 -scsi"$SCSI_NR" /dev/disk/by-id/"$SELECTION""
+done
+
