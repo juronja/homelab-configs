@@ -1,6 +1,7 @@
 #! /bin/bash
 
 # Copyright (c) 2024-present juronja
+# Used code from https://github.com/tteck to some degree
 # Author: juronja
 # License: MIT
 
