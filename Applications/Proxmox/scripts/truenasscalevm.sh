@@ -68,6 +68,8 @@ fi
 # Execute following actions
 
 # Constant variables for actions
+NAME="truenas-scale"
+CPU="host"
 CORE_COUNT=4
 DISK_SIZE=32
 RAM=$(($RAM_COUNT * 1024))
@@ -78,7 +80,7 @@ VMID=$NEXTID
 wget -nc --directory-prefix=$IMG_LOCATION https://download.truenas.com/TrueNAS-SCALE-$SCALE_RLS/$SCALE_VRS/TrueNAS-SCALE-$SCALE_VRS.iso
 
 # Create a VM
-qm create $VMID --cores $CORE_COUNT --cpu host --memory $RAM --balloon 0 --name truenas-scale --machine q35 --scsihw virtio-scsi-single --scsi0 local-lvm:$DISK_SIZE,ssd=on,iothread=on --cdrom local:iso/TrueNAS-SCALE-$SCALE_VRS.iso --net0 virtio,bridge=vmbr0,firewall=1 --ipconfig0 ip=dhcp,ip6=dhcp --agent enabled=1 --onboot 1
+qm create $VMID --cores $CORE_COUNT --cpu $CPU --memory $RAM --balloon 0 --name $NAME --bios ovmf --machine q35 --scsihw virtio-scsi-single --scsi0 local-lvm:$DISK_SIZE,ssd=on,iothread=on --cdrom local:iso/TrueNAS-SCALE-$SCALE_VRS.iso --net0 virtio,bridge=vmbr0,firewall=1 --ipconfig0 ip=dhcp,ip6=dhcp --agent enabled=1 --onboot 1
 
 
 # Importing disks specifics
