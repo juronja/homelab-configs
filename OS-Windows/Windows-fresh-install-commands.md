@@ -93,9 +93,6 @@ New-PSDrive -Name "M" -Root "\\nas.repina.eu\media" -Persist -PSProvider "FileSy
 
 New-PSDrive -Name "X" -Root "\\nas.repina.eu\cubbit" -Persist -PSProvider "FileSystem" -Credential juronja
 
-#WebDAV
-net use Z: https://nextcloud.repina.eu/remote.php/dav/files/juronja%40gmail.com /user:juronja@gmail.com
-
 ```
 
 
