@@ -3,6 +3,7 @@
 ota:
   platform: esphome
 
+# Networking
 wifi:
   networks:
     - ssid: !secret wifi_ssid
