@@ -1,4 +1,3 @@
-
 # Allow Over-The-Air updates
 ota:
   platform: esphome
