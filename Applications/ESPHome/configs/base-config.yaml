@@ -1,6 +1,29 @@
 
+wifi:
+  networks:
+    - ssid: !secret wifi_ssid
+      password: !secret wifi_password
+    - ssid: !secret wifi_ssid2
+      password: !secret wifi_password2
+    - ssid: !secret wifi_ssid3
+      password: !secret wifi_password3
+    - ssid: !secret wifi_ssid4
+      password: !secret wifi_password4
+
+  # Set up a wifi access point
+  ap:
+    ssid: ${friendly_name}
+    password: ${ap_pass}
+
+
 # Enable logging
 logger:
 
 # This is needed to access the settings via web IP
 web_server:
+
+# In combination with the `ap` this allows the user to provision wifi credentials to the device via WiFi AP.
+captive_portal:
+
+# Allow provisioning Wi-Fi via serial
+improv_serial:
