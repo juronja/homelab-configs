@@ -35,9 +35,9 @@
     - Unifi Site Manager:
         icon: unifi.svg
         href: https://unifi.ui.com
-    - Pihole:
-        icon: pi-hole.svg
-        href: http://pihole.repina.eu/admin/login.php
+    - Adguard Home:
+        icon: adguard-home.svg
+        href: http://adguard.repina.eu
 
 - Manage:
     - Home Assistant:
