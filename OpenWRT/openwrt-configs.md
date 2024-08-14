@@ -13,8 +13,8 @@ passwd
 ```bash
 uci set system.@system[0].zonename='Europe/Ljubljana'
 uci set system.@system[0].timezone='CET-1CEST,M3.5.0,M10.5.0/3'
-uci set system.@system[0].hostname=GW-TP-Link-Archer-C7 #Change te device name here
-
+uci set system.@system[0].hostname=GW-TP-Link-Archer-C7v4 #Change te device name here
+uci set system.@system[0].hostname=AP-TL-WR1043NDv2 #Change te device name here
 ```
 
 ## Setup Modes
