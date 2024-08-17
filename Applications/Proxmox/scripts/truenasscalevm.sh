@@ -55,6 +55,15 @@ else
     exit-script
 fi
 
+if CORE_COUNT=$(whiptail --backtitle "Install - TrueNAS SCALE VM" --title "CORE COUNT" --radiolist "\nAllocate amount of CORES. (Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 3 \
+    "4" "cores" OFF \
+    "8" "cores" ON \
+    "12" "cores" OFF \
+    3>&1 1>&2 2>&3); then
+        echo -e "Allocated CORES: $CORE_COUNT"
+else
+    exit-script
+fi
 
 if RAM_COUNT=$(whiptail --backtitle "Install - TrueNAS SCALE VM" --title "RAM COUNT" --radiolist "\nAllocate amount of RAM. (Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 3 \
     "8" "GB" OFF \
@@ -71,7 +80,6 @@ fi
 # Constant variables for actions
 NAME="truenas-scale"
 CPU="host"
-CORE_COUNT=4
 DISK_SIZE=32
 RAM=$(($RAM_COUNT * 1024))
 IMG_LOCATION="/var/lib/vz/template/iso/"
