@@ -6,7 +6,7 @@ Use Windows Terminal with Admin privileges.
 
 To disable windows defender you have to manually toggle the Tamper Protection OFF.
 
-```bash
+```shell
 # Disable UAC
 Set-itemproperty "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System" -Name "EnableLUA" -Value "0" -Type DWord
 # Disable Password expiry
@@ -59,7 +59,7 @@ Add-MpPreference -ExclusionPath "C:\Music_production","C:\Users\Jure\Downloads",
 ```
 
 # Install Apps
-```bash
+```shell
 
 winget install -e --id Google.Chrome
 winget install -e --id Microsoft.VisualStudioCode
@@ -83,15 +83,19 @@ winget install -e --id WireGuard.WireGuard
 #winget install -e --id OpenJS.NodeJS.LTS
 ```
 
-
-
-
 ### Backup command for UAC
 
-```bash
+```shell
 reg ADD HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v EnableLUA /t REG_DWORD /d 0 /f
 ```
 
+## Map network drives
+```shell
+New-PSDrive -Name "M" -Root "\\nas.repina.eu\media" -Persist -PSProvider "FileSystem" -Credential juronja
+
+New-PSDrive -Name "X" -Root "\\nas.repina.eu\cubbit" -Persist -PSProvider "FileSystem" -Credential juronja
+
+```
 
 
 ## TO DO Windows setup ##

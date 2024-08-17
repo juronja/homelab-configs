@@ -13,8 +13,8 @@ passwd
 ```bash
 uci set system.@system[0].zonename='Europe/Ljubljana'
 uci set system.@system[0].timezone='CET-1CEST,M3.5.0,M10.5.0/3'
-uci set system.@system[0].hostname=GW-TP-Link-Archer-C7 #Change te device name here
-
+uci set system.@system[0].hostname=GW-TP-Link-Archer-C7v4 #Change te device name here
+uci set system.@system[0].hostname=AP-TL-WR1043NDv2 #Change te device name here
 ```
 
 ## Setup Modes
@@ -138,7 +138,7 @@ uci set dhcp.lan.interface='lan'
 uci set dhcp.lan.start='50'
 uci set dhcp.lan.limit='150'
 uci set dhcp.lan.leasetime='12h'
-uci set dhcp.lan.dhcp_option='6,192.168.84.22' #Pihole server address
+uci set dhcp.lan.dhcp_option='6,192.168.84.22' #Adguard server address
 uci set dhcp.lan.ra='disable'
 uci set dhcp.lan.dhcpv6='disable'
 uci set dhcp.lan.ndp='disable'
@@ -297,12 +297,11 @@ Linux Homelab
 ```bash
 uci add dhcp host
 uci set dhcp.@host[-1].name='homelab'
-uci add_list dhcp.@host[-1].mac='BC:24:11:1A:9F:DC'
-uci set dhcp.@host[-1].ip='192.168.84.25'
+uci add_list dhcp.@host[-1].mac='MACADRESS'
+uci set dhcp.@host[-1].ip='RESERVEIPADDRESS'
 uci commit
 
 ```
-
 
 ## Notes
 

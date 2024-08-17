@@ -1,6 +1,6 @@
 # Useful Proxmox configurations
 
-When installing I use `pve1.lan.repina.eu` hostname.
+When installing I use `pve-new.lan` hostname.
 
 ## First time setup
 
@@ -54,3 +54,20 @@ pvecm expected 1
 pvecm delnode pve-nodename
 ```
 
+### Remove the cluster
+
+Run on the machine where you want to remove the cluster settings
+
+```bash
+# First, stop the corosync and pve-cluster services on the node:
+systemctl stop pve-cluster
+systemctl stop corosync
+# Start the cluster file system again in local mode:
+pmxcfs -l
+# Delete the corosync configuration files:
+rm /etc/pve/corosync.conf
+rm -r /etc/corosync/*
+# You can now start the file system again as a normal service:
+killall pmxcfs
+systemctl start pve-cluster
+```
