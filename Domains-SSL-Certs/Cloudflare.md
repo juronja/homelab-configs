@@ -10,7 +10,7 @@ If you are onboarding an existing domain to Cloudflare, make sure DNSSEC is disa
 
 Follow this [official instructions](https://developers.cloudflare.com/dns/dnssec/#enable-dnssec)
 
-After you create .pem and .key files add tehm to Nginx Proxy Manager Host.
+After you create .pem and .key files add them to Nginx Proxy Manager Host.
 
 ### Enable HSTS
 

@@ -9,6 +9,8 @@ To disable windows defender you have to manually toggle the Tamper Protection OF
 ```shell
 # Disable UAC
 Set-itemproperty "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System" -Name "EnableLUA" -Value "0" -Type DWord
+# Disable Password expiry
+wmic UserAccount set PasswordExpires=False
 # Disable Defender
 Set-itemproperty "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender" -Name "DisableAntiSpyware" -Value "1" -Type DWord -Force
 
