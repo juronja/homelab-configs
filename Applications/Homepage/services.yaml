@@ -5,39 +5,39 @@
 - Infrastructure:
     - Proxmox Old:
         icon: proxmox.svg
-        href: https://pve-old.repina.eu:8006
-        siteMonitor: https://pve-old.repina.eu:8006
+        href: https://pve-old.lan:8006
+        siteMonitor: https://pve-old.lan:8006
         description: pve-old
         #widget:
         #  type: proxmox
-        #  url: https://pve.repina.eu:8006
+        #  url: https://pve.lan:8006
         #  username: {{HOMEPAGE_VAR_PROXMOX_USER}}
         #  password: {{HOMEPAGE_VAR_PROXMOX_PASS}}
     - Proxmox New:
         icon: proxmox.svg
-        href: https://pve-new.repina.eu:8006
-        siteMonitor: https://pve-new.repina.eu:8006
+        href: https://pve-new.lan:8006
+        siteMonitor: https://pve-new.lan:8006
         description: pve-new
     - Truenas Scale:
         icon: truenas.svg
-        href: http://nas.repina.eu
-        siteMonitor: http://nas.repina.eu
+        href: http://nas.lan
+        siteMonitor: http://nas.lan
         #description: pve1
 
 - Networking:
     - Gateway Router:
         icon: openwrt.svg
-        href: http://router.repina.eu
+        href: http://router.lan
         description: OpenWRT OS
     - Nginx Proxy Manager:
         icon: nginx-proxy-manager.svg
-        href: http://proxy.repina.eu:81/login
+        href: http://proxy.lan:81/login
     - Unifi Site Manager:
         icon: unifi.svg
         href: https://unifi.ui.com
     - Adguard Home:
         icon: adguard-home.svg
-        href: http://adguard.repina.eu
+        href: http://adguard.lan
 
 - Manage:
     - Home Assistant:
@@ -46,7 +46,7 @@
         #description: Homepage is 😎
     - Portainer:
         icon: portainer.svg
-        href: https://portainer.repina.eu:9443
+        href: https://portainer.lan:9443
     - Jenkins:
         icon: jenkins.svg
         href: http://jenkins.repina.eu
@@ -54,23 +54,23 @@
 - Media:
     - qBittorrent:
         icon: qbittorrent.svg
-        href: http://nas.repina.eu:30024
+        href: http://nas.lan:30024
         #description: Homepage is the best
     - Prowlarr:
         icon: prowlarr.svg
-        href: http://nas.repina.eu:30050
+        href: http://nas.lan:30050
         #description: Homepage is the best
     - Radarr:
         icon: radarr.svg
-        href: http://nas.repina.eu:30025
+        href: http://nas.lan:30025
         #description: Homepage is the best
     - Sonarr:
         icon: sonarr.svg
-        href: http://nas.repina.eu:30027
+        href: http://nas.lan:30027
         #description: Homepage is the best
     - Readarr:
         icon: readarr.svg
-        href: http://nas.repina.eu:30045
+        href: http://nas.lan:30045
         #description: Homepage is the best
     - Audiobookshelf:
         icon: audiobookshelf.svg
