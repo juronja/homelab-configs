@@ -44,6 +44,9 @@
         icon: home-assistant.svg
         href: http://ha.repina.eu
         #description: Homepage is 😎
+    - Frigate NVR:
+        icon: frigate.svg
+        href: http://frigate.lan:5000
     - Portainer:
         icon: portainer.svg
         href: https://portainer.lan:9443
