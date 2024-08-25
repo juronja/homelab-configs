@@ -1,0 +1,91 @@
+mqtt:
+  enabled: true
+  host: 192.168.84.21
+  port: 1883
+  user: mqtt
+  password: X&yibCCDaKWfyH38!rGN59K^ji%@d8e&Sm*&9ksEoXFdqf%T&f
+  topic_prefix: frigate
+  client_id: frigate
+
+ffmpeg:
+  hwaccel_args: preset-vaapi
+
+environment_vars:
+  LIBVA_DRIVER_NAME: i965
+
+detectors:
+  ov:
+    type: openvino
+    device: CPU
+
+model:
+  width: 300
+  height: 300
+  input_tensor: nhwc
+  input_pixel_format: bgr
+  path: /openvino-model/FP16/ssdlite_mobilenet_v2.xml # When installed via Helper Scripts add /FP16/
+  labelmap_path: /openvino-model/coco_91cl_bkgr.txt
+
+go2rtc:
+  streams:
+    esp-cam-stream:
+      - ffmpeg:http://192.168.84.30:8080#video=h264#hardware   # <- use hardware acceleration to create an h264 stream usable for other components.
+
+cameras:
+  esp-cam:
+    ffmpeg:
+      inputs:
+        - path: rtsp://127.0.0.1:8554/esp-cam-stream
+          roles:
+            - detect
+            - record
+      input_args: preset-rtsp-restream
+      output_args:
+        record: preset-record-generic
+    detect:
+      enabled: true
+      width: 800
+      height: 600
+      fps: 5
+    objects:
+      track:
+        - person
+        - car
+        - motorcycle
+    snapshots:
+      enabled: true
+      timestamp: true
+      quality: 100
+      retain:
+        default: 5
+      required_zones:
+        - Driveway
+    record:
+      enabled: true
+      retain:
+        days: 1
+        mode: motion
+      events:
+        retain:
+          default: 1
+          mode: motion
+#      sync_recordings: true # The sync operation uses considerable CPU resources and in most cases is not needed, only enable when necessary.
+    review:
+      alerts:
+        required_zones:
+          - Driveway
+      detections:
+        required_zones:
+          - Driveway
+
+    motion:
+      threshold: 45
+      contour_area: 10
+      improve_contrast: 'true'
+      mask: 0,0,1,0,1,0.25,0.561,0.412,0.396,0.434,0.205,1,0,1
+    zones:
+      Driveway:
+        coordinates: 1,0.515,0.668,0.549,0.607,0.475,0.452,0.58,0.388,1,1,1
+        loitering_time: 0
+        inertia: 3
+version: 0.14
