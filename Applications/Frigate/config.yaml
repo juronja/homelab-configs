@@ -63,11 +63,11 @@ cameras:
     record:
       enabled: true
       retain:
-        days: 1
+        days: 2
         mode: motion
       events:
         retain:
-          default: 1
+          default: 2
           mode: motion
 #      sync_recordings: true # The sync operation uses considerable CPU resources and in most cases is not needed, only enable when necessary.
     review:
