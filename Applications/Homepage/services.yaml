@@ -6,7 +6,7 @@
     - Proxmox Old:
         icon: proxmox.svg
         href: https://pve-old.lan:8006
-        siteMonitor: https://pve-old.lan:8006
+        ping: 192.168.84.20
         description: pve-old
         #widget:
         #  type: proxmox
@@ -16,12 +16,12 @@
     - Proxmox New:
         icon: proxmox.svg
         href: https://pve-new.lan:8006
-        siteMonitor: https://pve-new.lan:8006
+        ping: 192.168.84.10
         description: pve-new
     - Truenas Scale:
         icon: truenas.svg
         href: http://nas.lan
-        siteMonitor: http://nas.lan
+        ping: 192.168.84.11
         #description: pve1
 
 - Networking:
@@ -32,27 +32,33 @@
     - Nginx Proxy Manager:
         icon: nginx-proxy-manager.svg
         href: http://proxy.lan:81/login
-    - Unifi Site Manager:
-        icon: unifi.svg
-        href: https://unifi.ui.com
+        ping: 192.168.84.24
     - Adguard Home:
         icon: adguard-home.svg
         href: http://adguard.lan
+        ping: 192.168.84.27
+    - Unifi Site Manager:
+        icon: unifi.svg
+        href: https://unifi.ui.com
 
 - Manage:
     - Home Assistant:
         icon: home-assistant.svg
         href: http://ha.repina.eu
+        ping: http://ha.repina.eu
         #description: Homepage is 😎
     - Frigate NVR:
         icon: frigate.svg
         href: http://frigate.lan:5000
+        ping: 192.168.84.13
     - Portainer:
         icon: portainer.svg
         href: https://portainer.lan:9443
+        ping: 192.168.84.14
     - Jenkins:
         icon: jenkins.svg
         href: http://jenkins.repina.eu
+        ping: http://jenkins.repina.eu
 
 - Media:
     - qBittorrent:
@@ -78,4 +84,5 @@
     - Audiobookshelf:
         icon: audiobookshelf.svg
         href: http://audiobook.repina.eu
+        ping: http://audiobook.repina.eu
         #description: Homepage is the best
