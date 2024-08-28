@@ -23,6 +23,9 @@
         href: http://nas.lan
         ping: 192.168.84.11
         #description: pve1
+    - Portainer:
+        icon: portainer.svg
+        href: https://portainer.lan:9443
 
 - Networking:
     - Gateway Router:
@@ -44,45 +47,39 @@
 - Manage:
     - Home Assistant:
         icon: home-assistant.svg
-        href: http://ha.repina.eu
-        ping: http://ha.repina.eu
+        href: https://ha.repina.eu
+        ping: https://ha.repina.eu
         #description: Homepage is 😎
     - Frigate NVR:
         icon: frigate.svg
         href: http://frigate.lan:5000
         ping: 192.168.84.13
-    - Portainer:
-        icon: portainer.svg
-        href: https://portainer.lan:9443
-        ping: 192.168.84.14
     - Jenkins:
         icon: jenkins.svg
-        href: http://jenkins.repina.eu
-        ping: http://jenkins.repina.eu
+        href: https://jenkins.repina.eu
+        ping: https://jenkins.repina.eu
 
 - Media:
-    - qBittorrent:
-        icon: qbittorrent.svg
-        href: http://nas.lan:30024
-        #description: Homepage is the best
-    - Prowlarr:
-        icon: prowlarr.svg
-        href: http://nas.lan:30050
-        #description: Homepage is the best
-    - Radarr:
-        icon: radarr.svg
-        href: http://nas.lan:30025
-        #description: Homepage is the best
-    - Sonarr:
-        icon: sonarr.svg
-        href: http://nas.lan:30027
-        #description: Homepage is the best
+    - Nextcloud:
+        icon: nextcloud.svg
+        href: https://nextcloud.repina.eu
+        ping: https://nextcloud.repina.eu
+    - Audiobookshelf:
+        icon: audiobookshelf.svg
+        href: https://audiobook.repina.eu
+        ping: https://audiobook.repina.eu
     - Readarr:
         icon: readarr.svg
         href: http://nas.lan:30045
-        #description: Homepage is the best
-    - Audiobookshelf:
-        icon: audiobookshelf.svg
-        href: http://audiobook.repina.eu
-        ping: http://audiobook.repina.eu
-        #description: Homepage is the best
+    - qBittorrent:
+        icon: qbittorrent.svg
+        href: http://nas.lan:30024
+    - Prowlarr:
+        icon: prowlarr.svg
+        href: http://nas.lan:30050
+    - Radarr:
+        icon: radarr.svg
+        href: http://nas.lan:30025
+    - Sonarr:
+        icon: sonarr.svg
+        href: http://nas.lan:30027
