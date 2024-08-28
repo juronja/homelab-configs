@@ -91,9 +91,9 @@ reg ADD HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v Enable
 
 ## Map network drives
 ```shell
-New-PSDrive -Name "M" -Root "\\nas.repina.eu\media" -Persist -PSProvider "FileSystem" -Credential juronja
+New-PSDrive -Name "M" -Root "\\nas.lan\media" -Persist -PSProvider "FileSystem" -Credential juronja
 
-New-PSDrive -Name "X" -Root "\\nas.repina.eu\cubbit" -Persist -PSProvider "FileSystem" -Credential juronja
+New-PSDrive -Name "X" -Root "\\nas.lan\cubbit" -Persist -PSProvider "FileSystem" -Credential juronja
 
 ```
 
