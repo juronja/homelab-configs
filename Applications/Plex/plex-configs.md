@@ -38,6 +38,6 @@ When instaling a LXC container in proxmox you can mount a network Samba share dr
 ```bash
 apt update && apt install cifs-utils
 mkdir /mnt/media
-mount -t -o username=NAS_USER cifs //192.x.x.x/media /mnt/media
+mount -t cifs //192.168.x.x/media /mnt/media -o username=NAS_USERNAME
 
 ```
