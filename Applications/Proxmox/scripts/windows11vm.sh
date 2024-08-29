@@ -42,8 +42,14 @@ function exit-script() {
 echo "Starting VM script .."
 
 # Whiptail inputs
-if SCALE_RLS=$(whiptail --backtitle "Install - Windows 11 VM" --title "ISO FILE NAME" --inputbox "\nType the ISO FILE NAME to install. (Without extension, Case sensitive)\n" --cancel-button "Exit Script" 12 58 3>&1 1>&2 2>&3); then
-    echo -e "Release version: $SCALE_RLS"
+
+while read -r LSOUTPUT; do
+  ISOARRAY+=("$LSOUTPUT" "" "OFF")
+done < <(ls /var/lib/vz/template/iso)
+
+
+if WIN_ISO=$(whiptail --backtitle "Install - Windows 11 VM" --title "ISO FILE NAME" --radiolist "\nSelect the ISO FILE NAME to install\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 20 58 10 "${ISOARRAY[@]}" 3>&1 1>&2 2>&3 | tr -d '"'); then
+    echo -e "Selected iso: $WIN_ISO"
 else
     exit-script
 fi
@@ -83,12 +89,11 @@ NAME="windows11"
 VMID=$NEXTID
 RAM=$(($RAM_COUNT * 1024))
 IMG_LOCATION="/var/lib/vz/template/iso/"
-WIN_ISO_NAME="cyg-en-us_windows_11_business_editions_version_23h2_x64_dvd_a9092734"
 
 # Dowload the VirtIO drivers stable for Windows
 wget -nc --directory-prefix=$IMG_LOCATION https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso
 
 # Create a VM
-qm create $VMID --ostype win11 --cores $CORE_COUNT --cpu x86-64-v2-AES --memory $RAM --balloon 1 --name $NAME --bios ovmf --efidisk0 local-lvm:1,efitype=4m,pre-enrolled-keys=1 --machine q35 --tpmstate0 local-lvm:1,version=v2.0 --scsihw virtio-scsi-single --scsi0 local-lvm:$DISK_SIZE,ssd=on,iothread=on --ide0 local:iso/$WIN_ISO_NAME.iso,media=cdrom --ide1 local:iso/virtio-win.iso,media=cdrom --net0 virtio,bridge=vmbr0,firewall=1 --ipconfig0 ip=dhcp,ip6=dhcp --agent enabled=1 --onboot 1 --boot order="ide0;scsi0"
+qm create $VMID --ostype win11 --cores $CORE_COUNT --cpu x86-64-v2-AES --memory $RAM --balloon 1 --name $NAME --bios ovmf --efidisk0 local-lvm:1,efitype=4m,pre-enrolled-keys=1 --machine q35 --tpmstate0 local-lvm:1,version=v2.0 --scsihw virtio-scsi-single --scsi0 local-lvm:$DISK_SIZE,ssd=on,iothread=on --ide0 local:iso/$WIN_ISO,media=cdrom --ide1 local:iso/virtio-win.iso,media=cdrom --net0 virtio,bridge=vmbr0,firewall=1 --ipconfig0 ip=dhcp,ip6=dhcp --agent enabled=1 --onboot 1 --boot order="ide0;scsi0"
 #qm create 502 --ostype win11 --cores 4 --cpu x86-64-v2-AES --memory 8192 --balloon 1 --name windows11-template --bios ovmf --efidisk0 local-lvm:1,efitype=4m,pre-enrolled-keys=1 --machine q35 --tpmstate0 local-lvm:1,version=v2.0 --scsihw virtio-scsi-single --scsi0 local-lvm:64,ssd=on,iothread=on --ide0 local:iso/cyg-en-us_windows_11_business_editions_version_23h2_x64_dvd_a9092734.iso,media=cdrom --ide1 local:iso/virtio-win.iso,media=cdrom --net0 virtio,bridge=vmbr0,firewall=1 --ipconfig0 ip=dhcp,ip6=dhcp --agent enabled=1 --onboot 1 --boot order="ide0;scsi0"
 
