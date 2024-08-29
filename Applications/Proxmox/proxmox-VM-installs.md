@@ -54,3 +54,14 @@ Copy this line in the Proxmox Shell.
 bash -c "$(wget -qLO - https://raw.githubusercontent.com/juronja/homelab-configs/main/Applications/Proxmox/scripts/windows11vm.sh)"
 
 ```
+
+- STEP 1 - Choose Enterprise edition
+Load virtio disk and network drivers when installing.
+
+- STEP 2 - Load Drivers
+Load virtio **disk** and **network** drivers when installing!
+
+- STEP 2 - Use local account
+When asked to sign in use local domain (account) option.
+
+
