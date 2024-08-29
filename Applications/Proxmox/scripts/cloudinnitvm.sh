@@ -87,7 +87,7 @@ VMID=501
 RAM=$(($RAM_COUNT * 1024))
 IMG_LOCATION="/var/lib/vz/template/iso/"
 
-# Dowload the Ubuntu cloud innit image
+# Download the Ubuntu cloud innit image
 wget -nc --directory-prefix=$IMG_LOCATION https://cloud-images.ubuntu.com/$UBUNTU_RLS/current/$UBUNTU_RLS-server-cloudimg-amd64.img
 
 # Create a VM
