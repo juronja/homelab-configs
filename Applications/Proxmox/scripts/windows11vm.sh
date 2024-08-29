@@ -48,7 +48,7 @@ while read -r LSOUTPUT; do
 done < <(ls /var/lib/vz/template/iso)
 
 
-if WIN_ISO=$(whiptail --backtitle "Install - Windows 11 VM" --title "ISO FILE NAME" --radiolist "\nSelect the ISO FILE NAME to install\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 20 58 10 "${ISOARRAY[@]}" 3>&1 1>&2 2>&3 | tr -d '"'); then
+if WIN_ISO=$(whiptail --backtitle "Install - Windows 11 VM" --title "ISO FILE NAME" --radiolist "\nSelect the ISO FILE NAME to install\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 20 74 8 "${ISOARRAY[@]}" 3>&1 1>&2 2>&3 | tr -d '"'); then
     echo -e "Selected iso: $WIN_ISO"
 else
     exit-script
