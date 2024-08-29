@@ -48,13 +48,13 @@ while read -r LSOUTPUT; do
 done < <(ls /var/lib/vz/template/iso)
 
 
-if WIN_ISO=$(whiptail --backtitle "Install - Windows 11 VM" --title "ISO FILE NAME" --radiolist "\nSelect the ISO FILE NAME to install\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 20 74 8 "${ISOARRAY[@]}" 3>&1 1>&2 2>&3 | tr -d '"'); then
+if WIN_ISO=$(whiptail --backtitle "Install - Windows 11 VM" --title "ISO FILE NAME" --radiolist "\nSelect the ISO FILE NAME to install. (Use Spacebar to select)\n" --cancel-button "Exit Script" 18 90 8 "${ISOARRAY[@]}" 3>&1 1>&2 2>&3 | tr -d '"'); then
     echo -e "Selected iso: $WIN_ISO"
 else
     exit-script
 fi
 
-if CORE_COUNT=$(whiptail --backtitle "Install - Windows 11 VM" --title "CORE COUNT" --radiolist "\nAllocate number of CPU Cores\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 2 \
+if CORE_COUNT=$(whiptail --backtitle "Install - Windows 11 VM" --title "CORE COUNT" --radiolist "\nAllocate number of CPU Cores. (Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 2 \
     "4" "cores" ON \
     "8" "cores" OFF \
     3>&1 1>&2 2>&3); then
@@ -63,7 +63,7 @@ else
     exit-script
 fi
 
-if RAM_COUNT=$(whiptail --backtitle "Install - Windows 11 VM" --title "RAM COUNT" --radiolist "\nAllocate number of RAM\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 3 \
+if RAM_COUNT=$(whiptail --backtitle "Install - Windows 11 VM" --title "RAM COUNT" --radiolist "\nAllocate number of RAM. (Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 3 \
     "4" "GB" OFF \
     "8" "GB" ON \
     "16" "GB" OFF \
@@ -73,7 +73,7 @@ else
     exit-script
 fi
 
-if DISK_SIZE=$(whiptail --backtitle "Install - Windows 11 VM" --title "DISK SIZE" --inputbox "\nSet disk size in GB" "128" --cancel-button "Exit Script" 8 58 3>&1 1>&2 2>&3); then
+if DISK_SIZE=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nSet disk size in GB" 8 58 "64" --title "DISK SIZE" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
     if [ -z $DISK_SIZE ]; then
         DISK_SIZE="128"
         echo -e "Disk size: $DISK_SIZE GB"
