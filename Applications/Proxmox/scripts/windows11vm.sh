@@ -48,7 +48,7 @@ while read -r LSOUTPUT; do
 done < <(ls /var/lib/vz/template/iso)
 
 
-if WIN_ISO=$(whiptail --backtitle "Install - Windows 11 VM" --title "ISO FILE NAME" --radiolist "\nSelect the ISO FILE NAME to install. (Use Spacebar to select)\n" --cancel-button "Exit Script" 18 90 8 "${ISOARRAY[@]}" 3>&1 1>&2 2>&3 | tr -d '"'); then
+if WIN_ISO=$(whiptail --backtitle "Install - Windows 11 VM" --title "ISO FILE NAME" --radiolist "\nSelect the ISO to install. (Use Spacebar to select)\n" --cancel-button "Exit Script" 18 90 8 "${ISOARRAY[@]}" 3>&1 1>&2 2>&3 | tr -d '"'); then
     echo -e "Selected iso: $WIN_ISO"
 else
     exit-script
@@ -73,7 +73,7 @@ else
     exit-script
 fi
 
-if DISK_SIZE=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nSet disk size in GB" 8 58 "64" --title "DISK SIZE" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
+if DISK_SIZE=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nSet disk size in GB" 8 58 "128    " --title "DISK SIZE" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
     if [ -z $DISK_SIZE ]; then
         DISK_SIZE="128"
         echo -e "Disk size: $DISK_SIZE GB"
@@ -90,7 +90,7 @@ VMID=$NEXTID
 RAM=$(($RAM_COUNT * 1024))
 IMG_LOCATION="/var/lib/vz/template/iso/"
 
-# Dowload the VirtIO drivers stable for Windows
+# Download the VirtIO drivers stable for Windows
 wget -nc --directory-prefix=$IMG_LOCATION https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso
 
 # Create a VM
