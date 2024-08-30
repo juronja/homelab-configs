@@ -1,12 +1,13 @@
 # First steps after installing Windows
 
 - Use Windows Terminal with Admin privileges!
+- Update App Installer in MS Store to update winget
 - To disable windows defender you have to manually toggle the Tamper Protection OFF.
 
 ## Basics
 
 ```shell
-Invoke-RestMethod -Uri https://raw.githubusercontent.com/juronja/homelab-configs/main/OS-Windows/scripts/win-basics.ps1 | Invoke-Expression
+Invoke-RestMethod -Uri https://raw.githubusercontent.com/juronja/homelab-configs/main/OS-Windows/scripts/win-install-basics.ps1 | Invoke-Expression
 
 ```
 

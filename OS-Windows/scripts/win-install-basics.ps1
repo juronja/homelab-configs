@@ -34,8 +34,6 @@ powercfg /change disk-timeout-ac 0
 powercfg /change disk-timeout-dc 0
 
 # Install / Uninstall apps
-Add-AppxPackage -RegisterByFamilyName -MainPackage Microsoft.DesktopAppInstaller_8wekyb3d8bbwe
-
 Get-AppxPackage -alluser Microsoft.BingNews | Remove-AppxPackage
 Get-AppxPackage -alluser Microsoft.WindowsMaps | Remove-AppxPackage
 Get-AppxPackage -alluser Microsoft.MicrosoftStickyNotes | Remove-AppxPackage
@@ -53,7 +51,7 @@ Get-AppxPackage -alluser Microsoft.Getstarted | Remove-AppxPackage
 Get-AppxPackage -alluser Clipchamp.Clipchamp | Remove-AppxPackage
 Get-AppxPackage -alluser MicrosoftCorporationII.QuickAssist | Remove-AppxPackage
 Get-AppxPackage -alluser microsoft.windowscommunicationsapps | Remove-AppxPackage # Mail app
-Get-AppxPackage -alluser Microsoft.Windows.Client.WebExperience | Remove-AppxPackage # Widget app
+Get-AppxPackage -alluser MicrosoftWindows.Client.WebExperience | Remove-AppxPackage # Widget app
 Get-AppxPackage -alluser Microsoft.549981C3F5F10 | Remove-AppxPackage # Cortana appGet-AppxPackage -alluser Microsoft.549981C3F5F10 | Remove-AppxPackage # Cortana app
 winget uninstall onedrive
 winget install -e --id Google.Chrome
