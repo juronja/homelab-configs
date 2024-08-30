@@ -6,7 +6,7 @@
 ## Basics
 
 ```shell
-Invoke-RestMethod -Uri $gistUrl | Invoke-Expression
+Invoke-RestMethod -Uri https://raw.githubusercontent.com/juronja/homelab-configs/main/OS-Windows/scripts/win-basics.ps1 | Invoke-Expression
 
 ```
 
