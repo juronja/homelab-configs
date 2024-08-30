@@ -58,9 +58,13 @@ winget install -e --id WireGuard.WireGuard
 
 ```shell
 Get-NetIPConfiguration
+```
 
+```shell
 New-NetIPAddress -InterfaceIndex 6 -IPAddress 192.168.84.15 -PrefixLength 24 -DefaultGateway 192.168.84.1
+```
 
+```shell
 Set-DnsClientServerAddress -InterfaceIndex 6 -ServerAddresses 192.168.84.27
 
 ```
