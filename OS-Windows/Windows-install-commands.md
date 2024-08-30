@@ -1,7 +1,7 @@
 # First steps after installing Windows
 
 - Use Windows Terminal with Admin privileges!
-- Update App Installer in MS Store to update winget
+- Update `App Installer` in MS Store to update winget
 - To disable windows defender you have to manually toggle the Tamper Protection OFF.
 
 ## Basics
@@ -59,7 +59,7 @@ winget install -e --id WireGuard.WireGuard
 ```shell
 Get-NetIPConfiguration
 
-New-NetIPAddress -InterfaceIndex 6 -IPAddress 192.168.84.15 -PrefixLength 24 -DefaultGateway 10.1.4.1
+New-NetIPAddress -InterfaceIndex 6 -IPAddress 192.168.84.15 -PrefixLength 24 -DefaultGateway 192.168.84.1
 
 Set-DnsClientServerAddress -InterfaceIndex 6 -ServerAddresses 192.168.84.27
 
