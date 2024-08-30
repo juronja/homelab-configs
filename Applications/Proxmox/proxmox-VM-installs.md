@@ -56,12 +56,11 @@ bash -c "$(wget -qLO - https://raw.githubusercontent.com/juronja/homelab-configs
 ```
 
 - STEP 1 - Choose Enterprise edition
-Load virtio disk and network drivers when installing.
 
 - STEP 2 - Load Drivers
-Load virtio **disk** and **network** drivers when installing!
+Load virtio **disk** and **network** drivers (NETKVM>w11>amd64) when installing!
 
-- STEP 2 - Use local account
+- STEP 3 - Use local account
 When asked to sign in use local domain (account) option.
 
 
