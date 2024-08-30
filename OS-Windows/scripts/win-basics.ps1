@@ -3,7 +3,6 @@ Set-itemproperty "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\Syste
 # Disable Password expiry
 wmic UserAccount set PasswordExpires=False
 # TASKBAR - Removes Widgets and Task View from the Taskbar / Alligns the taskbar to the left
-Set-itemproperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "TaskbarDa" -Value "0" -Type DWord
 Set-itemproperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ShowTaskViewButton" -Value "0" -Type DWord
 Set-itemproperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "TaskbarAl" -Value "0" -Type DWord
 # START - Hide recently added apps / Show most used apps
@@ -35,6 +34,8 @@ powercfg /change disk-timeout-ac 0
 powercfg /change disk-timeout-dc 0
 
 # Install / Uninstall apps
+winget install "App Installer" -s msstore --force
+
 Get-AppxPackage -alluser Microsoft.BingNews | Remove-AppxPackage
 Get-AppxPackage -alluser Microsoft.WindowsMaps | Remove-AppxPackage
 Get-AppxPackage -alluser Microsoft.MicrosoftStickyNotes | Remove-AppxPackage
@@ -52,6 +53,7 @@ Get-AppxPackage -alluser Microsoft.Getstarted | Remove-AppxPackage
 Get-AppxPackage -alluser Clipchamp.Clipchamp | Remove-AppxPackage
 Get-AppxPackage -alluser MicrosoftCorporationII.QuickAssist | Remove-AppxPackage
 Get-AppxPackage -alluser microsoft.windowscommunicationsapps | Remove-AppxPackage # Mail app
+Get-AppxPackage -alluser Microsoft.Windows.Client.WebExperience | Remove-AppxPackage # Widget app
 Get-AppxPackage -alluser Microsoft.549981C3F5F10 | Remove-AppxPackage # Cortana appGet-AppxPackage -alluser Microsoft.549981C3F5F10 | Remove-AppxPackage # Cortana app
 winget uninstall onedrive
 winget install -e --id Google.Chrome
