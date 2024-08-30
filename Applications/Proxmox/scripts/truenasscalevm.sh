@@ -79,7 +79,7 @@ fi
 
 # Constant variables for actions
 NAME="truenas-scale"
-CPU="host"
+CPU="x86-64-v3"
 DISK_SIZE=32
 RAM=$(($RAM_COUNT * 1024))
 IMG_LOCATION="/var/lib/vz/template/iso/"
