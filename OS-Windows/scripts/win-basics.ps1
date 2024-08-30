@@ -34,7 +34,7 @@ powercfg /change disk-timeout-ac 0
 powercfg /change disk-timeout-dc 0
 
 # Install / Uninstall apps
-winget install "App Installer" -s msstore --force
+Add-AppxPackage -RegisterByFamilyName -MainPackage Microsoft.DesktopAppInstaller_8wekyb3d8bbwe
 
 Get-AppxPackage -alluser Microsoft.BingNews | Remove-AppxPackage
 Get-AppxPackage -alluser Microsoft.WindowsMaps | Remove-AppxPackage
