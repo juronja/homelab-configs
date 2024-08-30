@@ -17,6 +17,10 @@ Set-itemproperty "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender" -Name "Dis
 # Dynamic Lightning - turn uff because it is screwing with the Logitech G hub settings
 Set-itemproperty "HKLM:\SOFTWARE\Microsoft\Lighting" -Name "AmbientLightingEnabled" -Value "0" -Type DWord #-Force
 
+# StorageSense - set to run every day.
+Set-itemproperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy" -Name "2048" -Value "1" -Type DWord #-Force
+
+
 # Renames the computer
 Rename-Computer -NewName "PC-Pernica"
 
