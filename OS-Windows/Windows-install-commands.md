@@ -54,6 +54,19 @@ winget install -e --id WireGuard.WireGuard
 #winget install -e --id OpenJS.NodeJS.LTS
 ```
 
+## Set Static IP
+
+```shell
+Get-NetIPConfiguration
+
+New-NetIPAddress -InterfaceIndex 6 -IPAddress 192.168.84.15 -PrefixLength 24 -DefaultGateway 10.1.4.1
+
+Set-DnsClientServerAddress -InterfaceIndex 6 -ServerAddresses 192.168.84.27
+
+```
+
+
+
 ## Map network drives
 ```shell
 New-PSDrive -Name "M" -Root "\\nas.lan\media" -Persist -PSProvider "FileSystem" -Credential juronja
