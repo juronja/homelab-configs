@@ -35,10 +35,6 @@ wsl --install -d Ubuntu
 
 ## Install Apps
 ```shell
-winget install -e --id Google.Chrome
-winget install -e --id Adobe.Acrobat.Reader.64-bit
-winget install -e --id Microsoft.PowerToys --source winget
-winget install -e --id Google.Drive
 winget install -e --id Microsoft.VisualStudioCode
 winget install -e --id Plex.Plex
 winget install -e --id Plex.Plexamp
