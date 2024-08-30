@@ -85,7 +85,6 @@ winget install -e --id WireGuard.WireGuard
 
 ## Uninstall apps
 
-
 ```shell
 Get-AppxPackage -alluser Microsoft.BingNews | Remove-AppxPackage
 Get-AppxPackage -alluser Microsoft.WindowsMaps | Remove-AppxPackage
@@ -101,9 +100,11 @@ Get-AppxPackage -alluser Microsoft.WindowsFeedbackHub | Remove-AppxPackage
 Get-AppxPackage -alluser Microsoft.WindowsSoundRecorder | Remove-AppxPackage
 Get-AppxPackage -alluser Microsoft.GetHelp | Remove-AppxPackage
 Get-AppxPackage -alluser Microsoft.Getstarted | Remove-AppxPackage
-Get-AppxPackage -alluser Microsoft.GetHelp | Remove-AppxPackage
-Get-AppxPackage -alluser Microsoft.GetHelp | Remove-AppxPackage
-Get-AppxPackage -alluser Microsoft.GetHelp | Remove-AppxPackage
+Get-AppxPackage -alluser Clipchamp.Clipchamp | Remove-AppxPackage
+Get-AppxPackage -alluser MicrosoftCorporationII.QuickAssist | Remove-AppxPackage
+Get-AppxPackage -alluser microsoft.windowscommunicationsapps | Remove-AppxPackage # Mail app
+Get-AppxPackage -alluser Microsoft.549981C3F5F10 | Remove-AppxPackage # Cortana appGet-AppxPackage -alluser Microsoft.549981C3F5F10 | Remove-AppxPackage # Cortana app
+winget uninstall onedrive
 
 ```
 
