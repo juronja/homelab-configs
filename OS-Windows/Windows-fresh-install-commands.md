@@ -86,6 +86,26 @@ winget install -e --id WireGuard.WireGuard
 ## Uninstall apps
 
 
+```shell
+Get-AppxPackage -alluser Microsoft.BingNews | Remove-AppxPackage
+Get-AppxPackage -alluser Microsoft.WindowsMaps | Remove-AppxPackage
+Get-AppxPackage -alluser Microsoft.MicrosoftStickyNotes | Remove-AppxPackage
+Get-AppxPackage -alluser Microsoft.Todos | Remove-AppxPackage
+Get-AppxPackage -alluser Microsoft.YourPhone | Remove-AppxPackage
+Get-AppxPackage -alluser Microsoft.People | Remove-AppxPackage
+Get-AppxPackage -alluser Microsoft.OutlookForWindows | Remove-AppxPackage
+Get-AppxPackage -alluser Microsoft.ZuneMusic | Remove-AppxPackage
+Get-AppxPackage -alluser Microsoft.ZuneVideo | Remove-AppxPackage
+Get-AppxPackage -alluser Microsoft.MicrosoftOfficeHub | Remove-AppxPackage
+Get-AppxPackage -alluser Microsoft.WindowsFeedbackHub | Remove-AppxPackage
+Get-AppxPackage -alluser Microsoft.WindowsSoundRecorder | Remove-AppxPackage
+Get-AppxPackage -alluser Microsoft.GetHelp | Remove-AppxPackage
+Get-AppxPackage -alluser Microsoft.Getstarted | Remove-AppxPackage
+Get-AppxPackage -alluser Microsoft.GetHelp | Remove-AppxPackage
+Get-AppxPackage -alluser Microsoft.GetHelp | Remove-AppxPackage
+Get-AppxPackage -alluser Microsoft.GetHelp | Remove-AppxPackage
+
+```
 
 ### Backup command for UAC
 
