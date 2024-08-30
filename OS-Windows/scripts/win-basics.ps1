@@ -19,9 +19,8 @@ Set-itemproperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advan
 Set-itemproperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy" -Name "2048" -Value "1" -Type DWord #-Force
 # Defender exclusion list
 Add-MpPreference -ExclusionPath "C:\Music_production","C:\Users\Jure\Downloads","C:\Windows","D:\","E:\","F:\","H:\","I:\","M:\","X:\"
-# Disable Defender
+# Defender - disable
 #Set-itemproperty "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender" -Name "DisableAntiSpyware" -Value "1" -Type DWord -Force
-
 
 # Power settings
 powercfg /setactive SCHEME_MIN # (Min power saving)
