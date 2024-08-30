@@ -73,7 +73,7 @@ else
     exit-script
 fi
 
-if DISK_SIZE=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nSet disk size in GB" 8 58 "128    " --title "DISK SIZE" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
+if DISK_SIZE=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nSet disk size in GB" 8 58 "128" --title "DISK SIZE" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
     if [ -z $DISK_SIZE ]; then
         DISK_SIZE="128"
         echo -e "Disk size: $DISK_SIZE GB"
