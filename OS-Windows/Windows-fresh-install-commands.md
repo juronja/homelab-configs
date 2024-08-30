@@ -1,6 +1,6 @@
 # First steps after installing Windows
 
-Use Windows Terminal with Admin privileges.
+Use Windows Terminal with Admin privileges!
 
 ## Desktop PC tweaks
 
@@ -58,7 +58,7 @@ Add-MpPreference -ExclusionPath "C:\Music_production","C:\Users\Jure\Downloads",
 
 ```
 
-# Install Apps
+## Install Apps
 ```shell
 
 winget install -e --id Google.Chrome
@@ -83,6 +83,10 @@ winget install -e --id WireGuard.WireGuard
 #winget install -e --id OpenJS.NodeJS.LTS
 ```
 
+## Uninstall apps
+
+
+
 ### Backup command for UAC
 
 ```shell
@@ -100,3 +104,5 @@ New-PSDrive -Name "X" -Root "\\nas.lan\cubbit" -Persist -PSProvider "FileSystem"
 
 ## TO DO Windows setup ##
 - [ ] disable sounds
+- [ ] uninstall programs
+
