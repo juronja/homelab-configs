@@ -1,0 +1,70 @@
+# First steps after installing Windows
+
+- Use Windows Terminal with Admin privileges!
+- To disable windows defender you have to manually toggle the Tamper Protection OFF.
+
+## Basics
+
+```shell
+Invoke-RestMethod -Uri $gistUrl | Invoke-Expression
+
+```
+
+### Backup command for UAC
+
+```shell
+reg ADD HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v EnableLUA /t REG_DWORD /d 0 /f
+```
+
+## Optional Preferences
+
+```shell
+# Dynamic Lightning - turn uff because it is screwing with the Logitech G hub settings
+Set-itemproperty "HKLM:\SOFTWARE\Microsoft\Lighting" -Name "AmbientLightingEnabled" -Value "0" -Type DWord #-Force
+# Disable Print screen key to open screen capture
+Set-itemproperty "HKCU:\Control Panel\Keyboard" -Name "PrintScreenKeyForSnippingEnabled" -Value "0" -Type DWord
+
+# Renames the computer
+Rename-Computer -NewName "PC-Pernica"
+
+# Enable VMP and Install Windows Subsystem for Linux
+Enable-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform -all
+wsl --update
+wsl --install -d Ubuntu
+```
+
+## Install Apps
+```shell
+winget install -e --id Google.Chrome
+winget install -e --id Adobe.Acrobat.Reader.64-bit
+winget install -e --id Microsoft.PowerToys --source winget
+winget install -e --id Google.Drive
+winget install -e --id Microsoft.VisualStudioCode
+winget install -e --id Plex.Plex
+winget install -e --id Plex.Plexamp
+winget install -e --id Telegram.TelegramDesktop
+winget install -e --id WhatsApp.WhatsApp
+winget install -e --id Discord.Discord
+winget install -e --id Logitech.GHUB
+winget install -e --id Nvidia.GeForceExperience
+winget install -e --id Valve.Steam
+winget install -e --id Docker.DockerDesktop
+winget install -e --id Logitech.OptionsPlus
+winget install -e --id Amazon.AWSCLI
+winget install -e --id WireGuard.WireGuard
+
+# For NPM if needed after install run the node.JS command prompt to initialize
+#winget install -e --id OpenJS.NodeJS.LTS
+```
+
+## Map network drives
+```shell
+New-PSDrive -Name "M" -Root "\\nas.lan\media" -Persist -PSProvider "FileSystem" -Credential juronja
+
+New-PSDrive -Name "X" -Root "\\nas.lan\cubbit" -Persist -PSProvider "FileSystem" -Credential juronja
+
+```
+
+## TO DO Windows setup ##
+- [ ] disable sounds
+
