@@ -20,13 +20,13 @@ reg ADD HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v Enable
 ## Optional Preferences
 
 ```shell
+# Renames the computer
+Rename-Computer -NewName "PC-Pernica"
+
 # Dynamic Lightning - turn uff because it is screwing with the Logitech G hub settings
 Set-itemproperty "HKLM:\SOFTWARE\Microsoft\Lighting" -Name "AmbientLightingEnabled" -Value "0" -Type DWord #-Force
 # Disable Print screen key to open screen capture
 Set-itemproperty "HKCU:\Control Panel\Keyboard" -Name "PrintScreenKeyForSnippingEnabled" -Value "0" -Type DWord
-
-# Renames the computer
-Rename-Computer -NewName "PC-Pernica"
 
 # Enable VMP and Install Windows Subsystem for Linux
 Enable-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform -all
@@ -54,7 +54,9 @@ winget install -e --id WireGuard.WireGuard
 #winget install -e --id OpenJS.NodeJS.LTS
 ```
 
-## Set Static IP
+## Networking
+
+### Static IP
 
 ```shell
 Get-NetIPConfiguration
@@ -69,7 +71,16 @@ Set-DnsClientServerAddress -InterfaceIndex 6 -ServerAddresses 192.168.84.27
 
 ```
 
+### Disable IPv6
 
+```shell
+Get-NetAdapterBinding -ComponentID ms_tcpip6
+```
+
+```shell
+Disable-NetAdapterBinding -Name "Ethernet" -ComponentID ms_tcpip6 
+
+```
 
 ## Map network drives
 ```shell
