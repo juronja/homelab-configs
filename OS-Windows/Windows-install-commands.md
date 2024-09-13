@@ -84,9 +84,9 @@ Disable-NetAdapterBinding -Name "Ethernet" -ComponentID ms_tcpip6
 
 ## Map network drives
 ```shell
-New-PSDrive -Name "M" -Root "\\nas.lan\media" -Persist -PSProvider "FileSystem" -Credential juronja
+New-PSDrive -Name "M" -Root "\\nas.lan\media" -Persist -Scope Global -PSProvider "FileSystem"
 
-New-PSDrive -Name "X" -Root "\\nas.lan\cubbit" -Persist -PSProvider "FileSystem" -Credential juronja
+New-PSDrive -Name "X" -Root "\\nas.lan\cubbit" -Persist -Scope Global -PSProvider "FileSystem" -Credential juronja
 
 ```
 
