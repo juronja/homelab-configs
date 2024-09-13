@@ -83,3 +83,6 @@
     - Sonarr:
         icon: sonarr.svg
         href: http://nas.lan:30027
+    - Lidarr:
+        icon: lidarr.svg
+        href: http://nas.lan:30014
