@@ -20,7 +20,7 @@ Docs:
 3. Go to **Credentials** and add a **0Auth client ID** credential
     - select web application type
     - add name
-    - add redirect URIs (taken from [Audiobookshelf docs](https://www.audiobookshelf.org/guides/oidc_authentication/#configuring-your-oidc-provider)) and save to generate `ClientID` and `Secret`
+    - add Authorized redirect URIs (taken from [Audiobookshelf docs](https://www.audiobookshelf.org/guides/oidc_authentication/#configuring-your-oidc-provider)) and save to generate `ClientID` and `Secret`
 
 ```markdown
 https://abs.yoursite.com/auth/openid/callback
