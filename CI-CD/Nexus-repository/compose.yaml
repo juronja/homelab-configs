@@ -9,9 +9,9 @@ services:
 #      interval: 10s
 #      start_period: 5s
     volumes:
-      - "nexus:/nexus-data" #Volume mapping for persistency
+      - "data:/nexus-data" #Volume mapping for persistency
     ports:
       - "8081:8081"
       - "8082:8082" # Port for Docker repo
 volumes:
-  nexus: # It will prepend the project name
+  data: # It will prepend the project name
