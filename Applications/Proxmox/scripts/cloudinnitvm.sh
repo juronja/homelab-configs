@@ -5,6 +5,10 @@
 # Author: juronja
 # License: MIT
 
+# Constant variables for dialogs
+NEXTID=$(pvesh get /cluster/nextid)
+NODE=$(hostname)
+
 # Functions
 function check_root() {
   if [[ "$(id -u)" != 0 || $(ps -o comm= -p $PPID) == "sudo" ]]; then
@@ -78,15 +82,16 @@ else
 fi
 
 # Constant variables
+NAME="ubuntu-cloud-template"
 VMID=501
 RAM=$(($RAM_COUNT * 1024))
 IMG_LOCATION="/var/lib/vz/template/iso/"
 
-# Dowload the Ubuntu cloud innit image
+# Download the Ubuntu cloud innit image
 wget -nc --directory-prefix=$IMG_LOCATION https://cloud-images.ubuntu.com/$UBUNTU_RLS/current/$UBUNTU_RLS-server-cloudimg-amd64.img
 
 # Create a VM
-qm create $VMID --ostype l26 --cores $CORE_COUNT --cpu x86-64-v2-AES --memory $RAM --balloon 1 --name ubuntu-cloud-template --scsihw virtio-scsi-pci --net0 virtio,bridge=vmbr0,firewall=1 --serial0 socket --vga serial0 --ipconfig0 ip=dhcp,ip6=dhcp --agent enabled=1 --onboot 1
+qm create $VMID --ostype l26 --cores $CORE_COUNT --cpu x86-64-v2-AES --memory $RAM --balloon 1 --name $NAME --scsihw virtio-scsi-single --net0 virtio,bridge=vmbr0,firewall=1 --serial0 socket --vga serial0 --ipconfig0 ip=dhcp,ip6=dhcp --agent enabled=1 --onboot 1
 
 # Import cloud image disk
 qm disk import $VMID $IMG_LOCATION$UBUNTU_RLS-server-cloudimg-amd64.img local-lvm --format qcow2

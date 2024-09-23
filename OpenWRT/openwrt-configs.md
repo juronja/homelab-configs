@@ -68,11 +68,16 @@ uci set wireless.default_radio1=wifi-iface
 uci set wireless.default_radio1.device='radio1'
 uci set wireless.default_radio1.network='lan'
 uci set wireless.default_radio1.mode='ap'
-uci set wireless.default_radio1.key='PASSWORD' # Enter password here
+uci set wireless.default_radio1.key='PASSWORD' # Enter password
 uci set wireless.default_radio1.encryption='sae-mixed'
 uci set wireless.default_radio1.ssid='rw' # Enter SSID
-#uci set wireless.default_radio1.ieee80211k='1' # For band-steering
-#uci set wireless.default_radio1.bss_transition='1' # For band-steering
+# Fast Transition
+uci set wireless.default_radio1.ieee80211r='1'
+uci set wireless.default_radio1.mobility_domain='4f57'
+uci set wireless.default_radio1.ft_over_ds='0'
+# Band-steering
+#uci set wireless.default_radio1.ieee80211k='1' 
+#uci set wireless.default_radio1.bss_transition='1'
 uci commit
 wifi up #Turns Wifi ON
 ```
@@ -93,11 +98,16 @@ uci set wireless.default_radio0=wifi-iface
 uci set wireless.default_radio0.device='radio0'
 uci set wireless.default_radio0.network='lan'
 uci set wireless.default_radio0.mode='ap'
-uci set wireless.default_radio0.key='PASSWORD' # Enter password here
+uci set wireless.default_radio1.key='PASSWORD' # Enter password
 uci set wireless.default_radio0.encryption='sae-mixed'
 uci set wireless.default_radio0.ssid='rw' # Enter SSID
-#uci set wireless.default_radio0.ieee80211k='1' # For band-steering
-#uci set wireless.default_radio0.bss_transition='1' # For band-steering
+# Fast Transition
+uci set wireless.default_radio0.ieee80211r='1'
+uci set wireless.default_radio0.mobility_domain='4f57'
+uci set wireless.default_radio0.ft_over_ds='0'
+# Band-steering
+#uci set wireless.default_radio0.ieee80211k='1'
+#uci set wireless.default_radio0.bss_transition='1'
 uci commit
 wifi up #Turns Wifi ON
 ```
