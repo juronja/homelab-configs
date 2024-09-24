@@ -102,7 +102,7 @@ IMG_LOCATION="/var/lib/vz/template/iso/"
 wget -nc --directory-prefix=$IMG_LOCATION https://cloud-images.ubuntu.com/$UBUNTU_RLS/current/$UBUNTU_RLS-server-cloudimg-amd64.img
 
 # Create a VM
-qm create $NEXTID --ostype l26 --cores $CORE_COUNT --cpu x86-64-v2-AES --memory $RAM --balloon 1 --name $VM_NAME --machine q35 --scsihw virtio-scsi-single --net0 virtio,bridge=vmbr0,firewall=1 --serial0 socket --vga serial0 --ipconfig0 ip=dhcp,ip6=dhcp --agent enabled=1 --onboot 1
+qm create $NEXTID --ostype l26 --cores $CORE_COUNT --cpu x86-64-v2-AES --memory $RAM --balloon 1 --name $VM_NAME --scsihw virtio-scsi-single --net0 virtio,bridge=vmbr0,firewall=1 --serial0 socket --vga serial0 --ipconfig0 ip=dhcp,ip6=dhcp --agent enabled=1 --onboot 1
 
 # Import cloud image disk
 qm disk import $NEXTID $IMG_LOCATION$UBUNTU_RLS-server-cloudimg-amd64.img local-lvm --format qcow2
