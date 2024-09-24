@@ -51,9 +51,22 @@ else
     exit-script
 fi
 
-if CORE_COUNT=$(whiptail --backtitle "Install - Ubuntu VM" --title "CORE COUNT" --radiolist "\nAllocate number of CPU Cores\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 2 \
+if VM_NAME=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nSet the name of the VM" 8 58 "homelab" --title "VM NAME" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
+    if [ -z $VM_NAME ]; then
+        VM_NAME="homelab"
+        echo -e "Name: $VM_NAME"
+    else
+        echo -e "Name: $VM_NAME"
+    fi
+else
+    exit-script
+fi
+
+
+if CORE_COUNT=$(whiptail --backtitle "Install - Ubuntu VM" --title "CORE COUNT" --radiolist "\nAllocate number of CPU Cores\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 3 \
     "2" "cores" ON \
     "4" "cores" OFF \
+    "8" "cores" OFF \
     3>&1 1>&2 2>&3); then
         echo -e "Allocated Cores: $CORE_COUNT"
 else
@@ -82,8 +95,6 @@ else
 fi
 
 # Constant variables
-NAME="ubuntu-cloud-template"
-VMID=501
 RAM=$(($RAM_COUNT * 1024))
 IMG_LOCATION="/var/lib/vz/template/iso/"
 
@@ -91,13 +102,17 @@ IMG_LOCATION="/var/lib/vz/template/iso/"
 wget -nc --directory-prefix=$IMG_LOCATION https://cloud-images.ubuntu.com/$UBUNTU_RLS/current/$UBUNTU_RLS-server-cloudimg-amd64.img
 
 # Create a VM
-qm create $VMID --ostype l26 --cores $CORE_COUNT --cpu x86-64-v2-AES --memory $RAM --balloon 1 --name $NAME --scsihw virtio-scsi-single --net0 virtio,bridge=vmbr0,firewall=1 --serial0 socket --vga serial0 --ipconfig0 ip=dhcp,ip6=dhcp --agent enabled=1 --onboot 1
+qm create $NEXTID --ostype l26 --cores $CORE_COUNT --cpu x86-64-v2-AES --memory $RAM --balloon 1 --name $VM_NAME --scsihw virtio-scsi-single --net0 virtio,bridge=vmbr0,firewall=1 --serial0 socket --vga serial0 --ipconfig0 ip=dhcp,ip6=dhcp --agent enabled=1 --onboot 1
 
 # Import cloud image disk
-qm disk import $VMID $IMG_LOCATION$UBUNTU_RLS-server-cloudimg-amd64.img local-lvm --format qcow2
+qm disk import $NEXTID $IMG_LOCATION$UBUNTU_RLS-server-cloudimg-amd64.img local-lvm --format qcow2
 
 # Map cloud image disk
-qm set $VMID --scsi0 local-lvm:vm-$VMID-disk-0,discard=on,ssd=1 --ide2 local-lvm:cloudinit
+qm set $NEXTID --scsi0 local-lvm:vm-$NEXTID-disk-0,discard=on,ssd=1 --ide2 local-lvm:cloudinit
 
-# Resize the disk to 32 GB.
-qm disk resize $VMID scsi0 "${DISK_SIZE}G" && qm set $VMID --boot order=scsi0
+# Resize the disk
+qm disk resize $NEXTID scsi0 "${DISK_SIZE}G" && qm set $NEXTID --boot order=scsi0
+
+# Network config
+
+
