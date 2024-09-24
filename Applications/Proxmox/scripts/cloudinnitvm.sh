@@ -51,7 +51,7 @@ else
     exit-script
 fi
 
-if VM_NAME=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nSet the name of the VM" 8 58 "homelab" --title "VM NAME" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
+if VM_NAME=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nSet the name of the VM" 8 58 "homelab" --title "NAME" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
     if [ -z $VM_NAME ]; then
         VM_NAME="homelab"
         echo -e "Name: $VM_NAME"
@@ -95,6 +95,8 @@ else
 fi
 
 # Constant variables
+CIDR=192.168.84.41/24
+GW=192.168.84.1
 RAM=$(($RAM_COUNT * 1024))
 IMG_LOCATION="/var/lib/vz/template/iso/"
 
@@ -114,5 +116,5 @@ qm set $NEXTID --scsi0 local-lvm:vm-$NEXTID-disk-0,discard=on,ssd=1 --ide2 local
 qm disk resize $NEXTID scsi0 "${DISK_SIZE}G" && qm set $NEXTID --boot order=scsi0
 
 # Network config
-
+qm set $NEXTID --ipconfig0 ip=$CIDR,gw=$GW
 
