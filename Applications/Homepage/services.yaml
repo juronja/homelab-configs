@@ -25,7 +25,7 @@
         #description: pve1
     - Portainer:
         icon: portainer.svg
-        href: https://portainer.lan:9443
+        href: https://ubuntu.lan:9443
 
 - Networking:
     - Gateway Router:
