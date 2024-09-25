@@ -30,6 +30,7 @@ if [[ $installPlace != 1 ]]; then
   fi
 fi
 read -p "Do you want to install Docker? (y/n) " dockerYesNo
+read -p "Do you want to install Portainer? (y/n) " portainerYesNo
 
 
 # sudo ufw allow from 176.57.95.182
@@ -40,6 +41,8 @@ sudo apt update -y && sudo apt upgrade -y
 # Configure automatic updates
 sudo sed -i 's/\/\/Unattended-Upgrade::Automatic-Reboot-Time/Unattended-Upgrade::Automatic-Reboot-Time/' /etc/apt/apt.conf.d/50unattended-upgrades
 echo "Automatic upgrades configured successfully!"
+
+
 
 # Disable pings in firewall
 #sudo sed -i 's/-A ufw-before-input -p icmp --icmp-type echo-request -j ACCEPT/-A ufw-before-input -p icmp --icmp-type echo-request -j DROP/' /etc/ufw/before.rules
@@ -56,34 +59,61 @@ if [[ $utpYesNo == "y" ]]; then
 fi
 sudo ufw enable
 
-# Remove legacy Docker
-if [[ $dockerYesNo == "y" ]]; then
+# Proxmox install specifics
+if [[ $installPlace == 1 ]]; then
+  
+  # Create custom app folder for deployment
+  sudo mkdir -m 750 /home/$rootUser/apps && sudo chown -R $rootUser:$rootUser /home/$rootUser/apps
 
-for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove $pkg; done
+  # Set local timezone
+  sudo timedatectl set-timezone Europe/Ljubljana
+  echo "Local timezone set successfully!"
 
-# Add Docker's official GPG key:
-sudo apt-get update
-sudo apt-get install ca-certificates curl
-sudo install -m 0755 -d /etc/apt/keyrings
-sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
-sudo chmod a+r /etc/apt/keyrings/docker.asc
-
-# Add the repository to Apt sources:
-echo \
-  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
-  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
-  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-sudo apt-get update
+  # Install guest agent
+  sudo apt install qemu-guest-agent -y
+fi
 
 # Install Docker
-sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
-# Append user to docker group
-sudo usermod -aG docker $rootUser
-# Verify - run hello image and delete
-sudo docker run --rm hello-world && sudo docker rmi hello-world
-# Create the daemon.json for insecure (http) logins configs if needed
-cd /etc/docker/ && sudo touch daemon.json
+if [[ $dockerYesNo == "y" ]]; then
+
+  # Remove legacy Docker
+  for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove $pkg; done
+
+  # Add Docker's official GPG key:
+  sudo apt-get update
+  sudo apt-get install ca-certificates curl
+  sudo install -m 0755 -d /etc/apt/keyrings
+  sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+  sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+  # Add the repository to Apt sources:
+  echo \
+    "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+    $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+    sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+  sudo apt-get update
+
+  # Install Docker
+  sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
+  # Append user to docker group
+  sudo usermod -aG docker $rootUser
+  # Verify - run hello image and delete
+  sudo docker run --rm hello-world && sudo docker rmi hello-world
+  # Create the daemon.json for insecure (http) logins configs if needed
+  cd /etc/docker/ && sudo touch daemon.json
 fi
+
+
+# Install Portainer
+if [[ $dockerYesNo == "y" ]] && [[ $portainerYesNo == "y" ]];
+  # Pull the compose file
+  wget -nc --directory-prefix=/home/$rootUser/apps https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/Applications/Portainer/compose.yaml
+  # Run compose file
+  cd /home/$rootUser/apps
+  docker compose up -d
+fi
+
+
 
 # Add a maintenance user
 if [[ $userYesNo == "y" ]]; then
@@ -97,22 +127,6 @@ if [[ $userYesNo == "y" ]]; then
   # Create the Public Key Directory for SSH on your Linux Server.
   sudo mkdir -m 700 /home/$newUser/.ssh && sudo chown -R $newUser:$newUser /home/$newUser/.ssh && cd /home/$newUser/.ssh && nano authorized_keys
   echo "Maintenance user added successfully!"
-fi
-
-# Proxmox install specifics
-if [[ $installPlace == 1 ]]; then
-  
-  # Create custom app folder for deployment
-  sudo mkdir -m 750 /home/$rootUser/apps && sudo chown -R $rootUser:$rootUser /home/$rootUser/apps
-
-  #sudo mkdir apps/{portainer,homepage}_data # Create custom app directory tree
-
-  # Set local timezone
-  sudo timedatectl set-timezone Europe/Ljubljana
-  echo "Local timezone set successfully!"
-
-  # Install guest agent
-  sudo apt install qemu-guest-agent -y
 fi
 
 printf "\n## Script finished! Rebooting system .. ##\n\n"
