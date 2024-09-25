@@ -56,7 +56,7 @@
         href: http://frigate.lan:5000
         ping: 192.168.84.13
     - Nexus:
-        icon: https://raw.githubusercontent.com/juronja/homelab-configs/9e321c0afbf0de24abf35a19050c719f71703edc/Applications/Homepage/icons/sonatype-nexus.png
+        icon: https://raw.githubusercontent.com/juronja/homelab-configs/main/Applications/Homepage/icons/sonatype-nexus.png
         href: http://ubuntu.lan:8081
         ping: 192.168.84.16
     - Jenkins:
