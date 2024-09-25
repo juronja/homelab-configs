@@ -7,7 +7,7 @@
         icon: proxmox.svg
         href: https://pve-old.lan:8006
         ping: 192.168.84.20
-        description: pve-old
+        #description: pve-old
         #widget:
         #  type: proxmox
         #  url: https://pve.lan:8006
@@ -17,7 +17,7 @@
         icon: proxmox.svg
         href: https://pve-new.lan:8006
         ping: 192.168.84.10
-        description: pve-new
+        #description: pve-new
     - Truenas Scale:
         icon: truenas.svg
         href: http://nas.lan
@@ -26,12 +26,13 @@
     - Portainer:
         icon: portainer.svg
         href: https://ubuntu.lan:9443
+        ping: 192.168.84.16
 
 - Networking:
     - Gateway Router:
         icon: openwrt.svg
         href: http://router.lan
-        description: OpenWRT OS
+        #description: OpenWRT OS
     - Nginx Proxy Manager:
         icon: nginx-proxy-manager.svg
         href: http://proxy.lan:81/login
@@ -54,6 +55,10 @@
         icon: frigate.svg
         href: http://frigate.lan:5000
         ping: 192.168.84.13
+    - Nexus:
+        icon: sonatype-nexus.png
+        href: http://ubuntu.lan:8081
+        ping: 192.168.84.16
     - Jenkins:
         icon: jenkins.svg
         href: https://jenkins.repina.eu
