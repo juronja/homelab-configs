@@ -42,8 +42,8 @@ sudo sed -i 's/\/\/Unattended-Upgrade::Automatic-Reboot-Time/Unattended-Upgrade:
 echo "Automatic upgrades configured successfully!"
 
 # Disable pings in firewall
-sudo sed -i 's/-A ufw-before-input -p icmp --icmp-type echo-request -j ACCEPT/-A ufw-before-input -p icmp --icmp-type echo-request -j DROP/' /etc/ufw/before.rules
-echo "Disable pings in firewall configured successfully!"
+#sudo sed -i 's/-A ufw-before-input -p icmp --icmp-type echo-request -j ACCEPT/-A ufw-before-input -p icmp --icmp-type echo-request -j DROP/' /etc/ufw/before.rules
+#echo "Disable pings in firewall configured successfully!"
 
 # Configure firewall
 sudo ufw default allow outgoing && sudo ufw default deny incoming && sudo ufw allow 22
