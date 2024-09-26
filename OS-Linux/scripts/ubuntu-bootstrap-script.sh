@@ -8,7 +8,7 @@
 rootUser="$(whoami)"
 
 # User input variables
-whiptail --backtitle "CUSTOMIZE UBUNTU" --defaultno --title "PROCEED?" --yesno "This will run a custom script to customize Ubuntu!" 10 58 || exit
+whiptail --backtitle "CUSTOMIZE UBUNTU SCRIPT" --defaultno --title "PROCEED?" --yesno "This will run a custom script to customize Ubuntu!" 10 58 || exit
 
 read -p "Did you install the VM on Proxmox (1) or Digital Ocean (2)? " installPlace
 
