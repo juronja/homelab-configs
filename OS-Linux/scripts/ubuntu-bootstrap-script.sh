@@ -7,10 +7,27 @@
 # Constant variables
 rootUser="$(whoami)"
 
-# User input variables
-whiptail --backtitle "CUSTOMIZE UBUNTU SCRIPT" --defaultno --title "PROCEED?" --yesno "This will run a custom script to customize Ubuntu!" 10 58 || exit
+# Functions
+function exit-script() {
+  clear
+  echo -e "⚠  User exited script \n"
+  exit
+}
 
-read -p "Did you install the VM on Proxmox (1) or Digital Ocean (2)? " installPlace
+echo "Starting VM script .."
+
+# Whiptail inputs
+whiptail --backtitle "Customize - Ubuntu VM" --defaultno --title "PROCEED?" --yesno "This will run a custom script to customize Ubuntu!" 10 58 || exit
+
+if installPlace=$(whiptail --backtitle "Customize - Ubuntu VM" --title "INSTALL PLACE" --radiolist "\nWhere did you install Ubuntu?\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 2 \
+    "1" "Proxmox" ON \
+    "2" "Digital Ocean" OFF \
+    3>&1 1>&2 2>&3); then
+        echo -e "Install place: $installPlace"
+else
+    exit-script
+fi
+
 
 read -p "Do you want to add UFW TCP rules? (y/n) " tcpYesNo
 if [[ $tcpYesNo == "y" ]]; then
