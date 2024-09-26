@@ -28,26 +28,35 @@ else
     exit-script
 fi
 
-if whiptail --backtitle "Customize - Ubuntu VM" --defaultno --title "UFW TCP RULES" --yesno "Do you want to add UFW TCP rules?" 10 62; then
+if whiptail --backtitle "Customize - Ubuntu VM" --title "UFW TCP RULES" --yesno "Do you want to add UFW TCP rules?" 10 62; then
+  tcp="y"
   read -p "Write comma seperated ports to open on TCP: " tcpPorts
 else
   echo "continue .."
 fi
 
 
-read -p "Do you want to add UFW TCP rules? (y/n) " tcpYesNo
-if [[ $tcpYesNo == "y" ]]; then
-  read -p "Write comma seperated ports to open on TCP: " tcpPorts
+#read -p "Do you want to add UFW TCP rules? (y/n) " tcpYesNo
+#if [[ $tcpYesNo == "y" ]]; then
+#  read -p "Write comma seperated ports to open on TCP: " tcpPorts
+#fi
+
+if whiptail --backtitle "Customize - Ubuntu VM" --defaultno --title "UFW UTP RULES" --yesno "Do you want to add UFW UTP rules?" 10 62; then
+  utp="y"
+  read -p "Write comma seperated ports to open on UTP: " utpPorts
+else
+  echo "continue .."
 fi
 
-read -p "Do you want to add UFW UTP rules? (y/n) " utpYesNo
-if [[ $utpYesNo == "y" ]]; then
-  read -p "Write comma seperated ports to open on UTP: " utpPorts
-fi
+
+#read -p "Do you want to add UFW UTP rules? (y/n) " utp
+#if [[ $utp == "y" ]]; then
+#  read -p "Write comma seperated ports to open on UTP: " utpPorts
+#fi
 
 if [[ $installPlace != 1 ]]; then
-  read -p "Do you want to add a maintenance user? (y/n) " userYesNo # skip this for proxmox
-  if [[ $userYesNo == "y" ]]; then
+  read -p "Do you want to add a maintenance user? (y/n) " user # skip this for proxmox
+  if [[ $user == "y" ]]; then
     read -p "Write the user name: " newUser
     adduser $newUser
   fi
@@ -78,10 +87,10 @@ echo "Automatic upgrades configured successfully!"
 # Configure firewall
 sudo ufw default allow outgoing && sudo ufw default deny incoming && sudo ufw allow 22
 
-if [[ $tcpYesNo == "y" ]]; then
+if [[ $tcp == "y" ]]; then
   sudo ufw allow $tcpPorts/tcp
 fi
-if [[ $utpYesNo == "y" ]]; then
+if [[ $utp == "y" ]]; then
   sudo ufw allow $utpPorts/udp
 fi
 sudo ufw --force enable
@@ -141,7 +150,7 @@ if [[ $dockerYesNo == "y" ]] && [[ $portainerYesNo == "y" ]]; then
 fi
 
 # Add a maintenance user
-if [[ $userYesNo == "y" ]]; then
+if [[ $user == "y" ]]; then
 
   # Add user to sudo group
   sudo usermod -aG sudo $newUser
