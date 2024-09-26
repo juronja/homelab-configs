@@ -28,6 +28,9 @@ else
     exit-script
 fi
 
+if tcpYesNo=$(whiptail --backtitle "Install - Ubuntu VM" --defaultno --title "SSH DETECTED" --yesno "It's suggested to use the Proxmox shell instead of SSH, since SSH can create issues while gathering variables. Would you like to proceed with using SSH?" 10 62 3>&1 1>&2 2>&3); then
+   echo -e "Result: $tcpYesNo"
+
 
 read -p "Do you want to add UFW TCP rules? (y/n) " tcpYesNo
 if [[ $tcpYesNo == "y" ]]; then
