@@ -105,7 +105,7 @@ fi
 
 
 # Install Portainer
-if [[ $dockerYesNo == "y" ]] && [[ $portainerYesNo == "y" ]];
+if [[ $dockerYesNo == "y" ]] && [[ $portainerYesNo == "y" ]]; then
   # Pull the compose file
   wget -nc --directory-prefix=/home/$rootUser/apps https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/Applications/Portainer/compose.yaml
   # Run compose file
