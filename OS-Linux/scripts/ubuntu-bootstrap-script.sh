@@ -55,17 +55,17 @@ fi
 #  read -p "Write comma seperated ports to open on UTP: " utpPorts
 #fi
 
-if [[ $installPlace != 1 ]]; then # skips this for proxmox
+if [[ $installPlace != 1 ]]; then # skips this if installed on proxmox
   if whiptail --backtitle "Customize - Ubuntu VM" --title "MAINTENANCE USER" --yesno "Do you want to add a maintenance user?" 10 62; then
-  if newUser=$(whiptail --backtitle "Customize - Ubuntu VM" --inputbox "\nWrite the user name:" 10 58 "" --title "ADD USER" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
-    user=1
-    adduser $newUser
-    echo "Added a new user: $newUser"
+    if newUser=$(whiptail --backtitle "Customize - Ubuntu VM" --inputbox "\nWrite the user name:" 10 58 "" --title "ADD USER" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
+      user=1
+      adduser $newUser
+      else
+      echo "Maintenance user skipped .."
+    fi
     else
     echo "Maintenance user skipped .."
   fi
-  else
-  echo "Maintenance user skipped .."
 fi
 
 read -p "Do you want to install Docker? (y/n) " dockerYesNo
