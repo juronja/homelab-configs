@@ -20,34 +20,35 @@ echo "Starting script .."
 whiptail --backtitle "Customize - Ubuntu VM" --title "NOTE" --msgbox "This will run a custom script to customize Ubuntu!" 10 58 || exit
 
 if installPlace=$(whiptail --backtitle "Customize - Ubuntu VM" --title "INSTALL PLACE" --radiolist "\nWhere did you install Ubuntu?\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 2 \
-    "1" "Proxmox" ON \
-    "2" "Digital Ocean" OFF \
-    3>&1 1>&2 2>&3); then
-        echo -e "Install place: $installPlace"
-else
+  "1" "Proxmox" ON \
+  "2" "Digital Ocean" OFF \
+  3>&1 1>&2 2>&3); then
+    echo -e "Install place: $installPlace"
+  else
     exit-script
 fi
 
-if whiptail --backtitle "Customize - Ubuntu VM" --title "UFW TCP RULES" --yesno "Do you want to add UFW TCP rules?" 10 62; then
-  tcp="y"
-  read -p "Write comma seperated ports to open on TCP: " tcpPorts
-else
-  echo "continue .."
+if whiptail --backtitle "Customize - Ubuntu VM" --title "UFW RULES" --yesno "Do you want to add UFW rules?" 10 62; then
+  if tcpPorts=$(whiptail --backtitle "Customize - Ubuntu VM" --inputbox "\nWrite comma seperated ports to open on TCP" 8 58 "7474,8082,..." --title "TCP PORTS" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
+    tcp=1
+    echo "Opened TCP Ports: $tcpPorts"
+    else
+    echo "TCP ports skipped .."
+  fi
+  if utpPorts=$(whiptail --backtitle "Customize - Ubuntu VM" --inputbox "\nWrite comma seperated ports to open on UTP" 8 58 "7474,8082,..." --title "UTP PORTS" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
+    utp=1
+    echo "Opened TCP Ports: $utpPorts"
+    else
+    echo "UTP ports skipped .."
+  fi
+  else
+  echo "UFW Rules skipped .."
 fi
-
 
 #read -p "Do you want to add UFW TCP rules? (y/n) " tcpYesNo
 #if [[ $tcpYesNo == "y" ]]; then
 #  read -p "Write comma seperated ports to open on TCP: " tcpPorts
 #fi
-
-if whiptail --backtitle "Customize - Ubuntu VM" --defaultno --title "UFW UTP RULES" --yesno "Do you want to add UFW UTP rules?" 10 62; then
-  utp="y"
-  read -p "Write comma seperated ports to open on UTP: " utpPorts
-else
-  echo "continue .."
-fi
-
 
 #read -p "Do you want to add UFW UTP rules? (y/n) " utp
 #if [[ $utp == "y" ]]; then
@@ -87,10 +88,10 @@ echo "Automatic upgrades configured successfully!"
 # Configure firewall
 sudo ufw default allow outgoing && sudo ufw default deny incoming && sudo ufw allow 22
 
-if [[ $tcp == "y" ]]; then
+if [[ $tcp == 1 ]]; then
   sudo ufw allow $tcpPorts/tcp
 fi
-if [[ $utp == "y" ]]; then
+if [[ $utp == 1 ]]; then
   sudo ufw allow $utpPorts/udp
 fi
 sudo ufw --force enable
