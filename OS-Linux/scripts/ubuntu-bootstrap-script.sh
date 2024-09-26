@@ -28,6 +28,7 @@ if installPlace=$(whiptail --backtitle "Customize - Ubuntu VM" --title "INSTALL 
     exit-script
 fi
 
+# UFW RULES
 if whiptail --backtitle "Customize - Ubuntu VM" --title "UFW RULES" --yesno "Do you want to add UFW rules?" 10 62; then
   if tcpPorts=$(whiptail --backtitle "Customize - Ubuntu VM" --inputbox "\nWrite comma seperated ports to open on TCP" 10 58 "7474,8082,..." --title "TCP PORTS" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
     tcp=1
@@ -55,6 +56,7 @@ fi
 #  read -p "Write comma seperated ports to open on UTP: " utpPorts
 #fi
 
+# MAINTENANCE USER
 if [[ $installPlace != 1 ]]; then # skips this if installed on proxmox
   if whiptail --backtitle "Customize - Ubuntu VM" --title "MAINTENANCE USER" --yesno "Do you want to add a maintenance user?" 10 62; then
     if newUser=$(whiptail --backtitle "Customize - Ubuntu VM" --inputbox "\nWrite the user name:" 10 58 "" --title "ADD USER" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
@@ -68,6 +70,7 @@ if [[ $installPlace != 1 ]]; then # skips this if installed on proxmox
   fi
 fi
 
+# INSTALL DOCKER & PORTAINER
 if whiptail --backtitle "Customize - Ubuntu VM" --title "INSTALL DOCKER" --yesno "Do you want to install Docker?" 10 62; then
   docker=1
   if insecReg=$(whiptail --backtitle "Customize - Ubuntu VM" --inputbox "\nWrite comma seperated IP:PORT list to allow in Docker:" 10 58 "ubuntu.lan:8082" --title "ADD INSECURE REGISTRY RULES?" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
@@ -84,11 +87,6 @@ if whiptail --backtitle "Customize - Ubuntu VM" --title "INSTALL DOCKER" --yesno
   echo "Docker install skipped .."
 fi
 
-#  read -p "Write comma seperated IP:PORT list to allow in Docker: " insecReg
-#  read -p "Do you want to install Portainer? (y/n) " portainerYesNo
-
-# sudo ufw allow from 176.57.95.182
-
 # Update and install upgrades
 sudo apt update -y && sudo apt upgrade -y
 
@@ -103,6 +101,7 @@ echo "Automatic upgrades configured successfully!"
 # Configure firewall
 sudo sed -i 's/IPV6=yes/IPV6=no/' /etc/default/ufw
 sudo ufw default allow outgoing && sudo ufw default deny incoming && sudo ufw allow 22
+# sudo ufw allow from 176.57.95.182
 
 if [[ $tcp == 1 ]]; then
   sudo ufw allow $tcpPorts/tcp
