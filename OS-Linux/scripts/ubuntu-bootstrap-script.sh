@@ -31,9 +31,11 @@ if [[ $installPlace != 1 ]]; then
 fi
 read -p "Do you want to install Docker? (y/n) " dockerYesNo
 
-read -p "Do you want to add insecure registry rules? (y/n) " insRegYesNo
-if [[ $insRegYesNo == "y" ]]; then
+if [[ $dockerYesNo == "y" ]]; then
+  read -p "Do you want to add insecure registry rules? (y/n) " insRegYesNo
+  if [[ $insRegYesNo == "y" ]]; then
   read -p "Write comma seperated IP:PORT list to allow in Docker: " insecReg
+  fi
 fi
 
 read -p "Do you want to install Portainer? (y/n) " portainerYesNo
@@ -105,6 +107,7 @@ if [[ $dockerYesNo == "y" ]]; then
   # Create the daemon.json for insecure (http) logins configs if needed for Nexus
   cd /etc/docker/ && sudo touch daemon.json
   printf "{\n    \"insecure-registries\" : [ \"$insecReg\" ]\n}" | sudo tee /etc/docker/daemon.json > /dev/nullfi
+fi
 
 # Install Portainer
 if [[ $dockerYesNo == "y" ]] && [[ $portainerYesNo == "y" ]]; then
