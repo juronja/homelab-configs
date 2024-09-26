@@ -29,13 +29,13 @@ if installPlace=$(whiptail --backtitle "Customize - Ubuntu VM" --title "INSTALL 
 fi
 
 if whiptail --backtitle "Customize - Ubuntu VM" --title "UFW RULES" --yesno "Do you want to add UFW rules?" 10 62; then
-  if tcpPorts=$(whiptail --backtitle "Customize - Ubuntu VM" --inputbox "\nWrite comma seperated ports to open on TCP" 8 58 "7474,8082,..." --title "TCP PORTS" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
+  if tcpPorts=$(whiptail --backtitle "Customize - Ubuntu VM" --inputbox "\nWrite comma seperated ports to open on TCP" 10 58 "7474,8082,..." --title "TCP PORTS" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
     tcp=1
     echo "Opened TCP Ports: $tcpPorts"
     else
     echo "TCP ports skipped .."
   fi
-  if utpPorts=$(whiptail --backtitle "Customize - Ubuntu VM" --inputbox "\nWrite comma seperated ports to open on UTP" 8 58 "7474,8082,..." --title "UTP PORTS" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
+  if utpPorts=$(whiptail --backtitle "Customize - Ubuntu VM" --inputbox "\nWrite comma seperated ports to open on UTP" 10 58 "7474,8082,..." --title "UTP PORTS" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
     utp=1
     echo "Opened TCP Ports: $utpPorts"
     else
@@ -78,7 +78,7 @@ fi
 sudo apt update -y && sudo apt upgrade -y
 
 # Configure automatic updates
-sudo sed -i 's/\/\/Unattended-Upgrade::Automatic-Reboot-Time/Unattended-Upgrade::Automatic-Reboot-Time/' /etc/apt/apt.conf.d/50unattended-upgrades
+sudo sed -i 's/\/\/Unattended-Upgrade::Automatic-Reboot-Time "02:00"/Unattended-Upgrade::Automatic-Reboot-Time "06:30"/' /etc/apt/apt.conf.d/50unattended-upgrades
 echo "Automatic upgrades configured successfully!"
 
 # Disable pings in firewall
@@ -86,6 +86,7 @@ echo "Automatic upgrades configured successfully!"
 #echo "Disable pings in firewall configured successfully!"
 
 # Configure firewall
+sudo sed -i 's/IPV6=yes/IPV6=no/' /etc/default/ufw
 sudo ufw default allow outgoing && sudo ufw default deny incoming && sudo ufw allow 22
 
 if [[ $tcp == 1 ]]; then
