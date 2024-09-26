@@ -59,7 +59,7 @@ if [[ $installPlace != 1 ]]; then # skips this if installed on proxmox
   if whiptail --backtitle "Customize - Ubuntu VM" --title "MAINTENANCE USER" --yesno "Do you want to add a maintenance user?" 10 62; then
     if newUser=$(whiptail --backtitle "Customize - Ubuntu VM" --inputbox "\nWrite the user name:" 10 58 "" --title "ADD USER" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
       user=1
-      adduser $newUser
+      sudo adduser $newUser
       else
       echo "Maintenance user skipped .."
     fi
