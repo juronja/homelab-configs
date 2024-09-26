@@ -153,7 +153,7 @@ if [[ $docker == 1 ]]; then
   sudo docker run --rm hello-world && sudo docker rmi hello-world
   # Create the daemon.json for insecure (http) logins configs if needed for Nexus
   cd /etc/docker/ && sudo touch daemon.json
-  printf "{\n    \"insecure-registries\" : [ \"$insecReg\" ]\n}" | sudo tee /etc/docker/daemon.json > /dev/nullfi
+  printf "{\n    \"insecure-registries\" : [ \"$insecReg\" ]\n}" | sudo tee /etc/docker/daemon.json > /dev/null
 fi
 
 # Install Portainer
