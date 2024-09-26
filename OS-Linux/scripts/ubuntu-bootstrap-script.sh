@@ -14,10 +14,10 @@ function exit-script() {
   exit
 }
 
-echo "Starting VM script .."
+echo "Starting script .."
 
 # Whiptail inputs
-whiptail --backtitle "Customize - Ubuntu VM" --defaultno --title "PROCEED?" --yesno "This will run a custom script to customize Ubuntu!" 10 58 || exit
+whiptail --backtitle "Customize - Ubuntu VM" --title "NOTE" --msgbox "This will run a custom script to customize Ubuntu!" 10 58 || exit
 
 if installPlace=$(whiptail --backtitle "Customize - Ubuntu VM" --title "INSTALL PLACE" --radiolist "\nWhere did you install Ubuntu?\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 2 \
     "1" "Proxmox" ON \
