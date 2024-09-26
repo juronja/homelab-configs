@@ -28,10 +28,10 @@ else
     exit-script
 fi
 
-if tcpYesNo=$(whiptail --backtitle "Customize - Ubuntu VM" --defaultno --title "UFW TCP RULES" --yesno "Do you want to add UFW TCP rules?" 10 62 3>&1 1>&2 2>&3); then
-   echo -e "UFW TCP ADD: $tcpYesNo"
+if whiptail --backtitle "Customize - Ubuntu VM" --defaultno --title "UFW TCP RULES" --yesno "Do you want to add UFW TCP rules?" 10 62; then
+  read -p "Write comma seperated ports to open on TCP: " tcpPorts
 else
-    exit-script
+  echo "continue .."
 fi
 
 
