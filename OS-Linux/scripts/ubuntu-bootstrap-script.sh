@@ -36,9 +36,8 @@ if [[ $dockerYesNo == "y" ]]; then
   if [[ $insRegYesNo == "y" ]]; then
   read -p "Write comma seperated IP:PORT list to allow in Docker: " insecReg
   fi
+  read -p "Do you want to install Portainer? (y/n) " portainerYesNo
 fi
-
-read -p "Do you want to install Portainer? (y/n) " portainerYesNo
 
 # sudo ufw allow from 176.57.95.182
 
