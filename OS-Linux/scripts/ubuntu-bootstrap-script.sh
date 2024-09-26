@@ -30,8 +30,13 @@ if [[ $installPlace != 1 ]]; then
   fi
 fi
 read -p "Do you want to install Docker? (y/n) " dockerYesNo
-read -p "Do you want to install Portainer? (y/n) " portainerYesNo
 
+read -p "Do you want to add insecure registry rules? (y/n) " insRegYesNo
+if [[ $insRegYesNo == "y" ]]; then
+  read -p "Write comma seperated IP:PORT list to allow in Docker: " insecReg
+fi
+
+read -p "Do you want to install Portainer? (y/n) " portainerYesNo
 
 # sudo ufw allow from 176.57.95.182
 
@@ -41,8 +46,6 @@ sudo apt update -y && sudo apt upgrade -y
 # Configure automatic updates
 sudo sed -i 's/\/\/Unattended-Upgrade::Automatic-Reboot-Time/Unattended-Upgrade::Automatic-Reboot-Time/' /etc/apt/apt.conf.d/50unattended-upgrades
 echo "Automatic upgrades configured successfully!"
-
-
 
 # Disable pings in firewall
 #sudo sed -i 's/-A ufw-before-input -p icmp --icmp-type echo-request -j ACCEPT/-A ufw-before-input -p icmp --icmp-type echo-request -j DROP/' /etc/ufw/before.rules
@@ -99,9 +102,9 @@ if [[ $dockerYesNo == "y" ]]; then
   sudo usermod -aG docker $rootUser
   # Verify - run hello image and delete
   sudo docker run --rm hello-world && sudo docker rmi hello-world
-  # Create the daemon.json for insecure (http) logins configs if needed
+  # Create the daemon.json for insecure (http) logins configs if needed for Nexus
   cd /etc/docker/ && sudo touch daemon.json
-fi
+  printf "{\n    \"insecure-registries\" : [ \"$insecReg\" ]\n}" | sudo tee /etc/docker/daemon.json > /dev/nullfi
 
 # Install Portainer
 if [[ $dockerYesNo == "y" ]] && [[ $portainerYesNo == "y" ]]; then
