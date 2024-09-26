@@ -61,7 +61,7 @@ fi
 if [[ $utpYesNo == "y" ]]; then
   sudo ufw allow $utpPorts/udp
 fi
-sudo ufw enable
+sudo ufw --force enable
 
 # Proxmox install specifics
 if [[ $installPlace == 1 ]]; then
