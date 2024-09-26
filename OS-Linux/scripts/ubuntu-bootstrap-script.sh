@@ -68,15 +68,24 @@ if [[ $installPlace != 1 ]]; then # skips this if installed on proxmox
   fi
 fi
 
-read -p "Do you want to install Docker? (y/n) " dockerYesNo
-
-if [[ $dockerYesNo == "y" ]]; then
-  read -p "Do you want to add insecure registry rules? (y/n) " insRegYesNo
-  if [[ $insRegYesNo == "y" ]]; then
-  read -p "Write comma seperated IP:PORT list to allow in Docker: " insecReg
+if whiptail --backtitle "Customize - Ubuntu VM" --title "INSTALL DOCKER" --yesno "Do you want to install Docker?" 10 62; then
+  docker=1
+  if insecReg=$(whiptail --backtitle "Customize - Ubuntu VM" --inputbox "\nWrite comma seperated IP:PORT list to allow in Docker:" 10 58 "ubuntu.lan:8082" --title "ADD INSECURE REGISTRY RULES?" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
+    echo "Added insecure registry rules: $insecReg"
+    else
+    echo "Add registry rules skipped .."
   fi
-  read -p "Do you want to install Portainer? (y/n) " portainerYesNo
+  if whiptail --backtitle "Customize - Ubuntu VM" --title "INSTALL PORTAINER" --yesno "Do you want to install Portainer?" 10 62; then
+    portainer=1
+    else
+    echo "Portainer install skipped .."
+  fi
+  else
+  echo "Docker install skipped .."
 fi
+
+#  read -p "Write comma seperated IP:PORT list to allow in Docker: " insecReg
+#  read -p "Do you want to install Portainer? (y/n) " portainerYesNo
 
 # sudo ufw allow from 176.57.95.182
 
@@ -118,7 +127,7 @@ if [[ $installPlace == 1 ]]; then
 fi
 
 # Install Docker
-if [[ $dockerYesNo == "y" ]]; then
+if [[ $docker == 1 ]]; then
 
   # Remove legacy Docker
   for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove $pkg; done
@@ -149,7 +158,7 @@ if [[ $dockerYesNo == "y" ]]; then
 fi
 
 # Install Portainer
-if [[ $dockerYesNo == "y" ]] && [[ $portainerYesNo == "y" ]]; then
+if [[ $docker == 1 ]] && [[ $portainer == 1 ]]; then
   # Pull the compose file
   wget -nc --directory-prefix=/home/$rootUser/apps https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/Applications/Portainer/compose.yaml
   # Run compose file
