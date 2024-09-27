@@ -5,13 +5,10 @@
 Install default plugins. The logic is that you install the plugin first and **then set it up in the Tools section**.
 
 ### Docker specifics
-Docker access is mounted already via container. But you have to give permissions to the "jenkins" user inside the container.
-
-Login to the container and give read/write permissions to "Others". This will allow jenkins user to run docker commands.
+Docker access is mounted already via compose file. But you have to give permissions to the `jenkins` user inside the container to use docker commands by giving read/write permissions to `Others`.
 
 ```bash
-sudo docker exec -ti -u root jenkins bash
-chmod 666 /var/run/docker.sock
+sudo docker exec -u root jenkins chmod 666 /var/run/docker.sock
 ```
 
 NOTE: Each reboot or restart of docker service this will reset back to defaults.
@@ -21,13 +18,13 @@ NOTE: Each reboot or restart of docker service this will reset back to defaults.
 1. Create a tar from docker volume:
 
 ```bash
-tar -czvf jdata.tar.gz /var/lib/docker/volumes/jenkins_data/_data/
+sudo tar -czvf jdata.tar.gz /var/lib/docker/volumes/jenkins_data/_data/
 ```
 
 2. Copy tar to other server:
 
-scp jdata.tar.gz root@homelab:/root
+scp -i ~/.ssh/id_rsa.pub jdata.tar.gz user@homelab:/home/user/apps
 
 3. Unpack the tar
 
-tar -xzvf jdata.tar.gz -C /var/lib/docker/volumes/jenkins_data/_data/
+sudo tar -xzvf jdata.tar.gz -C /var/lib/docker/volumes/jenkins_data/_data/
