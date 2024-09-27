@@ -25,9 +25,9 @@
         #description: pve1
     - Portainer:
         icon: portainer.svg
-        href: https://ubuntu.lan:9443
+        href: https://cdci.lan:9443
         ping: 192.168.84.16
-        description: ubuntu.lan
+        description: cdci.lan
 
 - Networking:
     - Gateway Router:
@@ -58,7 +58,7 @@
         ping: 192.168.84.13
     - Nexus:
         icon: https://raw.githubusercontent.com/juronja/homelab-configs/main/Applications/Homepage/icons/sonatype-nexus.png
-        href: http://ubuntu.lan:8081
+        href: http://cdci.lan:8081
         ping: 192.168.84.16
     - Jenkins:
         icon: jenkins.svg
