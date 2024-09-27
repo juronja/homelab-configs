@@ -73,7 +73,7 @@ fi
 # WHIPTAIL INSTALL DOCKER & PORTAINER
 if whiptail --backtitle "Customize - Ubuntu VM" --title "INSTALL DOCKER" --yesno "Do you want to install Docker?" 10 62; then
   docker=1
-  if insecReg=$(whiptail --backtitle "Customize - Ubuntu VM" --inputbox "\nWrite comma seperated IP:PORT list to allow in Docker:" 10 58 "ubuntu.lan:8082" --title "ADD INSECURE REGISTRY RULES?" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
+  if insecReg=$(whiptail --backtitle "Customize - Ubuntu VM" --inputbox "\nWrite comma seperated IP:PORT list to allow in Docker:" 10 58 "IP:PORT" --title "ADD INSECURE REGISTRY RULES?" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
     echo "Added insecure registry rules: $insecReg"
     else
     echo "Add registry rules skipped .."
