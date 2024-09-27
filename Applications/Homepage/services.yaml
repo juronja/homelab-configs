@@ -27,6 +27,7 @@
         icon: portainer.svg
         href: https://ubuntu.lan:9443
         ping: 192.168.84.16
+        description: ubuntu.lan
 
 - Networking:
     - Gateway Router:
