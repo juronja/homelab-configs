@@ -4,7 +4,7 @@
 
 Install default plugins. The logic is that you install the plugin first and **then set it up in the Tools section**.
 
-### Docker specifics
+## Docker specifics
 Docker access is mounted already via compose file. But you have to give permissions to the `jenkins` user inside the container to use docker commands by giving read/write permissions to `Others`.
 
 ```bash
@@ -13,7 +13,7 @@ sudo docker exec -u root jenkins chmod 666 /var/run/docker.sock
 
 NOTE: Each reboot or restart of docker service this will reset back to defaults.
 
-### Migrate server configurations
+## Migrate server configurations
 
 1. Create a tar from docker volume:
 
@@ -28,3 +28,4 @@ scp -i ~/.ssh/id_rsa.pub jdata.tar.gz user@homelab:/home/user/apps
 3. Unpack the tar
 
 sudo tar -xzvf jdata.tar.gz -C /var/lib/docker/volumes/jenkins_data/_data/
+
