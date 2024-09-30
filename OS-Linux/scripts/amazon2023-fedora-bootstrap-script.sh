@@ -26,11 +26,6 @@ if whiptail --backtitle "Customize VM" --title "INSTALL DOCKER" --yesno "Do you 
     else
     echo "Add registry rules skipped .."
   fi
-  if whiptail --backtitle "Customize VM" --title "INSTALL PORTAINER" --yesno "Do you want to install Portainer?" 10 62; then
-    portainer=1
-    else
-    echo "Portainer install skipped .."
-  fi
   else
   echo "Docker install skipped .."
 fi
