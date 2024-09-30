@@ -38,16 +38,12 @@ sudo dnf upgrade --refresh
 # Install Docker
 if [[ $docker == 1 ]]; then
 
-  # Remove legacy Docker
-  sudo dnf remove docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-selinux docker-engine-selinux docker-engine
-
-  # Add the repository source:
-  sudo dnf -y install dnf-plugins-core
-  sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
-
   # Install Docker
-  sudo dnf install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin  # Append user to docker group
+  sudo dnf install docker -y
+  sudo systemctl start docker
+  sudo systemctl enable docker
   sudo usermod -aG docker $rootUser
+  #newgrp docker
   # Verify - run hello image and delete
   sudo docker run --rm hello-world && sudo docker rmi hello-world
   # Create the daemon.json for insecure (http) logins configs if needed for Nexus
