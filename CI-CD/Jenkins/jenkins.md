@@ -4,6 +4,11 @@
 
 Install default plugins. The logic is that you install the plugin first and **then set it up in the Tools section**.
 
+### Useful additional plugins
+- Multibranch Scan Webhook Trigger
+- Version Number Plugin (useful in builds for versioning)
+
+
 ## Docker specifics
 Docker access is mounted already via compose file. But you have to give permissions to the `jenkins` user inside the container to use docker commands by giving read/write permissions to `Others`.
 
