@@ -47,6 +47,8 @@ if [[ $docker == 1 ]]; then
   sudo usermod -aG docker $rootUser
   # Verify - run hello image and delete
   sudo docker run --rm hello-world && sudo docker rmi hello-world
+  # Install docker compose
+  sudo curl -L https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s | tr '[:upper:]' '[:lower:]')-$(uname -m) -o /usr/bin/docker-compose && sudo chmod 755 /usr/bin/docker-compose && docker-compose --version
   # Create the daemon.json for insecure (http) logins configs if needed for Nexus
   cd /etc/docker/ && sudo touch daemon.json
   if [[ $registries == 1 ]]; then
