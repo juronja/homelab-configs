@@ -44,12 +44,10 @@ if [[ $docker == 1 ]]; then
   sudo dnf install docker -y
   sudo systemctl start docker
   sudo systemctl enable docker
-  echo "enabled docker"
-  sleep 3
   sudo usermod -aG docker $rootUser
   echo "user is $rootUser"
   sleep 3
-  newgrp docker
+ # newgrp docker
   echo "newgrp added"
   # Verify - run hello image and delete
   sleep 3
