@@ -42,13 +42,24 @@ if [[ $docker == 1 ]]; then
 
   # Install Docker
   sudo dnf install docker -y
+  echo "installed docker"
+  sleep 3
   sudo systemctl start docker
+  echo "started docker"
+  sleep 3
   sudo systemctl enable docker
+  echo "enabled docker"
+  sleep 3
   sudo usermod -aG docker $rootUser
+  echo "user is $rootUser"
+  sleep 3
   newgrp docker
+  echo "newgrp added"
   # Verify - run hello image and delete
+  sleep 3
   sudo docker run --rm hello-world && sudo docker rmi hello-world
   # Create the daemon.json for insecure (http) logins configs if needed for Nexus
+  sleep 3
   cd /etc/docker/ && sudo touch daemon.json
   if [[ $registries == 1 ]]; then
     printf "{\n    \"insecure-registries\" : [ \"$insecReg\" ]\n}" | sudo tee /etc/docker/daemon.json > /dev/null
