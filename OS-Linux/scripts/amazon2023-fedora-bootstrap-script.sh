@@ -45,8 +45,6 @@ if [[ $docker == 1 ]]; then
   sudo systemctl start docker
   sudo systemctl enable docker
   sudo usermod -aG docker $rootUser
-  echo "user is $rootUser"
- # newgrp docker
   # Verify - run hello image and delete
   sudo docker run --rm hello-world && sudo docker rmi hello-world
   # Create the daemon.json for insecure (http) logins configs if needed for Nexus
