@@ -75,6 +75,7 @@ if whiptail --backtitle "Customize - Ubuntu VM" --title "INSTALL DOCKER" --yesno
   docker=1
   if insecReg=$(whiptail --backtitle "Customize - Ubuntu VM" --inputbox "\nWrite comma seperated IP:PORT list to allow in Docker:" 10 58 "IP:PORT" --title "ADD INSECURE REGISTRY RULES?" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
     echo "Added insecure registry rules: $insecReg"
+    registries=1
     else
     echo "Add registry rules skipped .."
   fi
@@ -155,7 +156,11 @@ if [[ $docker == 1 ]]; then
   sudo docker run --rm hello-world && sudo docker rmi hello-world
   # Create the daemon.json for insecure (http) logins configs if needed for Nexus
   cd /etc/docker/ && sudo touch daemon.json
-  printf "{\n    \"insecure-registries\" : [ \"$insecReg\" ]\n}" | sudo tee /etc/docker/daemon.json > /dev/null
+  if [[ $registries == 1 ]]; then
+    printf "{\n    \"insecure-registries\" : [ \"$insecReg\" ]\n}" | sudo tee /etc/docker/daemon.json > /dev/null
+    else
+    echo "Add registry rules skipped .."
+  fi
 fi
 
 # Install Portainer
