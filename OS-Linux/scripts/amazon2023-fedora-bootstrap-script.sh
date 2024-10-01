@@ -42,11 +42,7 @@ if [[ $docker == 1 ]]; then
 
   # Install Docker
   sudo dnf install docker -y
-  echo "installed docker"
-  sleep 3
   sudo systemctl start docker
-  echo "started docker"
-  sleep 3
   sudo systemctl enable docker
   echo "enabled docker"
   sleep 3
