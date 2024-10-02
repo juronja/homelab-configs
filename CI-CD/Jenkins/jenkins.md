@@ -28,9 +28,13 @@ sudo tar -czvf jdata.tar.gz /var/lib/docker/volumes/jenkins_data/_data/
 
 2. Copy tar to other server:
 
+```bash
 scp -i ~/.ssh/id_rsa.pub jdata.tar.gz user@homelab:/home/user/apps
+```
 
 3. Unpack the tar
 
+```bash
 sudo tar -xzvf jdata.tar.gz -C /var/lib/docker/volumes/jenkins_data/_data/
+```
 
