@@ -15,6 +15,9 @@
     - Helper Scripts:
         - icon: https://tteck.github.io/Proxmox/favicon.ico
           href: https://tteck.github.io/Proxmox/
+    - TrueNas Downloads:
+        - icon: truenas.svg
+          href: https://download.truenas.com/
     - Duckdns:
         - icon: duckdns.png
           href: https://www.duckdns.org/
