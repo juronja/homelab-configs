@@ -4,12 +4,12 @@
 
 Install default plugins. The logic is that you install the plugin first and **then set it up in the Tools section**.
 
-### Useful additional plugins
+### Useful plugins
+- NodeJS Plugin
 - Multibranch Scan Webhook Trigger
 - Version Number Plugin (useful in builds for versioning)
 
-
-## Docker specifics
+### Enable Docker
 Docker access is mounted already via compose file. But you have to give permissions to the `jenkins` user inside the container to use docker commands by giving read/write permissions to `Others`.
 
 ```bash
@@ -17,6 +17,7 @@ sudo docker exec -u root jenkins chmod 666 /var/run/docker.sock
 ```
 
 NOTE: Each reboot or restart of docker service this will reset back to defaults.
+
 
 ## Migrate server configurations
 
