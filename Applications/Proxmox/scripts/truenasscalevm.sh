@@ -42,7 +42,7 @@ function exit-script() {
 echo "Starting VM script .."
 
 # Whiptail inputs
-if SCALE_ISO_URL=$(whiptail --backtitle "Install - TrueNAS SCALE VM" --title "RELEASE ISO URL" --inputbox "\nPaste the Release ISO URL to install.\n" --cancel-button "Exit Script" 12 58 3>&1 1>&2 2>&3); then
+if SCALE_ISO_URL=$(whiptail --backtitle "Install - TrueNAS SCALE VM" --title "RELEASE ISO URL" --inputbox "\nPaste the Release ISO URL from https://download.truenas.com/ to install.\n" --cancel-button "Exit Script" 12 58 3>&1 1>&2 2>&3); then
     echo -e "Release version: $SCALE_ISO_URL"
 else
     exit-script
