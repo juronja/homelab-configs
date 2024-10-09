@@ -42,15 +42,8 @@ function exit-script() {
 echo "Starting VM script .."
 
 # Whiptail inputs
-if SCALE_RLS=$(whiptail --backtitle "Install - TrueNAS SCALE VM" --title "RELEASE NAME" --inputbox "\nType the RELEASE NAME to install. (Case sensitive)\n" --cancel-button "Exit Script" 12 58 3>&1 1>&2 2>&3); then
-    echo -e "Release version: $SCALE_RLS"
-else
-    exit-script
-fi
-
-
-if SCALE_VRS=$(whiptail --backtitle "Install - TrueNAS SCALE VM" --title "VERSION NUMBER" --inputbox "\nType the VERSION NUMBER to install.\n" --cancel-button "Exit Script" 12 58 3>&1 1>&2 2>&3); then
-    echo -e "SCALE VERSION: $SCALE_VRS"
+if SCALE_ISO_URL=$(whiptail --backtitle "Install - TrueNAS SCALE VM" --title "RELEASE ISO URL" --inputbox "\nPaste the Release ISO URL to install.\n" --cancel-button "Exit Script" 12 58 3>&1 1>&2 2>&3); then
+    echo -e "Release version: $SCALE_ISO_URL"
 else
     exit-script
 fi
@@ -84,12 +77,13 @@ DISK_SIZE=32
 RAM=$(($RAM_COUNT * 1024))
 IMG_LOCATION="/var/lib/vz/template/iso/"
 VMID=$NEXTID
+SCALE_ISO=${SCALE_ISO_URL##*/}
 
 # Download the image
-wget -nc --directory-prefix=$IMG_LOCATION https://download.truenas.com/TrueNAS-SCALE-$SCALE_RLS/$SCALE_VRS/TrueNAS-SCALE-$SCALE_VRS.iso
+wget -nc --directory-prefix=$IMG_LOCATION $SCALE_ISO_URL
 
 # Create a VM
-qm create $VMID --ostype l26 --cores $CORE_COUNT --cpu $CPU --memory $RAM --balloon 0 --name $NAME --bios ovmf --efidisk0 local-lvm:1,efitype=4m,pre-enrolled-keys=1 --machine q35 --scsihw virtio-scsi-single --scsi0 local-lvm:$DISK_SIZE,ssd=on,iothread=on --cdrom local:iso/TrueNAS-SCALE-$SCALE_VRS.iso --net0 virtio,bridge=vmbr0,firewall=1 --ipconfig0 ip=dhcp,ip6=dhcp --agent enabled=1 --onboot 1
+qm create $VMID --ostype l26 --cores $CORE_COUNT --cpu $CPU --memory $RAM --balloon 0 --name $NAME --bios ovmf --efidisk0 local-lvm:1,efitype=4m,pre-enrolled-keys=1 --machine q35 --scsihw virtio-scsi-single --scsi0 local-lvm:$DISK_SIZE,ssd=on,iothread=on --cdrom local:iso/$SCALE_ISO --net0 virtio,bridge=vmbr0,firewall=1 --ipconfig0 ip=dhcp,ip6=dhcp --agent enabled=1 --onboot 1
 
 # Importing disks specifics
 whiptail --backtitle "Install - TrueNAS SCALE VM" --defaultno --title "IMPORT DISKS?" --yesno "Would you like to import onboard disks?" 10 58 || exit
