@@ -1,7 +1,7 @@
 # Disable UAC
 Set-itemproperty "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System" -Name "EnableLUA" -Value "0" -Type DWord
 # Disable Password expiry
-wmic UserAccount set PasswordExpires=False
+#wmic UserAccount set PasswordExpires=False
 # TASKBAR - Removes Widgets and Task View from the Taskbar / Alligns the taskbar to the left
 Set-itemproperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ShowTaskViewButton" -Value "0" -Type DWord
 Set-itemproperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "TaskbarAl" -Value "0" -Type DWord
@@ -11,9 +11,10 @@ Set-itemproperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\Start" -Name "
 # Personalize theme
 Set-itemproperty "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name "AppsUseLightTheme" -Value "0" -Type DWord
 Set-itemproperty "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name "SystemUsesLightTheme" -Value "0" -Type DWord
-# FILE EXPLORER - Show file extensions and Show hidden folders
+# FILE EXPLORER - Show file extensions, Show hidden folders, do not use check boxes to select items
 Set-itemproperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "HideFileExt" -Value "0" -Type DWord
 Set-itemproperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "Hidden" -Value "1" -Type DWord
+Set-itemproperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "AutoCheckSelect" -Value "0" -Type DWord
 # StorageSense - set to run every day.
 Set-itemproperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy" -Name "2048" -Value "1" -Type DWord #-Force
 # Defender exclusion list
@@ -53,6 +54,7 @@ Get-AppxPackage -alluser MicrosoftCorporationII.QuickAssist | Remove-AppxPackage
 Get-AppxPackage -alluser microsoft.windowscommunicationsapps | Remove-AppxPackage # Mail app
 Get-AppxPackage -alluser MicrosoftWindows.Client.WebExperience | Remove-AppxPackage # Widget app
 Get-AppxPackage -alluser Microsoft.549981C3F5F10 | Remove-AppxPackage # Cortana appGet-AppxPackage -alluser Microsoft.549981C3F5F10 | Remove-AppxPackage # Cortana app
+Get-AppxPackage -alluser Microsoft.Teams | Remove-AppxPackage
 winget uninstall onedrive
 winget install -e --id Google.Chrome
 winget install -e --id Adobe.Acrobat.Reader.64-bit
