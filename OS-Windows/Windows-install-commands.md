@@ -2,7 +2,6 @@
 
 - Use Windows Terminal with Admin privileges!
 - Update `App Installer` in MS Store to update winget
-- To disable windows defender you have to manually toggle the Tamper Protection OFF.
 
 ## Basics
 
@@ -50,8 +49,6 @@ winget install -e --id Logitech.OptionsPlus
 winget install -e --id Amazon.AWSCLI
 winget install -e --id WireGuard.WireGuard
 
-# For NPM if needed after install run the node.JS command prompt to initialize
-#winget install -e --id OpenJS.NodeJS.LTS
 ```
 
 ## Networking
