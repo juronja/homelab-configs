@@ -62,3 +62,6 @@ Load virtio **disk** (amd64>w11>virtio) and **network** drivers (NetKVM>w11>amd6
 
 - STEP 3 - Use local account
 When asked to sign in use local domain (account) option.
+
+- STEP 4 - Install other virtio drivers
+Run the wizard in the iso drive (virtio-win-gt-x64.msi).
