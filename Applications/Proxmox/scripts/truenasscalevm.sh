@@ -49,9 +49,9 @@ else
 fi
 
 if CORE_COUNT=$(whiptail --backtitle "Install - TrueNAS SCALE VM" --title "CORE COUNT" --radiolist "\nAllocate amount of CORES. (Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 3 \
-    "4" "cores" OFF \
-    "8" "cores" ON \
-    "12" "cores" OFF \
+    "2" "cores" OFF \
+    "4" "cores" ON \
+    "8" "cores" OFF \
     3>&1 1>&2 2>&3); then
         echo -e "Allocated CORES: $CORE_COUNT"
 else

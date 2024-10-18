@@ -17,3 +17,5 @@ services:
       - "50000:50000" #That port will be used when you connect agents to the controller.
 volumes:
   data: # It will prepend the project name
+
+
