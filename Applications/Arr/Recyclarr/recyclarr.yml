@@ -171,7 +171,7 @@ sonarr:
 
         assign_scores_to:
           - name: HD Bluray + WEB
-            score: -10000
+            score: -1000
 
       - trash_ids:
           # Custom Scoring for all items below
@@ -312,7 +312,7 @@ radarr:
 
         assign_scores_to:
           - name: HD Bluray + WEB
-            score: -10000
+            score: -1000
 
       - trash_ids:
           # Custom Scoring for all items below
