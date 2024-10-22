@@ -1,4 +1,4 @@
-# Useful Jenkins repository configurations
+# Useful Jenkins configurations
 
 ## Plugins and Tools
 

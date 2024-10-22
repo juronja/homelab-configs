@@ -87,6 +87,15 @@ New-PSDrive -Name "X" -Root "\\nas.lan\cubbit" -Persist -Scope Global -PSProvide
 
 ```
 
+## Set Environment Variables
+
+```shell
+setx ENV_LOCAL true
+setx MONGO_ADMIN_USER "admin_user"
+setx MONGO_ADMIN_PASS "pass"
+
+```
+
 ## TO DO Windows setup ##
 - [ ] disable sounds
 

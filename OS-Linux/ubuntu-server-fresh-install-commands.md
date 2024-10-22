@@ -95,6 +95,15 @@ sudo netplan apply
 
 ```
 
+## Environment Variables
+
+```bash
+nano ~/.profile
+export MONGO_ADMIN_USER=username
+export MONGO_ADMIN_PASS=pass
+
+```
+
 ## USEFUL FOR OTHER DISTROS - Ubuntu has this by default
 
 ### Install automatic upgrades
