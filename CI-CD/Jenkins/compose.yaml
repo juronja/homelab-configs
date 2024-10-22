@@ -12,6 +12,7 @@ services:
       - "data:/var/jenkins_home" # Volume mapping for persistency
       - "/var/run/docker.sock:/var/run/docker.sock" # Daemon access for docker commands
       - "/usr/bin/docker:/usr/bin/docker" # Access to binaries to run docker commands
+      - "/usr/libexec/docker/cli-plugins/docker-compose:/usr/libexec/docker/cli-plugins/docker-compose" # Access to binaries to run docker compose commands
     ports:
       - "8080:8080"
       - "50000:50000" #That port will be used when you connect agents to the controller.
