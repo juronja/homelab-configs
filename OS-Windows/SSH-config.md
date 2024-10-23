@@ -4,7 +4,6 @@
 
 ```bash
 ssh-keygen -t ed25519 -C "ubuntu-nameofserver"
-
 ```
 Rename the key eg. C:\Users\Jure/.ssh/id_ubuntu-nameofserver
 
@@ -34,14 +33,12 @@ Host ubuntu-homelab
   User juronja
   IdentityFile ~/.ssh/id_ubuntu-homelab
 #  Port if a custom ssh port is set
-
 ```
 
 ### Upload your Public key to your Linux Server (Windows)
 
 ```bash
 scp $env:USERPROFILE/.ssh/id_ubuntu-nameofserver.pub username@{IP}:~/.ssh/authorized_keys
-
 ```
 
 ### Disable password authentication in Linux. Uncomment "PasswordAuthentication" and change to "no"
@@ -50,5 +47,4 @@ In Proxmox you can remove the sudo commands for this to work
 
 ```bash
 sudo sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config && sudo sed -i 's/#AddressFamily any/AddressFamily inet/' /etc/ssh/sshd_config && sudo systemctl restart ssh
-
 ```
