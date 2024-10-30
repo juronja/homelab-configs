@@ -3,9 +3,9 @@
 ### Create Public/Private keys on your computer/PC 
 
 ```bash
-ssh-keygen -t ed25519 -C "ubuntu-nameofserver"
+ssh-keygen -t ed25519 -C "nameofserver"
 ```
-Rename the key eg. C:\Users\Jure/.ssh/id_ubuntu-nameofserver
+Rename the key eg. C:\Users\Jure/.ssh/id_nameofserver
 
 ### Setup SSH Managing config in Windows
 
