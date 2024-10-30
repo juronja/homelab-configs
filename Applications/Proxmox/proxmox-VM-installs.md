@@ -21,12 +21,13 @@ Convert the created VM to template for future use.
 - STEP 3 - Edit any cloud innit before starting
 And you are done!
 
-## TrueNAS SCALE VM
+
+## TrueNAS VM
 
 Copy this line in the Proxmox Shell.
 
 ```bash
-bash -c "$(wget -qLO - https://raw.githubusercontent.com/juronja/homelab-configs/main/Applications/Proxmox/scripts/truenasscalevm.sh)"
+bash -c "$(wget -qLO - https://raw.githubusercontent.com/juronja/homelab-configs/main/Applications/Proxmox/scripts/truenasvm.sh)"
 ```
 
 ### Attach Motherboard Hard disks manually
@@ -45,6 +46,7 @@ qm set 101 -scsi1 /dev/disk/by-id/ata-Hitachi_HTS547564A9E384_J2180053HELJ4C
 qm set 101 -scsi2 /dev/disk/by-id/ata-Hitachi_HTS727575A9E364_J3390084GMAGND
 
 ```
+
 
 ## Windows 11 VM
 
