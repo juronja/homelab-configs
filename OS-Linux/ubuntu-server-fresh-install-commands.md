@@ -33,15 +33,10 @@ Host gateway
   User root
   IdentityFile ~/.ssh/id_gateway
 
-Host proxmox
-  Hostname 192.168.84.20
-  User root
-  IdentityFile ~/.ssh/id_proxmox
-
 Host ubuntu-homelab
   Hostname 192.168.84.25
   User juronja
-  IdentityFile ~/.ssh/id_ubuntu-homelab
+  IdentityFile ~/.ssh/id_homelab
 
 Host ubuntu-server2
   Hostname 192.168.84.24
@@ -97,6 +92,7 @@ sudo netplan apply
 
 ## Environment Variables
 
+In this document add expot lines for persistent variables.
 ```bash
 nano ~/.profile
 export MONGO_ADMIN_USER=username
