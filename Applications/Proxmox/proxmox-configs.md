@@ -71,3 +71,9 @@ rm -r /etc/corosync/*
 killall pmxcfs
 systemctl start pve-cluster
 ```
+
+## Drive share for Truenas Rsync
+
+1. Create a **directory** type disk with **ext4** filesystem. pvenode>Disks>Directory>Create: Directory
+2. Enable **Add storage** when creating
+3. 
