@@ -25,5 +25,8 @@
         - icon: https://cdn.prod.website-files.com/611f84142709f0e312100b42/63c168bf9422e01dac8e950b_cubbit_logo%40256.png
           href: https://console.cubbit.eu/signin
     - DiluteRight:
-        - icon: https://raw.githubusercontent.com/juronja/DiluteRight/main/app/assets/images/favicons/android-chrome-512x512.png
+        - icon: https://raw.githubusercontent.com/juronja/DiluteRight/refs/heads/main/dist/assets/images/favicons/favicon.svg
           href: https://dilute.repina.eu/
+    - UTM Builder:
+        - icon: https://raw.githubusercontent.com/juronja/DiluteRight/refs/heads/main/dist/assets/images/favicons/favicon.svg
+          href: https://utm-builder.repina.eu/

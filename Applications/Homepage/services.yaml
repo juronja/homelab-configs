@@ -3,11 +3,11 @@
 # https://gethomepage.dev/latest/configs/services
 
 - Infrastructure:
-    - Proxmox Old:
+    - Proxmox Critical:
         icon: proxmox.svg
-        href: https://pve-old.lan:8006
+        href: https://pve-critical.lan:8006
         ping: 192.168.84.20
-        #description: pve-old
+        #description: pve-critical
         #widget:
         #  type: proxmox
         #  url: https://pve.lan:8006
@@ -25,9 +25,9 @@
         #description: pve1
     - Portainer:
         icon: portainer.svg
-        href: https://cdci.lan:9443
+        href: https://homelab.lan:9443
         ping: 192.168.84.16
-        description: cdci.lan
+        description: homelab.lan
 
 - Networking:
     - Gateway Router:
@@ -58,7 +58,7 @@
         ping: 192.168.84.13
     - Nexus:
         icon: https://raw.githubusercontent.com/juronja/homelab-configs/main/Applications/Homepage/icons/sonatype-nexus.png
-        href: http://cdci.lan:8081
+        href: http://homelab.lan:8081
         ping: 192.168.84.16
     - Jenkins:
         icon: jenkins.svg
