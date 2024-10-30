@@ -23,11 +23,16 @@
         href: http://nas.lan
         ping: 192.168.84.11
         #description: pve1
-    - Portainer:
+    - Portainer Homelab:
         icon: portainer.svg
         href: https://homelab.lan:9443
         ping: 192.168.84.16
         description: homelab.lan
+    - Portainer Hosting:
+        icon: portainer.svg
+        href: https://hosting-prod.lan:9443
+        ping: 192.168.84.15
+        description: hosting-prod.lan
 
 - Networking:
     - Gateway Router:
