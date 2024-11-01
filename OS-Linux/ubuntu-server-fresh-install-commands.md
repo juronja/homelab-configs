@@ -2,26 +2,13 @@
 
 OpenSSH can be installed when installing Linux, on Ubuntu it is preinstalled; so after installation you can ssh {{username}}@{{IP}} straight into your machine via the terminal (e.g. Windows PowerShell)
 
-## STEP 1 - Setting up Ubuntu with Docker
-
-SSH via Terminal
-
-### Setup script (Prompts)
-
-```bash
-bash -c "$(wget -qLO - https://raw.githubusercontent.com/juronja/homelab-configs/main/OS-Linux/scripts/ubuntu-bootstrap-script.sh)"
-
-```
-
-
-
-## STEP 2 - SSH KEY PAIRS ON WINDOWS
+## SSH KEY PAIRS ON WINDOWS
 ### Create Public/Private keys on your computer/PC 
 ```bash
-ssh-keygen -t ed25519 -C "ubuntu-nameofserver"
+ssh-keygen -t ed25519 -C "nameofserver"
 
 ```
-Rename the key eg. C:\Users\Jure/.ssh/id_ubuntu-nameofserver
+Rename the key eg. C:\Users\Jure/.ssh/id_nameofserver
 
 ### Setup SSH Managing config in Windows
 To better manage multiple SSH keys, setup and edit the ssh config file like this.
@@ -48,7 +35,7 @@ Host ubuntu-server2
 
 ### Upload your Public key to your Linux Server (Windows)
 ```bash
-scp $env:USERPROFILE/.ssh/id_ubuntu-nameofserver.pub username@{IP}:~/.ssh/authorized_keys
+scp $env:USERPROFILE/.ssh/id_nameofserver.pub username@{IP}:~/.ssh/authorized_keys
 
 ```
 ### Disable password authentication. Uncomment "PasswordAuthentication" and change to "no"
@@ -92,13 +79,17 @@ sudo netplan apply
 
 ## Environment Variables
 
-In this document add expot lines for persistent variables.
+In this document add export lines for persistent variables.
 ```bash
 nano ~/.profile
 export MONGO_ADMIN_USER=username
 export MONGO_ADMIN_PASS=pass
 
 ```
+
+Alternatively you can use `/etc/profile` for all users.
+
+
 
 ## USEFUL FOR OTHER DISTROS - Ubuntu has this by default
 
