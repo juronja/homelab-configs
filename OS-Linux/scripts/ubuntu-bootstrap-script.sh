@@ -6,6 +6,7 @@
 
 # Constant variables
 rootUser="$(whoami)"
+PortainerComposeUrl="https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/Applications/Portainer/compose.yaml"
 
 # Functions
 function exit-script() {
@@ -28,32 +29,27 @@ if installPlace=$(whiptail --backtitle "Customize - Ubuntu VM" --title "INSTALL 
     exit-script
 fi
 
-# WHIPTAIL UFW RULES
-if whiptail --backtitle "Customize - Ubuntu VM" --title "UFW RULES" --yesno "Do you want to add UFW rules?" 10 62; then
-  if tcpPorts=$(whiptail --backtitle "Customize - Ubuntu VM" --inputbox "\nWrite comma seperated ports to open on TCP" 10 58 "7474,8082,..." --title "TCP PORTS" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
-    tcp=1
-    echo "Opened TCP Ports: $tcpPorts"
-    else
-    echo "TCP ports skipped .."
-  fi
-  if utpPorts=$(whiptail --backtitle "Customize - Ubuntu VM" --inputbox "\nWrite comma seperated ports to open on UTP" 10 58 "7474,8082,..." --title "UTP PORTS" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
-    utp=1
-    echo "Opened TCP Ports: $utpPorts"
-    else
-    echo "UTP ports skipped .."
-  fi
-  else
-  echo "UFW Rules skipped .."
-fi
+# # WHIPTAIL UFW RULES
+# if whiptail --backtitle "Customize - Ubuntu VM" --title "UFW RULES" --yesno "Do you want to add UFW rules?" 10 62; then
+#   if tcpPorts=$(whiptail --backtitle "Customize - Ubuntu VM" --inputbox "\nWrite comma seperated ports to open on TCP" 10 58 "7474,8082,..." --title "TCP PORTS" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
+#     tcp=1
+#     echo "Opened TCP Ports: $tcpPorts"
+#     else
+#     echo "TCP ports skipped .."
+#   fi
+#   if utpPorts=$(whiptail --backtitle "Customize - Ubuntu VM" --inputbox "\nWrite comma seperated ports to open on UTP" 10 58 "7474,8082,..." --title "UTP PORTS" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
+#     utp=1
+#     echo "Opened TCP Ports: $utpPorts"
+#     else
+#     echo "UTP ports skipped .."
+#   fi
+#   else
+#   echo "UFW Rules skipped .."
+# fi
 
 #read -p "Do you want to add UFW TCP rules? (y/n) " tcpYesNo
 #if [[ $tcpYesNo == "y" ]]; then
 #  read -p "Write comma seperated ports to open on TCP: " tcpPorts
-#fi
-
-#read -p "Do you want to add UFW UTP rules? (y/n) " utp
-#if [[ $utp == "y" ]]; then
-#  read -p "Write comma seperated ports to open on UTP: " utpPorts
 #fi
 
 # WHIPTAIL MAINTENANCE USER
@@ -87,6 +83,9 @@ if whiptail --backtitle "Customize - Ubuntu VM" --title "INSTALL DOCKER" --yesno
   else
   echo "Docker install skipped .."
 fi
+
+whiptail --backtitle "Customize - Ubuntu VM" --title "REMINDER" --msgbox "Don't forget to setup a Firewall in Proxmox." 10 58 || exit
+
 
 # SCRIPT COMMANDS
 
@@ -166,7 +165,7 @@ fi
 # Install Portainer
 if [[ $docker == 1 ]] && [[ $portainer == 1 ]]; then
   # Pull the compose file
-  wget -nc --directory-prefix=/home/$rootUser/apps https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/Applications/Portainer/compose.yaml
+  wget -nc --directory-prefix=/home/$rootUser/apps $PortainerComposeUrl
   # Run compose file
   cd /home/$rootUser/apps
   sudo docker compose up -d
