@@ -29,23 +29,6 @@ if installPlace=$(whiptail --backtitle "Customize - Ubuntu VM" --title "INSTALL 
     exit-script
 fi
 
-# # WHIPTAIL UFW RULES
-# if whiptail --backtitle "Customize - Ubuntu VM" --title "UFW RULES" --yesno "Do you want to add UFW rules?" 10 62; then
-#   if tcpPorts=$(whiptail --backtitle "Customize - Ubuntu VM" --inputbox "\nWrite comma seperated ports to open on TCP" 10 58 "7474,8082,..." --title "TCP PORTS" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
-#     tcp=1
-#     echo "Opened TCP Ports: $tcpPorts"
-#     else
-#     echo "TCP ports skipped .."
-#   fi
-#   if utpPorts=$(whiptail --backtitle "Customize - Ubuntu VM" --inputbox "\nWrite comma seperated ports to open on UTP" 10 58 "7474,8082,..." --title "UTP PORTS" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
-#     utp=1
-#     echo "Opened TCP Ports: $utpPorts"
-#     else
-#     echo "UTP ports skipped .."
-#   fi
-#   else
-#   echo "UFW Rules skipped .."
-# fi
 
 #read -p "Do you want to add UFW TCP rules? (y/n) " tcpYesNo
 #if [[ $tcpYesNo == "y" ]]; then
@@ -102,16 +85,8 @@ echo "Automatic upgrades configured successfully!"
 
 # Configure firewall
 sudo sed -i 's/IPV6=yes/IPV6=no/' /etc/default/ufw
-sudo ufw default allow outgoing && sudo ufw default deny incoming && sudo ufw allow 22
-# sudo ufw allow from 176.57.95.182
+# sudo ufw default allow outgoing && sudo ufw default deny incoming && sudo ufw allow 22
 
-if [[ $tcp == 1 ]]; then
-  sudo ufw allow $tcpPorts/tcp
-fi
-if [[ $utp == 1 ]]; then
-  sudo ufw allow $utpPorts/udp
-fi
-sudo ufw --force enable
 
 # Proxmox install specifics
 if [[ $installPlace == 1 ]]; then

@@ -1,31 +1,52 @@
 # Useful Proxmox configurations
 
-When installing I use `pve-new.lan` hostname.
+- When installing I use `.lan` local domain. e.g. `pve-critical.lan`.
+- API URL endpoint for `pvesh` command: https://pve-critical.lan:8006/api2/html/
 
 ## First time setup
 
-Common steps when installing proxmox for the first time.
+Common steps when installing proxmox for the first time. Use this script:
 
-### Update repositories (no subscription, no enterprise)
+https://tteck.github.io/Proxmox/#proxmox-ve-post-install
 
-Official docs: https://pve.proxmox.com/wiki/Package_Repositories
 
-This is the recommended repository for testing and non-production use. Its packages are not as heavily tested and validated. You don’t need a subscription key to access the pve-no-subscription repository.
+## Firewall setup
 
-Configure this repository in /etc/apt/sources.list.
-Add pve-no-subscription, disable pve-enterprise and update
+Official docs: https://pve.proxmox.com/wiki/Firewall
 
-Step 1
+### Cluster level Firewall
+
+❗  Applies to all hosts.
+⚠️  If you enable the firewall, traffic to all hosts is blocked by default. Only exceptions is WebGUI(8006) and ssh(22) from your local network.
+
 ```bash
-sed -i 's/-updates\ main\ contrib/-updates\ main\ contrib\n\n#\ pve-no-subscription-repository\ndeb\ http:\/\/download.proxmox.com\/debian\/pve\ bookworm\ pve-no-subscription/' /etc/apt/sources.list
-sed -i 's/deb\ https:\/\/enterprise.proxmox.com\/debian\/pve\ bookworm\ pve-enterprise/#deb\ https:\/\/enterprise.proxmox.com\/debian\/pve\ bookworm\ pve-enterprise/' /etc/apt/sources.list.d/pve-enterprise.list
-apt-get update
-
+pvesh set /cluster/firewall/options --enable 1
+pvesh create /cluster/firewall/aliases --name local_network --cidr 192.168.84.0/24
+pvesh create /cluster/firewall/rules --action ACCEPT --type in --iface vmbr0 --source local_network --macro Ping --enable 1
+pvesh create /cluster/firewall/groups --group local-ssh-ping
+pvesh create /cluster/firewall/groups/local-ssh-ping --action ACCEPT --type in --source local_network --proto tcp --enable 1
+pvesh create /cluster/firewall/groups/local-ssh-ping --action ACCEPT --type in --source local_network --macro Ping --enable 1
+pvesh create /cluster/firewall/groups/local-ssh-ping --action ACCEPT --type in --source local_network --macro SSH --enable 1
 ```
-Step 2
-```bash
-apt-get dist-upgrade -y && reboot
 
+### VM level Firewall
+
+❗  Applies to specific VMs.
+
+```bash
+pvesh create /nodes/{{node}}/qemu/{{VMID}}/firewall/rules --action ACCEPT --type in --iface net0 --proto tcp --dport 8080 --enable 1
+pvesh set /nodes/{{node}}/qemu/{{VMID}}/firewall/options --enable 1
+```
+
+### LXC level firewall
+
+❗  Applies to specific LXCs.
+
+```bash
+pvesh create /nodes/{{node}}/lxc/{{LXCID}}/firewall/rules --action ACCEPT --type in --iface net0 --proto tcp --source local_network --enable 1 # Enable access on local network
+pvesh create /nodes/{{node}}/lxc/{{LXCID}}/firewall/rules --action ACCEPT --type in --iface net0 --source local_network --macro SSH --enable 1 # Enable SSH
+pvesh create /nodes/{{node}}/lxc/{{LXCID}}/firewall/rules --action ACCEPT --type in --iface net0 --source local_network --macro Ping --enable 1 # # Enable Ping on local network
+pvesh set /nodes/{{node}}/lxc/{{LXCID}}/firewall/options --enable 1
 ```
 
 ## Clustering
