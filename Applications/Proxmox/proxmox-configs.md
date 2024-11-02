@@ -34,8 +34,9 @@ pvesh create /cluster/firewall/groups/local-ssh-ping --action ACCEPT --type in -
 ❗  Applies to specific VMs.
 
 ```bash
-pvesh create /nodes/{{node}}/qemu/{{VMID}}/firewall/rules --action ACCEPT --type in --iface net0 --proto tcp --dport 8080 --enable 1
-pvesh set /nodes/{{node}}/qemu/{{VMID}}/firewall/options --enable 1
+NODE=$(hostname)
+pvesh create /nodes/$NODE/qemu/{{VMID}}/firewall/rules --action ACCEPT --type in --iface net0 --proto tcp --dport 8080 --enable 1
+pvesh set /nodes/$NODE/qemu/{{VMID}}/firewall/options --enable 1
 ```
 
 ### LXC level firewall
@@ -43,10 +44,11 @@ pvesh set /nodes/{{node}}/qemu/{{VMID}}/firewall/options --enable 1
 ❗  Applies to specific LXCs.
 
 ```bash
-pvesh create /nodes/{{node}}/lxc/{{LXCID}}/firewall/rules --action ACCEPT --type in --iface net0 --proto tcp --source local_network --enable 1 # Enable access on local network
-pvesh create /nodes/{{node}}/lxc/{{LXCID}}/firewall/rules --action ACCEPT --type in --iface net0 --source local_network --macro SSH --enable 1 # Enable SSH
-pvesh create /nodes/{{node}}/lxc/{{LXCID}}/firewall/rules --action ACCEPT --type in --iface net0 --source local_network --macro Ping --enable 1 # # Enable Ping on local network
-pvesh set /nodes/{{node}}/lxc/{{LXCID}}/firewall/options --enable 1
+NODE=$(hostname)
+pvesh create /nodes/$NODE/lxc/{{LXCID}}/firewall/rules --action ACCEPT --type in --iface net0 --proto tcp --source local_network --enable 1 # Enable access on local network
+pvesh create /nodes/$NODE/lxc/{{LXCID}}/firewall/rules --action ACCEPT --type in --iface net0 --source local_network --macro SSH --enable 1 # Enable SSH
+pvesh create /nodes/$NODE/lxc/{{LXCID}}/firewall/rules --action ACCEPT --type in --iface net0 --source local_network --macro Ping --enable 1 # # Enable Ping on local network
+pvesh set /nodes/$NODE/lxc/{{LXCID}}/firewall/options --enable 1
 ```
 
 ## Clustering
