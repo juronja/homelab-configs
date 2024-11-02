@@ -98,6 +98,7 @@ fi
 
 # WHIPTAIL FIREWALL RULES
 if whiptail --backtitle "Install - Ubuntu VM" --title "FIREWALL RULES" --yesno "Do you want to add FIREWALL rules?" 10 62; then
+  fw=1
   echo "Enable value: $CLUSTER_FW_ENABLED"
   if tcpPorts=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nWrite comma seperated ports to open on TCP" 10 58 "7474,3131,..." --title "TCP PORTS" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
     tcp=1
@@ -137,10 +138,12 @@ qm set $NEXTID --scsi0 local-lvm:vm-$NEXTID-disk-0,discard=on,ssd=1 --ide2 local
 qm disk resize $NEXTID scsi0 "${DISK_SIZE}G" && qm set $NEXTID --boot order=scsi0
 
 # Configure default VM level Firewall rules
-pvesh create /nodes/$NODE/qemu/$NEXTID/firewall/rules --action ACCEPT --type in --iface net0 --source 192.168.84.0/24 --proto tcp  --enable 1 # Enable access on local network
-pvesh create /nodes/$NODE/qemu/$NEXTID/firewall/rules --action ACCEPT --type in --iface net0 --source 192.168.84.0/24 --macro SSH --enable 1 # Enable SSH
-pvesh create /nodes/$NODE/qemu/$NEXTID/firewall/rules --action ACCEPT --type in --iface net0 --source 192.168.84.0/24 --macro Ping --enable 1 # Enable Ping on local network
-pvesh set /nodes/$NODE/qemu/$NEXTID/firewall/options --enable 1
+if [[ $fw == 1 ]]; then
+  pvesh create /nodes/$NODE/qemu/$NEXTID/firewall/rules --action ACCEPT --type in --iface net0 --source 192.168.84.0/24 --proto tcp  --enable 1 # Enable access on local network
+  pvesh create /nodes/$NODE/qemu/$NEXTID/firewall/rules --action ACCEPT --type in --iface net0 --source 192.168.84.0/24 --macro SSH --enable 1 # Enable SSH
+  pvesh create /nodes/$NODE/qemu/$NEXTID/firewall/rules --action ACCEPT --type in --iface net0 --source 192.168.84.0/24 --macro Ping --enable 1 # Enable Ping on local network
+  pvesh set /nodes/$NODE/qemu/$NEXTID/firewall/options --enable 1
+fi
 
 if [[ $tcp == 1 ]]; then
   pvesh create /nodes/$NODE/qemu/$NEXTID/firewall/rules --action ACCEPT --type in --iface net0 --proto tcp --dport $tcpPorts --enable 1
