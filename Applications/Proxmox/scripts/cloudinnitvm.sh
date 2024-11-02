@@ -140,7 +140,7 @@ qm disk resize $NEXTID scsi0 "${DISK_SIZE}G" && qm set $NEXTID --boot order=scsi
 if [[ $CLUSTER_FW_ENABLED != 1 ]]; then
   pvesh set /cluster/firewall/options --enable 1
   pvesh create /cluster/firewall/aliases --name local_network --cidr $LOCAL_NETWORK
-  sleep 5
+  sleep 3
   pvesh create /cluster/firewall/rules --action ACCEPT --type in --iface vmbr0 --source local_network --macro Ping --enable 1
   pvesh create /cluster/firewall/groups --group local-ssh-ping
   pvesh create /cluster/firewall/groups/local-ssh-ping --action ACCEPT --type in --source local_network --proto tcp --enable 1
@@ -150,8 +150,6 @@ fi
 
 # Configure default VM level firewall rules
 if [[ $fw == 1 ]]; then
-  echo "Enable value: $CLUSTER_FW_ENABLED"
-  echo "Local NETWORK: $LOCAL_NETWORK"
   pvesh create /nodes/$NODE/qemu/$NEXTID/firewall/rules --action ACCEPT --type in --iface net0 --source local_network --proto tcp  --enable 1 # Enable access on local network
   pvesh create /nodes/$NODE/qemu/$NEXTID/firewall/rules --action ACCEPT --type in --iface net0 --source local_network --macro SSH --enable 1 # Enable SSH
   pvesh create /nodes/$NODE/qemu/$NEXTID/firewall/rules --action ACCEPT --type in --iface net0 --source local_network --macro Ping --enable 1 # Enable Ping on local network
