@@ -140,10 +140,13 @@ qm disk resize $NEXTID scsi0 "${DISK_SIZE}G" && qm set $NEXTID --boot order=scsi
 if [[ $CLUSTER_FW_ENABLED != 1 ]]; then
   pvesh set /cluster/firewall/options --enable 1
   pvesh create /cluster/firewall/aliases --name local_network --cidr $LOCAL_NETWORK
-  sleep 3
-  pvesh create /cluster/firewall/rules --action ACCEPT --type in --iface vmbr0 --source local_network --macro Ping --enable 1
+  pvesh create /cluster/firewall/ipset --name critical_devices
   pvesh create /cluster/firewall/groups --group local-ssh-ping
-  pvesh create /cluster/firewall/groups/local-ssh-ping --action ACCEPT --type in --source local_network --proto tcp --enable 1
+  sleep 3
+  pvesh create /cluster/firewall/ipset/critical_devices --cidr 192.168.84.4
+  pvesh create /cluster/firewall/ipset/critical_devices --cidr 192.168.84.24
+  pvesh create /cluster/firewall/rules --action ACCEPT --type in --iface vmbr0 --source local_network --macro Ping --enable 1
+  pvesh create /cluster/firewall/groups/local-ssh-ping --action ACCEPT --type in --source +critical_devices --proto tcp --enable 1
   pvesh create /cluster/firewall/groups/local-ssh-ping --action ACCEPT --type in --source local_network --macro Ping --enable 1
   pvesh create /cluster/firewall/groups/local-ssh-ping --action ACCEPT --type in --source local_network --macro SSH --enable 1
 fi
@@ -151,11 +154,11 @@ fi
 # Configure default VM level firewall rules
 if [[ $fw == 1 ]]; then
 
-  pvesh create /nodes/$NODE/qemu/$NEXTID/firewall/rules --action ACCEPT --type in --iface net0 --source local_network --proto tcp  --enable 1 # Enable access on local network
+  pvesh create /nodes/$NODE/qemu/$NEXTID/firewall/rules --action ACCEPT --type in --iface net0 --source +critical_devices --proto tcp  --enable 1 # Enable access for critical devices that need access.
   pvesh create /nodes/$NODE/qemu/$NEXTID/firewall/rules --action ACCEPT --type in --iface net0 --source local_network --macro SSH --enable 1 # Enable SSH on local network
   pvesh create /nodes/$NODE/qemu/$NEXTID/firewall/rules --action ACCEPT --type in --iface net0 --source local_network --macro Ping --enable 1 # Enable Ping on local network
   pvesh set /nodes/$NODE/qemu/$NEXTID/firewall/options --enable 1
-  pvesh set /nodes/pve-new/qemu/103/firewall/options --log_level_in warning
+  pvesh set /nodes/$NODE/qemu/$NEXTID/firewall/options --log_level_in warning
 fi
 
 if [[ $tcp == 1 ]]; then
