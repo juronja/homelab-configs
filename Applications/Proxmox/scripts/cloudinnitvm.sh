@@ -8,6 +8,8 @@
 # Constant variables for dialogs
 NEXTID=$(pvesh get /cluster/nextid)
 NODE=$(hostname)
+CLUSTER_FW_ENABLED=$(pvesh get /cluster/firewall/options --output-format json | sed -n 's/.*"enable": *\([0-9]*\).*/\1/p')
+
 
 # Functions
 function check_root() {
@@ -96,6 +98,7 @@ fi
 
 # WHIPTAIL FIREWALL RULES
 if whiptail --backtitle "Install - Ubuntu VM" --title "FIREWALL RULES" --yesno "Do you want to add FIREWALL rules?" 10 62; then
+  echo "Enable value: $CLUSTER_FW_ENABLED"
   if tcpPorts=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nWrite comma seperated ports to open on TCP" 10 58 "7474,3131,..." --title "TCP PORTS" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
     tcp=1
     echo "Opened TCP Ports: $tcpPorts"
