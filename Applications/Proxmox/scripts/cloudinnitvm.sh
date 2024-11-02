@@ -9,7 +9,7 @@
 NEXTID=$(pvesh get /cluster/nextid)
 NODE=$(hostname)
 CLUSTER_FW_ENABLED=$(pvesh get /cluster/firewall/options --output-format json | sed -n 's/.*"enable": *\([0-9]*\).*/\1/p')
-
+LOCAL_NETWORK=$(pve-firewall localnet | grep local_network | cut -d':' -f2 | sed 's/ //g')
 
 # Functions
 function check_root() {
@@ -100,13 +100,13 @@ fi
 if whiptail --backtitle "Install - Ubuntu VM" --title "FIREWALL RULES" --yesno "Do you want to add FIREWALL rules?" 10 62; then
   fw=1
   echo "Enable value: $CLUSTER_FW_ENABLED"
-  if tcpPorts=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nWrite comma seperated ports to open on TCP" 10 58 "7474,3131,..." --title "TCP PORTS" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
+  if tcpPorts=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nWrite comma seperated ports to open on TCP" 10 58 "7474,3131,..." --title "CUSTOM TCP PORTS" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
     tcp=1
     echo "Opened TCP Ports: $tcpPorts"
     else
     echo "TCP ports skipped .."
   fi
-  if udpPorts=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nWrite comma seperated ports to open on UDP" 10 58 "8082,..." --title "UDP PORTS" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
+  if udpPorts=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nWrite comma seperated ports to open on UDP" 10 58 "8082,..." --title "CUSTOM UDP PORTS" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
     udp=1
     echo "Opened UDP Ports: $udpPorts"
     else
@@ -137,11 +137,17 @@ qm set $NEXTID --scsi0 local-lvm:vm-$NEXTID-disk-0,discard=on,ssd=1 --ide2 local
 # Resize the disk
 qm disk resize $NEXTID scsi0 "${DISK_SIZE}G" && qm set $NEXTID --boot order=scsi0
 
-# Configure default VM level Firewall rules
+# Configure Cluster level firewall rules
+if [[ $CLUSTER_FW_ENABLED != 1 ]]; then
+
+fi
+
+
+# Configure default VM level firewall rules
 if [[ $fw == 1 ]]; then
-  pvesh create /nodes/$NODE/qemu/$NEXTID/firewall/rules --action ACCEPT --type in --iface net0 --source 192.168.84.0/24 --proto tcp  --enable 1 # Enable access on local network
-  pvesh create /nodes/$NODE/qemu/$NEXTID/firewall/rules --action ACCEPT --type in --iface net0 --source 192.168.84.0/24 --macro SSH --enable 1 # Enable SSH
-  pvesh create /nodes/$NODE/qemu/$NEXTID/firewall/rules --action ACCEPT --type in --iface net0 --source 192.168.84.0/24 --macro Ping --enable 1 # Enable Ping on local network
+  pvesh create /nodes/$NODE/qemu/$NEXTID/firewall/rules --action ACCEPT --type in --iface net0 --source $LOCAL_NETWORK --proto tcp  --enable 1 # Enable access on local network
+  pvesh create /nodes/$NODE/qemu/$NEXTID/firewall/rules --action ACCEPT --type in --iface net0 --source $LOCAL_NETWORK --macro SSH --enable 1 # Enable SSH
+  pvesh create /nodes/$NODE/qemu/$NEXTID/firewall/rules --action ACCEPT --type in --iface net0 --source $LOCAL_NETWORK --macro Ping --enable 1 # Enable Ping on local network
   pvesh set /nodes/$NODE/qemu/$NEXTID/firewall/options --enable 1
 fi
 
