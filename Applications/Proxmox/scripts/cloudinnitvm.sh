@@ -95,22 +95,22 @@ else
 fi
 
 # WHIPTAIL FIREWALL RULES
-if whiptail --backtitle "Install - Ubuntu VM" --title "FIREWALL RULES" --yesno "Do you want to add FIREWALL rules?" 10 62; then
+if whiptail --backtitle "Install - Ubuntu VM" --title "FIREWALL" --yesno "Do you want to enable a FIREWALL?" 10 62; then
   fw=1
-  if tcpPorts=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nWrite comma seperated ports to open on TCP" 10 58 "7474,3131,..." --title "CUSTOM TCP PORTS" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
+  if tcpPorts=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nWrite comma seperated ports to open on TCP" 10 58 "7474,3131,..." --title "OPTIONAL TCP PORTS" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
     tcp=1
     echo "Opened TCP Ports: $tcpPorts"
     else
     echo "TCP ports skipped .."
   fi
-  if udpPorts=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nWrite comma seperated ports to open on UDP" 10 58 "8082,..." --title "CUSTOM UDP PORTS" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
+  if udpPorts=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nWrite comma seperated ports to open on UDP" 10 58 "8082,..." --title "OPTIONAL UDP PORTS" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
     udp=1
     echo "Opened UDP Ports: $udpPorts"
     else
     echo "UDP ports skipped .."
   fi
   else
-  echo "FIREWALL Rules skipped .."
+  echo "FIREWALL skipped .."
 fi
 
 
@@ -140,6 +140,7 @@ qm disk resize $NEXTID scsi0 "${DISK_SIZE}G" && qm set $NEXTID --boot order=scsi
 if [[ $CLUSTER_FW_ENABLED != 1 ]]; then
   pvesh set /cluster/firewall/options --enable 1
   pvesh create /cluster/firewall/aliases --name local_network --cidr $LOCAL_NETWORK
+  sleep 5
   pvesh create /cluster/firewall/rules --action ACCEPT --type in --iface vmbr0 --source local_network --macro Ping --enable 1
   pvesh create /cluster/firewall/groups --group local-ssh-ping
   pvesh create /cluster/firewall/groups/local-ssh-ping --action ACCEPT --type in --source local_network --proto tcp --enable 1
