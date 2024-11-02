@@ -8,8 +8,6 @@
 # Constant variables for dialogs
 NEXTID=$(pvesh get /cluster/nextid)
 NODE=$(hostname)
-CLUSTER_FW_ENABLED=$(pvesh get /cluster/firewall/options --output-format json | sed -n 's/.*"enable": *\([0-9]*\).*/\1/p')
-LOCAL_NETWORK=$(pve-firewall localnet | grep local_network | cut -d':' -f2 | sed 's/ //g')
 
 # Functions
 function check_root() {
@@ -99,7 +97,6 @@ fi
 # WHIPTAIL FIREWALL RULES
 if whiptail --backtitle "Install - Ubuntu VM" --title "FIREWALL RULES" --yesno "Do you want to add FIREWALL rules?" 10 62; then
   fw=1
-  echo "Enable value: $CLUSTER_FW_ENABLED"
   if tcpPorts=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nWrite comma seperated ports to open on TCP" 10 58 "7474,3131,..." --title "CUSTOM TCP PORTS" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
     tcp=1
     echo "Opened TCP Ports: $tcpPorts"
@@ -121,6 +118,8 @@ fi
 RAM=$(($RAM_COUNT * 1024))
 IMG_LOCATION="/var/lib/vz/template/iso/"
 CPU="x86-64-v3"
+CLUSTER_FW_ENABLED=$(pvesh get /cluster/firewall/options --output-format json | sed -n 's/.*"enable": *\([0-9]*\).*/\1/p')
+LOCAL_NETWORK=$(pve-firewall localnet | grep local_network | cut -d':' -f2 | sed 's/ //g')
 
 # Download the Ubuntu cloud innit image
 wget -nc --directory-prefix=$IMG_LOCATION https://cloud-images.ubuntu.com/$UBUNTU_RLS/current/$UBUNTU_RLS-server-cloudimg-amd64.img
@@ -139,15 +138,22 @@ qm disk resize $NEXTID scsi0 "${DISK_SIZE}G" && qm set $NEXTID --boot order=scsi
 
 # Configure Cluster level firewall rules
 if [[ $CLUSTER_FW_ENABLED != 1 ]]; then
-
+  pvesh set /cluster/firewall/options --enable 1
+  pvesh create /cluster/firewall/aliases --name local_network --cidr $LOCAL_NETWORK
+  pvesh create /cluster/firewall/rules --action ACCEPT --type in --iface vmbr0 --source local_network --macro Ping --enable 1
+  pvesh create /cluster/firewall/groups --group local-ssh-ping
+  pvesh create /cluster/firewall/groups/local-ssh-ping --action ACCEPT --type in --source local_network --proto tcp --enable 1
+  pvesh create /cluster/firewall/groups/local-ssh-ping --action ACCEPT --type in --source local_network --macro Ping --enable 1
+  pvesh create /cluster/firewall/groups/local-ssh-ping --action ACCEPT --type in --source local_network --macro SSH --enable 1
 fi
-
 
 # Configure default VM level firewall rules
 if [[ $fw == 1 ]]; then
-  pvesh create /nodes/$NODE/qemu/$NEXTID/firewall/rules --action ACCEPT --type in --iface net0 --source $LOCAL_NETWORK --proto tcp  --enable 1 # Enable access on local network
-  pvesh create /nodes/$NODE/qemu/$NEXTID/firewall/rules --action ACCEPT --type in --iface net0 --source $LOCAL_NETWORK --macro SSH --enable 1 # Enable SSH
-  pvesh create /nodes/$NODE/qemu/$NEXTID/firewall/rules --action ACCEPT --type in --iface net0 --source $LOCAL_NETWORK --macro Ping --enable 1 # Enable Ping on local network
+  echo "Enable value: $CLUSTER_FW_ENABLED"
+  echo "Local NETWORK: $LOCAL_NETWORK"
+  pvesh create /nodes/$NODE/qemu/$NEXTID/firewall/rules --action ACCEPT --type in --iface net0 --source local_network --proto tcp  --enable 1 # Enable access on local network
+  pvesh create /nodes/$NODE/qemu/$NEXTID/firewall/rules --action ACCEPT --type in --iface net0 --source local_network --macro SSH --enable 1 # Enable SSH
+  pvesh create /nodes/$NODE/qemu/$NEXTID/firewall/rules --action ACCEPT --type in --iface net0 --source local_network --macro Ping --enable 1 # Enable Ping on local network
   pvesh set /nodes/$NODE/qemu/$NEXTID/firewall/options --enable 1
 fi
 
