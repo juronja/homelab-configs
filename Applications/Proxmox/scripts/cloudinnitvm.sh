@@ -150,10 +150,12 @@ fi
 
 # Configure default VM level firewall rules
 if [[ $fw == 1 ]]; then
+
   pvesh create /nodes/$NODE/qemu/$NEXTID/firewall/rules --action ACCEPT --type in --iface net0 --source local_network --proto tcp  --enable 1 # Enable access on local network
   pvesh create /nodes/$NODE/qemu/$NEXTID/firewall/rules --action ACCEPT --type in --iface net0 --source local_network --macro SSH --enable 1 # Enable SSH on local network
   pvesh create /nodes/$NODE/qemu/$NEXTID/firewall/rules --action ACCEPT --type in --iface net0 --source local_network --macro Ping --enable 1 # Enable Ping on local network
   pvesh set /nodes/$NODE/qemu/$NEXTID/firewall/options --enable 1
+  pvesh set /nodes/pve-new/qemu/103/firewall/options --log_level_in warning
 fi
 
 if [[ $tcp == 1 ]]; then
