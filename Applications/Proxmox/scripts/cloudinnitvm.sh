@@ -97,13 +97,13 @@ fi
 # WHIPTAIL FIREWALL RULES
 if whiptail --backtitle "Install - Ubuntu VM" --title "FIREWALL" --yesno "Do you want to enable a FIREWALL?" 10 62; then
   fw=1
-  if tcpPorts=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nWrite comma seperated ports to open on TCP" 10 58 "7474,3131,..." --title "OPTIONAL TCP PORTS" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
+  if tcpPorts=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nWrite comma seperated TCP ports to expose on WAN" 10 58 "7474,3131," --title "OPEN TCP PORTS" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
     tcp=1
     echo "Opened TCP Ports: $tcpPorts"
     else
     echo "TCP ports skipped .."
   fi
-  if udpPorts=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nWrite comma seperated ports to open on UDP" 10 58 "8082,..." --title "OPTIONAL UDP PORTS" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
+  if udpPorts=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nWrite comma seperated UDP ports to expose on WAN" 10 58 "8082," --title "OPEN UDP PORTS" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
     udp=1
     echo "Opened UDP Ports: $udpPorts"
     else
@@ -140,31 +140,25 @@ qm disk resize $NEXTID scsi0 "${DISK_SIZE}G" && qm set $NEXTID --boot order=scsi
 if [[ $CLUSTER_FW_ENABLED != 1 ]]; then
   pvesh set /cluster/firewall/options --enable 1
   pvesh create /cluster/firewall/aliases --name local_network --cidr $LOCAL_NETWORK
-  pvesh create /cluster/firewall/aliases --name npm --cidr 192.168.84.24
-  pvesh create /cluster/firewall/ipset --name admin_devices
+  pvesh create /cluster/firewall/aliases --name npm --cidr 192.168.84.254
   pvesh create /cluster/firewall/groups --group local_access
-  pvesh create /cluster/firewall/groups --group npmg
   sleep 2
   pvesh create /cluster/firewall/rules --action ACCEPT --type in --iface vmbr0 --source local_network --macro Ping --enable 1
-  pvesh create /cluster/firewall/ipset/admin_devices --cidr 192.168.84.4
-  pvesh create /cluster/firewall/groups/local-access --action ACCEPT --type in --source +admin_devices --proto tcp --enable 1
+  pvesh create /cluster/firewall/groups/local_access --action ACCEPT --type in --source 192.168.84.1-192.168.84.49 --proto tcp --enable 1
   pvesh create /cluster/firewall/groups/local_access --action ACCEPT --type in --source local_network --macro Ping --enable 1
-  pvesh create /cluster/firewall/groups/local_access --action ACCEPT --type in --source local_network --macro SSH --enable 1
+  pvesh create /cluster/firewall/groups/local_access --action ACCEPT --type in --source 192.168.84.1-192.168.84.49 --macro SSH --enable 1
 fi
 
 # Configure default VM level firewall rules
 if [[ $fw == 1 ]]; then
-
-  # pvesh create /nodes/$NODE/qemu/$NEXTID/firewall/rules --action ACCEPT --type in --iface net0 --source +admin_devices --proto tcp  --enable 1 # Enable access for critical devices that need access.
-  # pvesh create /nodes/$NODE/qemu/$NEXTID/firewall/rules --action ACCEPT --type in --iface net0 --source local_network --macro SSH --enable 1 # Enable SSH on local network
-  # pvesh create /nodes/$NODE/qemu/$NEXTID/firewall/rules --action ACCEPT --type in --iface net0 --source local_network --macro Ping --enable 1 # Enable Ping on local network
+  pvesh create /nodes/$NODE/qemu/$NEXTID/firewall/rules --action local_access --type group --iface net0 --enable 1
   pvesh set /nodes/$NODE/qemu/$NEXTID/firewall/options --enable 1
   pvesh set /nodes/$NODE/qemu/$NEXTID/firewall/options --log_level_in warning
 fi
 
 if [[ $tcp == 1 ]]; then
-  pvesh create /nodes/$NODE/qemu/$NEXTID/firewall/rules --action ACCEPT --type in --iface net0 --proto tcp --dport $tcpPorts --enable 1
+  pvesh create /nodes/$NODE/qemu/$NEXTID/firewall/rules --action ACCEPT --type in --iface net0 --proto tcp --source npm --dport $tcpPorts --enable 1
 fi
 if [[ $udp == 1 ]]; then
-  pvesh create /nodes/$NODE/qemu/$NEXTID/firewall/rules --action ACCEPT --type in --iface net0 --proto udp --dport $udpPorts --enable 1
+  pvesh create /nodes/$NODE/qemu/$NEXTID/firewall/rules --action ACCEPT --type in --iface net0 --proto udp --source npm --dport $udpPorts --enable 1
 fi

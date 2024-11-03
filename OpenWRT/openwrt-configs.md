@@ -281,7 +281,7 @@ config redirect
         list proto 'tcp'
         option src 'wan'
         option src_dport '80'
-        option dest_ip '192.168.84.24'
+        option dest_ip '192.168.84.254'
 
 config redirect
         option dest 'lan'
@@ -292,7 +292,7 @@ config redirect
         list proto 'tcp'
         option src 'wan'
         option src_dport '443'
-        option dest_ip '192.168.84.24'
+        option dest_ip '192.168.84.254'
 
 
 ```
