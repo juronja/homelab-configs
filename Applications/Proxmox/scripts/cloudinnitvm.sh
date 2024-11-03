@@ -97,13 +97,13 @@ fi
 # WHIPTAIL FIREWALL RULES
 if whiptail --backtitle "Install - Ubuntu VM" --title "FIREWALL" --yesno "Do you want to enable a FIREWALL?" 10 62; then
   fw=1
-  if tcpPorts=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nWrite comma seperated TCP ports to expose on WAN" 10 58 "7474,3131," --title "OPEN TCP PORTS" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
+  if tcpPorts=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nWrite comma seperated TCP ports to expose on WAN" 10 58 "7474,3131," --title "EXPOSE TCP PORTS" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
     tcp=1
     echo "Opened TCP Ports: $tcpPorts"
     else
     echo "TCP ports skipped .."
   fi
-  if udpPorts=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nWrite comma seperated UDP ports to expose on WAN" 10 58 "8082," --title "OPEN UDP PORTS" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
+  if udpPorts=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nWrite comma seperated UDP ports to expose on WAN" 10 58 "8082," --title "EXPOSE UDP PORTS" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
     udp=1
     echo "Opened UDP Ports: $udpPorts"
     else
@@ -147,6 +147,7 @@ if [[ $CLUSTER_FW_ENABLED != 1 ]]; then
   pvesh create /cluster/firewall/groups/local_access --action ACCEPT --type in --source 192.168.84.1-192.168.84.49 --proto tcp --enable 1
   pvesh create /cluster/firewall/groups/local_access --action ACCEPT --type in --source local_network --macro Ping --enable 1
   pvesh create /cluster/firewall/groups/local_access --action ACCEPT --type in --source 192.168.84.1-192.168.84.49 --macro SSH --enable 1
+  echo "Cluster Firewall rules set successfully .."
 fi
 
 # Configure default VM level firewall rules
@@ -154,11 +155,14 @@ if [[ $fw == 1 ]]; then
   pvesh create /nodes/$NODE/qemu/$NEXTID/firewall/rules --action local_access --type group --iface net0 --enable 1
   pvesh set /nodes/$NODE/qemu/$NEXTID/firewall/options --enable 1
   pvesh set /nodes/$NODE/qemu/$NEXTID/firewall/options --log_level_in warning
+  echo "VM Firewall rules set successfully .."
 fi
 
 if [[ $tcp == 1 ]]; then
   pvesh create /nodes/$NODE/qemu/$NEXTID/firewall/rules --action ACCEPT --type in --iface net0 --proto tcp --source npm --dport $tcpPorts --enable 1
+  echo "TCP ports exposed successfully .."
 fi
 if [[ $udp == 1 ]]; then
   pvesh create /nodes/$NODE/qemu/$NEXTID/firewall/rules --action ACCEPT --type in --iface net0 --proto udp --source npm --dport $udpPorts --enable 1
+  echo "UDP ports exposed successfully .."
 fi
