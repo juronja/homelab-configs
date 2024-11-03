@@ -42,7 +42,7 @@
     - Nginx Proxy Manager:
         icon: nginx-proxy-manager.svg
         href: http://proxy.lan:81/login
-        ping: 192.168.84.24
+        ping: 192.168.84.254
     - Adguard Home:
         icon: adguard-home.svg
         href: http://adguard.lan
@@ -56,7 +56,6 @@
         icon: home-assistant.svg
         href: https://ha.repina.eu
         ping: https://ha.repina.eu
-        #description: Homepage is 😎
     - Frigate NVR:
         icon: frigate.svg
         href: http://frigate.lan:5000
