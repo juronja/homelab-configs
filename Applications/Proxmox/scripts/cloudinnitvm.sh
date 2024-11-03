@@ -147,7 +147,9 @@ if [[ $CLUSTER_FW_ENABLED != 1 ]]; then
   pvesh create /cluster/firewall/groups/local_access --action ACCEPT --type in --source 192.168.84.1-192.168.84.49 --proto tcp --enable 1
   pvesh create /cluster/firewall/groups/local_access --action ACCEPT --type in --source local_network --macro Ping --enable 1
   pvesh create /cluster/firewall/groups/local_access --action ACCEPT --type in --source 192.168.84.1-192.168.84.49 --macro SSH --enable 1
-  echo "Cluster Firewall rules set successfully .."
+  echo "Cluster Firewall configurations set successfully .."
+  else
+  echo "Cluster Firewall configurations already present .."
 fi
 
 # Configure default VM level firewall rules
