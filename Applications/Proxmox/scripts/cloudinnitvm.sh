@@ -99,18 +99,18 @@ if whiptail --backtitle "Install - Ubuntu VM" --title "FIREWALL" --yesno "Do you
   fw=1
   if tcpPorts=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nWrite comma seperated TCP ports to expose on WAN" 10 58 "7474,3131," --title "EXPOSE TCP PORTS" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
     tcp=1
-    echo "Opened TCP Ports: $tcpPorts"
+    echo "Will open TCP Ports: $tcpPorts"
     else
     echo "TCP ports skipped .."
   fi
   if udpPorts=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nWrite comma seperated UDP ports to expose on WAN" 10 58 "8082," --title "EXPOSE UDP PORTS" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
     udp=1
-    echo "Opened UDP Ports: $udpPorts"
+    echo "Will open UDP Ports: $udpPorts"
     else
     echo "UDP ports skipped .."
   fi
   else
-  echo "FIREWALL skipped .."
+  echo "FIREWALL setup skipped .."
 fi
 
 
