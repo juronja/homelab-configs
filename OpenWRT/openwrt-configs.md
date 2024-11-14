@@ -25,7 +25,7 @@ Official documentation: https://openwrt.org/docs/guide-user/network/wifi/dumbap
 
 By default, the main router will have an address of 192.168.1.1
 
-#### Set dynamic IP, disable wan, wan6 and disable services to safe resources
+#### Set dynamic IP, disable wan and disable services to safe resources
 
 If you need static IP, better reserve in router.
 You can also delete the WAN and WAN& interfaces in UI.
@@ -33,9 +33,6 @@ You can also delete the WAN and WAN& interfaces in UI.
 ```bash
 uci set network.lan.proto="dhcp"
 uci set dhcp.lan.ignore=1
-uci set dhcp.lan.ra='disable'
-uci set dhcp.lan.dhcpv6='disable'
-uci set dhcp.lan.ndp='disable'
 uci set network.wan.proto='none'
 uci set network.wan.auto='0'
 uci set network.wan6.proto='none'
@@ -149,9 +146,6 @@ uci set dhcp.lan.start='50'
 uci set dhcp.lan.limit='150'
 uci set dhcp.lan.leasetime='12h'
 uci set dhcp.lan.dhcp_option='6,192.168.84.22' #Adguard server address
-uci set dhcp.lan.ra='disable'
-uci set dhcp.lan.dhcpv6='disable'
-uci set dhcp.lan.ndp='disable'
 uci set dhcp.wan.ra='disable'
 uci set dhcp.wan.dhcpv6='disable'
 uci set dhcp.wan.ndp='disable'
