@@ -6,7 +6,7 @@ user and group owners must be `www-data`
 
 ## Post install tasks
 
-After you install put this command in the container shell:
+After you install put this commands in the container shell:
 
 ```bash
 occ config:system:set trusted_domains 0 --value=nextcloud.repina.eu
