@@ -146,6 +146,7 @@ uci set dhcp.lan.start='50'
 uci set dhcp.lan.limit='150'
 uci set dhcp.lan.leasetime='12h'
 uci set dhcp.lan.dhcp_option='6,192.168.84.22' #Adguard server address
+uci set dhcp.lan.ndp='disable'
 uci set dhcp.wan.ra='disable'
 uci set dhcp.wan.dhcpv6='disable'
 uci set dhcp.wan.ndp='disable'
