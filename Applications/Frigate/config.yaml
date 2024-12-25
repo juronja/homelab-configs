@@ -3,7 +3,7 @@ mqtt:
   host: 192.168.84.21
   port: 1883
   user: mqtt
-  password: X&yibCCDaKWfyH38!rGN59K^ji%@d8e&Sm*&9ksEoXFdqf%T&f
+  password: PASS
   topic_prefix: frigate
   client_id: frigate
 
@@ -17,6 +17,12 @@ detectors:
   ov:
     type: openvino
     device: CPU
+  # cpu1:
+  #   type: cpu
+  #   num_threads: 2
+  # cpu2:
+  #   type: cpu
+  #   num_threads: 2
 
 model:
   width: 300
@@ -29,9 +35,79 @@ model:
 go2rtc:
   streams:
     esp-cam-stream:
-      - ffmpeg:http://192.168.84.30:8080#video=h264#hardware   # <- use hardware acceleration to create an h264 stream usable for other components.
+      - ffmpeg:http://192.168.84.31:8080#video=h264#hardware   # <- use hardware acceleration to create an h264 stream usable for other components.
+#    front-left-main:
+#      - ffmpeg:http://192.168.84.30/flv?port=1935&app=bcs&stream=channel0_main.bcs&user=rtsp&password=PASS#video=copy#audio=copy#audio=opus
+#    front-left-sub:
+#      - ffmpeg:http://192.168.84.30/flv?port=1935&app=bcs&stream=channel0_ext.bcs&user=rtsp&password=PASS
 
 cameras:
+  front-left:
+    ffmpeg:
+      inputs:
+        # Low Resolution Stream
+        - path: rtsp://rtsp:PASS@192.168.84.40/Preview_01_sub
+          roles:
+            - detect
+        # High Resolution Stream
+        - path: rtsp://rtsp:PASS@192.168.84.40/Preview_01_main
+          roles:
+            - record
+#      input_args: preset-rtsp-restream
+      output_args:
+        record: preset-record-generic-audio-copy
+    detect:
+      enabled: true
+      width: 640
+      height: 480
+      fps: 7 # Set to the same frame rate as the stream in Reolink
+    objects:
+      track:
+        - person
+        - car
+        - motorcycle
+        - cat
+        - dog
+      filters:
+        person:
+          mask:
+            - 0.452,0.636,0.468,0.598,0.502,0.579,0.515,0.467,0.464,0.408,0.452,0.332,0.543,0.306,0.59,0.332,0.623,0.393,0.589,0.436,0.539,0.461,0.523,0.586,0.559,0.609,0.566,0.643,0.546,0.74,0.515,0.769,0.464,0.755
+            - 0.384,0.662,0.41,0.586,0.413,0.501,0.403,0.283,0.388,0.006,0.347,0.002,0.312,0.254,0.304,0.444,0.299,0.488,0.287,0.552,0.297,0.613,0.317,0.641,0.346,0.67
+    snapshots:
+      enabled: true
+      timestamp: true
+      quality: 100
+      retain:
+        default: 7
+      required_zones:
+        - Driveway
+    record:
+      enabled: true
+      retain:
+        days: 5
+        mode: motion
+      events:
+        retain:
+          default: 5
+          mode: active_objects
+      sync_recordings: true
+    review:
+      alerts:
+        required_zones: Driveway
+      detections:
+        required_zones: Driveway
+    motion:
+      threshold: 40
+      contour_area: 40
+      lightning_threshold: 0.3 # Decreasing this value will make motion detection more likely to ignore large amounts of motion (lightning or other substantial changes)
+      improve_contrast: 'true'
+      mask: 
+        0,0.443,0.077,0.322,0.168,0.269,0.303,0.228,0.65,0.193,0.9,0.227,0.875,0.416,0.842,0.517,0.815,0.719,0.734,1,1,1,1,0,0,0
+    zones:
+      Driveway:
+        coordinates: 0.565,0.249,0.319,0.291,0.124,0.38,0,0.527,0,1,0.669,1,0.876,0.286
+        loitering_time: 0
+        inertia: 3
   esp-cam:
     ffmpeg:
       inputs:
@@ -44,48 +120,39 @@ cameras:
         record: preset-record-generic
     detect:
       enabled: true
-      width: 800
-      height: 600
+      width: 1600
+      height: 1200
       fps: 5
     objects:
       track:
         - person
         - car
         - motorcycle
+        - cat
+        - dog
     snapshots:
       enabled: true
       timestamp: true
       quality: 100
       retain:
-        default: 5
+        default: 7
       required_zones:
         - Driveway
     record:
       enabled: true
       retain:
-        days: 2
+        days: 5
         mode: motion
       events:
         retain:
-          default: 2
-          mode: motion
-#      sync_recordings: true # The sync operation uses considerable CPU resources and in most cases is not needed, only enable when necessary.
-    review:
-      alerts:
-        required_zones:
-          - Driveway
-      detections:
-        required_zones:
-          - Driveway
-
+          default: 5
+          mode: active_objects
+      sync_recordings: true
+    review: {}
     motion:
-      threshold: 45
-      contour_area: 10
+      threshold: 40
+      contour_area: 45
       improve_contrast: 'true'
-      mask: 0,0,1,0,1,0.25,0.561,0.412,0.396,0.434,0.205,1,0,1
-    zones:
-      Driveway:
-        coordinates: 1,0.515,0.668,0.549,0.607,0.475,0.452,0.58,0.388,1,1,1
-        loitering_time: 0
-        inertia: 3
+      mask: 0,0,1,0,1,0.382,0.576,0.433,0.519,0.333,0.426,0.34,0.445,1,0,1
+    zones: {}
 version: 0.14
