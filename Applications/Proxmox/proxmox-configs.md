@@ -99,4 +99,13 @@ systemctl start pve-cluster
 
 1. Create a **directory** type disk with **ext4** filesystem. pvenode>Disks>Directory>Create: Directory
 2. Enable **Add storage** when creating
-3. 
+
+## Backup & Restore VMs
+
+You can use this to migrate VMs from one machine to another.
+
+1. Create a backup with Mode `Stop`. Other settings can be default.
+2. By default it will save backups to `local` storage and to `/var/lib/vz/dump` folder.
+3. Copy backup folder to another machine via SCP: `scp -r /var/lib/vz/dump root@IP:/var/lib/vz/`
+4. Restore VM from backups
+
