@@ -13,11 +13,12 @@ wifi:
       password: !secret wifi_password3
     - ssid: !secret wifi_ssid4
       password: !secret wifi_password4
-
   # Set up a wifi access point
   ap:
     ssid: ${friendly_name}
     password: ${ap_pass}
+  # custom local domain for openwrt
+  domain: .lan
 
 # Enable logging
 logger:
