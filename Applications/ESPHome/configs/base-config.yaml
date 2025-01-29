@@ -1,6 +1,7 @@
 # Allow Over-The-Air updates
 ota:
   platform: esphome
+  password: ${ap_pass}
 
 # Networking
 wifi:
@@ -13,7 +14,7 @@ wifi:
       password: !secret wifi_password3
     - ssid: !secret wifi_ssid4
       password: !secret wifi_password4
-  # Set up a wifi access point
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
     ssid: ${friendly_name}
     password: ${ap_pass}
