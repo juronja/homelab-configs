@@ -1,7 +1,6 @@
 # Allow Over-The-Air updates
 ota:
   platform: esphome
-  password: ${ap_pass}
 
 # Networking
 wifi:
