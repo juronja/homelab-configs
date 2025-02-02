@@ -6,7 +6,7 @@
 - In `Settings > System > Network > Home Assistant URL > Internet` add the HA domain url.
 
 
-## Configuartion.yaml
+## Configuration.yaml
 
 ```yml
 # Jure - customization for specific entities
@@ -18,7 +18,7 @@ http:
   use_x_forwarded_for: true
   trusted_proxies:
     - 192.168.84.0/24
-  ip_ban_enabled: true # This will block an IP after x unsuccessfull login attempts.
+  ip_ban_enabled: true # This will block an IP after x unsuccessful login attempts.
   login_attempts_threshold: 10
 
 ```
