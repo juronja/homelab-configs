@@ -3,10 +3,10 @@
 # https://gethomepage.dev/latest/configs/services
 
 - Infrastructure:
-    - Proxmox Critical:
+    - Proxmox i7-6700:
         icon: proxmox.svg
-        href: https://pve-critical.lan:8006
-        ping: 192.168.84.20
+        href: https://pve-i7-6700.lan:8006
+        ping: 192.168.84.5
         #description: pve-critical
         #widget:
         #  type: proxmox

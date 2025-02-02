@@ -14,7 +14,7 @@
           href: https://dash.cloudflare.com/login
     - Helper Scripts:
         - icon: https://tteck.github.io/Proxmox/favicon.ico
-          href: https://tteck.github.io/Proxmox/
+          href: https://community-scripts.github.io/ProxmoxVE/
     - TrueNas Downloads:
         - icon: truenas.svg
           href: https://download.truenas.com/
