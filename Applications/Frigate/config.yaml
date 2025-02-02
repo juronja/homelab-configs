@@ -84,11 +84,11 @@ cameras:
     record:
       enabled: true
       retain:
-        days: 5
+        days: 7
         mode: motion
       events:
         retain:
-          default: 5
+          default: 7
           mode: active_objects
       sync_recordings: true
     review:
@@ -141,11 +141,11 @@ cameras:
     record:
       enabled: true
       retain:
-        days: 5
+        days: 7
         mode: motion
       events:
         retain:
-          default: 5
+          default: 7
           mode: active_objects
       sync_recordings: true
     review: {}
