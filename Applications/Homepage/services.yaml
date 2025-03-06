@@ -3,7 +3,7 @@
 # https://gethomepage.dev/latest/configs/services
 
 - Infrastructure:
-    - Proxmox i7-6700:
+    - Proxmox i7-8700:
         icon: proxmox.svg
         href: https://pve-i7-8700.lan:8006
         ping: 192.168.84.6
@@ -70,10 +70,6 @@
         ping: https://jenkins.repina.eu
 
 - Media:
-    - Nextcloud:
-        icon: nextcloud.svg
-        href: https://nextcloud.repina.eu
-        ping: https://nextcloud.repina.eu
     - Audiobookshelf:
         icon: audiobookshelf.svg
         href: https://audiobook.repina.eu
