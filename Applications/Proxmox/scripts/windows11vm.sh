@@ -64,9 +64,9 @@ else
 fi
 
 if RAM_COUNT=$(whiptail --backtitle "Install - Windows 11 VM" --title "RAM COUNT" --radiolist "\nAllocate number of RAM. (Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 3 \
-    "4" "GB" OFF \
-    "8" "GB" ON \
-    "16" "GB" OFF \
+    "8" "GB" OFF \
+    "16" "GB" ON \
+    "32" "GB" OFF \
     3>&1 1>&2 2>&3); then
         echo -e "Allocated RAM: $RAM_COUNT GB"
 else
@@ -95,4 +95,4 @@ IMG_LOCATION="/var/lib/vz/template/iso/"
 wget -nc --directory-prefix=$IMG_LOCATION https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso
 
 # Create a VM
-qm create $VMID --ostype win11 --cores $CORE_COUNT --cpu $CPU --memory $RAM --balloon 1 --name $NAME --bios ovmf --efidisk0 local-lvm:1,efitype=4m,pre-enrolled-keys=1 --machine q35 --tpmstate0 local-lvm:1,version=v2.0 --scsihw virtio-scsi-single --scsi0 local-lvm:$DISK_SIZE,ssd=on,iothread=on --ide0 local:iso/$WIN_ISO,media=cdrom --ide1 local:iso/virtio-win.iso,media=cdrom --net0 virtio,bridge=vmbr0,firewall=1 --ipconfig0 ip=dhcp,ip6=dhcp --agent enabled=1 --onboot 1 --boot order="ide0;scsi0"
+qm create $VMID --ostype win11 --cores $CORE_COUNT --cpu $CPU --memory $RAM --balloon 0 --name $NAME --bios ovmf --efidisk0 local-lvm:1,efitype=4m,pre-enrolled-keys=1 --machine q35 --tpmstate0 local-lvm:1,version=v2.0 --scsihw virtio-scsi-single --scsi0 local-lvm:$DISK_SIZE,ssd=on,iothread=on --ide0 local:iso/$WIN_ISO,media=cdrom --ide1 local:iso/virtio-win.iso,media=cdrom --net0 virtio,bridge=vmbr0,firewall=1 --ipconfig0 ip=dhcp,ip6=dhcp --agent enabled=1 --onboot 1 --boot order="ide0;scsi0"
