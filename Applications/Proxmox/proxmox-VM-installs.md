@@ -71,7 +71,7 @@ Run the wizard in the iso drive (virtio-win-gt-x64.msi).
 ### PCIe Passthrough a GPU (WIP)
 
 1. Make sure IOMMU is enabled on the motherboard and CPU supports it
-2. With AMD CPUs IOMMU is enabled by default. With recent kernels (6.8 or newer), this is also true for Intel CPUs.
+2. With recent kernels (6.8 or newer), IOMMU is enabled by default.
 3. Add these modules: `printf "\nvfio\nvfio_iommu_type1\nvfio_pci" >> /etc/modules`
 4. Find vendor & device ID with: `lspci -ns 01:00 -v`
 5. Disable VGA: `echo "options vfio-pci ids=10de:1f02 disable_vga=1" > /etc/modprobe.d/vfio.conf`
