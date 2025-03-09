@@ -36,6 +36,7 @@ powercfg /change disk-timeout-dc 0
 
 # Install / Uninstall apps
 Get-AppxPackage -alluser Microsoft.BingNews | Remove-AppxPackage
+Get-AppxPackage -alluser Microsoft.BingWeather | Remove-AppxPackage
 Get-AppxPackage -alluser Microsoft.WindowsMaps | Remove-AppxPackage
 Get-AppxPackage -alluser Microsoft.MicrosoftStickyNotes | Remove-AppxPackage
 Get-AppxPackage -alluser Microsoft.Todos | Remove-AppxPackage
@@ -55,6 +56,8 @@ Get-AppxPackage -alluser microsoft.windowscommunicationsapps | Remove-AppxPackag
 Get-AppxPackage -alluser MicrosoftWindows.Client.WebExperience | Remove-AppxPackage # Widget app
 Get-AppxPackage -alluser Microsoft.549981C3F5F10 | Remove-AppxPackage # Cortana appGet-AppxPackage -alluser Microsoft.549981C3F5F10 | Remove-AppxPackage # Cortana app
 Get-AppxPackage -alluser Microsoft.Teams | Remove-AppxPackage
+Get-AppxPackage -alluser Microsoft.Copilot | Remove-AppxPackage
+Get-AppxPackage -alluser Microsoft.WindowsAlarms | Remove-AppxPackage
 winget uninstall onedrive
 winget install -e --id Google.Chrome
 winget install -e --id Adobe.Acrobat.Reader.64-bit
