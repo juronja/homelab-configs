@@ -64,6 +64,7 @@ Get-AppxPackage -alluser Microsoft.XboxGamingOverlay | Remove-AppxPackage
 Get-AppxPackage -alluser Microsoft.XboxSpeechToTextOverlay | Remove-AppxPackage
 Get-AppxPackage -alluser Microsoft.Xbox.TCUI | Remove-AppxPackage
 Get-AppxPackage -alluser Microsoft.XboxGameCallableUI | Remove-AppxPackage
+Get-AppxPackage -alluser MSTeams | Remove-AppxPackage
 
 winget uninstall onedrive
 winget install -e --id Google.Chrome
