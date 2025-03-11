@@ -58,6 +58,13 @@ Get-AppxPackage -alluser Microsoft.549981C3F5F10 | Remove-AppxPackage # Cortana 
 Get-AppxPackage -alluser Microsoft.Teams | Remove-AppxPackage
 Get-AppxPackage -alluser Microsoft.Copilot | Remove-AppxPackage
 Get-AppxPackage -alluser Microsoft.WindowsAlarms | Remove-AppxPackage
+Get-AppxPackage -alluser Microsoft.WindowsCamera | Remove-AppxPackage
+Get-AppxPackage -alluser Microsoft.GamingApp | Remove-AppxPackage
+Get-AppxPackage -alluser Microsoft.XboxGamingOverlay | Remove-AppxPackage
+Get-AppxPackage -alluser Microsoft.XboxSpeechToTextOverlay | Remove-AppxPackage
+Get-AppxPackage -alluser Microsoft.Xbox.TCUI | Remove-AppxPackage
+Get-AppxPackage -alluser Microsoft.XboxGameCallableUI | Remove-AppxPackage
+
 winget uninstall onedrive
 winget install -e --id Google.Chrome
 winget install -e --id Adobe.Acrobat.Reader.64-bit

@@ -65,8 +65,8 @@ Load virtio **disk** (amd64>w11>virtio) and **network** drivers (NetKVM>w11>amd6
 - STEP 3 - Use local account
 When asked to sign in use local domain (account) option.
 
-- STEP 4 - Install other virtio drivers
-Run the wizard in the iso drive (virtio-win-gt-x64.msi).
+- STEP 4 - Install guest-agent and other virtio drivers
+Run the wizard in the iso drive (qemu-ga-x86_64 and virtio-win-gt-x64.msi).
 
 ### PCIe Passthrough a GPU (WIP)
 
@@ -77,3 +77,6 @@ Run the wizard in the iso drive (virtio-win-gt-x64.msi).
 5. Disable VGA: `echo "options vfio-pci ids=10de:1f02 disable_vga=1" > /etc/modprobe.d/vfio.conf`
 6. Blacklist drivers so Proxmox does not load them `printf "blacklist nouveau\nblacklist nvidia\nblacklist nvidiafb" >> /etc/modprobe.d/blacklist.conf`
 7. Update `update-initramfs -u -k all`
+
+echo "options vfio_iommu_type1 allow_unsafe_interrupts=1" > /etc/modprobe.d/iommu_unsafe_interrupts.conf
+echo "options kvm ignore_msrs=1" > /etc/modprobe.d/kvm.conf

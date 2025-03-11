@@ -54,7 +54,7 @@ else
     exit-script
 fi
 
-if CORE_COUNT=$(whiptail --backtitle "Install - Windows 11 VM" --title "CORE COUNT" --radiolist "\nAllocate number of CPU Cores. (Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 2 \
+if CORE_COUNT=$(whiptail --backtitle "Install - Windows 11 VM" --title "CORE COUNT" --radiolist "\nAllocate number of CPU Cores. (Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 3 \
     "4" "cores" ON \
     "8" "cores" OFF \
     3>&1 1>&2 2>&3); then
@@ -73,13 +73,12 @@ else
     exit-script
 fi
 
-if DISK_SIZE=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nSet disk size in GB" 8 58 "256" --title "DISK SIZE" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
-    if [ -z $DISK_SIZE ]; then
-        DISK_SIZE="256"
+if DISK_SIZE=$(whiptail --backtitle "Install - Windows 11 VM" --title "DISK SIZE" --radiolist "\nSelect disk size. (Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 3 \
+    "128" "GB" OFF \
+    "256" "GB" ON \
+    "512" "GB" OFF \
+    3>&1 1>&2 2>&3); then
         echo -e "Disk size: $DISK_SIZE GB"
-    else
-        echo -e "Disk size: $DISK_SIZE GB"
-    fi
 else
     exit-script
 fi
