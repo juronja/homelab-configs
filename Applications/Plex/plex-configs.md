@@ -29,7 +29,7 @@ Note you can force SSL by setting required and not adding the HTTP URL, however 
 
 ### Plex LXC - mount SMB
 
-When instaling a LXC container in proxmox you can mount a network Samba share drive.
+When installing a LXC container in proxmox you can mount a network Samba share drive.
 
 1. Install cifs-utils
 2. Make a directory in /mnt
