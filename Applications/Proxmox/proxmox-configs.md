@@ -1,13 +1,13 @@
 # Useful Proxmox configurations
 
-- When installing I use `.lan` local domain. e.g. `pve-critical.lan`.
-- API URL endpoint for `pvesh` command: https://pve-critical.lan:8006/api2/html/
+- When installing I use `.lan` local domain. e.g. `pve-i7-8700.lan`.
+- API URL endpoint for `pvesh` command: https://pve-i7-8700.lan:8006/api2/html/
 
 ## First time setup
 
 Common steps when installing proxmox for the first time. Use this script:
 
-https://tteck.github.io/Proxmox/#proxmox-ve-post-install
+https://community-scripts.github.io/ProxmoxVE/scripts?id=post-pve-install
 
 
 ## Firewall setup
@@ -108,4 +108,10 @@ You can use this to migrate VMs from one machine to another.
 2. By default it will save backups to `local` storage and to `/var/lib/vz/dump` folder.
 3. Copy backup folder to another machine via SCP: `scp -r /var/lib/vz/dump root@IP:/var/lib/vz/`
 4. Restore VM from backups
+
+## VM Boot order
+
+Order 1: adguard, (startup delay: 20s)
+Order 2: truenas-scale (startup delay: 120s), haos, hosting-prod, nginxproxymanager
+Order 3: Any
 
