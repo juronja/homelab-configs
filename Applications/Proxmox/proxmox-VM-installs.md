@@ -78,5 +78,10 @@ Run the wizard in the iso drive (qemu-ga-x86_64 and virtio-win-gt-x64.msi).
 6. Blacklist drivers so Proxmox does not load them `printf "blacklist nouveau\nblacklist nvidia\nblacklist nvidiafb" >> /etc/modprobe.d/blacklist.conf`
 7. Update `update-initramfs -u -k all`
 
+#### Optional lines
+
+```bash
 echo "options vfio_iommu_type1 allow_unsafe_interrupts=1" > /etc/modprobe.d/iommu_unsafe_interrupts.conf
 echo "options kvm ignore_msrs=1" > /etc/modprobe.d/kvm.conf
+
+```
