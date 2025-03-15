@@ -74,22 +74,21 @@ else
 fi
 
 if RAM_COUNT=$(whiptail --backtitle "Install - Ubuntu VM" --title "RAM COUNT" --radiolist "\nAllocate number of RAM\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 3 \
+    "2" "GB" OFF \
     "4" "GB" ON \
     "8" "GB" OFF \
-    "16" "GB" OFF \
     3>&1 1>&2 2>&3); then
         echo -e "Allocated RAM: $RAM_COUNT GB"
 else
     exit-script
 fi
 
-if DISK_SIZE=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nSet disk size in GB" 8 58 "32" --title "DISK SIZE" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
-    if [ -z $DISK_SIZE ]; then
-        DISK_SIZE="32"
-        echo -e "Disk size: $DISK_SIZE GB"
-    else
-        echo -e "Disk size: $DISK_SIZE GB"
-    fi
+if DISK_SIZE=$(whiptail --backtitle "Install - Ubuntu VM" --title "DISK SIZE" --radiolist "\nAllocate disk size\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 3 \
+    "16" "GB" OFF \
+    "32" "GB" ON \
+    "64" "GB" OFF \
+    3>&1 1>&2 2>&3); then
+        echo -e "Allocated disk size: $DISK_SIZE GB"
 else
     exit-script
 fi
@@ -118,8 +117,14 @@ fi
 RAM=$(($RAM_COUNT * 1024))
 IMG_LOCATION="/var/lib/vz/template/iso/"
 CPU="x86-64-v3"
+
+# Proxmox variables
 CLUSTER_FW_ENABLED=$(pvesh get /cluster/firewall/options --output-format json | sed -n 's/.*"enable": *\([0-9]*\).*/\1/p')
 LOCAL_NETWORK=$(pve-firewall localnet | grep local_network | cut -d':' -f2 | sed 's/ //g')
+ALIAS_HOME_NETWORK="home_network"
+ALIAS_PROXY="npm"
+GROUP_LOCAL="local-ssh-ping"
+SOURCE_IPRANGE="192.168.84.1-192.168.84.49"
 
 # Download the Ubuntu cloud innit image
 wget -nc --directory-prefix=$IMG_LOCATION https://cloud-images.ubuntu.com/$UBUNTU_RLS/current/$UBUNTU_RLS-server-cloudimg-amd64.img
@@ -136,35 +141,35 @@ qm set $NEXTID --scsi0 local-lvm:vm-$NEXTID-disk-0,discard=on,ssd=1 --ide2 local
 # Resize the disk
 qm disk resize $NEXTID scsi0 "${DISK_SIZE}G" && qm set $NEXTID --boot order=scsi0
 
-# Configure Cluster level firewall rules
+# Configure Cluster level firewall rules if not enabled
 if [[ $CLUSTER_FW_ENABLED != 1 ]]; then
   pvesh set /cluster/firewall/options --enable 1
-  pvesh create /cluster/firewall/aliases --name local_network --cidr $LOCAL_NETWORK
-  pvesh create /cluster/firewall/aliases --name npm --cidr 192.168.84.254
-  pvesh create /cluster/firewall/groups --group local_access
+  pvesh create /cluster/firewall/aliases --name $ALIAS_HOME_NETWORK --cidr $LOCAL_NETWORK
+  pvesh create /cluster/firewall/aliases --name $ALIAS_PROXY --cidr 192.168.84.254
+  pvesh create /cluster/firewall/groups --group $GROUP_LOCAL
   sleep 2
-  pvesh create /cluster/firewall/rules --action ACCEPT --type in --iface vmbr0 --source local_network --macro Ping --enable 1
-  pvesh create /cluster/firewall/groups/local_access --action ACCEPT --type in --source 192.168.84.1-192.168.84.49 --proto tcp --enable 1
-  pvesh create /cluster/firewall/groups/local_access --action ACCEPT --type in --source local_network --macro Ping --enable 1
-  pvesh create /cluster/firewall/groups/local_access --action ACCEPT --type in --source 192.168.84.1-192.168.84.49 --macro SSH --enable 1
+  pvesh create /cluster/firewall/rules --action ACCEPT --type in --iface vmbr0 --source $ALIAS_HOME_NETWORK --macro Ping --enable 1
+  pvesh create /cluster/firewall/groups/$GROUP_LOCAL --action ACCEPT --type in --source $SOURCE_IPRANGE --proto tcp --enable 1
+  pvesh create /cluster/firewall/groups/$GROUP_LOCAL --action ACCEPT --type in --source $ALIAS_HOME_NETWORK --macro Ping --enable 1
+  pvesh create /cluster/firewall/groups/$GROUP_LOCAL --action ACCEPT --type in --source $SOURCE_IPRANGE --macro SSH --enable 1
   echo "Cluster Firewall configurations set successfully .."
   else
   echo "Cluster Firewall configurations already present .."
 fi
 
-# Configure default VM level firewall rules
+# Configure optional VM level firewall rules
 if [[ $fw == 1 ]]; then
-  pvesh create /nodes/$NODE/qemu/$NEXTID/firewall/rules --action local_access --type group --iface net0 --enable 1
+  pvesh create /nodes/$NODE/qemu/$NEXTID/firewall/rules --action $GROUP_LOCAL --type group --iface net0 --enable 1
   pvesh set /nodes/$NODE/qemu/$NEXTID/firewall/options --enable 1
   pvesh set /nodes/$NODE/qemu/$NEXTID/firewall/options --log_level_in warning
   echo "VM Firewall rules set successfully .."
 fi
 
 if [[ $tcp == 1 ]]; then
-  pvesh create /nodes/$NODE/qemu/$NEXTID/firewall/rules --action ACCEPT --type in --iface net0 --proto tcp --source npm --dport $tcpPorts --enable 1
+  pvesh create /nodes/$NODE/qemu/$NEXTID/firewall/rules --action ACCEPT --type in --iface net0 --proto tcp --source $ALIAS_PROXY --dport $tcpPorts --enable 1
   echo "TCP ports exposed successfully .."
 fi
 if [[ $udp == 1 ]]; then
-  pvesh create /nodes/$NODE/qemu/$NEXTID/firewall/rules --action ACCEPT --type in --iface net0 --proto udp --source npm --dport $udpPorts --enable 1
+  pvesh create /nodes/$NODE/qemu/$NEXTID/firewall/rules --action ACCEPT --type in --iface net0 --proto udp --source $ALIAS_PROXY --dport $udpPorts --enable 1
   echo "UDP ports exposed successfully .."
 fi
