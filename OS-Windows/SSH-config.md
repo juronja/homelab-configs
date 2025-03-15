@@ -18,21 +18,26 @@ Host gateway
   User root
   IdentityFile ~/.ssh/id_gateway
 
-Host proxmox
-  Hostname 192.168.84.20
-  User root
-  IdentityFile ~/.ssh/id_proxmox
-
-Host truenas
-  Hostname 192.168.84.10
-  User jure
-  IdentityFile ~/.ssh/id_truenas
-
-Host ubuntu-homelab
-  Hostname 192.168.84.25
+Host homelab
+  Hostname 192.168.84.16
   User juronja
   IdentityFile ~/.ssh/id_ubuntu-homelab
 #  Port if a custom ssh port is set
+
+Host hosting-prod
+  Hostname 192.168.84.15
+  User juronja
+  IdentityFile ~/.ssh/id_hosting-prod
+
+Host k8smaster
+  Hostname 192.168.84.7
+  User juronja
+  IdentityFile ~/.ssh/id_k8s
+
+Host amazon-server
+  Hostname 18.185.139.225
+  User ec2-user
+  IdentityFile ~/.ssh/id_amazon.pem
 ```
 
 ### Upload your Public key to your Linux Server (Windows)
