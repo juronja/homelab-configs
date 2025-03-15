@@ -3,7 +3,7 @@
 ## Setup Ubuntu
 
 ```bash
-bash -c "$(wget -qLO - https://raw.githubusercontent.com/juronja/homelab-configs/main/OS-Linux/scripts/ubuntu-bootstrap-script.sh)"
+bash -c "$(wget -qLO - https://raw.githubusercontent.com/juronja/homelab-configs/main/OS-Linux/scripts/ubuntuvm-bootstrap-proxmox.sh)"
 
 ```
 
