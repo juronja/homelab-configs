@@ -73,7 +73,7 @@ network:
 ### Restart the netplan
 
 ```bash
-sudo netplan apply
+sudo netplan try
 
 ```
 
