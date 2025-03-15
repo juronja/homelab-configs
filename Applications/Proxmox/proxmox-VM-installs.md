@@ -9,7 +9,6 @@ Copy this line in the Proxmox Shell.
 
 ```bash
 bash -c "$(wget -qLO - https://raw.githubusercontent.com/juronja/homelab-configs/main/Applications/Proxmox/scripts/cloudinnitvm.sh)"
-
 ```
 
 - STEP 1 - Username and password
@@ -54,7 +53,6 @@ Copy this line in the Proxmox Shell.
 
 ```bash
 bash -c "$(wget -qLO - https://raw.githubusercontent.com/juronja/homelab-configs/main/Applications/Proxmox/scripts/windows11vm.sh)"
-
 ```
 
 - STEP 1 - Choose Enterprise edition
