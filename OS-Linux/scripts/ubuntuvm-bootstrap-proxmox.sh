@@ -67,6 +67,13 @@ if whiptail --backtitle "Customize - Ubuntu VM" --title "INSTALL DOCKER" --yesno
   echo "Docker install skipped .."
 fi
 
+# WHIPTAIL PREP FOR KUBERNETES
+if whiptail --backtitle "Customize - Ubuntu VM" --title "PREP VM FOR KUBERNETES" --yesno "Will this VM be in a k8s cluster?" 10 62; then
+  k8s=1
+  else
+  echo "Kubernetes prep skipped .."
+fi
+
 whiptail --backtitle "Customize - Ubuntu VM" --title "REMINDER" --msgbox "Don't forget to setup a Firewall in Proxmox." 10 58 || exit
 
 
@@ -79,24 +86,14 @@ sudo apt update -y && sudo apt upgrade -y
 sudo sed -i 's/\/\/Unattended-Upgrade::Automatic-Reboot-Time "02:00"/Unattended-Upgrade::Automatic-Reboot-Time "06:30"/' /etc/apt/apt.conf.d/50unattended-upgrades
 echo "Automatic upgrades configured successfully!"
 
-# Disable pings in firewall
-#sudo sed -i 's/-A ufw-before-input -p icmp --icmp-type echo-request -j ACCEPT/-A ufw-before-input -p icmp --icmp-type echo-request -j DROP/' /etc/ufw/before.rules
-#echo "Disable pings in firewall configured successfully!"
-
-# Configure firewall
+# Disable IPv6
 sudo sed -i 's/IPV6=yes/IPV6=no/' /etc/default/ufw
-# sudo ufw default allow outgoing && sudo ufw default deny incoming && sudo ufw allow 22
-
 
 # Proxmox install specifics
 if [[ $installPlace == 1 ]]; then
   
   # Create custom app folder for deployment
   sudo mkdir -m 750 /home/$rootUser/apps && sudo chown -R $rootUser:$rootUser /home/$rootUser/apps
-
-  # Set local timezone
-  sudo timedatectl set-timezone Europe/Ljubljana
-  echo "Local timezone set successfully!"
 
   # Install guest agent
   sudo apt install qemu-guest-agent -y
@@ -144,6 +141,16 @@ if [[ $docker == 1 ]] && [[ $portainer == 1 ]]; then
   # Run compose file
   cd /home/$rootUser/apps
   sudo docker compose up -d
+fi
+
+# Prep server for kubernetes install
+if [[ $k8s == 1 ]]; then
+  sudo apt install containerd -y
+  sudo mkdir /etc/containerd
+  containerd config default | sudo tee /etc/containerd/config.toml
+  sudo sed -i 's/SystemdCgroup = false/SystemdCgroup = true/' /etc/containerd/config.toml
+  sudo sed -i 's/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/' /etc/sysctl.conf
+  echo "br_netfilter" | sudo tee /etc/modules-load.d/k8s.conf
 fi
 
 # Add a maintenance user
