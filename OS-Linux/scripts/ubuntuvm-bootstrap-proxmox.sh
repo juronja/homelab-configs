@@ -50,7 +50,7 @@ if [[ $installPlace != 1 ]]; then # skips this if installed on proxmox
 fi
 
 # WHIPTAIL INSTALL DOCKER & PORTAINER
-if whiptail --backtitle "Customize - Ubuntu VM" --title "INSTALL DOCKER" --yesno "Do you want to install Docker?" 10 62; then
+if whiptail --backtitle "Customize - Ubuntu VM" --title "INSTALL DOCKER" --yesno --defaultno "Do you want to install Docker?" 10 62; then
   docker=1
   if insecReg=$(whiptail --backtitle "Customize - Ubuntu VM" --inputbox "\nWrite comma seperated IP:PORT list to allow in Docker:" 10 58 "IP:PORT" --title "ADD INSECURE REGISTRY RULES?" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
     echo "Added insecure registry rules: $insecReg"
@@ -68,12 +68,11 @@ if whiptail --backtitle "Customize - Ubuntu VM" --title "INSTALL DOCKER" --yesno
 fi
 
 # WHIPTAIL PREP FOR KUBERNETES
-if whiptail --backtitle "Customize - Ubuntu VM" --title "PREP VM FOR KUBERNETES" --yesno "Will this VM be in a k8s cluster?" 10 62; then
+if whiptail --backtitle "Customize - Ubuntu VM" --title "PREP VM FOR KUBERNETES" --yesno --defaultno "Will this VM be in a k8s cluster?" 10 62; then
   k8s=1
-  if k8sInstallType=$(whiptail --backtitle "Customize - Ubuntu VM" --title "K8S TYPE" --radiolist "\nSelect the type of Kubernetes to install.\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 2 \
+  if k8sInstallType=$(whiptail --backtitle "Customize - Ubuntu VM" --title "K8S TYPE" --radiolist "\nSelect the type of Kubernetes to install.\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 3 \
     "1" "Minikube" ON \
-    "2" "K8S Master" OFF \
-    "3" "K8S Worker" OFF \
+    "2" "Manual K8S 1.32" OFF \
     3>&1 1>&2 2>&3); then
       echo -e "Kubernetes install type: $k8sInstallType"
     else
@@ -89,7 +88,7 @@ whiptail --backtitle "Customize - Ubuntu VM" --title "REMINDER" --msgbox "Don't 
 # SCRIPT COMMANDS
 
 # Update and install upgrades
-sudo apt update -y && sudo apt upgrade -y
+sudo apt-get update -y && sudo apt-get upgrade -y
 
 # Configure automatic updates
 sudo sed -i 's/\/\/Unattended-Upgrade::Automatic-Reboot-Time "02:00"/Unattended-Upgrade::Automatic-Reboot-Time "06:30"/' /etc/apt/apt.conf.d/50unattended-upgrades
@@ -105,7 +104,7 @@ if [[ $installPlace == 1 ]]; then
   sudo mkdir -m 750 /home/$rootUser/apps && sudo chown -R $rootUser:$rootUser /home/$rootUser/apps
 
   # Install guest agent
-  sudo apt install qemu-guest-agent -y
+  sudo apt-get install qemu-guest-agent -y
 fi
 
 # Install Docker
@@ -154,26 +153,26 @@ fi
 
 # Prep server for kubernetes install
 if [[ $k8s == 1 ]]; then
-  sudo apt install containerd -y
-  sudo mkdir /etc/containerd
-  containerd config default | sudo tee /etc/containerd/config.toml
-  sudo sed -i 's/SystemdCgroup = false/SystemdCgroup = true/' /etc/containerd/config.toml
-  sudo sed -i 's/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/' /etc/sysctl.conf
-  echo "br_netfilter" | sudo tee /etc/modules-load.d/k8s.conf
-  sudo apt-get install -y apt-transport-https
   # If Minikube
-  if [[ $k8s == 1 ]] && [[ $k8sInstallType == 1 ]]; then
+  if [[ $k8sInstallType == 1 ]]; then
     # Install minikube
     echo "minikube lala"
   fi
   # If K8S Master
-  if [[ $k8s == 1 ]] && [[ $k8sInstallType == 2 ]]; then
+  if [[ $k8sInstallType == 2 ]]; then
     # Install Master node
-    echo "Master node lala"
-  fi
-  if [[ $k8s == 1 ]] && [[ $k8sInstallType == 3 ]]; then
-    # Install Worker node
-    echo "Worker node lala"
+    sudo apt-get install containerd -y
+    sudo mkdir /etc/containerd
+    containerd config default | sudo tee /etc/containerd/config.toml
+    sudo sed -i 's/SystemdCgroup = false/SystemdCgroup = true/' /etc/containerd/config.toml
+    sudo sed -i 's/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/' /etc/sysctl.conf
+    echo "br_netfilter" | sudo tee /etc/modules-load.d/k8s.conf
+    sudo apt-get install -y apt-transport-https
+    curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.32/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+    echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.32/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
+    sudo apt-get update
+    sudo apt-get install -y kubelet kubeadm kubectl
+    sudo apt-mark hold kubelet kubeadm kubectl
   fi
 fi
 
