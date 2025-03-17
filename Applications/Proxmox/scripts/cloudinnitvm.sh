@@ -94,7 +94,7 @@ else
 fi
 
 # WHIPTAIL FIREWALL RULES
-if whiptail --backtitle "Install - Ubuntu VM" --title "FIREWALL" --yesno "Do you want to enable a FIREWALL?" 10 62; then
+if whiptail --backtitle "Install - Ubuntu VM" --title "FIREWALL" --yesno --defaultno "Do you want to enable a FIREWALL?" 10 62; then
   fw=1
   if tcpPorts=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nWrite comma seperated TCP ports to expose on WAN" 10 58 "7474,3131," --title "EXPOSE TCP PORTS" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
     tcp=1
