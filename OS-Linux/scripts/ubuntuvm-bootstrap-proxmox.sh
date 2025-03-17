@@ -74,7 +74,7 @@ if whiptail --backtitle "Customize - Ubuntu VM" --title "PREP VM FOR KUBERNETES"
   echo "Kubernetes prep skipped .."
 fi
 
-whiptail --backtitle "Customize - Ubuntu VM" --title "REMINDER" --msgbox "Don't forget to setup a Firewall in Proxmox." 10 58 || exit
+whiptail --backtitle "Customize - Ubuntu VM" --title "REMINDER" --msgbox "Don't forget to setup a Firewall in Proxmox if needed." 10 58 || exit
 
 
 # SCRIPT COMMANDS
@@ -151,6 +151,7 @@ if [[ $k8s == 1 ]]; then
   sudo sed -i 's/SystemdCgroup = false/SystemdCgroup = true/' /etc/containerd/config.toml
   sudo sed -i 's/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/' /etc/sysctl.conf
   echo "br_netfilter" | sudo tee /etc/modules-load.d/k8s.conf
+  sudo apt-get install -y apt-transport-https
 fi
 
 # Add a maintenance user
