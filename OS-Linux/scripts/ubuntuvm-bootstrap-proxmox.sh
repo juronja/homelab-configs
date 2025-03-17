@@ -70,6 +70,15 @@ fi
 # WHIPTAIL PREP FOR KUBERNETES
 if whiptail --backtitle "Customize - Ubuntu VM" --title "PREP VM FOR KUBERNETES" --yesno "Will this VM be in a k8s cluster?" 10 62; then
   k8s=1
+  if k8sInstallType=$(whiptail --backtitle "Customize - Ubuntu VM" --title "K8S TYPE" --radiolist "\nSelect the type of Kubernetes to install.\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 2 \
+    "1" "Minikube" ON \
+    "2" "K8S Master" OFF \
+    "3" "K8S Worker" OFF \
+    3>&1 1>&2 2>&3); then
+      echo -e "Kubernetes install type: $k8sInstallType"
+    else
+      exit-script
+  fi
   else
   echo "Kubernetes prep skipped .."
 fi
@@ -152,6 +161,20 @@ if [[ $k8s == 1 ]]; then
   sudo sed -i 's/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/' /etc/sysctl.conf
   echo "br_netfilter" | sudo tee /etc/modules-load.d/k8s.conf
   sudo apt-get install -y apt-transport-https
+  # If Minikube
+  if [[ $k8s == 1 ]] && [[ $k8sInstallType == 1 ]]; then
+    # Install minikube
+    echo "minikube lala"
+  fi
+  # If K8S Master
+  if [[ $k8s == 1 ]] && [[ $k8sInstallType == 2 ]]; then
+    # Install Master node
+    echo "Master node lala"
+  fi
+  if [[ $k8s == 1 ]] && [[ $k8sInstallType == 3 ]]; then
+    # Install Worker node
+    echo "Worker node lala"
+  fi
 fi
 
 # Add a maintenance user
