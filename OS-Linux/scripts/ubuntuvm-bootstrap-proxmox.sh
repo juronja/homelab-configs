@@ -156,7 +156,8 @@ if [[ $k8s == 1 ]]; then
   # If Minikube
   if [[ $k8sInstallType == 1 ]]; then
     # Install minikube
-    echo "minikube lala"
+    curl -LO https://github.com/kubernetes/minikube/releases/latest/download/minikube-linux-amd64
+    sudo install minikube-linux-amd64 /usr/local/bin/minikube && rm minikube-linux-amd64
   fi
   # If K8S Master
   if [[ $k8sInstallType == 2 ]]; then
