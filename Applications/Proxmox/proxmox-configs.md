@@ -109,6 +109,7 @@ You can use this to migrate VMs from one machine to another.
 2. By default it will save backups to `local` storage and to `/var/lib/vz/dump` folder.
 3. Copy backup folder to another machine via SCP: `scp -r /var/lib/vz/dump root@IP:/var/lib/vz/`
 4. Restore VM from backups
+5. Check if Firewall needs to be set (this does not get copied)
 
 ## VM Boot order
 
