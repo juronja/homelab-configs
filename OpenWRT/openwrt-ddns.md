@@ -4,7 +4,7 @@ Install:
 ```bash
 opkg update
 opkg install ddns-scripts
-opkg install ddns-scripts-services
+opkg install ddns-scripts-services #throwed an error last time, maybe it is preinstalled now
 opkg install ddns-scripts-cloudflare
 opkg install luci-app-ddns
 
@@ -49,7 +49,7 @@ uci set ddns.cloudflare.service_name='cloudflare.com-v4'
 uci set ddns.cloudflare.use_ipv6='0'
 uci set ddns.cloudflare.domain='lab-pernica@repina.eu'
 uci set ddns.cloudflare.username='Bearer'
-uci set ddns.cloudflare.password='ENTER API PASS' #UPDATE KEY!!
+uci set ddns.cloudflare.password='ENTER CLOUDFLARE USER API TOKEN' #UPDATE KEY!!
 uci set ddns.cloudflare.ip_source='network'
 uci set ddns.cloudflare.ip_network='wan'
 uci set ddns.cloudflare.use_syslog='2'
