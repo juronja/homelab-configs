@@ -9,10 +9,7 @@ wifi:
       password: !secret wifi_password
     - ssid: !secret wifi_ssid2
       password: !secret wifi_password2
-    - ssid: !secret wifi_ssid3
-      password: !secret wifi_password3
-    - ssid: !secret wifi_ssid4
-      password: !secret wifi_password4
+
   # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
     ssid: ${friendly_name}
