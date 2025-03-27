@@ -50,8 +50,6 @@ opkg install luci-app-wol
 
 ```
 
-
-
 ## Add static leases
 
 VM homelab example
