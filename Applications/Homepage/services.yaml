@@ -46,7 +46,7 @@
     - Adguard Home:
         icon: adguard-home.svg
         href: http://adguard.lan
-        ping: 192.168.84.27
+        ping: 192.168.84.253
     - Unifi Site Manager:
         icon: unifi.svg
         href: https://unifi.ui.com
