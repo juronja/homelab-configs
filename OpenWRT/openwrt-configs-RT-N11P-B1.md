@@ -1,4 +1,4 @@
-# Setting up TP-Link WR-1043ND v2 Device
+# Setting up ASUS RT-N11P-B1 Device
 
 By default, the main router will have an address of 192.168.1.1
 
@@ -13,7 +13,7 @@ passwd
 ```shell
 uci set system.@system[0].zonename='Europe/Ljubljana'
 uci set system.@system[0].timezone='CET-1CEST,M3.5.0,M10.5.0/3'
-uci set system.@system[0].hostname=AP-TP-Link-WR1043NDv2 # Change te device name here
+uci set system.@system[0].hostname=AP-RT-N11P-B1 # Change te device name here
 ```
 
 ## Set as AP mode
@@ -88,6 +88,3 @@ for i in firewall dnsmasq odhcpd; do
 done
 
 ```
-
-
-

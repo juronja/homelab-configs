@@ -32,7 +32,7 @@ uci set dhcp.lan.interface='lan'
 uci set dhcp.lan.start='50'
 uci set dhcp.lan.limit='150'
 uci set dhcp.lan.leasetime='12h'
-uci set dhcp.lan.dhcp_option='6,192.168.84.27' #Adguard server address
+uci set dhcp.lan.dhcp_option='6,192.168.84.253' #Adguard server address
 uci set dhcp.lan.ndp='disable'
 uci set dhcp.wan.ra='disable'
 uci set dhcp.wan.dhcpv6='disable'
@@ -65,11 +65,11 @@ uci set wireless.default_radio1.network='lan'
 uci set wireless.default_radio1.mode='ap'
 uci set wireless.default_radio1.key='PASSWORD' # Enter password
 uci set wireless.default_radio1.encryption='sae-mixed'
-uci set wireless.default_radio1.ssid='rw' # Enter SSID
+uci set wireless.default_radio1.ssid='rw_lan' # Enter SSID
 # Fast Transition
-uci set wireless.default_radio1.ieee80211r='1'
-uci set wireless.default_radio1.mobility_domain='4f57'
-uci set wireless.default_radio1.ft_over_ds='0'
+# uci set wireless.default_radio1.ieee80211r='1'
+# uci set wireless.default_radio1.mobility_domain='4f57'
+# uci set wireless.default_radio1.ft_over_ds='0'
 # Band-steering
 # uci set wireless.default_radio1.ieee80211k='1' 
 # uci set wireless.default_radio1.bss_transition='1'
@@ -95,7 +95,7 @@ uci set wireless.default_radio0.network='lan'
 uci set wireless.default_radio0.mode='ap'
 uci set wireless.default_radio0.key='PASSWORD' # Enter password
 uci set wireless.default_radio0.encryption='sae-mixed'
-uci set wireless.default_radio0.ssid='rw' # Enter SSID
+uci set wireless.default_radio0.ssid='rw_lan5g' # Enter SSID
 # Fast Transition
 # uci set wireless.default_radio0.ieee80211r='1'
 # uci set wireless.default_radio0.mobility_domain='4f57'
@@ -209,69 +209,63 @@ service firewall restart
 
 Device specific VLAN creation via uci.
 
-#### Guest VLAN
+#### IOT VLAN
 ```shell
 # Add Switch VLAN, this will auto create a device in Network > Interfaces > Devices for usage.
 uci add network switch_vlan
 uci set network.@switch_vlan[-1].device='switch0'
 uci set network.@switch_vlan[-1].vlan='3'
 uci set network.@switch_vlan[-1].vid='3'
-uci set network.@switch_vlan[-1].description='guest'
-uci set network.@switch_vlan[-1].ports='0t 2t 3t 4t 5t'
+uci set network.@switch_vlan[-1].description='iot'
+uci set network.@switch_vlan[-1].ports='0t 2t 3t 4t 5'
 uci commit
-# Create a bridge network
+# Create a bridge device
 uci add network device
 uci set network.@device[-1].type='bridge'
-uci set network.@device[-1].name='br-guest'
+uci set network.@device[-1].name='br-iot'
 uci add_list network.@device[-1].ports='eth0.3'
+uci commit
+# Create new interface
+uci set network.iot=interface
+uci set network.iot.proto="static"
+uci set network.iot.device='br-iot'
+uci set network.iot.ipaddr="192.168.3.1"
+uci set network.iot.netmask="255.255.255.0"
+uci set dhcp.iot=dhcp
+uci set dhcp.iot.interface='iot'
+uci set dhcp.iot.start='10'
+uci set dhcp.iot.limit='200'
+uci set dhcp.iot.leasetime='12h'
+uci add_list dhcp.iot.dhcp_option='6,9.9.9.11,1.1.1.2' #Public DNS
 uci commit
 # Add firewall entry
 uci add firewall zone
-uci set firewall.@zone[-1].name='guest'
+uci set firewall.@zone[-1].name='iot'
 uci set firewall.@zone[-1].input='REJECT'
 uci set firewall.@zone[-1].output='ACCEPT'
 uci set firewall.@zone[-1].forward='REJECT'
-uci add_list firewall.@zone[-1].network='guest'
 uci commit
-# Create new interface
-uci set network.guest=interface
-uci set network.guest.proto="static"
-uci set network.guest.device='br-guest'
-uci set network.guest.device='eth0.3'
-uci set network.guest.ipaddr="192.168.3.1"
-uci set network.guest.netmask="255.255.255.0"
-uci set network.guest.type='bridge' # Needed for potential guest wifi
-uci set dhcp.guest=dhcp
-uci set dhcp.guest.interface='guest'
-uci set dhcp.guest.start='10'
-uci set dhcp.guest.limit='200'
-uci set dhcp.guest.leasetime='12h'
-uci set dhcp.guest.dhcp_option='6,9.9.9.11,1.1.1.2' #Public DNS for guest
-uci set dhcp.guest.ra='disable'
-uci set dhcp.guest.dhcpv6='disable'
-uci set dhcp.guest.ndp='disable'
-uci commit
-# Create firewall forwarding rule for each VLAN
+# Connect firewall and create forwarding rule
+uci add_list firewall.@zone[-1].network='iot'
 uci add firewall forwarding
-uci set firewall.@forwarding[-1].src='guest'
+uci set firewall.@forwarding[-1].src='iot'
 uci set firewall.@forwarding[-1].dest='wan'
 uci commit
-# Add a firewall traffic rule for GUEST network so they can use DNS and DHCP
+# Add a firewall traffic rule for network so they can use DNS and DHCP
 uci add firewall rule
-uci set firewall.@rule[-1].name='Guest DHCP and DNS'
-uci set firewall.@rule[-1].src='guest'
+uci set firewall.@rule[-1].name='iot DHCP and DNS'
+uci set firewall.@rule[-1].src='iot'
 uci set firewall.@rule[-1].dest_port='53 67 68'
 uci set firewall.@rule[-1].target='ACCEPT'
 uci commit
-
-# Enable GUEST Wifi band 2G/802.11b/g/n
+# Enable Wifi band 2G/802.11b/g/n
 # Double check which radio is 2g or 5g and replace accordingly.
 uci set wireless.wifinet2=wifi-iface
 uci set wireless.wifinet2.device='radio1'
 uci set wireless.wifinet2.mode='ap'
-uci set wireless.wifinet2.network='guest'
+uci set wireless.wifinet2.network='iot'
 uci set wireless.wifinet2.ocv='0'
-uci set wireless.wifinet2.ssid='rw_guest' # Enter SSID
+uci set wireless.wifinet2.ssid='rw_iot' # Enter SSID
 uci set wireless.wifinet2.encryption='sae-mixed'
 uci set wireless.wifinet2.key='PASSWORD' # Enter password
 # Fast Transition
@@ -282,6 +276,77 @@ uci set wireless.wifinet2.key='PASSWORD' # Enter password
 # uci set wireless.wifinet2.ieee80211k='1' 
 # uci set wireless.wifinet2.bss_transition='1'
 uci commit
-reboot
+service network restart
 ```
+
+#### Guest VLAN
+```shell
+# Add Switch VLAN, this will auto create a device in Network > Interfaces > Devices for usage.
+uci add network switch_vlan
+uci set network.@switch_vlan[-1].device='switch0'
+uci set network.@switch_vlan[-1].vlan='4'
+uci set network.@switch_vlan[-1].vid='4'
+uci set network.@switch_vlan[-1].description='guest'
+uci set network.@switch_vlan[-1].ports='0t 2t 3t 4t'
+uci commit
+# Create a bridge device
+uci add network device
+uci set network.@device[-1].type='bridge'
+uci set network.@device[-1].name='br-guest'
+uci add_list network.@device[-1].ports='eth0.4'
+uci commit
+# Create new interface
+uci set network.guest=interface
+uci set network.guest.proto="static"
+uci set network.guest.device='br-guest'
+uci set network.guest.ipaddr="192.168.4.1"
+uci set network.guest.netmask="255.255.255.0"
+uci set dhcp.guest=dhcp
+uci set dhcp.guest.interface='guest'
+uci set dhcp.guest.start='10'
+uci set dhcp.guest.limit='200'
+uci set dhcp.guest.leasetime='12h'
+uci add_list dhcp.guest.dhcp_option='6,9.9.9.11,1.1.1.2' #Public DNS
+uci commit
+# Add firewall entry
+uci add firewall zone
+uci set firewall.@zone[-1].name='guest'
+uci set firewall.@zone[-1].input='REJECT'
+uci set firewall.@zone[-1].output='ACCEPT'
+uci set firewall.@zone[-1].forward='REJECT'
+uci commit
+# Connect firewall and create forwarding rule
+uci add_list firewall.@zone[-1].network='guest'
+uci add firewall forwarding
+uci set firewall.@forwarding[-1].src='guest'
+uci set firewall.@forwarding[-1].dest='wan'
+uci commit
+# Add a firewall traffic rule for network so they can use DNS and DHCP
+uci add firewall rule
+uci set firewall.@rule[-1].name='guest DHCP and DNS'
+uci set firewall.@rule[-1].src='guest'
+uci set firewall.@rule[-1].dest_port='53 67 68'
+uci set firewall.@rule[-1].target='ACCEPT'
+uci commit
+# Enable Wifi band 2G/802.11b/g/n
+# Double check which radio is 2g or 5g and replace accordingly.
+uci set wireless.wifinet3=wifi-iface
+uci set wireless.wifinet3.device='radio1'
+uci set wireless.wifinet3.mode='ap'
+uci set wireless.wifinet3.network='guest'
+uci set wireless.wifinet3.ocv='0'
+uci set wireless.wifinet3.ssid='rw_guest' # Enter SSID
+uci set wireless.wifinet3.encryption='sae-mixed'
+uci set wireless.wifinet3.key='PASSWORD' # Enter password
+# Fast Transition
+# uci set wireless.wifinet3.ieee80211r='1'
+# uci set wireless.wifinet3.mobility_domain='4f57'
+# uci set wireless.wifinet3.ft_over_ds='0'
+# Band-steering
+# uci set wireless.wifinet3.ieee80211k='1' 
+# uci set wireless.wifinet3.bss_transition='1'
+uci commit
+service network restart
+```
+
 
