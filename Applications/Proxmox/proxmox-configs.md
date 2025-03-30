@@ -52,6 +52,33 @@ pvesh create /nodes/$NODE/lxc/{{LXCID}}/firewall/rules --action ACCEPT --type in
 pvesh set /nodes/$NODE/lxc/{{LXCID}}/firewall/options --enable 1
 ```
 
+## Enable VLANs on nodes vmbr0
+
+Go to node System > Network > vmbr0 and tick the VLAN aware option, also limit VLAN IDs in advanced options.
+
+## Drive share for Truenas Rsync
+
+1. Create a **directory** type disk with **ext4** filesystem. pvenode>Disks>Directory>Create: Directory
+2. Enable **Add storage** when creating
+
+## Backup & Restore VMs
+
+You can use this to migrate VMs from one machine to another.
+
+1. Create a backup with Mode `Stop`. Other settings can be default.
+2. By default it will save backups to `local` storage and to `/var/lib/vz/dump` folder.
+3. Copy backup folder to another machine via SCP: `scp -r /var/lib/vz/dump root@IP:/var/lib/vz/`
+4. Restore VM from backups
+5. Check if Firewall needs to be set (this does not get copied)
+
+## VM Boot order
+
+Order 1: adguard, (startup delay: 20s)
+Order 2: truenas-scale (startup delay: 120s), haos, hosting-prod, nginxproxymanager
+Order 3: Any
+
+
+
 ## Clustering
 
 Official docs: https://pve.proxmox.com/wiki/Cluster_Manager
@@ -95,25 +122,3 @@ rm -r /etc/corosync/*
 killall pmxcfs
 systemctl start pve-cluster
 ```
-
-## Drive share for Truenas Rsync
-
-1. Create a **directory** type disk with **ext4** filesystem. pvenode>Disks>Directory>Create: Directory
-2. Enable **Add storage** when creating
-
-## Backup & Restore VMs
-
-You can use this to migrate VMs from one machine to another.
-
-1. Create a backup with Mode `Stop`. Other settings can be default.
-2. By default it will save backups to `local` storage and to `/var/lib/vz/dump` folder.
-3. Copy backup folder to another machine via SCP: `scp -r /var/lib/vz/dump root@IP:/var/lib/vz/`
-4. Restore VM from backups
-5. Check if Firewall needs to be set (this does not get copied)
-
-## VM Boot order
-
-Order 1: adguard, (startup delay: 20s)
-Order 2: truenas-scale (startup delay: 120s), haos, hosting-prod, nginxproxymanager
-Order 3: Any
-
