@@ -61,7 +61,6 @@ uci set wireless.radio1.disabled='0'
 uci set wireless.default_radio1=wifi-iface
 uci set wireless.default_radio1.ocv='0'
 uci set wireless.default_radio1.device='radio1'
-uci set wireless.default_radio1.network='lan'
 uci set wireless.default_radio1.mode='ap'
 uci set wireless.default_radio1.key='PASSWORD' # Enter password
 uci set wireless.default_radio1.encryption='sae-mixed'
@@ -141,6 +140,16 @@ config redirect
         option dest_ip '192.168.84.x' # Adjust IP
         list proto 'tcp'
         option dest_port '50413'
+
+config redirect
+        option dest 'lan'
+        option target 'DNAT'
+        option name 'Storj'
+        option src 'wan'
+        option src_dport '28967'
+        option dest_ip '192.168.84.x' # Adjust IP
+        list proto 'tcp'
+        option dest_port '28967'
 
 ```
 Restart firewall for effect
@@ -233,7 +242,7 @@ uci set network.iot.ipaddr="192.168.3.1"
 uci set network.iot.netmask="255.255.255.0"
 uci set dhcp.iot=dhcp
 uci set dhcp.iot.interface='iot'
-uci set dhcp.iot.start='10'
+uci set dhcp.iot.start='20'
 uci set dhcp.iot.limit='200'
 uci set dhcp.iot.leasetime='12h'
 uci add_list dhcp.iot.dhcp_option='6,9.9.9.11,1.1.1.2' #Public DNS
@@ -243,7 +252,7 @@ uci add firewall zone
 uci set firewall.@zone[-1].name='iot'
 uci set firewall.@zone[-1].input='REJECT'
 uci set firewall.@zone[-1].output='ACCEPT'
-uci set firewall.@zone[-1].forward='REJECT'
+uci set firewall.@zone[-1].forward='ACCEPT'
 uci commit
 # Connect firewall and create forwarding rule
 uci add_list firewall.@zone[-1].network='iot'
@@ -258,15 +267,25 @@ uci set firewall.@rule[-1].src='iot'
 uci set firewall.@rule[-1].dest_port='53 67 68'
 uci set firewall.@rule[-1].target='ACCEPT'
 uci commit
+# also allow tv to plex
+uci add firewall rule
+uci set firewall.@rule[-1].name='allow tv to plex'
+uci add_list firewall.@rule[-1].proto='tcp'
+uci set firewall.@rule[-1].src='iot'
+uci add_list firewall.@rule[-1].src_ip='192.168.3.X'
+uci set firewall.@rule[-1].dest='lan'
+uci add_list firewall.@rule[-1].dest_ip='192.168.84.X'
+uci set firewall.@rule[-1].dest_port='32400'
+uci set firewall.@rule[-1].target='ACCEPT'
+uci commit
 # Enable Wifi band 2G/802.11b/g/n
 # Double check which radio is 2g or 5g and replace accordingly.
 uci set wireless.wifinet2=wifi-iface
 uci set wireless.wifinet2.device='radio1'
 uci set wireless.wifinet2.mode='ap'
 uci set wireless.wifinet2.network='iot'
-uci set wireless.wifinet2.ocv='0'
 uci set wireless.wifinet2.ssid='rw_iot' # Enter SSID
-uci set wireless.wifinet2.encryption='sae-mixed'
+uci set wireless.wifinet2.encryption='psk2'
 uci set wireless.wifinet2.key='PASSWORD' # Enter password
 # Fast Transition
 # uci set wireless.wifinet2.ieee80211r='1'
