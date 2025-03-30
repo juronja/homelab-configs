@@ -55,7 +55,7 @@ opkg install luci-app-wol
 VM homelab example
 ```shell
 uci add dhcp host
-uci set dhcp.@host[-1].name='homelab'
+uci set dhcp.@host[-1].name='lt-jure'
 uci add_list dhcp.@host[-1].mac='MACADRESS'
 uci set dhcp.@host[-1].ip='RESERVEIPADDRESS'
 uci commit
