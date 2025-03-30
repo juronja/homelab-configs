@@ -71,8 +71,7 @@ fi
 if whiptail --backtitle "Customize - Ubuntu VM" --title "PREP VM FOR KUBERNETES" --yesno --defaultno "Will this VM be in a k8s cluster?" 10 62; then
   k8s=1
   if k8sInstallType=$(whiptail --backtitle "Customize - Ubuntu VM" --title "K8S TYPE" --radiolist "\nSelect the type of Kubernetes to install.\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 3 \
-    "1" "Minikube" ON \
-    "2" "Manual K8S 1.32" OFF \
+    "1" "Manual K8S 1.32" ON
     3>&1 1>&2 2>&3); then
       echo -e "Kubernetes install type: $k8sInstallType"
     else
@@ -153,42 +152,8 @@ fi
 
 # Prep server for kubernetes install
 if [[ $k8s == 1 ]]; then
-  # If Minikube
-  if [[ $k8sInstallType == 1 ]]; then
-    # Install minikube
-    curl -LO https://github.com/kubernetes/minikube/releases/latest/download/minikube-linux-amd64
-    sudo install minikube-linux-amd64 /usr/local/bin/minikube && rm minikube-linux-amd64
-    curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.32/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
-    echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.32/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
-    sudo apt-get update
-    sudo apt-get install -y kubectl
-
-    # Remove legacy Docker
-    for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove $pkg; done
-
-    # Add Docker's official GPG key:
-    sudo apt-get update
-    sudo apt-get install ca-certificates curl
-    sudo install -m 0755 -d /etc/apt/keyrings
-    sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
-    sudo chmod a+r /etc/apt/keyrings/docker.asc
-
-    # Add the repository to Apt sources:
-    echo \
-      "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
-      $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
-      sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-    sudo apt-get update
-
-    # Install Docker
-    sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
-    # Append user to docker group
-    sudo usermod -aG docker $rootUser
-    # Verify - run hello image and delete
-    sudo docker run --rm hello-world && sudo docker rmi hello-world
-  fi
   # If K8S Master
-  if [[ $k8sInstallType == 2 ]]; then
+  if [[ $k8sInstallType == 1 ]]; then
     # Install Master node
     sudo apt-get install containerd -y
     sudo mkdir /etc/containerd
