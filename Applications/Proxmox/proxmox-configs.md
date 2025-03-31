@@ -36,7 +36,7 @@ pvesh create /cluster/firewall/groups/local-ssh-ping --action ACCEPT --type in -
 
 ```bash
 NODE=$(hostname)
-pvesh create /nodes/$NODE/qemu/{{VMID}}/firewall/rules --action ACCEPT --type in --iface net0 --proto tcp --dport 8080,3131 --source dc/npm --enable 1
+pvesh create /nodes/$NODE/qemu/{{VMID}}/firewall/rules --action ACCEPT --type in --iface net0 --proto tcp --dport 7474,3131 --source dc/npm --enable 1
 pvesh set /nodes/$NODE/qemu/{{VMID}}/firewall/options --enable 1
 ```
 
