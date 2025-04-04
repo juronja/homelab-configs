@@ -122,7 +122,7 @@ CPU="x86-64-v3"
 CLUSTER_FW_ENABLED=$(pvesh get /cluster/firewall/options --output-format json | sed -n 's/.*"enable": *\([0-9]*\).*/\1/p')
 LOCAL_NETWORK=$(pve-firewall localnet | grep local_network | cut -d':' -f2 | sed 's/ //g')
 ALIAS_HOME_NETWORK="home_network"
-ALIAS_PROXY="npm"
+ALIAS_PROXY="proxy"
 GROUP_LOCAL="local-ssh-ping"
 SOURCE_IPRANGE="192.168.84.1-192.168.84.49"
 

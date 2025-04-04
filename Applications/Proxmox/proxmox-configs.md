@@ -22,7 +22,7 @@ Official docs: https://pve.proxmox.com/wiki/Firewall
 ```bash
 pvesh set /cluster/firewall/options --enable 1
 pvesh create /cluster/firewall/aliases --name home_network --cidr 192.168.84.0/24
-pvesh create /cluster/firewall/aliases --name npm --cidr 192.168.84.254
+pvesh create /cluster/firewall/aliases --name proxy --cidr 192.168.84.254
 pvesh create /cluster/firewall/rules --action ACCEPT --type in --iface vmbr0 --source dc/home_network --macro Ping --enable 1
 pvesh create /cluster/firewall/groups --group local-ssh-ping
 pvesh create /cluster/firewall/groups/local-ssh-ping --action ACCEPT --type in --source 192.168.84.1-192.168.84.49 --proto tcp --enable 1
@@ -36,7 +36,7 @@ pvesh create /cluster/firewall/groups/local-ssh-ping --action ACCEPT --type in -
 
 ```bash
 NODE=$(hostname)
-pvesh create /nodes/$NODE/qemu/{{VMID}}/firewall/rules --action ACCEPT --type in --iface net0 --proto tcp --dport 7474,3131 --source dc/npm --enable 1
+pvesh create /nodes/$NODE/qemu/{{VMID}}/firewall/rules --action ACCEPT --type in --iface net0 --proto tcp --dport 7474,3131 --source dc/proxy --enable 1
 pvesh set /nodes/$NODE/qemu/{{VMID}}/firewall/options --enable 1
 ```
 
