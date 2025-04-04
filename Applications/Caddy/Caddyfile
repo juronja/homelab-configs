@@ -1,0 +1,28 @@
+*.repina.eu {
+    tls /etc/caddy/certs/repina_eu-origin-cert.pem /etc/caddy/certs/repina_eu-private-key.key
+
+    @dilute host dilute.repina.eu
+    handle @dilute {
+        reverse_proxy 192.168.x.x:x
+		header -Server
+        header {
+            # This tells the client to store responses for one week.
+            Cache-Control max-age=604800
+            # Enable HSTS (HTTP Strict Transport Security) to force HTTPS for one year including subdomains.
+            Strict-Transport-Security max-age=31536000 includeSubDomains
+            # Prevent MIME type sniffing, mitigating certain security vulnerabilities.
+            X-Content-Type-Options nosniff
+            # Prevent the site from being embedded in an iframe, mitigating clickjacking.
+            X-Frame-Options DENY
+            # Set the referrer policy to send the origin only when making cross-origin requests.
+            Referrer-Policy origin-when-cross-origin
+            # This will deny website access to the listed hardware features for security purposes.
+            Permissions-Policy autoplay=(), camera=(), microphone=(), midi=(), usb=()
+            # Block XSS attacks to some degree using a report-only CSP.
+            Content-Security-Policy-Report-Only "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; upgrade-insecure-requests;"
+        }
+		request_body {
+            max_size 5KB
+        }
+    }
+}
