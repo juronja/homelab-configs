@@ -278,6 +278,16 @@ uci add_list firewall.@rule[-1].dest_ip='192.168.84.X'
 uci set firewall.@rule[-1].dest_port='32400'
 uci set firewall.@rule[-1].target='ACCEPT'
 uci commit
+# also allow guest devices to plex
+uci add firewall rule
+uci set firewall.@rule[-1].name='allow guests to plex'
+uci add_list firewall.@rule[-1].proto='tcp'
+uci set firewall.@rule[-1].src='guest'
+uci set firewall.@rule[-1].dest='lan'
+uci add_list firewall.@rule[-1].dest_ip='192.168.84.X'
+uci set firewall.@rule[-1].dest_port='32400'
+uci set firewall.@rule[-1].target='ACCEPT'
+uci commit
 # Enable Wifi band 2G/802.11b/g/n
 # Double check which radio is 2g or 5g and replace accordingly.
 uci set wireless.wifinet2=wifi-iface
