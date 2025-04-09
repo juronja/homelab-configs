@@ -1,6 +1,6 @@
 ---
-# For configuration options and examples, please see:
-# https://gethomepage.dev/latest/configs/services
+
+# Icons library: https://github.com/homarr-labs/dashboard-icons
 
 - Infrastructure:
     - Proxmox 4750g:
@@ -47,6 +47,10 @@
         icon: adguard-home.svg
         href: http://adguard.lan
         ping: 192.168.84.253
+    - WGDashboard:
+        icon: wireguard.svg
+        href: http://wireguard.lan:10086
+        ping: 192.168.84.252
     - Unifi Site Manager:
         icon: unifi.svg
         href: https://unifi.ui.com
