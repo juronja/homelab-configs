@@ -23,7 +23,7 @@ layout:
     icon: mdi-server
   Networking:
     icon: mdi-lan
-  Manage:
+  Tools:
     icon: mdi-tools
   Media:
     icon: mdi-multimedia

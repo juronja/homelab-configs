@@ -1,5 +1,4 @@
 ---
-
 # Icons library: https://github.com/homarr-labs/dashboard-icons
 
 - Infrastructure:
@@ -55,7 +54,7 @@
         icon: unifi.svg
         href: https://unifi.ui.com
 
-- Manage:
+- Tools:
     - Home Assistant:
         icon: home-assistant.svg
         href: https://ha.repina.eu
