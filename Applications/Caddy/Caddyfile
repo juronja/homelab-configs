@@ -1,28 +1,165 @@
 *.repina.eu {
-    tls /etc/caddy/certs/repina_eu-origin-cert.pem /etc/caddy/certs/repina_eu-private-key.key
+	tls /etc/caddy/certs/repina_eu-origin-cert.pem /etc/caddy/certs/repina_eu-private-key.key
 
-    @dilute host dilute.repina.eu
-    handle @dilute {
-        reverse_proxy 192.168.x.x:x
-		header -Server
-        header {
-            # This tells the client to store responses for one week.
-            Cache-Control max-age=604800
-            # Enable HSTS (HTTP Strict Transport Security) to force HTTPS for one year including subdomains.
-            Strict-Transport-Security max-age=31536000 includeSubDomains
-            # Prevent MIME type sniffing, mitigating certain security vulnerabilities.
-            X-Content-Type-Options nosniff
-            # Prevent the site from being embedded in an iframe, mitigating clickjacking.
-            X-Frame-Options DENY
-            # Set the referrer policy to send the origin only when making cross-origin requests.
-            Referrer-Policy origin-when-cross-origin
-            # This will deny website access to the listed hardware features for security purposes.
-            Permissions-Policy autoplay=(), camera=(), microphone=(), midi=(), usb=()
-            # Block XSS attacks to some degree using a report-only CSP.
-            Content-Security-Policy-Report-Only "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; upgrade-insecure-requests;"
-        }
+	header -Server
+	header {
+		# This tells the client to store responses for one week.
+		Cache-Control max-age=86400
+		# Set the referrer policy to send the origin only when making cross-origin requests.
+		Referrer-Policy origin-when-cross-origin
+		# Enable HSTS (HTTP Strict Transport Security) to force HTTPS for one year including subdomains.
+		Strict-Transport-Security max-age=31536000 includeSubDomains
+	}
+
+	@ha host ha.repina.eu
+	handle @ha {
+		reverse_proxy 192.168.x.x:x
+		header {
+			# This will deny website access to the listed hardware features for security purposes.
+			Permissions-Policy autoplay=(), midi=()
+			# Block XSS attacks to some degree using a report-only CSP.
+			Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' basemaps.cartocdn.com brands.home-assistant.io data:; font-src 'self'; connect-src 'self' raw.githubusercontent.com; upgrade-insecure-requests;"
+		}
+		rate_limit /auth/authorize* {
+			# distributed # only needed if multiple caddy instances
+			zone limit_by_ip {
+				key {remote_host}
+				events 20
+				window 10s
+			}
+		}
+	}
+
+	@audiobook host audiobook.repina.eu
+	handle @audiobook {
+		reverse_proxy 192.168.x.x:x
+		header {
+			# Prevent the site from being embedded in an iframe, mitigating clickjacking.
+			X-Frame-Options DENY
+			# Prevent MIME type sniffing, mitigating certain security vulnerabilities.
+			X-Content-Type-Options nosniff
+			# This will deny website access to the listed hardware features for security purposes.
+			Permissions-Policy autoplay=(), camera=(), microphone=(), midi=(), usb=()
+			# Block XSS attacks to some degree using a report-only CSP.
+			Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' api.github.com; frame-ancestors 'none'; upgrade-insecure-requests;"
+		}
 		request_body {
-            max_size 5KB
-        }
-    }
+			max_size 100MB
+		}
+		rate_limit /audiobookshelf/login/ {
+			# distributed # only needed if multiple caddy instances
+			zone limit_by_ip {
+				key {remote_host}
+				events 20
+				window 10s
+			}
+		}
+	}
+
+	@dilute host dilute.repina.eu
+	handle @dilute {
+		reverse_proxy 192.168.x.x:x
+		header {
+			# Prevent the site from being embedded in an iframe, mitigating clickjacking.
+			X-Frame-Options DENY
+			# Prevent MIME type sniffing, mitigating certain security vulnerabilities.
+			X-Content-Type-Options nosniff
+			# This will deny website access to the listed hardware features for security purposes.
+			Permissions-Policy autoplay=(), camera=(), microphone=(), midi=(), usb=()
+			# Block XSS attacks to some degree using a report-only CSP.
+			Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' cdn.jsdelivr.net 'unsafe-inline'; img-src 'self' data:; font-src 'self' cdn.jsdelivr.net; connect-src 'self'; frame-ancestors 'none'; upgrade-insecure-requests;"
+		}
+		request_body {
+			max_size 100KB
+		}
+		rate_limit {
+			# distributed # only needed if multiple caddy instances
+			zone limit_by_ip {
+				key {remote_host}
+				events 10
+				window 5s
+			}
+		}
+	}
+
+	@jenkins host jenkins.repina.eu
+	handle @jenkins {
+		reverse_proxy 192.168.x.x:x
+		header {
+			# Prevent the site from being embedded in an iframe, mitigating clickjacking.
+			X-Frame-Options DENY
+			# Prevent MIME type sniffing, mitigating certain security vulnerabilities.
+			X-Content-Type-Options nosniff
+			# This will deny website access to the listed hardware features for security purposes.
+			Permissions-Policy autoplay=(), camera=(), microphone=(), midi=(), usb=()
+			# Block XSS attacks to some degree using a report-only CSP.
+			Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' cdn.jsdelivr.net 'unsafe-inline'; img-src 'self' data:; font-src 'self' cdn.jsdelivr.net; connect-src 'self'; frame-ancestors 'none'; upgrade-insecure-requests;"
+		}
+		request_body {
+			max_size 100KB
+		}
+		rate_limit /login {
+			# distributed # only needed if multiple caddy instances
+			zone limit_by_ip {
+				key {remote_host}
+				events 20
+				window 10s
+			}
+		}
+	}
+
+	@utm-dev host utm-builder-dev.repina.eu
+	handle @utm-dev {
+		basic_auth {
+			juronja pass #hash pass first with 'caddy hash-password'
+		}
+		reverse_proxy 192.168.x.x:x
+		header {
+			# Prevent the site from being embedded in an iframe, mitigating clickjacking.
+			X-Frame-Options DENY
+			# Prevent MIME type sniffing, mitigating certain security vulnerabilities.
+			X-Content-Type-Options nosniff
+			# This will deny website access to the listed hardware features for security purposes.
+			Permissions-Policy autoplay=(), camera=(), microphone=(), midi=(), usb=()
+			# Block XSS attacks to some degree using a report-only CSP.
+			Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' cdn.jsdelivr.net fonts.googleapis.com 'unsafe-inline'; img-src 'self' data:; font-src 'self' cdn.jsdelivr.net fonts.gstatic.com; connect-src 'self'; frame-ancestors 'none'; upgrade-insecure-requests;"
+		}
+		request_body {
+			max_size 100KB
+		}
+		rate_limit {
+			# distributed # only needed if multiple caddy instances
+			zone limit_by_ip {
+				key {remote_host}
+				events 20
+				window 10s
+			}
+		}
+	}
+
+	@utm host utm-builder.repina.eu
+	handle @utm {
+		reverse_proxy 192.168.x.x:x
+		header {
+			# Prevent the site from being embedded in an iframe, mitigating clickjacking.
+			X-Frame-Options DENY
+			# Prevent MIME type sniffing, mitigating certain security vulnerabilities.
+			X-Content-Type-Options nosniff
+			# This will deny website access to the listed hardware features for security purposes.
+			Permissions-Policy autoplay=(), camera=(), microphone=(), midi=(), usb=()
+			# Block XSS attacks to some degree using a report-only CSP.
+			Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' cdn.jsdelivr.net fonts.googleapis.com 'unsafe-inline'; img-src 'self' data:; font-src 'self' cdn.jsdelivr.net fonts.gstatic.com; connect-src 'self'; frame-ancestors 'none'; upgrade-insecure-requests;"
+		}
+		request_body {
+			max_size 100KB
+		}
+		rate_limit {
+			# distributed # only needed if multiple caddy instances
+			zone limit_by_ip {
+				key {remote_host}
+				events 20
+				window 10s
+			}
+		}
+	}
 }
