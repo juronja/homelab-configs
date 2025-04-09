@@ -15,3 +15,8 @@ Add host path in TrueNas: /mnt/media-pool/media
 11. UI > edit formats
 12. Import Movies
 13. Make a List > Plex Watchlist
+
+## Replace official metadata
+
+Follow this to replace the broken official metadata:
+https://github.com/blampe/rreading-glasses
