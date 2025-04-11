@@ -8,7 +8,7 @@ How to setup various VMs in Proxmox.
 Copy this line in the Proxmox Shell.
 
 ```bash
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/juronja/homelab-configs/main/Applications/Proxmox/scripts/cloudinnitvm.sh)"
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/Infrastructure/Proxmox/scripts/cloudinnitvm.sh)"
 ```
 
 - STEP 1 - Username and password
@@ -26,7 +26,7 @@ And you are done!
 Copy this line in the Proxmox Shell.
 
 ```bash
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/juronja/homelab-configs/main/Applications/Proxmox/scripts/truenasvm.sh)"
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/Infrastructure/Proxmox/scripts/truenasvm.sh)"
 ```
 
 ### Attach Motherboard Hard disks manually
@@ -52,7 +52,7 @@ qm set 101 -scsi2 /dev/disk/by-id/ata-Hitachi_HTS727575A9E364_J3390084GMAGND
 Copy this line in the Proxmox Shell.
 
 ```bash
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/juronja/homelab-configs/main/Applications/Proxmox/scripts/windows11vm.sh)"
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/Infrastructure/Proxmox/scripts/windows11vm.sh)"
 ```
 
 - STEP 1 - Choose Enterprise edition
