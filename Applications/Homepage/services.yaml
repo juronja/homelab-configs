@@ -38,10 +38,6 @@
         icon: openwrt.svg
         href: http://router.lan
         #description: OpenWRT OS
-    - Nginx Proxy Manager:
-        icon: nginx-proxy-manager.svg
-        href: http://proxy.lan:81/login
-        ping: 192.168.84.254
     - Adguard Home:
         icon: adguard-home.svg
         href: http://adguard.lan
