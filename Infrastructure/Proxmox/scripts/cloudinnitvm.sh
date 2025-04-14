@@ -124,7 +124,6 @@ LOCAL_NETWORK=$(pve-firewall localnet | grep local_network | cut -d':' -f2 | sed
 ALIAS_HOME_NETWORK="home_network"
 ALIAS_PROXY="proxy"
 GROUP_LOCAL="local-ssh-ping"
-SOURCE_IPRANGE="192.168.84.1-192.168.84.49"
 
 # Download the Ubuntu cloud innit image
 wget -nc --directory-prefix=$IMG_LOCATION https://cloud-images.ubuntu.com/$UBUNTU_RLS/current/$UBUNTU_RLS-server-cloudimg-amd64.img
@@ -149,9 +148,9 @@ if [[ $CLUSTER_FW_ENABLED != 1 ]]; then
   pvesh create /cluster/firewall/groups --group $GROUP_LOCAL
   sleep 2
   pvesh create /cluster/firewall/rules --action ACCEPT --type in --iface vmbr0 --source $ALIAS_HOME_NETWORK --macro Ping --enable 1
-  pvesh create /cluster/firewall/groups/$GROUP_LOCAL --action ACCEPT --type in --source $SOURCE_IPRANGE --proto tcp --enable 1
+  pvesh create /cluster/firewall/groups/$GROUP_LOCAL --action ACCEPT --type in --source $ALIAS_HOME_NETWORK --proto tcp --enable 1
   pvesh create /cluster/firewall/groups/$GROUP_LOCAL --action ACCEPT --type in --source $ALIAS_HOME_NETWORK --macro Ping --enable 1
-  pvesh create /cluster/firewall/groups/$GROUP_LOCAL --action ACCEPT --type in --source $SOURCE_IPRANGE --macro SSH --enable 1
+  pvesh create /cluster/firewall/groups/$GROUP_LOCAL --action ACCEPT --type in --source $ALIAS_HOME_NETWORK --macro SSH --enable 1
   echo "Cluster Firewall configurations set successfully .."
   else
   echo "Cluster Firewall configurations already present .."

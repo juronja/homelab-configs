@@ -25,9 +25,9 @@ pvesh create /cluster/firewall/aliases --name home_network --cidr 192.168.84.0/2
 pvesh create /cluster/firewall/aliases --name proxy --cidr 192.168.84.254
 pvesh create /cluster/firewall/rules --action ACCEPT --type in --iface vmbr0 --source dc/home_network --macro Ping --enable 1
 pvesh create /cluster/firewall/groups --group local-ssh-ping
-pvesh create /cluster/firewall/groups/local-ssh-ping --action ACCEPT --type in --source 192.168.84.1-192.168.84.49 --proto tcp --enable 1
+pvesh create /cluster/firewall/groups/local-ssh-ping --action ACCEPT --type in --source dc/home_network --proto tcp --enable 1
 pvesh create /cluster/firewall/groups/local-ssh-ping --action ACCEPT --type in --source dc/home_network --macro Ping --enable 1
-pvesh create /cluster/firewall/groups/local-ssh-ping --action ACCEPT --type in --source 192.168.84.1-192.168.84.49 --macro SSH --enable 1
+pvesh create /cluster/firewall/groups/local-ssh-ping --action ACCEPT --type in --source dc/home_network --macro SSH --enable 1
 ```
 
 ### VM level Firewall
