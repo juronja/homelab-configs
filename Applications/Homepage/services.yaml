@@ -49,6 +49,9 @@
     - Unifi Site Manager:
         icon: unifi.svg
         href: https://unifi.ui.com
+    - Unifi Network Server:
+        icon: unifi.svg
+        href: https://unifi.lan:8443
 
 - Tools:
     - Home Assistant:
