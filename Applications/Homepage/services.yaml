@@ -20,7 +20,7 @@
     - Truenas Scale:
         icon: truenas.svg
         href: http://nas.lan
-        ping: 192.168.84.11
+        ping: 192.168.84.6
         #description: pve1
     - Portainer Homelab:
         icon: portainer.svg
