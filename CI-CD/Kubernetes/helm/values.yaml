@@ -1,0 +1,45 @@
+replicaCount: 2
+
+adService:
+  name: adservice
+  port: 9555
+
+cartService:
+  name: cartservice
+  port: 7070
+
+checkoutService:
+  name: checkoutservice
+  port: 5050
+
+currencyService:
+  name: currencyservice
+  port: 7000
+
+emailService:
+  name: emailservice
+  port: 8080
+
+frontend:
+  name: frontend
+  port: 8080
+
+paymentService:
+  name: paymentservice
+  port: 50051
+
+productCatalogService:
+  name: productcatalogservice
+  port: 3550
+
+recommendationService:
+  name: recommendationservice
+  port: 8080
+
+shippingService:
+  name: shippingservice
+  port: 50051
+
+cartDatabase:
+  name: redis-cart
+  port: 6379

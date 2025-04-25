@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.checkoutService.name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ .Values.checkoutService.name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ .Values.checkoutService.name }}
+    spec:
+      containers:
+      - name: {{ .Values.checkoutService.name }}
+        image: us-central1-docker.pkg.dev/google-samples/microservices-demo/{{ .Values.checkoutService.name }}:v0.10.2
+        ports:
+        - containerPort: {{ .Values.checkoutService.port }}
+        env:
+        - name: PORT
+          value: "5050"
+        - name: PRODUCT_CATALOG_SERVICE_ADDR
+          value: "productcatalogservice:3550"
+        - name: SHIPPING_SERVICE_ADDR
+          value: "shippingservice:50051"
+        - name: PAYMENT_SERVICE_ADDR
+          value: "paymentservice:50051"
+        - name: EMAIL_SERVICE_ADDR
+          value: "emailservice:5000"
+        - name: CURRENCY_SERVICE_ADDR
+          value: "currencyservice:7000"
+        - name: CART_SERVICE_ADDR
+          value: "cartservice:7070"
+        readinessProbe:
+          grpc:
+            port: {{ .Values.checkoutService.port }}
+        livenessProbe:
+          grpc:
+            port: {{ .Values.checkoutService.port }}
+        resources:
+          requests:
+            cpu: 100m
+            memory: 64Mi
+          limits:
+            cpu: 200m
+            memory: 128Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.checkoutService.name }}
+spec:
+  selector:
+    app.kubernetes.io/name: {{ .Values.checkoutService.name }}
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: {{ .Values.checkoutService.port }}
+      targetPort: {{ .Values.checkoutService.port }}
