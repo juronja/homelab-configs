@@ -51,6 +51,64 @@ kubectl create secret generic secret-name --from-file=username=./username.txt --
 
 
 kubectl create secret generic mongo-admin --from-file=MONGO_ADMIN_USER=/home/juronja/apps/utm-builder/creds/db-user.txt --from-file=MONGO_ADMIN_PASS=/home/juronja/apps/utm-builder/creds/db-pass.txt
-
 ```
 
+Create a secret for Docker login creds
+
+```shell
+kubectl create secret generic dockerhub --from-file=.dockerconfigjson=.docker/config.json --type=kubernetes.io/dockerconfigjson
+```
+
+
+## Digital Ocean specifics
+
+
+### Mongodb helm chart
+
+Install helm repo
+`helm repo add bitnami https://charts.bitnami.com/bitnami`
+
+Values file for installing a mongodb helm chart against digital ocean.
+
+```yaml
+architecture: replicaset
+auth:
+    rootPassword: secret-pass
+replicaCount: 3
+persistence:
+    storageClass: "do-block-storage" # This is digital ocean specific
+```
+
+Install with this code:
+`helm install my-mongodb --values values.yaml bitnami/mongodb`
+
+
+Add ingress controller
+
+```shell
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+
+helm install my-ingress-nginx ingress-nginx/ingress-nginx
+```
+
+create ingress rules:
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: mongo-express
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: ingress.repina.eu
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: mongo-express-service
+            port:
+              number: 8081
+```
