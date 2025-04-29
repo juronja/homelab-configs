@@ -6,12 +6,15 @@
     - My Github:
         - icon: github.svg
           href: https://github.com/juronja
-    - AWS Console:
-        - icon: aws.svg
-          href: https://juronja.signin.aws.amazon.com/console
     - Cloudflare:
         - icon: cloudflare.svg
           href: https://dash.cloudflare.com/login
+    - AWS Console:
+        - icon: aws.svg
+          href: https://juronja.signin.aws.amazon.com/console
+    - AWS Console Mami:
+        - icon: aws.svg
+          href: https://233207430299.signin.aws.amazon.com/console
     - Helper Scripts:
         - icon: https://tteck.github.io/Proxmox/favicon.ico
           href: https://community-scripts.github.io/ProxmoxVE/
