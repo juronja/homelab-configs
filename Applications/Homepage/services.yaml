@@ -12,11 +12,6 @@
         #  url: https://pve.lan:8006
         #  username: {{HOMEPAGE_VAR_PROXMOX_USER}}
         #  password: {{HOMEPAGE_VAR_PROXMOX_PASS}}
-    - Proxmox New:
-        icon: proxmox.svg
-        href: https://pve-new.lan:8006
-        ping: 192.168.84.10
-        #description: pve-new
     - Truenas Scale:
         icon: truenas.svg
         href: http://nas.lan
@@ -26,12 +21,12 @@
         icon: portainer.svg
         href: https://homelab.lan:9443
         ping: 192.168.84.16
-        description: homelab.lan
+        # description: homelab.lan
     - Portainer Hosting:
         icon: portainer.svg
         href: https://hosting-prod.lan:9443
         ping: 192.168.84.15
-        description: hosting-prod.lan
+        # description: hosting-prod.lan
 
 - Networking:
     - Gateway Router:
@@ -52,6 +47,7 @@
     - Unifi Network Server:
         icon: unifi.svg
         href: https://unifi.lan:8443
+        description: pernica
 
 - Tools:
     - Home Assistant:
