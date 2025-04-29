@@ -1,45 +1,125 @@
 replicaCount: 2
 
+images:
+  repository: us-central1-docker.pkg.dev/google-samples/microservices-demo
+
 adService:
   name: adservice
   port: 9555
+  resources:
+    requests:
+      cpu: 200m
+      memory: 180Mi
+    limits:
+      cpu: 300m
+      memory: 300Mi
 
 cartService:
   name: cartservice
   port: 7070
-
-checkoutService:
-  name: checkoutservice
-  port: 5050
-
-currencyService:
-  name: currencyservice
-  port: 7000
-
-emailService:
-  name: emailservice
-  port: 8080
-
-frontend:
-  name: frontend
-  port: 8080
-
-paymentService:
-  name: paymentservice
-  port: 50051
-
-productCatalogService:
-  name: productcatalogservice
-  port: 3550
-
-recommendationService:
-  name: recommendationservice
-  port: 8080
-
-shippingService:
-  name: shippingservice
-  port: 50051
+  resources:
+    requests:
+      cpu: 200m
+      memory: 64Mi
+    limits:
+      cpu: 300m
+      memory: 128Mi
 
 cartDatabase:
   name: redis-cart
   port: 6379
+  resources:
+    requests:
+      cpu: 70m
+      memory: 200Mi
+    limits:
+      cpu: 125m
+      memory: 256Mi
+      
+checkoutService:
+  name: checkoutservice
+  port: 5050
+  resources:
+    requests:
+      cpu: 100m
+      memory: 64Mi
+    limits:
+      cpu: 200m
+      memory: 128Mi
+
+currencyService:
+  name: currencyservice
+  port: 7000
+  resources:
+    requests:
+      cpu: 100m
+      memory: 64Mi
+    limits:
+      cpu: 200m
+      memory: 128Mi
+
+emailService:
+  name: emailservice
+  port: 8080
+  resources:
+    requests:
+      cpu: 100m
+      memory: 64Mi
+    limits:
+      cpu: 200m
+      memory: 128Mi
+
+frontendService:
+  name: frontend
+  port: 8080
+  resources:
+    requests:
+      cpu: 100m
+      memory: 64Mi
+    limits:
+      cpu: 200m
+      memory: 128Mi
+
+paymentService:
+  name: paymentservice
+  port: 50051
+  resources:
+    requests:
+      cpu: 100m
+      memory: 64Mi
+    limits:
+      cpu: 200m
+      memory: 128Mi
+
+productCatalogService:
+  name: productcatalogservice
+  port: 3550
+  resources:
+    requests:
+      cpu: 100m
+      memory: 64Mi
+    limits:
+      cpu: 200m
+      memory: 128Mi
+
+recommendationService:
+  name: recommendationservice
+  port: 8080
+  resources:
+    requests:
+      cpu: 100m
+      memory: 220Mi
+    limits:
+      cpu: 200m
+      memory: 450Mi
+
+shippingService:
+  name: shippingservice
+  port: 50051
+  resources:
+    requests:
+      cpu: 100m
+      memory: 64Mi
+    limits:
+      cpu: 200m
+      memory: 128Mi

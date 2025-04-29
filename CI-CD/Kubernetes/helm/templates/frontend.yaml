@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: {{ .Values.frontendService.name }}
-        image: us-central1-docker.pkg.dev/google-samples/microservices-demo/{{ .Values.frontendService.name }}:v0.10.2
+        image: {{ .Values.images.repository }}/{{ .Values.frontendService.name }}:{{ .Chart.AppVersion }}
         ports:
         - containerPort: {{ .Values.frontendService.port }}
         env:
@@ -54,12 +54,7 @@ spec:
             - name: "Cookie"
               value: "shop_session-id=x-liveness-probe"
         resources:
-          requests:
-            cpu: 100m
-            memory: 64Mi
-          limits:
-            cpu: 200m
-            memory: 128Mi
+          {{- toYaml .Values.frontendService.resources | nindent 10 }}
 ---
 apiVersion: v1
 kind: Service

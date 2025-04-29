@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: {{ .Values.productCatalogService.name }}
-        image: us-central1-docker.pkg.dev/google-samples/microservices-demo/{{ .Values.productCatalogService.name }}:v0.10.2
+        image: {{ .Values.images.repository }}/{{ .Values.productCatalogService.name }}:{{ .Chart.AppVersion }}
         ports:
         - containerPort: {{ .Values.productCatalogService.port }}
         env:
@@ -28,12 +28,7 @@ spec:
           grpc:
             port: {{ .Values.productCatalogService.port }}
         resources:
-          requests:
-            cpu: 100m
-            memory: 64Mi
-          limits:
-            cpu: 200m
-            memory: 128Mi
+          {{- toYaml .Values.productCatalogService.resources | nindent 10 }}
 ---
 apiVersion: v1
 kind: Service

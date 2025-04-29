@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: {{ .Values.currencyService.name }}
-        image: us-central1-docker.pkg.dev/google-samples/microservices-demo/{{ .Values.currencyService.name }}:v0.10.2
+        image: {{ .Values.images.repository }}/{{ .Values.currencyService.name }}:{{ .Chart.AppVersion }}
         ports:
         - containerPort: {{ .Values.currencyService.port }}
         env:
@@ -30,12 +30,7 @@ spec:
           grpc:
             port: {{ .Values.currencyService.port }}
         resources:
-          requests:
-            cpu: 100m
-            memory: 64Mi
-          limits:
-            cpu: 200m
-            memory: 128Mi
+          {{- toYaml .Values.currencyService.resources | nindent 10 }}
 ---
 apiVersion: v1
 kind: Service

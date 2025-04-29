@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: {{ .Values.recommendationService.name }}
-        image: us-central1-docker.pkg.dev/google-samples/microservices-demo/{{ .Values.recommendationService.name }}:v0.10.2
+        image: {{ .Values.images.repository }}/{{ .Values.recommendationService.name }}:{{ .Chart.AppVersion }}
         ports:
         - containerPort: {{ .Values.recommendationService.port }}
         env:
@@ -32,12 +32,7 @@ spec:
           grpc:
             port: {{ .Values.recommendationService.port }}
         resources:
-          requests:
-            cpu: 100m
-            memory: 256Mi
-          limits:
-            cpu: 200m
-            memory: 512Mi
+          {{- toYaml .Values.recommendationService.resources | nindent 10 }}
 ---
 apiVersion: v1
 kind: Service

@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: {{ .Values.adService.name }}
-        image: us-central1-docker.pkg.dev/google-samples/microservices-demo/adservice:v0.10.2
+        image: {{ .Values.images.repository }}/{{ .Values.adService.name }}:{{ .Chart.AppVersion }}
         ports:
         - containerPort: {{ .Values.adService.port }}
         env:
@@ -32,12 +32,7 @@ spec:
           grpc:
             port: {{ .Values.adService.port }}
         resources:
-          requests:
-            cpu: 200m
-            memory: 180Mi
-          limits:
-            cpu: 300m
-            memory: 300Mi
+          {{- toYaml .Values.adService.resources | nindent 10 }}
 ---
 apiVersion: v1
 kind: Service
