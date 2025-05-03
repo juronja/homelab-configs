@@ -84,8 +84,8 @@ else
 fi
 
 if DISK_SIZE=$(whiptail --backtitle "Install - Ubuntu VM" --title "DISK SIZE" --radiolist "\nAllocate disk size\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 3 \
-    "16" "GB" OFF \
-    "32" "GB" ON \
+    "32" "GB" OFF \
+    "48" "GB" ON \
     "64" "GB" OFF \
     3>&1 1>&2 2>&3); then
         echo -e "Allocated disk size: $DISK_SIZE GB"
