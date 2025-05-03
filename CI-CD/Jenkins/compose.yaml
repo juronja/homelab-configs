@@ -1,7 +1,8 @@
 name: jenkins # Will be used for network auto naming and image names
 services:
   jenkins:
-    image: jenkins/jenkins:lts
+    build: .
+#    image: jenkins/jenkins:lts
     container_name: jenkins
     restart: unless-stopped
 #    healthcheck:
@@ -18,5 +19,3 @@ services:
       - "50000:50000" #That port will be used when you connect agents to the controller.
 volumes:
   data: # It will prepend the project name
-
-
