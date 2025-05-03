@@ -63,9 +63,10 @@ else
 fi
 
 
-if CORE_COUNT=$(whiptail --backtitle "Install - Ubuntu VM" --title "CORE COUNT" --radiolist "\nAllocate number of CPU Cores\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 3 \
+if CORE_COUNT=$(whiptail --backtitle "Install - Ubuntu VM" --title "CORE COUNT" --radiolist "\nAllocate number of CPU Cores\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 4 \
     "2" "cores" ON \
     "4" "cores" OFF \
+    "6" "cores" OFF \
     "8" "cores" OFF \
     3>&1 1>&2 2>&3); then
         echo -e "Allocated Cores: $CORE_COUNT"
@@ -73,10 +74,11 @@ else
     exit-script
 fi
 
-if RAM_COUNT=$(whiptail --backtitle "Install - Ubuntu VM" --title "RAM COUNT" --radiolist "\nAllocate number of RAM\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 3 \
+if RAM_COUNT=$(whiptail --backtitle "Install - Ubuntu VM" --title "RAM COUNT" --radiolist "\nAllocate number of RAM\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 4 \
     "2" "GB" OFF \
     "4" "GB" ON \
     "8" "GB" OFF \
+    "12" "GB" OFF \
     3>&1 1>&2 2>&3); then
         echo -e "Allocated RAM: $RAM_COUNT GB"
 else
