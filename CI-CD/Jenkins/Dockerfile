@@ -7,7 +7,7 @@ RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/s
 RUN install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 
 # Install eksctl
-RUN ARCH=amd64 && PLATFORM=$(uname -s)_$ARCH
+ARG PLATFORM=Linux_amd64
 RUN curl -sLO "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_$PLATFORM.tar.gz"
 RUN tar -xzf eksctl_$PLATFORM.tar.gz -C /tmp && rm eksctl_$PLATFORM.tar.gz
 RUN mv /tmp/eksctl /usr/local/bin
