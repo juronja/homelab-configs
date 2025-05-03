@@ -49,7 +49,7 @@ For Host reboot you can automate this with `crontab -e`. And then add this code 
 ```
 
 
-## Migrate server configurations
+## Migrate server configurations (untested)
 
 1. Create a tar from docker volume:
 
