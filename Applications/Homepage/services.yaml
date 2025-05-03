@@ -20,13 +20,12 @@
     - Portainer Homelab:
         icon: portainer.svg
         href: https://homelab.lan:9443
-        ping: 192.168.84.16
+        ping: 192.168.84.20
         # description: homelab.lan
-    - Portainer Hosting:
+    - Portainer Homelab-old:
         icon: portainer.svg
-        href: https://hosting-prod.lan:9443
-        ping: 192.168.84.15
-        # description: hosting-prod.lan
+        href: https://192.168.84.16:9443
+        ping: 192.168.84.16
 
 - Networking:
     - Gateway Router:
