@@ -143,8 +143,7 @@ while true; do
 done
 
 if [[ $OS_IPv4_CIDR != "dhcp" ]]; then
-  echo "DEBUG: OS_IPv4_CIDR before sed: '$OS_IPv4_CIDR'"
-  local SUGGESTED_GW=$(echo "$OS_IPv4_CIDR" | sed 's/\.[0-9]\{1,3\}\/\([0-9]\+\)$/.1/')
+  SUGGESTED_GW=$(echo "$OS_IPv4_CIDR" | sed 's/\.[0-9]\{1,3\}\/\([0-9]\+\)$/.1/')
   echo "DEBUG: SUGGESTED_GW after sed: '$SUGGESTED_GW'"
   while true; do
     if OS_IPv4_GW=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nEnter gateway IP address" 8 58 "$SUGGESTED_GW" --title "CLOUD-INIT IPv4 GATEWAY" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
