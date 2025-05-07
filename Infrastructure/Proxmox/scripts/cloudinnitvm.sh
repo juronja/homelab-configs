@@ -45,56 +45,118 @@ echo "Starting VM script .."
 
 # Whiptail inputs
 if UBUNTU_RLS=$(whiptail --backtitle "Install - Ubuntu VM" --title "UBUNTU RELEASE" --radiolist "\nChoose the release to install\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 2 \
-    "noble" "24.04 LTS" ON \
-    "jammy" "22.04 LTS" OFF \
-    3>&1 1>&2 2>&3); then
-        echo -e "Release version: $UBUNTU_RLS"
+  "noble" "24.04 LTS" ON \
+  "jammy" "22.04 LTS" OFF \
+  3>&1 1>&2 2>&3); then
+    echo -e "Release version: $UBUNTU_RLS"
 else
-    exit_script
+  exit_script
 fi
 
 if VM_NAME=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nSet the name of the VM" 8 58 "homelab" --title "NAME" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
-    if [ -z $VM_NAME ]; then
-        VM_NAME="homelab"
-        echo -e "Name: $VM_NAME"
-    else
-        echo -e "Name: $VM_NAME"
-    fi
+  if [ -z $VM_NAME ]; then
+    VM_NAME="homelab"
+    echo -e "Name: $VM_NAME"
+  else
+    echo -e "Name: $VM_NAME"
+  fi
 else
-    exit_script
+  exit_script
 fi
 
-
 if CORE_COUNT=$(whiptail --backtitle "Install - Ubuntu VM" --title "CORE COUNT" --radiolist "\nAllocate number of CPU Cores\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 4 \
-    "2" "cores" ON \
-    "4" "cores" OFF \
-    "6" "cores" OFF \
-    "8" "cores" OFF \
-    3>&1 1>&2 2>&3); then
-        echo -e "Allocated Cores: $CORE_COUNT"
+  "2" "cores" ON \
+  "4" "cores" OFF \
+  "6" "cores" OFF \
+  "8" "cores" OFF \
+  3>&1 1>&2 2>&3); then
+    echo -e "Allocated Cores: $CORE_COUNT"
 else
-    exit_script
+  exit_script
 fi
 
 if RAM_COUNT=$(whiptail --backtitle "Install - Ubuntu VM" --title "RAM COUNT" --radiolist "\nAllocate number of RAM\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 4 \
-    "2" "GB" OFF \
-    "4" "GB" ON \
-    "8" "GB" OFF \
-    "12" "GB" OFF \
-    3>&1 1>&2 2>&3); then
-        echo -e "Allocated RAM: $RAM_COUNT GB"
+  "2" "GB" OFF \
+  "4" "GB" ON \
+  "8" "GB" OFF \
+  "12" "GB" OFF \
+  3>&1 1>&2 2>&3); then
+    echo -e "Allocated RAM: $RAM_COUNT GB"
 else
-    exit_script
+  exit_script
 fi
 
 if DISK_SIZE=$(whiptail --backtitle "Install - Ubuntu VM" --title "DISK SIZE" --radiolist "\nAllocate disk size\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 3 \
-    "32" "GB" OFF \
-    "48" "GB" ON \
-    "64" "GB" OFF \
-    3>&1 1>&2 2>&3); then
-        echo -e "Allocated disk size: $DISK_SIZE GB"
+  "32" "GB" OFF \
+  "48" "GB" ON \
+  "64" "GB" OFF \
+  3>&1 1>&2 2>&3); then
+    echo -e "Allocated disk size: $DISK_SIZE GB"
 else
+  exit_script
+fi
+
+while true; do
+  if OS_USER=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nCloudinnit username" 8 58 --title "CI USERNAME" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
+    if [ -z $OS_USER ]; then
+      whiptail --backtitle "Install - Ubuntu VM" --msgbox "Username cannot be empty" 8 58
+    else
+      break # Username is not empty, break out of the loop
+    fi
+  else
     exit_script
+  fi
+done
+
+while true; do
+  if OS_PASS=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nCloudinnit password" 8 58 --title "CI PASSWORD" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
+    if [ -z $OS_PASS ]; then
+      whiptail --backtitle "Install - Ubuntu VM" --msgbox "Password cannot be empty" 8 58
+    elif [[ "$OS_PASS" == *" "* ]]; then
+      whiptail --msgbox "Password cannot contain spaces. Please try again." 8 58
+    elif [ ${#OS_PASS} -lt 5 ]; then
+      whiptail --msgbox "Password must be at least 5 characters long. Please try again." 8 58
+    else
+      break # Password is valid, break out of the loop
+    fi
+  else
+    exit_script
+  fi
+done
+
+while true; do
+  if OS_IPv4_CIDR=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nSet a Static IPv4 CIDR Address (/24)" 8 58 "dhcp" --title "CI IPv4 CIDR" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
+    if [ -z $OS_IPv4_CIDR ]; then
+      OS_IPv4_CIDR="dhcp"
+      break
+    else
+      if [[ "$OS_IPv4_CIDR" =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}/([0-9]|[1-2][0-9]|3[0-2])$ ]]; then
+        echo -e "IPv4 Address: $OS_IPv4_CIDR"
+        break
+      else
+        whiptail --backtitle "Install - Ubuntu VM" --msgbox "$OS_IPv4_CIDR is an invalid IPv4 CIDR address. Please enter a valid IPv4 CIDR address or 'dhcp'" 8 58
+      fi
+    fi
+  else
+    exit_script
+  fi
+done
+
+if [[ $OS_IPv4_CIDR != "dhcp" ]]; then
+  while true; do
+    if OS_IPv4_GW=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nEnter gateway IP address" 8 58 --title "CI IPv4 GATEWAY" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
+      if [ -z $OS_IPv4_GW ]; then
+          whiptail --backtitle "Install - Ubuntu VM" --msgbox "Gateway IP address cannot be empty" 8 58
+      elif [[ ! "$OS_IPv4_GW" =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then
+        whiptail --backtitle "Install - Ubuntu VM" --msgbox "Invalid IP address format" 8 58
+      else
+        echo -e "Gateway IP Address: $OS_IPv4_GW"
+        break # Exit the loop after a valid gateway IP is entered
+      fi
+    else
+      exit_script
+    fi
+  done
 fi
 
 # WHIPTAIL FIREWALL RULES
@@ -121,10 +183,6 @@ fi
 RAM=$(($RAM_COUNT * 1024))
 IMG_LOCATION="/var/lib/vz/template/iso/"
 CPU="x86-64-v3"
-OS_USER="test"
-OS_PASS="pass"
-OS_IPv4_CIDR="192.168.84.49/24"
-OS_IPv4_GW="192.168.84.1"
 
 # Proxmox variables
 CLUSTER_FW_ENABLED=$(pvesh get /cluster/firewall/options --output-format json | sed -n 's/.*"enable": *\([0-9]*\).*/\1/p')
