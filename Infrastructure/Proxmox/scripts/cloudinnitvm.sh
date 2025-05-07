@@ -114,7 +114,7 @@ while true; do
       whiptail --backtitle "Install - Ubuntu VM" --msgbox "Password cannot be empty" 8 58
     elif [[ "$OS_PASS" == *" "* ]]; then
       whiptail --msgbox "Password cannot contain spaces. Please try again." 8 58
-    elif [ ${#OS_PASS} -lt 5 ]; then
+    elif [ ${#OS_PASS} -lt 8 ]; then
       whiptail --msgbox "Password must be at least 5 characters long. Please try again." 8 58
     else
       break # Password is valid, break out of the loop
