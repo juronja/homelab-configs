@@ -143,8 +143,9 @@ while true; do
 done
 
 if [[ $OS_IPv4_CIDR != "dhcp" ]]; then
+  local SUGGESTED_GW=$(echo "$OS_IPv4_CIDR" | sed 's/\.[0-9]\{1,3\}\/\([0-9]\+\)$/.1/')
   while true; do
-    if OS_IPv4_GW=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nEnter gateway IP address" 8 58 --title "CI IPv4 GATEWAY" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
+    if OS_IPv4_GW=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nEnter gateway IP address" 8 58 "$SUGGESTED_GW" --title "CI IPv4 GATEWAY" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
       if [ -z $OS_IPv4_GW ]; then
           whiptail --backtitle "Install - Ubuntu VM" --msgbox "Gateway IP address cannot be empty" 8 58
       elif [[ ! "$OS_IPv4_GW" =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then
