@@ -97,7 +97,7 @@ else
 fi
 
 while true; do
-  if OS_USER=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nCloudinnit username" 8 58 --title "CI USERNAME" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
+  if OS_USER=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nCloud-innit username" 8 58 --title "CLOUD-INIT USERNAME" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
     if [ -z $OS_USER ]; then
       whiptail --backtitle "Install - Ubuntu VM" --msgbox "Username cannot be empty" 8 58
     else
@@ -109,7 +109,7 @@ while true; do
 done
 
 while true; do
-  if OS_PASS=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nCloudinnit password" 8 58 --title "CI PASSWORD" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
+  if OS_PASS=$(whiptail --backtitle "Install - Ubuntu VM" --passwordbox "\nCloud-innit password" 8 58 --title "CLOUD-INIT PASSWORD" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
     if [ -z $OS_PASS ]; then
       whiptail --backtitle "Install - Ubuntu VM" --msgbox "Password cannot be empty" 8 58
     elif [[ "$OS_PASS" == *" "* ]]; then
