@@ -123,6 +123,8 @@ IMG_LOCATION="/var/lib/vz/template/iso/"
 CPU="x86-64-v3"
 OS_USER="test"
 OS_PASS="pass"
+OS_IPv4_CIDR="192.168.84.49/24"
+OS_IPv4_GW="192.168.84.1"
 
 # Proxmox variables
 CLUSTER_FW_ENABLED=$(pvesh get /cluster/firewall/options --output-format json | sed -n 's/.*"enable": *\([0-9]*\).*/\1/p')
@@ -135,7 +137,7 @@ GROUP_LOCAL="local-ssh-ping"
 wget -nc --directory-prefix=$IMG_LOCATION https://cloud-images.ubuntu.com/$UBUNTU_RLS/current/$UBUNTU_RLS-server-cloudimg-amd64.img
 
 # Create a VM
-qm create $NEXTID --ostype l26 --cores $CORE_COUNT --cpu $CPU --numa 1 --memory $RAM --balloon 0 --name $VM_NAME --scsihw virtio-scsi-single --net0 virtio,bridge=vmbr0,firewall=1 --serial0 socket --vga serial0 --ipconfig0 ip=dhcp --agent enabled=1 --onboot 1
+qm create $NEXTID --ostype l26 --cores $CORE_COUNT --cpu $CPU --numa 1 --memory $RAM --balloon 0 --name $VM_NAME --scsihw virtio-scsi-single --net0 virtio,bridge=vmbr0,firewall=1 --serial0 socket --vga serial0 --ipconfig0 ip=$OS_IPv4_CIDR,gw=$OS_IPv4_GW --agent enabled=1 --onboot 1
 
 # Import cloud image disk
 qm disk import $NEXTID $IMG_LOCATION$UBUNTU_RLS-server-cloudimg-amd64.img local-lvm --format qcow2
@@ -147,7 +149,7 @@ qm set $NEXTID --scsi0 local-lvm:vm-$NEXTID-disk-0,discard=on,ssd=1 --ide2 local
 qm disk resize $NEXTID scsi0 "${DISK_SIZE}G" && qm set $NEXTID --boot order=scsi0
 
 # Configure Cloudinit datails
-qm set --ciuser $OS_USER --cipassword $OS_PASS
+qm set $NEXTID --ciuser $OS_USER --cipassword $OS_PASS
 
 # Configure Cluster level firewall rules if not enabled
 if [[ $CLUSTER_FW_ENABLED != 1 ]]; then
