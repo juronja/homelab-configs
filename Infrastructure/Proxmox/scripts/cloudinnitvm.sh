@@ -216,10 +216,10 @@ qm disk resize $NEXTID scsi0 "${DISK_SIZE}G" && qm set $NEXTID --boot order=scsi
 # Configure Cloudinit datails
 qm set $NEXTID --ciuser $OS_USER --cipassword $OS_PASS
 qm cloudinit dump $NEXTID user > $CLOUD_INNIT_LOCAL
-wget $CLOUD_INNIT_GIT -O temp_cloud_init.yml
-cat temp_cloud_init.yml >> $CLOUD_INNIT_LOCAL
+# wget $CLOUD_INNIT_GIT -O temp_cloud_init.yml
+# cat temp_cloud_init.yml >> $CLOUD_INNIT_LOCAL
 qm set $NEXTID --cicustom "user=local:$CLOUD_INNIT_LOCAL"
-rm temp_cloud_init.yml
+# rm temp_cloud_init.yml
 
 # Configure Cluster level firewall rules if not enabled
 if [[ $CLUSTER_FW_ENABLED != 1 ]]; then
