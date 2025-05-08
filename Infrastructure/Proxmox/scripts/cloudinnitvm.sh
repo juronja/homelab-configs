@@ -185,8 +185,8 @@ whiptail --backtitle "Install - Ubuntu VM" --title "SSH NOTE" --msgbox "Manually
 # WHIPTAIL INSTALL DOCKER & PORTAINER & JENKINS
 if whiptail --backtitle "Customize - Ubuntu VM" --title "INSTALL DOCKER" --yesno --defaultno "Do you want to install Docker?" 10 62; then
   docker=1
-  if INSEC_REG=$(whiptail --backtitle "Customize - Ubuntu VM" --inputbox "\nWrite comma seperated IP:PORT list to allow in Docker:" 10 58 "IP:PORT" --title "ADD INSECURE REGISTRY RULES?" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
-    echo "Added insecure registry rules: $INSEC_REG"
+  if insecReg=$(whiptail --backtitle "Customize - Ubuntu VM" --inputbox "\nWrite comma seperated IP:PORT list to allow in Docker:" 10 58 "IP:PORT" --title "ADD INSECURE REGISTRY RULES?" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
+    echo "Added insecure registry rules: $insecReg"
     registries=1
     else
     echo "Add registry rules skipped .."
