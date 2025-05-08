@@ -6,5 +6,3 @@ runcmd:
   - sudo sed -i 's/\/\/Unattended-Upgrade::Automatic-Reboot-Time "02:00"/Unattended-Upgrade::Automatic-Reboot-Time "06:00"/' /etc/apt/apt.conf.d/50unattended-upgrades
   # Disable IPv6
   - sudo sed -i 's/IPV6=yes/IPV6=no/' /etc/default/ufw
-  # Create custom app folder for deployment
-  - sudo mkdir -m 750 /home/$rootUser/apps && sudo chown -R $rootUser:$rootUser /home/$rootUser/apps

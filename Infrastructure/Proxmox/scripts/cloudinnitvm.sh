@@ -43,7 +43,7 @@ function exit_script() {
 ### MAIN SCRIPT ###
 echo "Starting VM script .."
 
-# Whiptail inputs
+# WHIPTAIL VM INPUTS
 if UBUNTU_RLS=$(whiptail --backtitle "Install - Ubuntu VM" --title "UBUNTU RELEASE" --radiolist "\nChoose the release to install\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 2 \
   "noble" "24.04 LTS" ON \
   "jammy" "22.04 LTS" OFF \
@@ -182,7 +182,28 @@ fi
 
 whiptail --backtitle "Install - Ubuntu VM" --title "SSH NOTE" --msgbox "Manually paste the public SSH key before starting the VM!" 10 58 || exit
 
-
+# WHIPTAIL INSTALL DOCKER & PORTAINER & JENKINS
+if whiptail --backtitle "Customize - Ubuntu VM" --title "INSTALL DOCKER" --yesno --defaultno "Do you want to install Docker?" 10 62; then
+  docker=1
+  if INSEC_REG=$(whiptail --backtitle "Customize - Ubuntu VM" --inputbox "\nWrite comma seperated IP:PORT list to allow in Docker:" 10 58 "IP:PORT" --title "ADD INSECURE REGISTRY RULES?" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
+    echo "Added insecure registry rules: $INSEC_REG"
+    registries=1
+    else
+    echo "Add registry rules skipped .."
+  fi
+  if whiptail --backtitle "Customize - Ubuntu VM" --title "INSTALL PORTAINER" --yesno "Do you want to install Portainer?" 10 62; then
+    portainer=1
+    else
+    echo "Portainer install skipped .."
+  fi
+  if whiptail --backtitle "Customize - Ubuntu VM" --title "INSTALL JENKINS" --yesno "Do you want to install Jenkins?" 10 62; then
+    jenkins=1
+    else
+    echo "Jenkins install skipped .."
+  fi
+  else
+  echo "Docker install skipped .."
+fi
 
 # Constant variables
 RAM=$(($RAM_COUNT * 1024))
@@ -191,6 +212,9 @@ CPU="x86-64-v3"
 CLOUD_INNIT_ABSOLUTE="/var/lib/vz/snippets/ubuntu-homelab-cloud-init.yml"
 CLOUD_INNIT_LOCAL="snippets/ubuntu-homelab-cloud-init.yml"
 CLOUD_INNIT_GIT="https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/Infrastructure/Proxmox/ubuntu-homelab-cloud-init.yml"
+PortainerComposeUrl="https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/Applications/Portainer/compose.yaml"
+JenkinsDockerfileUrl="https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/CI-CD/Jenkins/Dockerfile"
+JenkinsComposeUrl="https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/CI-CD/Jenkins/compose.yaml"
 
 # Proxmox variables
 CLUSTER_FW_ENABLED=$(pvesh get /cluster/firewall/options --output-format json | sed -n 's/.*"enable": *\([0-9]*\).*/\1/p')
@@ -219,9 +243,53 @@ qm set $NEXTID --ciuser $OS_USER --cipassword $OS_PASS
 qm cloudinit dump $NEXTID user > $CLOUD_INNIT_ABSOLUTE
 wget $CLOUD_INNIT_GIT -O temp_cloud_init.yml
 cat temp_cloud_init.yml >> $CLOUD_INNIT_ABSOLUTE
+# Create custom app folder for deployment
+cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
+- sudo mkdir -m 750 /home/$rootUser/apps && sudo chown -R $rootUser:$rootUser /home/$rootUser/apps
+EOF
+# # Docker install
+# if [ "$docker" == "1" ]; then
+#   cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
+#   # Remove legacy Docker
+#   - for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove \$pkg; done
 
-# Replace $rootUser with $OS_USER
-sed -i "s/\$rootUser/$OS_USER/g" $CLOUD_INNIT_ABSOLUTE
+#   # Add Docker's official GPG key:
+#   - sudo apt-get update
+#   - sudo apt-get install ca-certificates curl
+#   - sudo install -m 0755 -d /etc/apt/keyrings
+#   - sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+#   - sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+#   # Add the repository to Apt sources:
+#   - echo "deb [arch=\$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \$(. /etc/os-release && echo "\$VERSION_CODENAME") stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+#   - sudo apt-get update
+
+#   # Install Docker
+#   - sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
+#   # Append user to docker group
+#   - sudo usermod -aG docker $rootUser
+#   # Verify - run hello image and delete
+#   - sudo docker run --rm hello-world && sudo docker rmi hello-world
+#   # Create the daemon.json for insecure (http) logins configs if needed for Nexus
+#   - cd /etc/docker/ && sudo touch daemon.json
+# EOF
+#   # Replace $rootUser with $OS_USER
+#   sed -i "s/\$rootUser/$OS_USER/g" $CLOUD_INNIT_ABSOLUTE
+#   if [[ $registries == 1 ]]; then
+#     cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
+#   # Add insecure registries
+#   - printf "{\\n    \\"insecure-registries\\\" : [ \\"$insecReg\\" ]\\n}" | sudo tee /etc/docker/daemon.json > /dev/null
+# EOF
+#   else
+#     echo "Add registry rules skipped .."
+#   fi
+# fi
+
+
+
+
+
+
 
 qm set $NEXTID --cicustom "user=local:$CLOUD_INNIT_LOCAL"
 rm temp_cloud_init.yml
