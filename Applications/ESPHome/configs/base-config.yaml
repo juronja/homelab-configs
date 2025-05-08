@@ -1,6 +1,6 @@
 # Allow Over-The-Air updates
 ota:
-  platform: esphome
+  - platform: esphome
 
 # Networking
 wifi:
@@ -23,9 +23,6 @@ web_server:
 
 # In combination with the `ap` this allows the user to provision wifi credentials to the device via WiFi AP.
 captive_portal:
-
-# Allow provisioning Wi-Fi via serial
-improv_serial:
 
 # Wifi signal
 sensor:
