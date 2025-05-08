@@ -1,0 +1,9 @@
+package_reboot_if_required: true
+packages:
+  - qemu-guest-agent
+runcmd:
+  # Configure automatic updates
+  - sudo sed -i 's/\/\/Unattended-Upgrade::Automatic-Reboot-Time "02:00"/Unattended-Upgrade::Automatic-Reboot-Time "06:30"/' /etc/apt/apt.conf.d/50unattended-upgrades
+  - echo "Automatic upgrades configured successfully!"
+  # Disable IPv6
+  - sudo sed -i 's/IPV6=yes/IPV6=no/' /etc/default/ufw
