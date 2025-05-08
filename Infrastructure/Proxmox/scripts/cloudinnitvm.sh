@@ -246,7 +246,7 @@ cat temp_cloud_init.yml >> $CLOUD_INNIT_ABSOLUTE
 # Create custom app folder for deployment
 cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
   # Create custom app folder for deployment
-  - sudo mkdir -m 750 /home/$rootUser/apps && sudo chown -R $rootUser:$rootUser /home/$rootUser/apps
+  - sudo mkdir -m 750 /home/$OS_USER/apps && sudo chown -R $OS_USER:$OS_USER /home/$OS_USER/apps
 EOF
 # Docker install
 if [ "$docker" == "1" ]; then
@@ -268,14 +268,12 @@ if [ "$docker" == "1" ]; then
   # Install Docker
   - sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
   # Append user to docker group
-  - sudo usermod -aG docker $rootUser
+  - sudo usermod -aG docker $OS_USER
   # Verify - run hello image and delete
   - sudo docker run --rm hello-world && sudo docker rmi hello-world
   # Create the daemon.json for insecure (http) logins configs if needed for Nexus
   - cd /etc/docker/ && sudo touch daemon.json
 EOF
-  # Replace $rootUser with $OS_USER
-  sed -i "s/\$rootUser/$OS_USER/g" $CLOUD_INNIT_ABSOLUTE
   if [[ $registries == 1 ]]; then
     cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
   # Add insecure registries
