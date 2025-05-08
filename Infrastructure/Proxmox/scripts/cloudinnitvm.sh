@@ -180,11 +180,17 @@ if whiptail --backtitle "Install - Ubuntu VM" --title "PROXMOX FIREWALL" --yesno
   echo "FIREWALL setup skipped .."
 fi
 
+whiptail --backtitle "Install - Ubuntu VM" --title "SSH NOTE" --msgbox "Manually paste the public SSH key before starting the VM!" 10 58 || exit
+
+
 
 # Constant variables
 RAM=$(($RAM_COUNT * 1024))
 IMG_LOCATION="/var/lib/vz/template/iso/"
 CPU="x86-64-v3"
+CLOUD_INNIT_LOCAL="/var/lib/vz/snippets/ubuntu-homelab-cloud-init.yml"
+CLOUD_INNIT_GIT="https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/Infrastructure/Proxmox/ubuntu-homelab-cloud-init.yml"
+
 
 # Proxmox variables
 CLUSTER_FW_ENABLED=$(pvesh get /cluster/firewall/options --output-format json | sed -n 's/.*"enable": *\([0-9]*\).*/\1/p')
@@ -210,8 +216,11 @@ qm disk resize $NEXTID scsi0 "${DISK_SIZE}G" && qm set $NEXTID --boot order=scsi
 
 # Configure Cloudinit datails
 qm set $NEXTID --ciuser $OS_USER --cipassword $OS_PASS
+qm cloudinit dump $NEXTID user > $CLOUD_INNIT_LOCAL
+wget $CLOUD_INNIT_GIT -O temp_cloud_init.yml
+cat temp_cloud_init.yml >> $CLOUD_INNIT_LOCAL
 
-qm cloudinit dump $NEXTID user > /var/lib/vz/snippets/ci.yml
+rm temp_cloud_init.yml
 
 # Configure Cluster level firewall rules if not enabled
 if [[ $CLUSTER_FW_ENABLED != 1 ]]; then
