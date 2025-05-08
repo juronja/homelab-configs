@@ -132,8 +132,6 @@ while true; do
     echo $SSH_PUB_KEY
     if [ -z $SSH_PUB_KEY ]; then
       whiptail --backtitle "Install - Ubuntu VM" --msgbox "SSH key cannot be empty" 8 58
-    elif [[ "$OS_PASS" == *" "* ]]; then
-      whiptail --msgbox "SSH key cannot contain spaces. Please try again." 8 58
     else
       break # SSH key is valid, break out of the loop
     fi
