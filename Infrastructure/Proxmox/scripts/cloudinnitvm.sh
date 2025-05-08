@@ -244,9 +244,7 @@ qm cloudinit dump $NEXTID user > $CLOUD_INNIT_ABSOLUTE
 wget $CLOUD_INNIT_GIT -O temp_cloud_init.yml
 cat temp_cloud_init.yml >> $CLOUD_INNIT_ABSOLUTE
 # Create custom app folder for deployment
-cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
-- sudo mkdir -m 750 /home/$rootUser/apps && sudo chown -R $rootUser:$rootUser /home/$rootUser/apps
-EOF
+echo " - sudo mkdir -m 750 /home/$rootUser/apps && sudo chown -R $rootUser:$rootUser /home/$rootUser/apps" >> $CLOUD_INNIT_ABSOLUTE
 # # Docker install
 # if [ "$docker" == "1" ]; then
 #   cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
@@ -280,8 +278,6 @@ EOF
 #   # Add insecure registries
 #   - printf "{\\n    \\"insecure-registries\\\" : [ \\"$insecReg\\" ]\\n}" | sudo tee /etc/docker/daemon.json > /dev/null
 # EOF
-#   else
-#     echo "Add registry rules skipped .."
 #   fi
 # fi
 
