@@ -191,7 +191,6 @@ CPU="x86-64-v3"
 CLOUD_INNIT_LOCAL="/var/lib/vz/snippets/ubuntu-homelab-cloud-init.yml"
 CLOUD_INNIT_GIT="https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/Infrastructure/Proxmox/ubuntu-homelab-cloud-init.yml"
 
-
 # Proxmox variables
 CLUSTER_FW_ENABLED=$(pvesh get /cluster/firewall/options --output-format json | sed -n 's/.*"enable": *\([0-9]*\).*/\1/p')
 LOCAL_NETWORK=$(pve-firewall localnet | grep local_network | cut -d':' -f2 | sed 's/ //g')
@@ -219,7 +218,7 @@ qm set $NEXTID --ciuser $OS_USER --cipassword $OS_PASS
 qm cloudinit dump $NEXTID user > $CLOUD_INNIT_LOCAL
 wget $CLOUD_INNIT_GIT -O temp_cloud_init.yml
 cat temp_cloud_init.yml >> $CLOUD_INNIT_LOCAL
-
+qm set $NEXTID --cicustom "user=local:$CLOUD_INNIT_LOCAL"
 rm temp_cloud_init.yml
 
 # Configure Cluster level firewall rules if not enabled
