@@ -147,13 +147,13 @@ while true; do
     if [ -z $OS_IPv4_CIDR ]; then
       OS_IPv4_CIDR="dhcp"
       break
+    elif [ "$OS_IPv4_CIDR" = "dhcp" ]; then
+      break 
+    elif [[ "$OS_IPv4_CIDR" =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}/([0-9]|[1-2][0-9]|3[0-2])$ ]]; then
+      echo -e "IPv4 Address: $OS_IPv4_CIDR"
+      break
     else
-      if [[ "$OS_IPv4_CIDR" =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}/([0-9]|[1-2][0-9]|3[0-2])$ ]]; then
-        echo -e "IPv4 Address: $OS_IPv4_CIDR"
-        break
-      else
-        whiptail --backtitle "Install - Ubuntu VM" --msgbox "$OS_IPv4_CIDR is an invalid IPv4 CIDR address. Please enter a valid IPv4 CIDR address or 'dhcp'" 8 58
-      fi
+      whiptail --backtitle "Install - Ubuntu VM" --msgbox "$OS_IPv4_CIDR is an invalid IPv4 CIDR address. Please enter a valid IPv4 CIDR address or 'dhcp'" 8 58
     fi
   else
     exit_script
