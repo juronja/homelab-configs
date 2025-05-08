@@ -219,6 +219,10 @@ qm set $NEXTID --ciuser $OS_USER --cipassword $OS_PASS
 qm cloudinit dump $NEXTID user > $CLOUD_INNIT_ABSOLUTE
 wget $CLOUD_INNIT_GIT -O temp_cloud_init.yml
 cat temp_cloud_init.yml >> $CLOUD_INNIT_ABSOLUTE
+
+# Replace $rootUser with $OS_USER
+sed -i "s/\$rootUser/$OS_USER/g" $CLOUD_INNIT_ABSOLUTE
+
 qm set $NEXTID --cicustom "user=local:$CLOUD_INNIT_LOCAL"
 rm temp_cloud_init.yml
 
