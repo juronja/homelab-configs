@@ -1,28 +1,14 @@
-# Allow Over-The-Air updates
-ota:
-  - platform: esphome
-
 # Networking
 wifi:
-  networks:
-    - ssid: !secret wifi_ssid
-      password: !secret wifi_password
-
   # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
     ssid: ${friendly_name}
     password: ${ap_pass}
   # custom local domain for openwrt
-  domain: .lan
-
-# Enable logging
-logger:
+#  domain: .lan
 
 # This is needed to access the settings via web IP
 web_server:
-
-# In combination with the `ap` this allows the user to provision wifi credentials to the device via WiFi AP.
-captive_portal:
 
 # Wifi signal
 sensor:
