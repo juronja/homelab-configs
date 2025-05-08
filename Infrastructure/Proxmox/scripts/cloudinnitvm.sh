@@ -248,39 +248,39 @@ cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
   # Create custom app folder for deployment
   - sudo mkdir -m 750 /home/$OS_USER/apps && sudo chown -R $OS_USER:$OS_USER /home/$OS_USER/apps
 EOF
-# Docker install
-if [ "$docker" == "1" ]; then
-  cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
-  # Remove legacy Docker
-  - for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove \$pkg; done
+# # Docker install
+# if [ "$docker" == "1" ]; then
+#   cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
+#   # Remove legacy Docker
+#   - for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove \$pkg; done
 
-  # Add Docker's official GPG key:
-  - sudo apt-get update
-  - sudo apt-get install ca-certificates curl
-  - sudo install -m 0755 -d /etc/apt/keyrings
-  - sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
-  - sudo chmod a+r /etc/apt/keyrings/docker.asc
+#   # Add Docker's official GPG key:
+#   - sudo apt-get update
+#   - sudo apt-get install ca-certificates curl
+#   - sudo install -m 0755 -d /etc/apt/keyrings
+#   - sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+#   - sudo chmod a+r /etc/apt/keyrings/docker.asc
 
-  # Add the repository to Apt sources:
-  - echo "deb [arch=\$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \$(. /etc/os-release && echo "\$VERSION_CODENAME") stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-  - sudo apt-get update
+#   # Add the repository to Apt sources:
+#   - echo "deb [arch=\$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \$(. /etc/os-release && echo "\$VERSION_CODENAME") stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+#   - sudo apt-get update
 
-  # Install Docker
-  - sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
-  # Append user to docker group
-  - sudo usermod -aG docker $OS_USER
-  # Verify - run hello image and delete
-  - sudo docker run --rm hello-world && sudo docker rmi hello-world
-  # Create the daemon.json for insecure (http) logins configs if needed for Nexus
-  - cd /etc/docker/ && sudo touch daemon.json
-EOF
-  if [[ $registries == 1 ]]; then
-    cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
-  # Add insecure registries
-  - printf "{\\n    \\"insecure-registries\\\" : [ \\"$insecReg\\" ]\\n}" | sudo tee /etc/docker/daemon.json > /dev/null
-EOF
-  fi
-fi
+#   # Install Docker
+#   - sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
+#   # Append user to docker group
+#   - sudo usermod -aG docker $OS_USER
+#   # Verify - run hello image and delete
+#   - sudo docker run --rm hello-world && sudo docker rmi hello-world
+#   # Create the daemon.json for insecure (http) logins configs if needed for Nexus
+#   - cd /etc/docker/ && sudo touch daemon.json
+# EOF
+#   if [[ $registries == 1 ]]; then
+#     cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
+#   # Add insecure registries
+#   - printf "{\\n    \\"insecure-registries\\\" : [ \\"$insecReg\\" ]\\n}" | sudo tee /etc/docker/daemon.json > /dev/null
+# EOF
+#   fi
+# fi
 
 
 
