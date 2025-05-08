@@ -125,6 +125,24 @@ while true; do
 done
 
 while true; do
+  if RAW_SSH_PUB_KEY=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nPaste your public ssh key for this server" 8 58 --title "CLOUD-INIT PUBLIC SSH KEY" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
+    # Trim leading and trailing whitespace (spaces, tabs, newlines)
+    SSH_PUB_KEY=$(echo "$RAW_SSH_PUB_KEY" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
+    echo $RAW_SSH_PUB_KEY
+    echo $SSH_PUB_KEY
+    if [ -z $SSH_PUB_KEY ]; then
+      whiptail --backtitle "Install - Ubuntu VM" --msgbox "SSH key cannot be empty" 8 58
+    elif [[ "$OS_PASS" == *" "* ]]; then
+      whiptail --msgbox "SSH key cannot contain spaces. Please try again." 8 58
+    else
+      break # SSH key is valid, break out of the loop
+    fi
+  else
+    exit_script
+  fi
+done
+
+while true; do
   if OS_IPv4_CIDR=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nSet a Static IPv4 CIDR Address (/24)" 8 58 "dhcp" --title "CLOUD-INIT IPv4 CIDR" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
     if [ -z $OS_IPv4_CIDR ]; then
       OS_IPv4_CIDR="dhcp"
@@ -144,7 +162,6 @@ done
 
 if [[ $OS_IPv4_CIDR != "dhcp" ]]; then
   SUGGESTED_GW=$(echo "$OS_IPv4_CIDR" | sed 's/\.[0-9]\{1,3\}\/\([0-9]\+\)$/.1/')
-  echo "DEBUG: SUGGESTED_GW after sed: '$SUGGESTED_GW'"
   while true; do
     if OS_IPv4_GW=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nEnter gateway IP address" 8 58 "$SUGGESTED_GW" --title "CLOUD-INIT IPv4 GATEWAY" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
       if [ -z $OS_IPv4_GW ]; then
@@ -210,7 +227,7 @@ qm set $NEXTID --scsi0 local-lvm:vm-$NEXTID-disk-0,discard=on,ssd=1 --ide2 local
 qm disk resize $NEXTID scsi0 "${DISK_SIZE}G" && qm set $NEXTID --boot order=scsi0
 
 # Configure Cloudinit datails
-qm set $NEXTID --ciuser $OS_USER --cipassword $OS_PASS
+qm set $NEXTID --ciuser $OS_USER --cipassword $OS_PASS --sshkeys $SSH_PUB_KEY
 
 # Configure Cluster level firewall rules if not enabled
 if [[ $CLUSTER_FW_ENABLED != 1 ]]; then
