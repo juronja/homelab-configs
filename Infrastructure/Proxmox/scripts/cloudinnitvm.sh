@@ -331,9 +331,8 @@ fi
 
 printf "\n## Script finished! .. ##\n\n"
 if [[ $portainer == 1 ]]; then
-  echo "Portainer is available at: https://$(echo "$OS_IPv4_CIDR" | awk -F'./' '{print $1}'):9443"
+  printf "\nPortainer is available at: https://$(echo "$OS_IPv4_CIDR" | awk -F'./' '{print $1}'):9443\n"
 fi
 if [[ $jenkins == 1 ]]; then
-  echo "Jenkins is available at: http://$(echo "$OS_IPv4_CIDR" | awk -F'./' '{print $1}'):8080"
+  printf "\nJenkins is available at: http://$(echo "$OS_IPv4_CIDR" | awk -F'./' '{print $1}'):8080\n"
 fi
-
