@@ -250,7 +250,7 @@ cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
 EOF
 # Docker install
 if [ "$docker" == "1" ]; then
-  cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
+  cat <<'EOF' >> "$CLOUD_INNIT_ABSOLUTE"
   # Add Docker's official GPG key
   - curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc && chmod a+r /etc/apt/keyrings/docker.asc
   # Add the repository to Apt sources
