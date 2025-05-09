@@ -11,13 +11,7 @@ Copy this line in the Proxmox Shell.
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/Infrastructure/Proxmox/scripts/cloudinnitvm.sh)"
 ```
 
-- STEP 1 - Username and password
-Set the username and password inside proxmox UI
-
-- STEP 2 - Convert to template
-Convert the created VM to template for future use.
-
-- STEP 3 - Edit any cloud innit before starting
+- POST INSTALL - Edit SSH KEY cloud-innit before starting
 And you are done!
 
 
