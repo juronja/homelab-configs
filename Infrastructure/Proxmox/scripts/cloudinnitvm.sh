@@ -255,6 +255,8 @@ if [ "$docker" == "1" ]; then
   - sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc && sudo chmod a+r /etc/apt/keyrings/docker.asc
   # Add the repository to Apt sources
   - echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+  # Install Docker
+  - sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
 EOF
 fi
 # if [[ $registries == 1 ]]; then
@@ -264,10 +266,7 @@ fi
 # EOF
 # fi
 
-
 # #####
-#   # Install Docker
-#   - sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
 #   # Append user to docker group
 #   - sudo usermod -aG docker $OS_USER
 #   # Verify - run hello image and delete
