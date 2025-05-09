@@ -18,11 +18,15 @@ RUN ./get_helm.sh
 
 # Add bitnami charts
 RUN helm repo add bitnami https://charts.bitnami.com/bitnami
+RUN helm repo update
+
+# Update APT
+RUN apt-get update
 
 # Install nano
-RUN apt install nano
+RUN apt-get install nano -y
 
 # Install this plugin for 'envsubst' commands used in jenkins pipelines to replace variables.
-RUN apt install gettext-base
+RUN apt-get install gettext-base -y
 
 USER jenkins
