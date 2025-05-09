@@ -15,6 +15,7 @@ RUN ./aws/install
 RUN curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
 RUN chmod 700 get_helm.sh
 RUN ./get_helm.sh
+
 # Add bitnami charts
 RUN helm repo add bitnami https://charts.bitnami.com/bitnami
 
