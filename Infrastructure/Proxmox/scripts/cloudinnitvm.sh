@@ -343,10 +343,10 @@ if [[ $udp == 1 ]]; then
   echo "UDP ports exposed successfully .."
 fi
 
-printf "\n## Script finished! .. ##\n\n"
+printf "\n## Script finished! Add your SSH key and start the VM .. ##\n\n"
 if [[ $installContainers =~ "portainer" ]]; then
-  printf "Portainer is available at: ${BL}https://$(echo "$OS_IPv4_CIDR" | awk -F'./' '{print $1}'):9443${CL}\n\n"
+  printf "Portainer will be available at: ${BL}https://$(echo "$OS_IPv4_CIDR" | awk -F'./' '{print $1}'):9443${CL}\n\n"
 fi
 if [[ $installContainers =~ "jenkins" ]]; then
-  printf "Jenkins is available at: ${BL}http://$(echo "$OS_IPv4_CIDR" | awk -F'./' '{print $1}'):8080${CL}\n\n"
+  printf "Jenkins will be available at: ${BL}http://$(echo "$OS_IPv4_CIDR" | awk -F'./' '{print $1}'):8080${CL}\n\n"
 fi
