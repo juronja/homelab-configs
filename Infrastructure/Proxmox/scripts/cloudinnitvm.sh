@@ -185,9 +185,9 @@ whiptail --backtitle "Install - Ubuntu VM" --title "SSH NOTE" --msgbox "Manually
 # WHIPTAIL INSTALL DOCKER & PORTAINER & JENKINS
 if whiptail --backtitle "Customize - Ubuntu VM" --title "INSTALL DOCKER" --yesno --defaultno "Do you want to install Docker?" 10 62; then
   docker=1
-  if insecReg=$(whiptail --backtitle "Customize - Ubuntu VM" --inputbox "\nWrite comma seperated IP:PORT list to allow in Docker:" 10 58 "IP:PORT" --title "ADD INSECURE REGISTRY RULES?" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
-    echo "Added insecure registry rules: $insecReg"
+  if insecReg=$(whiptail --backtitle "Customize - Ubuntu VM" --inputbox "\nWrite comma seperated IP:PORT list to allow in Docker:" 10 58 "192.168.x.x:PORT" --title "ADD INSECURE REGISTRY RULES?" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
     registries=1
+    echo "Added insecure registry rules: $insecReg"
     else
     echo "Add registry rules skipped .."
   fi
@@ -266,10 +266,20 @@ EOF
   - cd /etc/docker/ && touch daemon.json
 EOF
 fi
+# Add insecure registries
 if [[ $registries == 1 ]]; then
   cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
-  # Add insecure registries
-  - printf "{\\n    \\"insecure-registries\\\" : [ \\"$insecReg\\" ]\\n}" | tee /etc/docker/daemon.json > /dev/null
+  printf "{\n    \"insecure-registries\" : [ \"$insecReg\" ]\n}" | tee /etc/docker/daemon.json > /dev/null
+EOF
+fi
+# Install Portainer
+if [[ $docker == 1 ]] && [[ $portainer == 1 ]]; then
+  cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
+  # Pull the compose file
+  wget -nc --directory-prefix=/home/$OS_USER/apps/portainer $PortainerComposeUrl
+  # Run compose file
+  cd /home/$OS_USER/apps/portainer
+  docker compose up -d
 EOF
 fi
 
