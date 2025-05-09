@@ -258,6 +258,8 @@ if [ "$docker" == "1" ]; then
   - apt-get update
   # Install Docker
   - apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
+  # Append user to docker group
+  - sudo usermod -aG docker "$OS_USER"
 EOF
 fi
 # if [[ $registries == 1 ]]; then
@@ -268,8 +270,6 @@ fi
 # fi
 
 # #####
-#   # Append user to docker group
-#   - sudo usermod -aG docker $OS_USER
 #   # Verify - run hello image and delete
 #   - sudo docker run --rm hello-world && sudo docker rmi hello-world
 #   # Create the daemon.json for insecure (http) logins configs if needed for Nexus
