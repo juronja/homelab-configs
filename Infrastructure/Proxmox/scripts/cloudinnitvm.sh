@@ -269,25 +269,33 @@ fi
 # Add insecure registries
 if [[ $registries == 1 ]]; then
   cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
-  printf "{\n    \"insecure-registries\" : [ \"$insecReg\" ]\n}" | tee /etc/docker/daemon.json > /dev/null
+  - printf "{\n    \"insecure-registries\" : [ \"$insecReg\" ]\n}" | tee /etc/docker/daemon.json > /dev/null
 EOF
 fi
 # Install Portainer
 if [[ $docker == 1 ]] && [[ $portainer == 1 ]]; then
   cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
   # Pull the compose file
-  wget -nc --directory-prefix=/home/$OS_USER/apps/portainer $PortainerComposeUrl
+  - wget -nc --directory-prefix=/home/$OS_USER/apps/portainer $PortainerComposeUrl
   # Run compose file
-  cd /home/$OS_USER/apps/portainer
-  docker compose up -d
+  - cd /home/$OS_USER/apps/portainer
+  - docker compose up -d
+EOF
+fi
+# Install Jenkins
+if [[ $docker == 1 ]] && [[ $jenkins == 1 ]]; then
+  cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
+  # Pull the compose file
+  - wget -nc --directory-prefix=/home/$OS_USER/apps/jenkins $JenkinsDockerfileUrl
+  - wget -nc --directory-prefix=/home/$OS_USER/apps/jenkins $JenkinsComposeUrl
+  # Run compose file
+  - cd /home/$OS_USER/apps/jenkins
+  - docker compose up -d
 EOF
 fi
 
 
-# #####
 
-
-# #####
 
 qm set $NEXTID --cicustom "user=local:$CLOUD_INNIT_LOCAL"
 rm temp_cloud_init.yml
