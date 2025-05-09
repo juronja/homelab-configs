@@ -191,12 +191,12 @@ if whiptail --backtitle "Customize - Ubuntu VM" --title "INSTALL DOCKER" --yesno
     else
     echo "Add registry rules skipped .."
   fi
-  if whiptail --backtitle "Customize - Ubuntu VM" --title "INSTALL PORTAINER" --yesno "Do you want to install Portainer?" 10 62; then
+  if whiptail --backtitle "Customize - Ubuntu VM" --title "INSTALL PORTAINER" --yesno --defaultno "Do you want to install Portainer?" 10 62; then
     portainer=1
     else
     echo "Portainer install skipped .."
   fi
-  if whiptail --backtitle "Customize - Ubuntu VM" --title "INSTALL JENKINS" --yesno "Do you want to install Jenkins?" 10 62; then
+  if whiptail --backtitle "Customize - Ubuntu VM" --title "INSTALL JENKINS" --yesno --defaultno "Do you want to install Jenkins?" 10 62; then
     jenkins=1
     else
     echo "Jenkins install skipped .."
@@ -255,7 +255,6 @@ if [ "$docker" == "1" ]; then
   - sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc && sudo chmod a+r /etc/apt/keyrings/docker.asc
   # Add the repository to Apt sources
   - echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-  - sudo apt-get update
 EOF
 fi
 # if [[ $registries == 1 ]]; then
