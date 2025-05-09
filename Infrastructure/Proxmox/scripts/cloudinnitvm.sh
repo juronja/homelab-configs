@@ -192,7 +192,7 @@ if whiptail --backtitle "Install - Ubuntu VM" --title "INSTALL DOCKER" --yesno -
   else
     echo "Add registry rules skipped .."
   fi
-  if installContainers=$(whiptail --backtitle "Install - Ubuntu VM" --title "INSTALL APPS" --checklist "Do you want to install these containers?" 10 40 3; \
+  if installContainers=$(whiptail --backtitle "Install - Ubuntu VM" --title "INSTALL APPS" --checklist "Do you want to install these containers?" 10 40 3 \
     "portainer" "" OFF \
     "jenkins" "" OFF \
     3>&1 1>&2 2>&3); then
