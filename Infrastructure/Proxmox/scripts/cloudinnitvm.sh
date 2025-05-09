@@ -192,7 +192,7 @@ if whiptail --backtitle "Install - Ubuntu VM" --title "INSTALL DOCKER" --yesno -
   else
     echo "Add registry rules skipped .."
   fi
-  if installContainers=$(whiptail --backtitle "Install - Ubuntu VM" --title "INSTALL APPS" --checklist "Do you want to install these containers?" 10 40 3 \
+  if installContainers=$(whiptail --backtitle "Install - Ubuntu VM" --title "INSTALL APPS" --checklist "Do you want to install these containers?" 12 58 3 \
     "portainer" "" OFF \
     "jenkins" "" OFF \
     3>&1 1>&2 2>&3); then
@@ -273,7 +273,7 @@ if [[ $registries == 1 ]]; then
 EOF
 fi
 # Install Portainer
-if [[ $docker == 1 ]] && [[ $installContainers == portainer ]]; then
+if [[ $docker == 1 ]] && [[ $installContainers =~ "portainer" ]]; then
   cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
   # Install Portainer
   - wget -nc --directory-prefix=/home/$OS_USER/apps/portainer $PortainerComposeUrl
@@ -282,7 +282,7 @@ if [[ $docker == 1 ]] && [[ $installContainers == portainer ]]; then
 EOF
 fi
 # Install Jenkins
-if [[ $docker == 1 ]] && [[ $installContainers == jenkins ]]; then
+if [[ $docker == 1 ]] && [[ $installContainers =~ "jenkins" ]]; then
   cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
   # Install Jenkins
   - wget -nc --directory-prefix=/home/$OS_USER/apps/jenkins $JenkinsDockerfileUrl
@@ -329,9 +329,9 @@ if [[ $udp == 1 ]]; then
 fi
 
 printf "\n## Script finished! .. ##\n\n"
-if [[ $installContainers == portainer ]]; then
+if [[ $installContainers =~ "portainer" ]]; then
   printf "Portainer is available at: https://$(echo "$OS_IPv4_CIDR" | awk -F'./' '{print $1}'):9443\n\n"
 fi
-if [[ $installContainers == jenkins ]]; then
+if [[ $installContainers =~ "jenkins" ]]; then
   printf "Jenkins is available at: http://$(echo "$OS_IPv4_CIDR" | awk -F'./' '{print $1}'):8080\n\n"
 fi
