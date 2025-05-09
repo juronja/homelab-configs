@@ -6,14 +6,22 @@ USER root
 RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 RUN install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 
-# Install eksctl
-ARG PLATFORM=Linux_amd64
-RUN curl -sLO "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_$PLATFORM.tar.gz"
-RUN tar -xzf eksctl_$PLATFORM.tar.gz -C /tmp && rm eksctl_$PLATFORM.tar.gz
-RUN mv /tmp/eksctl /usr/local/bin
+# Install AWS CLI
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+RUN unzip awscliv2.zip
+RUN ./aws/install
 
-# Install AWS IAM Authenticator
-RUN curl -o aws-iam-authenticator https://amazon-eks.s3.us-west-2.amazonaws.com/1.15.10/2020-02-22/bin/linux/amd64/aws-iam-authenticator
-RUN chmod +x ./aws-iam-authenticator && mv ./aws-iam-authenticator /usr/local/bin
+# Install Helm
+RUN curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+RUN chmod 700 get_helm.sh
+RUN ./get_helm.sh
+# Add bitnami charts
+RUN helm repo add bitnami https://charts.bitnami.com/bitnami
+
+# Install nano
+RUN apt install nano
+
+# Install this plugin for 'envsubst' commands used in jenkins pipelines to replace variables.
+RUN apt install gettext-base
 
 USER jenkins
