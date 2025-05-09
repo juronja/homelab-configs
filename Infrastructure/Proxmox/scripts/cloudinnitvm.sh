@@ -176,32 +176,31 @@ if whiptail --backtitle "Install - Ubuntu VM" --title "PROXMOX FIREWALL" --yesno
     else
     echo "UDP ports skipped .."
   fi
-  else
+else
   echo "FIREWALL setup skipped .."
 fi
 
 whiptail --backtitle "Install - Ubuntu VM" --title "SSH NOTE" --msgbox "Manually paste the public SSH key before starting the VM!" 10 58 || exit
 
 # WHIPTAIL INSTALL DOCKER & PORTAINER & JENKINS
-if whiptail --backtitle "Customize - Ubuntu VM" --title "INSTALL DOCKER" --yesno --defaultno "Do you want to install Docker?" 10 62; then
+
+if whiptail --backtitle "Install - Ubuntu VM" --title "INSTALL DOCKER" --yesno --defaultno "Do you want to install Docker?" 10 62; then
   docker=1
-  if insecReg=$(whiptail --backtitle "Customize - Ubuntu VM" --inputbox "\nWrite comma seperated IP:PORT list to allow in Docker:" 10 58 "192.168.x.x:PORT" --title "ADD INSECURE REGISTRY RULES?" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
+  if insecReg=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nWrite comma seperated IP:PORT list to allow in Docker:" 10 58 "192.168.x.x:PORT" --title "ADD INSECURE REGISTRY RULES?" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
     registries=1
     echo "Added insecure registry rules: $insecReg"
-    else
+  else
     echo "Add registry rules skipped .."
   fi
-  if whiptail --backtitle "Customize - Ubuntu VM" --title "INSTALL PORTAINER" --yesno --defaultno "Do you want to install Portainer?" 10 62; then
-    portainer=1
-    else
-    echo "Portainer install skipped .."
-  fi
-  if whiptail --backtitle "Customize - Ubuntu VM" --title "INSTALL JENKINS" --yesno --defaultno "Do you want to install Jenkins?" 10 62; then
-    jenkins=1
-    else
-    echo "Jenkins install skipped .."
-  fi
+  if installContainers=$(whiptail --backtitle "Install - Ubuntu VM" --title "INSTALL APPS" --checklist "Do you want to install these containers?" 10 40 3; then \
+    "portainer" "" OFF \
+    "jenkins" "" OFF \
+    3>&1 1>&2 2>&3); then
+      echo -e "Install containers: $installContainers"
   else
+    echo "Container install skipped .."
+  fi
+else
   echo "Docker install skipped .."
 fi
 
@@ -274,7 +273,7 @@ if [[ $registries == 1 ]]; then
 EOF
 fi
 # Install Portainer
-if [[ $docker == 1 ]] && [[ $portainer == 1 ]]; then
+if [[ $docker == 1 ]] && [[ $installContainers == portainer ]]; then
   cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
   # Install Portainer
   - wget -nc --directory-prefix=/home/$OS_USER/apps/portainer $PortainerComposeUrl
@@ -283,7 +282,7 @@ if [[ $docker == 1 ]] && [[ $portainer == 1 ]]; then
 EOF
 fi
 # Install Jenkins
-if [[ $docker == 1 ]] && [[ $jenkins == 1 ]]; then
+if [[ $docker == 1 ]] && [[ $installContainers == jenkins ]]; then
   cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
   # Install Jenkins
   - wget -nc --directory-prefix=/home/$OS_USER/apps/jenkins $JenkinsDockerfileUrl
@@ -330,9 +329,9 @@ if [[ $udp == 1 ]]; then
 fi
 
 printf "\n## Script finished! .. ##\n\n"
-if [[ $portainer == 1 ]]; then
-  printf "\nPortainer is available at: https://$(echo "$OS_IPv4_CIDR" | awk -F'./' '{print $1}'):9443\n"
+if [[ $installContainers == portainer ]]; then
+  printf "Portainer is available at: https://$(echo "$OS_IPv4_CIDR" | awk -F'./' '{print $1}'):9443\n\n"
 fi
-if [[ $jenkins == 1 ]]; then
-  printf "\nJenkins is available at: http://$(echo "$OS_IPv4_CIDR" | awk -F'./' '{print $1}'):8080\n"
+if [[ $installContainers == jenkins ]]; then
+  printf "Jenkins is available at: http://$(echo "$OS_IPv4_CIDR" | awk -F'./' '{print $1}'):8080\n\n"
 fi
