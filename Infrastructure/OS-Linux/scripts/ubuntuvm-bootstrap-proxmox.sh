@@ -7,27 +7,18 @@
 # Constant variables
 rootUser="$(whoami)"
 PortainerComposeUrl="https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/Applications/Portainer/compose.yaml"
+JenkinsDockerfileUrl="https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/CI-CD/Jenkins/Dockerfile"
+JenkinsComposeUrl="https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/CI-CD/Jenkins/compose.yaml"
 
 # Functions
-function exit-script() {
+function exit_script() {
   clear
   echo -e "⚠  User exited script \n"
   exit
 }
 
 echo "Starting script .."
-
-# WHIPTAIL INSTALL PLACE
 whiptail --backtitle "Customize - Ubuntu VM" --title "NOTE" --msgbox "This will run a custom script to customize Ubuntu!" 10 58 || exit
-
-if installPlace=$(whiptail --backtitle "Customize - Ubuntu VM" --title "INSTALL PLACE" --radiolist "\nWhere did you install Ubuntu?\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 2 \
-  "1" "Proxmox" ON \
-  "2" "Digital Ocean" OFF \
-  3>&1 1>&2 2>&3); then
-    echo -e "Install place: $installPlace"
-  else
-    exit-script
-fi
 
 
 #read -p "Do you want to add UFW TCP rules? (y/n) " tcpYesNo
@@ -35,21 +26,7 @@ fi
 #  read -p "Write comma seperated ports to open on TCP: " tcpPorts
 #fi
 
-# WHIPTAIL MAINTENANCE USER
-if [[ $installPlace != 1 ]]; then # skips this if installed on proxmox
-  if whiptail --backtitle "Customize - Ubuntu VM" --title "MAINTENANCE USER" --yesno "Do you want to add a maintenance user?" 10 62; then
-    if newUser=$(whiptail --backtitle "Customize - Ubuntu VM" --inputbox "\nWrite the user name:" 10 58 "" --title "ADD USER" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
-      user=1
-      sudo adduser $newUser
-      else
-      echo "Maintenance user skipped .."
-    fi
-    else
-    echo "Maintenance user skipped .."
-  fi
-fi
-
-# WHIPTAIL INSTALL DOCKER & PORTAINER
+# WHIPTAIL INSTALL DOCKER & PORTAINER & JENKINS
 if whiptail --backtitle "Customize - Ubuntu VM" --title "INSTALL DOCKER" --yesno --defaultno "Do you want to install Docker?" 10 62; then
   docker=1
   if insecReg=$(whiptail --backtitle "Customize - Ubuntu VM" --inputbox "\nWrite comma seperated IP:PORT list to allow in Docker:" 10 58 "IP:PORT" --title "ADD INSECURE REGISTRY RULES?" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
@@ -63,6 +40,11 @@ if whiptail --backtitle "Customize - Ubuntu VM" --title "INSTALL DOCKER" --yesno
     else
     echo "Portainer install skipped .."
   fi
+  if whiptail --backtitle "Customize - Ubuntu VM" --title "INSTALL JENKINS" --yesno "Do you want to install Jenkins?" 10 62; then
+    jenkins=1
+    else
+    echo "Jenkins install skipped .."
+  fi
   else
   echo "Docker install skipped .."
 fi
@@ -75,7 +57,7 @@ if whiptail --backtitle "Customize - Ubuntu VM" --title "PREP VM FOR KUBERNETES"
     3>&1 1>&2 2>&3); then
       echo -e "Kubernetes install type: $k8sInstallType"
     else
-      exit-script
+      exit_script
   fi
   else
   echo "Kubernetes prep skipped .."
@@ -96,15 +78,11 @@ echo "Automatic upgrades configured successfully!"
 # Disable IPv6
 sudo sed -i 's/IPV6=yes/IPV6=no/' /etc/default/ufw
 
-# Proxmox install specifics
-if [[ $installPlace == 1 ]]; then
-  
-  # Create custom app folder for deployment
-  sudo mkdir -m 750 /home/$rootUser/apps && sudo chown -R $rootUser:$rootUser /home/$rootUser/apps
+# Create custom app folder for deployment
+sudo mkdir -m 750 /home/$rootUser/apps && sudo chown -R $rootUser:$rootUser /home/$rootUser/apps
 
-  # Install guest agent
-  sudo apt-get install qemu-guest-agent -y
-fi
+# Install guest agent
+sudo apt-get install qemu-guest-agent -y
 
 # Install Docker
 if [[ $docker == 1 ]]; then
@@ -113,16 +91,13 @@ if [[ $docker == 1 ]]; then
   for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove $pkg; done
 
   # Add Docker's official GPG key:
-  sudo apt-get update
-  sudo apt-get install ca-certificates curl
-  sudo install -m 0755 -d /etc/apt/keyrings
   sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
   sudo chmod a+r /etc/apt/keyrings/docker.asc
 
   # Add the repository to Apt sources:
   echo \
     "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
-    $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+    $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" | \
     sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
   sudo apt-get update
 
@@ -144,9 +119,19 @@ fi
 # Install Portainer
 if [[ $docker == 1 ]] && [[ $portainer == 1 ]]; then
   # Pull the compose file
-  wget -nc --directory-prefix=/home/$rootUser/apps $PortainerComposeUrl
+  wget -nc --directory-prefix=/home/$rootUser/apps/portainer $PortainerComposeUrl
   # Run compose file
-  cd /home/$rootUser/apps
+  cd /home/$rootUser/apps/portainer
+  sudo docker compose up -d
+fi
+
+# Install Jenkins
+if [[ $docker == 1 ]] && [[ $jenkins == 1 ]]; then
+  # Pull the compose file
+  wget -nc --directory-prefix=/home/$rootUser/apps/jenkins $JenkinsDockerfileUrl
+  wget -nc --directory-prefix=/home/$rootUser/apps/jenkins $JenkinsComposeUrl
+  # Run compose file
+  cd /home/$rootUser/apps/jenkins
   sudo docker compose up -d
 fi
 
@@ -170,19 +155,19 @@ if [[ $k8s == 1 ]]; then
   fi
 fi
 
-# Add a maintenance user
-if [[ $user == 1 ]]; then
+# # Add a maintenance user
+# if [[ $user == 1 ]]; then
 
-  # Add user to sudo group
-  sudo usermod -aG sudo $newUser
+#   # Add user to sudo group
+#   sudo usermod -aG sudo $newUser
 
-  # Create custom app folder for deployment
-  sudo mkdir -m 750 /home/$newUser/apps && sudo chown -R $newUser:$newUser /home/$newUser/apps
+#   # Create custom app folder for deployment
+#   sudo mkdir -m 750 /home/$newUser/apps && sudo chown -R $newUser:$newUser /home/$newUser/apps
 
-  # Create the Public Key Directory for SSH on your Linux Server.
-  sudo mkdir -m 700 /home/$newUser/.ssh && sudo chown -R $newUser:$newUser /home/$newUser/.ssh && cd /home/$newUser/.ssh && nano authorized_keys
-  echo "Maintenance user added successfully!"
-fi
+#   # Create the Public Key Directory for SSH on your Linux Server.
+#   sudo mkdir -m 700 /home/$newUser/.ssh && sudo chown -R $newUser:$newUser /home/$newUser/.ssh && cd /home/$newUser/.ssh && nano authorized_keys
+#   echo "Maintenance user added successfully!"
+# fi
 
 printf "\n## Script finished! Rebooting system .. ##\n\n"
 
