@@ -9,6 +9,22 @@ NEXTID=$(pvesh get /cluster/nextid)
 NODE=$(hostname)
 
 # Functions
+
+# Colors
+YW=$(echo "\033[33m")
+YWB=$(echo "\033[93m")
+BL=$(echo "\033[36m")
+RD=$(echo "\033[01;31m")
+BGN=$(echo "\033[4;92m")
+GN=$(echo "\033[1;92m")
+DGN=$(echo "\033[32m")
+
+# Formatting
+CL=$(echo "\033[m")
+BOLD=$(echo "\033[1m")
+HOLD=" "
+TAB="  "
+
 # Run as root only
 root_check() {
   if [[ "$(id -u)" -ne 0 || $(ps -o comm= -p $PPID) == "sudo" ]]; then
@@ -330,8 +346,8 @@ fi
 
 printf "\n## Script finished! .. ##\n\n"
 if [[ $installContainers =~ "portainer" ]]; then
-  printf "Portainer is available at: https://$(echo "$OS_IPv4_CIDR" | awk -F'./' '{print $1}'):9443\n\n"
+  printf "Portainer is available at: ${BL}https://$(echo "$OS_IPv4_CIDR" | awk -F'./' '{print $1}'):9443${CL}\n\n"
 fi
 if [[ $installContainers =~ "jenkins" ]]; then
-  printf "Jenkins is available at: http://$(echo "$OS_IPv4_CIDR" | awk -F'./' '{print $1}'):8080\n\n"
+  printf "Jenkins is available at: ${BL}http://$(echo "$OS_IPv4_CIDR" | awk -F'./' '{print $1}'):8080${CL}\n\n"
 fi
