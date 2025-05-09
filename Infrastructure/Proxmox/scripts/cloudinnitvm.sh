@@ -262,8 +262,14 @@ EOF
   cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
   # Append user to docker group
   - sudo usermod -aG docker "$OS_USER"
+  # Create the daemon.json for insecure (http) logins configs if needed for Nexus
+  - cd /etc/docker/ && sudo touch daemon.json
 EOF
 fi
+
+
+# #####
+
 # if [[ $registries == 1 ]]; then
 #   cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
 #   # Add insecure registries
@@ -271,11 +277,6 @@ fi
 # EOF
 # fi
 
-# #####
-#   # Verify - run hello image and delete
-#   - sudo docker run --rm hello-world && sudo docker rmi hello-world
-#   # Create the daemon.json for insecure (http) logins configs if needed for Nexus
-#   - cd /etc/docker/ && sudo touch daemon.json
 # #####
 
 qm set $NEXTID --cicustom "user=local:$CLOUD_INNIT_LOCAL"
