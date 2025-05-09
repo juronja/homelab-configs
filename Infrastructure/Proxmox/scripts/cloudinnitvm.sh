@@ -196,13 +196,12 @@ else
   echo "FIREWALL setup skipped .."
 fi
 
-whiptail --backtitle "Install - Ubuntu VM" --title "SSH NOTE" --msgbox "Manually paste the public SSH key before starting the VM!" 10 58 || exit
+whiptail --backtitle "Install - Ubuntu VM" --title "SSH NOTE" --msgbox "NOTE: Manually add the public SSH key in Proxmox UI before starting the VM!" 10 58 || exit
 
 # WHIPTAIL INSTALL DOCKER & PORTAINER & JENKINS
-
 if whiptail --backtitle "Install - Ubuntu VM" --title "INSTALL DOCKER" --yesno --defaultno "Do you want to install Docker?" 10 62; then
   docker=1
-  if insecReg=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nWrite comma seperated IP:PORT list to allow in Docker:" 10 58 "192.168.x.x:PORT" --title "ADD INSECURE REGISTRY RULES?" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
+  if insecReg=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nWrite comma seperated IP:PORT list to allow:" 10 58 "192.168.x.x:PORT" --title "ADD INSECURE REGISTRY RULES?" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
     registries=1
     echo "Added insecure registry rules: $insecReg"
   else
