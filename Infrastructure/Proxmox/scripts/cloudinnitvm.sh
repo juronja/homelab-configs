@@ -261,21 +261,21 @@ if [ "$docker" == "1" ]; then
 EOF
   cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
   # Append user to docker group
-  - sudo usermod -aG docker "$OS_USER"
+  - usermod -aG docker $OS_USER
   # Create the daemon.json for insecure (http) logins configs if needed for Nexus
-  - cd /etc/docker/ && sudo touch daemon.json
+  - cd /etc/docker/ && touch daemon.json
+EOF
+fi
+if [[ $registries == 1 ]]; then
+  cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
+  # Add insecure registries
+  - printf "{\\n    \\"insecure-registries\\\" : [ \\"$insecReg\\" ]\\n}" | tee /etc/docker/daemon.json > /dev/null
 EOF
 fi
 
 
 # #####
 
-# if [[ $registries == 1 ]]; then
-#   cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
-#   # Add insecure registries
-#   - printf "{\\n    \\"insecure-registries\\\" : [ \\"$insecReg\\" ]\\n}" | sudo tee /etc/docker/daemon.json > /dev/null
-# EOF
-# fi
 
 # #####
 
