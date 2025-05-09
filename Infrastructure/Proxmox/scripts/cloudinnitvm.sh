@@ -53,17 +53,6 @@ else
   exit_script
 fi
 
-if VM_NAME=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nSet the name of the VM" 8 58 "homelab" --title "NAME" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
-  if [ -z $VM_NAME ]; then
-    VM_NAME="homelab"
-    echo -e "Name: $VM_NAME"
-  else
-    echo -e "Name: $VM_NAME"
-  fi
-else
-  exit_script
-fi
-
 if CORE_COUNT=$(whiptail --backtitle "Install - Ubuntu VM" --title "CORE COUNT" --radiolist "\nAllocate number of CPU Cores\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 4 \
   "2" "cores" ON \
   "4" "cores" OFF \
@@ -92,6 +81,17 @@ if DISK_SIZE=$(whiptail --backtitle "Install - Ubuntu VM" --title "DISK SIZE" --
   "64" "GB" OFF \
   3>&1 1>&2 2>&3); then
     echo -e "Allocated disk size: $DISK_SIZE GB"
+else
+  exit_script
+fi
+
+if VM_NAME=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nSet the name of the VM" 8 58 "homelab" --title "NAME" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
+  if [ -z $VM_NAME ]; then
+    VM_NAME="homelab"
+    echo -e "Name: $VM_NAME"
+  else
+    echo -e "Name: $VM_NAME"
+  fi
 else
   exit_script
 fi
@@ -293,9 +293,6 @@ if [[ $docker == 1 ]] && [[ $jenkins == 1 ]]; then
 EOF
 fi
 
-
-
-
 qm set $NEXTID --cicustom "user=local:$CLOUD_INNIT_LOCAL"
 rm temp_cloud_init.yml
 
@@ -331,3 +328,12 @@ if [[ $udp == 1 ]]; then
   pvesh create /nodes/$NODE/qemu/$NEXTID/firewall/rules --action ACCEPT --type in --iface net0 --proto udp --source $ALIAS_PROXY --dport $udpPorts --enable 1
   echo "UDP ports exposed successfully .."
 fi
+
+printf "\n## Script finished! .. ##\n\n"
+if [[ $portainer == 1 ]]; then
+  echo "Portainer is available at: https://$(echo "$OS_IPv4_CIDR" | awk -F'./' '{print $1}'):9443"
+fi
+if [[ $jenkins == 1 ]]; then
+  echo "Jenkins is available at: http://$(echo "$OS_IPv4_CIDR" | awk -F'./' '{print $1}'):8080"
+fi
+
