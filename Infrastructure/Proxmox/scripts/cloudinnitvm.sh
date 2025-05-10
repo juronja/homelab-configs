@@ -60,7 +60,7 @@ function exit_script() {
 echo "Starting VM script .."
 
 # WHIPTAIL VM INPUTS
-if UBUNTU_RLS=$(whiptail --backtitle "Install - Ubuntu VM" --title "UBUNTU RELEASE" --radiolist "\nChoose the release to install\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 2 \
+if UBUNTU_RLS=$(whiptail --backtitle "Install - Ubuntu VM" --title "UBUNTU RELEASE" --radiolist "\nChoose the release to install. (Spacebar to select)\n" --cancel-button "Exit Script" 12 58 2 \
   "noble" "24.04 LTS" ON \
   "jammy" "22.04 LTS" OFF \
   3>&1 1>&2 2>&3); then
@@ -69,7 +69,7 @@ else
   exit_script
 fi
 
-if CORE_COUNT=$(whiptail --backtitle "Install - Ubuntu VM" --title "CORE COUNT" --radiolist "\nAllocate number of CPU Cores\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 4 \
+if CORE_COUNT=$(whiptail --backtitle "Install - Ubuntu VM" --title "CORE COUNT" --radiolist "\nAllocate number of CPU Cores. (Spacebar to select)\n" --cancel-button "Exit Script" 12 58 4 \
   "2" "cores" ON \
   "4" "cores" OFF \
   "6" "cores" OFF \
@@ -80,7 +80,7 @@ else
   exit_script
 fi
 
-if RAM_COUNT=$(whiptail --backtitle "Install - Ubuntu VM" --title "RAM COUNT" --radiolist "\nAllocate number of RAM\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 4 \
+if RAM_COUNT=$(whiptail --backtitle "Install - Ubuntu VM" --title "RAM COUNT" --radiolist "\nAllocate number of RAM. (Spacebar to select)\n" --cancel-button "Exit Script" 12 58 4 \
   "2" "GB" OFF \
   "4" "GB" ON \
   "8" "GB" OFF \
@@ -91,7 +91,7 @@ else
   exit_script
 fi
 
-if DISK_SIZE=$(whiptail --backtitle "Install - Ubuntu VM" --title "DISK SIZE" --radiolist "\nAllocate disk size\n(Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 3 \
+if DISK_SIZE=$(whiptail --backtitle "Install - Ubuntu VM" --title "DISK SIZE" --radiolist "\nAllocate disk size. (Spacebar to select)\n" --cancel-button "Exit Script" 12 58 3 \
   "32" "GB" OFF \
   "48" "GB" ON \
   "64" "GB" OFF \
@@ -207,7 +207,7 @@ if whiptail --backtitle "Install - Ubuntu VM" --title "INSTALL DOCKER" --yesno -
   else
     echo "Add registry rules skipped .."
   fi
-  if installContainers=$(whiptail --backtitle "Install - Ubuntu VM" --title "INSTALL APPS" --checklist "Do you want to install these containers?" 12 58 3 \
+  if installContainers=$(whiptail --backtitle "Install - Ubuntu VM" --title "INSTALL APPS" --checklist "\nInstall these containers? (Spacebar to select)" 12 58 3 \
     "portainer" "" OFF \
     "jenkins" "" OFF \
     3>&1 1>&2 2>&3); then
@@ -343,7 +343,7 @@ if [[ $udp == 1 ]]; then
   echo "UDP ports exposed successfully .."
 fi
 
-printf "\n## Script finished! Add your SSH key and start the VM .. ##\n\n"
+printf "\n${BL}## Script finished! Add your SSH key and start the VM .. ##${CL}\n\n"
 if [[ $installContainers =~ "portainer" ]]; then
   printf "Portainer will be available at: ${BL}https://$(echo "$OS_IPv4_CIDR" | awk -F'./' '{print $1}'):9443${CL}\n\n"
 fi
