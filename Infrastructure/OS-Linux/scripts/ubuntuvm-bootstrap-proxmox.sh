@@ -169,7 +169,7 @@ fi
 #   echo "Maintenance user added successfully!"
 # fi
 
-printf "\n## Script finished! Rebooting system .. ##\n\n"
+printf "\n## Script finished! Rebooting system .. ##\n"
 
 # Reboot system
 sudo reboot
