@@ -3,8 +3,6 @@
 
 	header -Server
 	header {
-		# This tells the client to store responses for one week.
-		Cache-Control max-age=86400
 		# Set the referrer policy to send the origin only when making cross-origin requests.
 		Referrer-Policy origin-when-cross-origin
 		# Enable HSTS (HTTP Strict Transport Security) to force HTTPS for one year including subdomains.
@@ -15,10 +13,10 @@
 	handle @ha {
 		reverse_proxy 192.168.x.x:x
 		header {
-			# This will deny website access to the listed hardware features for security purposes.
-			Permissions-Policy autoplay=(), midi=()
+			# Prevent MIME type sniffing, mitigating certain security vulnerabilities.
+			X-Content-Type-Options nosniff
 			# Block XSS attacks to some degree using a report-only CSP.
-			Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' basemaps.cartocdn.com brands.home-assistant.io data:; font-src 'self'; connect-src 'self' raw.githubusercontent.com; upgrade-insecure-requests;"
+			# Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' basemaps.cartocdn.com brands.home-assistant.io data:; font-src 'self'; connect-src 'self' raw.githubusercontent.com; upgrade-insecure-requests;"
 		}
 		rate_limit /auth/authorize* {
 			# distributed # only needed if multiple caddy instances
