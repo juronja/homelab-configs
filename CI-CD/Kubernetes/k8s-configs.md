@@ -1,15 +1,19 @@
 # Kubernetes configurations
 
-## Minimum hardware requirements
+## On Premises
+
+How to setup kubernetes on bare metal.
+
+### Minimum hardware requirements
 
 Master node: 2CPU, 2GB RAM
 Worker node: 1CPU, 2GB RAM
 
-## Install kubernetes
+### Install kubernetes
 
 More info: https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
 
-### Master only
+#### Master only
 
 Initiate the cluster
 
@@ -31,14 +35,13 @@ Add a Container Network Interface (overlay network)
 kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
 ```
 
-### Worker only
+#### Worker only
 
 Print join command on the **master**
 ```shell
 kubeadm token create --print-join-command
 ```
-Join workers to cluster with above join command
-
+Join workers to cluster with above join command.
 
 
 ## Secrets usage
@@ -46,17 +49,17 @@ Join workers to cluster with above join command
 Generate a secret directly with `kubectl`. This will auto encode base64. More info:
 https://kubernetes.io/docs/tasks/configmap-secret/managing-secret-using-kubectl/
 
+
+Secret from `.env` file:
+
 ```shell
-kubectl create secret generic secret-name --from-file=username=./username.txt --from-file=password=./password.txt
-
-
-kubectl create secret generic mongo-admin --from-file=MONGO_ADMIN_USER=/home/juronja/apps/utm-builder/creds/db-user.txt --from-file=MONGO_ADMIN_PASS=/home/juronja/apps/utm-builder/creds/db-pass.txt
+kubectl create secret generic mongo-admin -n utm-builder --from-env-file=$HOME/apps/utm-builder/.env
 ```
 
-Create a secret for Docker login creds
+Secret for private docker registry. If you already ran `docker login`, you can copy that credential into Kubernetes:
 
 ```shell
-kubectl create secret generic dockerhub --from-file=.dockerconfigjson=.docker/config.json --type=kubernetes.io/dockerconfigjson
+kubectl create secret generic docker-secrets -n utm-builder --from-file=.dockerconfigjson=$HOME/.docker/config.json --type=kubernetes.io/dockerconfigjson
 ```
 
 
