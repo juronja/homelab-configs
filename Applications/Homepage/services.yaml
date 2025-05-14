@@ -22,10 +22,6 @@
         href: https://homelab.lan:9443
         ping: 192.168.84.20
         # description: homelab.lan
-    - Portainer Homelab-old:
-        icon: portainer.svg
-        href: https://192.168.84.16:9443
-        ping: 192.168.84.16
 
 - Networking:
     - Gateway Router:
@@ -35,7 +31,6 @@
     - Adguard Home:
         icon: adguard-home.svg
         href: http://adguard.lan
-        ping: 192.168.84.253
     - WGDashboard:
         icon: wireguard.svg
         href: http://wireguard.lan:10086
