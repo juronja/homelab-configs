@@ -35,20 +35,20 @@ wsl --install -d Ubuntu
 
 ## Install Apps
 ```shell
-winget install -e --id Microsoft.VisualStudioCode
 winget install -e --id Plex.Plex
 winget install -e --id Plex.Plexamp
 winget install -e --id Telegram.TelegramDesktop
 winget install -e --id WhatsApp.WhatsApp
 winget install -e --id Discord.Discord
+winget install -e --id Logitech.OptionsPlus
 winget install -e --id Logitech.GHUB
 winget install -e --id Nvidia.GeForceExperience
 winget install -e --id Valve.Steam
-winget install -e --id Docker.DockerDesktop
-winget install -e --id Logitech.OptionsPlus
-winget install -e --id Amazon.AWSCLI
 winget install -e --id WireGuard.WireGuard
-
+winget install -e --id Microsoft.VisualStudioCode
+winget install -e --id Amazon.AWSCLI
+winget install -e --id Hashicorp.Terraform
+winget install -e --id Docker.DockerDesktop
 ```
 
 ## Networking
