@@ -1,4 +1,6 @@
-# Disable UAC
+Write-Host "`nConfiguring System Settings (UAC, Taskbar, Start Menu, File Explorer, Theme)..." -ForegroundColor Cyan
+
+# Disable UAC (requires reboot)
 Set-itemproperty "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System" -Name "EnableLUA" -Value "0" -Type DWord
 # Disable Password expiry
 #wmic UserAccount set PasswordExpires=False
@@ -8,20 +10,24 @@ Set-itemproperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advan
 # START - Hide recently added apps / Show most used apps
 Set-itemproperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\Start" -Name "ShowRecentList" -Value "0" -Type DWord
 Set-itemproperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\Start" -Name "ShowFrequentList" -Value "1" -Type DWord
-# Personalize theme
+# Personalize theme (Dark Theme)
 Set-itemproperty "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name "AppsUseLightTheme" -Value "0" -Type DWord
 Set-itemproperty "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" -Name "SystemUsesLightTheme" -Value "0" -Type DWord
 # FILE EXPLORER - Show file extensions, Show hidden folders, do not use check boxes to select items, disable thumbnails
 Set-itemproperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "HideFileExt" -Value "0" -Type DWord
 Set-itemproperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "Hidden" -Value "1" -Type DWord
 Set-itemproperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "AutoCheckSelect" -Value "0" -Type DWord
-
 # StorageSense - set to run every day.
 Set-itemproperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy" -Name "2048" -Value "1" -Type DWord #-Force
+
+Write-Host "`nConfiguring Windows Defender settings..." -ForegroundColor Cyan
+
 # Defender exclusion list
 Add-MpPreference -ExclusionPath "C:\Music_production","C:\Users\Jure\Downloads","C:\Windows","D:\","E:\","F:\","H:\","I:\","M:\","X:\"
 # Defender - disable
 #Set-itemproperty "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender" -Name "DisableAntiSpyware" -Value "1" -Type DWord -Force
+
+Write-Host "`nConfiguring Power settings..." -ForegroundColor Cyan
 
 # Power settings
 powercfg /setactive SCHEME_MIN # (Min power saving)
@@ -34,6 +40,8 @@ powercfg /change hibernate-timeout-ac 0
 powercfg /change hibernate-timeout-dc 0
 powercfg /change disk-timeout-ac 0
 powercfg /change disk-timeout-dc 0
+
+Write-Host "`nManaging AppX packages and Winget applications..." -ForegroundColor Cyan
 
 # Install / Uninstall apps
 Get-AppxPackage -alluser Microsoft.BingNews | Remove-AppxPackage
@@ -55,7 +63,7 @@ Get-AppxPackage -alluser Clipchamp.Clipchamp | Remove-AppxPackage
 Get-AppxPackage -alluser MicrosoftCorporationII.QuickAssist | Remove-AppxPackage
 Get-AppxPackage -alluser microsoft.windowscommunicationsapps | Remove-AppxPackage # Mail app
 Get-AppxPackage -alluser MicrosoftWindows.Client.WebExperience | Remove-AppxPackage # Widget app
-Get-AppxPackage -alluser Microsoft.549981C3F5F10 | Remove-AppxPackage # Cortana appGet-AppxPackage -alluser Microsoft.549981C3F5F10 | Remove-AppxPackage # Cortana app
+Get-AppxPackage -alluser Microsoft.549981C3F5F10 | Remove-AppxPackage # Cortana app
 Get-AppxPackage -alluser Microsoft.Teams | Remove-AppxPackage
 Get-AppxPackage -alluser Microsoft.Copilot | Remove-AppxPackage
 Get-AppxPackage -alluser Microsoft.WindowsAlarms | Remove-AppxPackage
@@ -70,3 +78,6 @@ winget uninstall onedrive
 winget install -e --id Google.Chrome
 winget install -e --id Adobe.Acrobat.Reader.64-bit
 winget install -e --id Microsoft.PowerToys --source winget
+
+Write-Host "`nScript finished." -ForegroundColor Green
+Write-Host "Some changes (like UAC) require a system reboot to take full effect." -ForegroundColor Yellow
