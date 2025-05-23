@@ -47,6 +47,7 @@ winget install -e --id Valve.Steam
 winget install -e --id WireGuard.WireGuard
 winget install -e --id Microsoft.VisualStudioCode
 winget install -e --id Amazon.AWSCLI
+winget install -e --id Kubernetes.kubectl
 winget install -e --id Hashicorp.Terraform
 winget install -e --id Docker.DockerDesktop
 ```
