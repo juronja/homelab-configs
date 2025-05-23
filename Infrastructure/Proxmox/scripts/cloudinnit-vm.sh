@@ -291,6 +291,7 @@ fi
 if [[ $docker == 1 ]] && [[ $installContainers =~ "portainer" ]]; then
   cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
   # Install Portainer
+  - mkdir /home/$OS_USER/apps/portainer
   - wget -nc --directory-prefix=/home/$OS_USER/apps/portainer $PortainerComposeUrl
   - cd /home/$OS_USER/apps/portainer
   - docker compose up -d
@@ -300,10 +301,26 @@ fi
 if [[ $docker == 1 ]] && [[ $installContainers =~ "jenkins" ]]; then
   cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
   # Install Jenkins
+  - mkdir /home/$OS_USER/apps/jenkins
   - wget -nc --directory-prefix=/home/$OS_USER/apps/jenkins $JenkinsDockerfileUrl
   - wget -nc --directory-prefix=/home/$OS_USER/apps/jenkins $JenkinsComposeUrl
   - cd /home/$OS_USER/apps/jenkins
   - docker compose up -d
+EOF
+fi
+# Install Minecraft server
+if [[ $installContainers =~ "minecraft" ]]; then
+  sed sed -i 's/#- openjdk-21-jre-headless/- openjdk-21-jre-headless/' $CLOUD_INNIT_ABSOLUTE
+  cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
+  # Download server jar
+  - mkdir /home/$OS_USER/apps/minecraft
+  - wget -nc --directory-prefix=/home/$OS_USER/apps/minecraft $MINECRAFT_JAR
+  - cd /home/$OS_USER/apps/minecraft
+  # Install server to get eula
+  - java -Xmx1024M -Xms1024M -jar server.jar nogui
+  # Accept EULA and start server
+  - sed -i 's/eula=false/eula=true/' eula.txt
+  - java -Xmx1024M -Xms1024M -jar server.jar nogui  
 EOF
 fi
 
