@@ -1,6 +1,7 @@
 package_reboot_if_required: true
 packages:
   - qemu-guest-agent
+  #- openjdk-21-jre-headless
 runcmd:
   # Configure automatic updates
   - sed -i 's/\/\/Unattended-Upgrade::Automatic-Reboot-Time "02:00"/Unattended-Upgrade::Automatic-Reboot-Time "06:00"/' /etc/apt/apt.conf.d/50unattended-upgrades
