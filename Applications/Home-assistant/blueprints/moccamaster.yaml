@@ -11,7 +11,7 @@ blueprint:
       selector:
         time:
     enable_time_trigger:
-      name: Enable Scheduled Time Trigger
+      name: Enable Scheduled Turn On Time
       description: Turn on to activate the trigger based on a fixed scheduled time.
       selector:
         boolean:
@@ -30,10 +30,6 @@ trigger:
   - platform: time
     at: !input turn_on_time
     id: time_based_trigger
-    condition:
-      - condition: zone
-        entity_id: person.polona_burnik
-        zone: zone.home
     enabled: !input enable_time_trigger # This enables/disables the trigger itself
 
   # Trigger 2: Based on the phone's next alarm (if 'phone_next_alarm_sensor' is provided)
@@ -45,10 +41,12 @@ trigger:
         after: "03:00:00"
         before: "09:00:00"
         entity_id: sensor.pixel_8a_next_alarm # Checks the original alarm time
-      - condition: zone
-        entity_id: person.polona_burnik
-        zone: zone.home
     enabled: !input enable_alarm_trigger # This enables/disables the trigger itself
+
+condition: # This is the main automation condition block (applies to ALL triggers)
+  - condition: zone
+    entity_id: person.polona_burnik
+    zone: zone.home
 
 action:
   - service: switch.turn_on
