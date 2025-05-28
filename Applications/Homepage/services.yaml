@@ -60,6 +60,10 @@
         icon: jenkins.svg
         href: https://jenkins.repina.eu
         ping: https://jenkins.repina.eu
+    - Open WebUI:
+        icon: open-webui.svg
+        href: http://openwebui.lan:8080
+        ping: 192.168.84.10
 
 - Media:
     - Audiobookshelf:
