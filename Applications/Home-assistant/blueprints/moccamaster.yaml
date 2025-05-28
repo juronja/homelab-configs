@@ -17,8 +17,7 @@ triggers:
   - trigger: time
     at:
       entity_id: sensor.pixel_6a_next_alarm
-      offset: "-00:10:00"
-    enabled: !input enable_alarm_trigger
+      offset: !input offset
     
 conditions:
   - condition: time
