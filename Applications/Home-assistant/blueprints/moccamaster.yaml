@@ -7,7 +7,7 @@ blueprint:
     # Scheduled Time Trigger Inputs
     turn_on_time:
       name: Scheduled Turn On Time
-      description: The time of day to turn on the smart plug (e.g., 07:00:00).
+      description: The time of day to turn on the smart plug (h:m:s).
       selector:
         time:
     enable_time_trigger:
