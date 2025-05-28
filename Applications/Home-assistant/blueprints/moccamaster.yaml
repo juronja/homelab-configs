@@ -25,33 +25,30 @@ blueprint:
         boolean:
       default: false # Default to off
 
-    # Phone Screen On Trigger Inputs
-    enable_screen_on_trigger:
-      name: Enable Screen On Trigger
-      description: Turn on to activate the trigger when your phone's screen turns on.
-      selector:
-        boolean:
-      default: false # Default to off
-
 trigger:
   # Trigger 1: Based on a fixed time (if 'turn_on_time' is provided)
   - platform: time
     at: !input turn_on_time
     id: time_based_trigger
+    condition:
+      - condition: zone
+        entity_id: person.polona_burnik
+        zone: zone.home
+    enabled: !input enable_time_trigger # This enables/disables the trigger itself
 
   # Trigger 2: Based on the phone's next alarm (if 'phone_next_alarm_sensor' is provided)
   - platform: time
     at: "{{ (states('sensor.pixel_8a_next_alarm') | as_datetime - timedelta(minutes=10)).time() }}"
     id: alarm_based_trigger
+    condition: # Added condition for the alarm trigger
+      - condition: time
+        after: "03:00:00"
+        before: "09:00:00"
+        entity_id: sensor.pixel_8a_next_alarm # Checks the original alarm time
+      - condition: zone
+        entity_id: person.polona_burnik
+        zone: zone.home
     enabled: !input enable_alarm_trigger # This enables/disables the trigger itself
-
-  # Trigger 3: Based on phone screen turning on (if 'phone_screen_on_sensor' is provided)
-  - platform: state
-    entity_id: binary_sensor.pixel_8a_interactive
-    from: 'off'
-    to: 'on'
-    id: screen_on_based_trigger
-    enabled: !input enable_screen_on_trigger # This enables/disables the trigger itself
 
 action:
   - service: switch.turn_on
