@@ -6,18 +6,40 @@ blueprint:
   homeassistant:
     min_version: 2024.6.0
   input:
-    # Phone Next Alarm Trigger Inputs
-    offset:
-      name: Offset time
+    # Manual Time Input
+    manual_time:
+      name: Manual Time Trigger
+      description: The time of day to turn on the smart plug (h:m:s).
+      selector:
+        time:
+    manual_time_enabled:
+      name: Enable Manual Time Trigger
+      description: Toggle to activate the Manual Time Trigger.
+      selector:
+        boolean:
+      default: false
+    # Phone Next Alarm Offset Input
+    alarm_offset:
+      name: Next Alarm Trigger Offset
       description: Set an offset time in h:m:s format.
       selector:
         time:
+    alarm_time_enabled:
+      name: Enable Alarm Time Trigger
+      description: Toggle to activate the Alarm Time Trigger.
+      selector:
+        boolean:
+      default: false
 
 triggers:
   - trigger: time
+    at: !input manual_time
+    enabled: !input manual_time_enabled
+  - trigger: time
     at:
       entity_id: sensor.pixel_6a_next_alarm
-      offset: !input offset
+      offset: !input alarm_offset
+    enabled: !input alarm_time_enabled
     
 conditions:
   - condition: time
