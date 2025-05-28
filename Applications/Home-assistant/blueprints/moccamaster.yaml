@@ -1,5 +1,5 @@
 blueprint:
-  name: Moccamaster Turn ON - Alarm sync
+  name: Moccamaster - Turn ON rules
   author: juronja
   description: Turns on a smart plug at a specific time, for my coffee machine.
   domain: automation
@@ -17,7 +17,7 @@ blueprint:
       description: Toggle to activate the Manual Time Trigger.
       selector:
         boolean:
-      default: false
+      default: input_boolean.enable_manual_time_trigger
     # Phone Next Alarm Offset Input
     alarm_offset:
       name: Next Alarm Trigger Offset
