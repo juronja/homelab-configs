@@ -1,14 +1,9 @@
 blueprint:
-  name: Moccamaster Schedule
+  name: Moccamaster
   author: juronja
   description: Turns on a smart plug at a specific time, for my coffee machine.
   domain: automation
   input:
-    smart_plug_entity:
-      name: Smart Plug Entity
-      selector:
-        entity:
-          domain: switch # Assuming your smart plug is a switch entity
     turn_on_time:
       name: Turn On Time
       description: The time of day to turn on the smart plug (e.g., 07:00:00).
@@ -22,6 +17,6 @@ trigger:
 action:
   - service: switch.turn_on
     target:
-      entity_id: !input smart_plug_entity
+      entity_id: switch.moccamaster
 
 mode: single
