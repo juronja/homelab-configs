@@ -4,20 +4,9 @@ blueprint:
   description: Turns on a smart plug at a specific time, for my coffee machine.
   domain: automation
   homeassistant:
-  min_version: 2024.6.0
+    min_version: 2024.6.0
   input:
-    # Scheduled Time Trigger Inputs
-    turn_on_time:
-      name: Scheduled Turn On Time
-      description: The time of day to turn on the smart plug (h:m:s).
-      selector:
-        time:
-    enable_time_trigger:
-      name: Enable Scheduled Turn On Time
-      description: Turn on to activate the trigger based on a fixed scheduled time.
-      selector:
-        boolean:
-      default: false # Default to off
+
 
     # Phone Next Alarm Trigger Inputs
     enable_alarm_trigger:
@@ -27,28 +16,24 @@ blueprint:
         boolean:
       default: false # Default to off
 
-# triggers:
-#   # Trigger 1: Based on a fixed time
-#   - trigger: time
-#     entity_id: !input turn_on_time
-#     enabled: !input enable_time_trigger
-
-#   # Trigger 2: Based on the phone's next alarm (10 minutes before, between 3 AM and 9 AM)
-#   - trigger: time
-#     entity_id: sensor.pixel_8a_next_alarm # Checks the original alarm time
-#     at: "{{ (states('sensor.pixel_8a_next_alarm') | as_datetime - timedelta(minutes=10)).time() }}"
-#     enabled: !input enable_alarm_trigger
+triggers:
+  - trigger: time
+    at:
+      entity_id: sensor.pixel_6a_next_alarm
+      offset: "-00:10:00"
     
-# conditions: # This is the main automation condition block (applies to ALL triggers)
-#   - condition: zone
-#     entity_id: person.polona_burnik
-#     zone: zone.home
-#   - condition: time
-#     after: "03:00:00"
-#     before: "09:00:00"
+conditions:
+  - condition: time
+    after: "03:00:00"
+    before: "09:00:00"
+  - condition: zone
+    entity_id: person.polona_burnik
+    zone: zone.home
 
 actions:
   - action: switch.turn_on
-    target: switch.moccamaster
+    target:
+      entity_id:
+        - switch.moccamaster
 
 mode: single
