@@ -1,26 +1,24 @@
 blueprint:
-  name: Moccamaster
+  name: Moccamaster Turn ON - Alarm sync
   author: juronja
   description: Turns on a smart plug at a specific time, for my coffee machine.
   domain: automation
   homeassistant:
     min_version: 2024.6.0
   input:
-
-
     # Phone Next Alarm Trigger Inputs
-    enable_alarm_trigger:
-      name: Enable Alarm Trigger
-      description: Turn on to activate the trigger based on your phone's next alarm.
+    offset:
+      name: Offset time
+      description: Set an offset time in h:m:s format.
       selector:
-        boolean:
-      default: false # Default to off
+        time:
 
 triggers:
   - trigger: time
     at:
       entity_id: sensor.pixel_6a_next_alarm
       offset: "-00:10:00"
+    enabled: !input enable_alarm_trigger
     
 conditions:
   - condition: time
