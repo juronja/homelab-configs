@@ -39,13 +39,13 @@ triggers:
     at: "{{ (states('sensor.pixel_8a_next_alarm') | as_datetime - timedelta(minutes=10)).time() }}"
     enabled: !input enable_alarm_trigger
     
-conditions: # This is the main automation condition block (applies to ALL triggers)
-  - condition: zone
-    entity_id: person.polona_burnik
-    zone: zone.home
-  - condition: time
-    after: "03:00:00"
-    before: "09:00:00"
+# conditions: # This is the main automation condition block (applies to ALL triggers)
+#   - condition: zone
+#     entity_id: person.polona_burnik
+#     zone: zone.home
+#   - condition: time
+#     after: "03:00:00"
+#     before: "09:00:00"
 
 actions:
   - action: switch.turn_on
