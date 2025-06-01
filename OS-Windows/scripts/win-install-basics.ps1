@@ -1,4 +1,19 @@
-Write-Host "`nConfiguring System Settings (UAC, Taskbar, Start Menu, File Explorer, Theme)..." -ForegroundColor Cyan
+# Set error action preference to stop script on error
+$ErrorActionPreference = "Stop"
+
+# --- Function to display messages ---
+function Show-Message {
+    param (
+        [string]$Message,
+        [string]$Color = "Cyan"
+    )
+    Write-Host ""
+    Write-Host -ForegroundColor $Color $Message
+    Write-Host ""
+    Start-Sleep -Seconds 1
+}
+
+Show-Message "`nConfiguring System Settings (UAC, Taskbar, Start Menu, File Explorer, Theme)..."
 
 # Disable UAC (requires reboot)
 Set-itemproperty "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System" -Name "EnableLUA" -Value "0" -Type DWord
@@ -20,14 +35,14 @@ Set-itemproperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advan
 # StorageSense - set to run every day.
 Set-itemproperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy" -Name "2048" -Value "1" -Type DWord #-Force
 
-Write-Host "`nConfiguring Windows Defender settings..." -ForegroundColor Cyan
+Show-Message "`nConfiguring Windows Defender settings..."
 
 # Defender exclusion list
 Add-MpPreference -ExclusionPath "C:\Music_production","C:\Users\Jure\Downloads","C:\Windows","D:\","E:\","F:\","H:\","I:\","M:\","X:\"
 # Defender - disable
 #Set-itemproperty "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender" -Name "DisableAntiSpyware" -Value "1" -Type DWord -Force
 
-Write-Host "`nConfiguring Power settings..." -ForegroundColor Cyan
+Show-Message "`nConfiguring Power settings..."
 
 # Power settings
 powercfg /setactive SCHEME_MIN # (Min power saving)
@@ -41,7 +56,7 @@ powercfg /change hibernate-timeout-dc 0
 powercfg /change disk-timeout-ac 0
 powercfg /change disk-timeout-dc 0
 
-Write-Host "`nManaging AppX packages and Winget applications..." -ForegroundColor Cyan
+Show-Message "`nManaging AppX packages and Winget applications..."
 
 # Install / Uninstall apps
 Get-AppxPackage -alluser Microsoft.BingNews | Remove-AppxPackage
