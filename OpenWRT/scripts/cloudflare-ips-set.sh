@@ -5,7 +5,7 @@ FILE_NAME="cloudflare-ips.txt"
 
 rm /tmp/$FILE_NAME
 
-wget -q "https://www.cloudflare.com/ips-v4" -O - > /tmp/$FILE_NAME
+# wget -q "https://www.cloudflare.com/ips-v4" -O - > /tmp/$FILE_NAME
 
 if [ $? -eq 0 ]; then
     logger -p notice -t $LOG_TAG "INFO: Cloudflare IPs downloaded successfully to /tmp/cloudflare-ips.txt"
