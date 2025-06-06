@@ -157,55 +157,43 @@ Restart firewall for effect
 service firewall restart
 ```
 
-#### Cloudflare & Nginx Proxy Manager conditional port forwarding rules
+#### Cloudflare & Proxy Manager conditional port forwarding rules
 
 Cloudflare IPs: https://www.cloudflare.com/en-in/ips/
 
 Add conditions in the configuration file `/etc/config/firewall`
 
-```yml
-config	ipset
-        option name 'cloudflare-ips'
-	option match 'src_net'
-	option enabled '1'
-	list entry '173.245.48.0/20'
-        list entry '103.21.244.0/22'
-        list entry '103.22.200.0/22'
-        list entry '103.31.4.0/22'
-        list entry '104.16.0.0/13'
-        list entry '104.24.0.0/14'
-        list entry '108.162.192.0/18'
-        list entry '131.0.72.0/22'
-        list entry '141.101.64.0/18'
-        list entry '162.158.0.0/15'
-        list entry '172.64.0.0/13'
-        list entry '173.245.48.0/20'
-        list entry '188.114.96.0/20'
-        list entry '190.93.240.0/20'
-        list entry '197.234.240.0/22'
-        list entry '198.41.128.0/17'
+```shell
+uci add firewall ipset
+uci set firewall.@ipset[-1].name='cloudflare-ips'
+uci set firewall.@ipset[-1].match='src_net'
+uci set firewall.@ipset[-1].enabled='1'
+uci set firewall.@ipset[-1].loadfile='/tmp/cloudflare-ips.txt' # create file!!
+uci commit
+```
 
+```yml
 config redirect
         option dest 'lan'
         option target 'DNAT'
-        option name 'Nginx Proxy Manager 80'
+        option name 'Proxy Manager 80'
         option family 'ipv4'
         option ipset 'cloudflare-ips'
         list proto 'tcp'
         option src 'wan'
         option src_dport '80'
-        option dest_ip '192.168.84.x' # Adjust IP
+        option dest_ip '192.168.84.x' # Adjust to proxy IP
 
 config redirect
         option dest 'lan'
         option target 'DNAT'
-        option name 'Nginx Proxy Manager 443'
+        option name 'Proxy Manager 443'
         option family 'ipv4'
         option ipset 'cloudflare-ips'
         list proto 'tcp'
         option src 'wan'
         option src_dport '443'
-        option dest_ip '192.168.84.x' # Adjust IP
+        option dest_ip '192.168.84.x' # Adjust to proxy IP
 
 
 ```
