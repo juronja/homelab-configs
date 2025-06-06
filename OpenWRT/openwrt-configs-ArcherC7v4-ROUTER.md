@@ -165,7 +165,7 @@ Cloudflare IPs: https://www.cloudflare.com/en-in/ips/
 Download the script and add to cron:
 
 ```shell
-wget -P /root https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/OpenWRT/cloudflare-ips-set.sh
+wget -P /root https://raw.githubusercontent.com/juronja/homelab-configs/main/OpenWRT/scripts/cloudflare-ips-set.sh
 chmod +x /root/cloudflare-ips-set.sh
 echo "0 3 * * 1 /root/cloudflare-ips-set.sh" | tee -a "/var/spool/cron/crontabs/root"
 
