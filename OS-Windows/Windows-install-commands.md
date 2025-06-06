@@ -46,6 +46,7 @@ winget install -e --id Nvidia.GeForceExperience
 winget install -e --id Valve.Steam
 winget install -e --id WireGuard.WireGuard
 winget install -e --id Microsoft.VisualStudioCode # You have to manually upgrade with "winget upgrade -e --id Microsoft.VisualStudioCode"
+winget install -e --id Python.Python.3.14
 winget install -e --id Amazon.AWSCLI
 winget install -e --id Kubernetes.kubectl
 winget install -e --id Hashicorp.Terraform
