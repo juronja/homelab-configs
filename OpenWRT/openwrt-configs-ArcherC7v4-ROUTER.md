@@ -161,7 +161,6 @@ service firewall restart
 
 Cloudflare IPs: https://www.cloudflare.com/en-in/ips/
 
-Add conditions in the configuration file `/etc/config/firewall`
 
 ```shell
 uci add firewall ipset
@@ -171,6 +170,8 @@ uci set firewall.@ipset[-1].enabled='1'
 uci set firewall.@ipset[-1].loadfile='/tmp/cloudflare-ips.txt' # create file!!
 uci commit
 ```
+
+Add conditions in the configuration file `/etc/config/firewall`
 
 ```yml
 config redirect

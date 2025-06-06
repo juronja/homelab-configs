@@ -1,6 +1,6 @@
 #!/bin/sh
 
-wget "https://www.cloudflare.com/ips-v4" -O ->> /tmp/cloudflareips.txt
+wget -q "https://www.cloudflare.com/ips-v4" -O ->> /tmp/cloudflare-ips.txt
 fw4 reload-sets
 
 exit 0
