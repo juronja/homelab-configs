@@ -161,6 +161,7 @@ service firewall restart
 
 Cloudflare IPs: https://www.cloudflare.com/en-in/ips/
 
+Load ipsets from file in the configuration file `/etc/config/firewall`
 
 ```shell
 uci add firewall ipset
@@ -171,7 +172,16 @@ uci set firewall.@ipset[-1].loadfile='/tmp/cloudflare-ips.txt' # create file!!
 uci commit
 ```
 
-Add conditions in the configuration file `/etc/config/firewall`
+Download the script and add to cron:
+
+```shell
+wget -P /root https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/OpenWRT/cloudflare-ips-set.sh
+chmod +x /root/cloudflare-ips-set.sh
+echo "0 3 * * 1 /root/cloudflare-ips-set.sh" | tee -a "/var/spool/cron/crontabs/root"
+
+```
+
+Additional entries for proxy.
 
 ```yml
 config redirect
