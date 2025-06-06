@@ -161,16 +161,6 @@ service firewall restart
 
 Cloudflare IPs: https://www.cloudflare.com/en-in/ips/
 
-Load ipsets from file in the configuration file `/etc/config/firewall`
-
-```shell
-uci add firewall ipset
-uci set firewall.@ipset[-1].name='cloudflare-ips'
-uci set firewall.@ipset[-1].match='src_net'
-uci set firewall.@ipset[-1].enabled='1'
-uci set firewall.@ipset[-1].loadfile='/tmp/cloudflare-ips.txt' # create file!!
-uci commit
-```
 
 Download the script and add to cron:
 
@@ -181,7 +171,19 @@ echo "0 3 * * 1 /root/cloudflare-ips-set.sh" | tee -a "/var/spool/cron/crontabs/
 
 ```
 
-Additional entries for proxy.
+Add and load ipsets from file that cron generates.
+
+```shell
+uci add firewall ipset
+uci set firewall.@ipset[-1].name='cloudflare-ips'
+uci set firewall.@ipset[-1].match='src_net'
+uci set firewall.@ipset[-1].enabled='1'
+uci set firewall.@ipset[-1].loadfile='/tmp/cloudflare-ips.txt' # create file!!
+uci commit
+```
+
+
+Additional entries for proxy in `/etc/config/firewall`
 
 ```yml
 config redirect
