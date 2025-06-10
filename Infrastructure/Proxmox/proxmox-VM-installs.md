@@ -52,7 +52,7 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/juronja/homelab-configs/
 - STEP 1 - Choose Enterprise edition
 
 - STEP 2 - Load Drivers
-Load virtio **disk** (amd64>w11>virtio) and **network** drivers (NetKVM>w11>amd64) when installing!
+Load virtio **disk** (amd64>w11) and **network** drivers (NetKVM>w11>amd64) when installing!
 
 - STEP 3 - Use local account
 When asked to sign in use local domain (account) option.
