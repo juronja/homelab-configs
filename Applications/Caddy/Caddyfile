@@ -9,25 +9,6 @@
 		Strict-Transport-Security max-age=31536000 includeSubDomains
 	}
 
-	@ha host ha.repina.eu
-	handle @ha {
-		reverse_proxy 192.168.x.x:x
-		header {
-			# Prevent MIME type sniffing, mitigating certain security vulnerabilities.
-			X-Content-Type-Options nosniff
-			# Block XSS attacks to some degree using a report-only CSP.
-			# Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' basemaps.cartocdn.com brands.home-assistant.io data:; font-src 'self'; connect-src 'self' raw.githubusercontent.com; upgrade-insecure-requests;"
-		}
-		rate_limit /auth/authorize* {
-			# distributed # only needed if multiple caddy instances
-			zone limit_by_ip {
-				key {remote_host}
-				events 20
-				window 10s
-			}
-		}
-	}
-
 	@audiobook host audiobook.repina.eu
 	handle @audiobook {
 		reverse_proxy 192.168.x.x:x
@@ -53,8 +34,64 @@
 			}
 		}
 	}
+}
+*.homelabtales.com {
+	tls /etc/caddy/certs/homelabtales_com-origin-cert.pem /etc/caddy/certs/homelabtales_com-private-key.key
 
-	@dilute host dilute.repina.eu
+	header -Server
+	header {
+		# Set the referrer policy to send the origin only when making cross-origin requests.
+		Referrer-Policy origin-when-cross-origin
+		# Enable HSTS (HTTP Strict Transport Security) to force HTTPS for one year including subdomains.
+		Strict-Transport-Security max-age=31536000 includeSubDomains
+	}
+
+	@ha host ha.homelabtales.com
+	handle @ha {
+		reverse_proxy 192.168.x.x:x
+		header {
+			# Prevent MIME type sniffing, mitigating certain security vulnerabilities.
+			X-Content-Type-Options nosniff
+			# Block XSS attacks to some degree using a report-only CSP.
+			# Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' basemaps.cartocdn.com brands.home-assistant.io data:; font-src 'self'; connect-src 'self' raw.githubusercontent.com; upgrade-insecure-requests;"
+		}
+		rate_limit /auth/authorize* {
+			# distributed # only needed if multiple caddy instances
+			zone limit_by_ip {
+				key {remote_host}
+				events 20
+				window 10s
+			}
+		}
+	}
+
+	@audiobook host audiobook.homelabtales.com
+	handle @audiobook {
+		reverse_proxy 192.168.x.x:x
+		header {
+			# Prevent the site from being embedded in an iframe, mitigating clickjacking.
+			X-Frame-Options DENY
+			# Prevent MIME type sniffing, mitigating certain security vulnerabilities.
+			X-Content-Type-Options nosniff
+			# This will deny website access to the listed hardware features for security purposes.
+			Permissions-Policy autoplay=(), camera=(), microphone=(), midi=(), usb=()
+			# Block XSS attacks to some degree using a report-only CSP.
+			Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' api.github.com; frame-ancestors 'none'; upgrade-insecure-requests;"
+		}
+		request_body {
+			max_size 100MB
+		}
+		rate_limit /audiobookshelf/login/ {
+			# distributed # only needed if multiple caddy instances
+			zone limit_by_ip {
+				key {remote_host}
+				events 20
+				window 10s
+			}
+		}
+	}
+
+	@dilute host dilute.homelabtales.com
 	handle @dilute {
 		reverse_proxy 192.168.x.x:x
 		header {
@@ -80,7 +117,7 @@
 		}
 	}
 
-	@jenkins host jenkins.repina.eu
+	@jenkins host jenkins.homelabtales.com
 	handle @jenkins {
 		reverse_proxy 192.168.x.x:x
 		header {
@@ -106,7 +143,7 @@
 		}
 	}
 
-	@utm-dev host utm-builder-dev.repina.eu
+	@utm-dev host utm-builder-dev.homelabtales.com
 	handle @utm-dev {
 		basic_auth {
 			juronja pass #hash pass first with 'caddy hash-password'
@@ -135,7 +172,7 @@
 		}
 	}
 
-	@utm host utm-builder.repina.eu
+	@utm host utm-builder.homelabtales.com
 	handle @utm {
 		reverse_proxy 192.168.x.x:x
 		header {
