@@ -25,15 +25,34 @@ BOLD=$(echo "\033[1m")
 HOLD=" "
 TAB="  "
 
-# Run as root only
-root_check() {
-  if [[ "$(id -u)" -ne 0 || $(ps -o comm= -p $PPID) == "sudo" ]]; then
-    clear
-    msg_error "Please run this script as root."
-    echo -e "\nExiting..."
-    sleep 2
-    exit
-  fi
+# FUNCTIONS
+get_latest_minecraft_release() {
+    # Install dependency
+    if ! command -v jq &> /dev/null; then
+      echo "jq is not installed. Attempting to install jq..."
+      apt-get update
+      apt-get install jq -y
+    fi
+
+    local MANIFEST_URL="https://piston-meta.mojang.com/mc/game/version_manifest.json"
+    local LATEST_RELEASE=""
+
+    echo "Fetching Minecraft version manifest ..."
+
+    # -r : raw output for jq (removes quotes)
+    LATEST_RELEASE=$(curl -s "$MANIFEST_URL" | jq -r '.latest.release')
+
+    # Check if the variable is not empty (i.e., retrieval was successful)
+    if [ -n "$LATEST_RELEASE" ]; then
+        echo "Latest Minecraft release found: $LATEST_RELEASE"
+
+        MINECRAFT_JAR=$LATEST_RELEASE
+        echo "$MINECRAFT_JAR" # Output the version for the function's return value
+        return 0
+    else
+        echo "Error: Failed to retrieve the latest Minecraft release version. JSON parsing might have failed or the 'latest.release' key is missing."
+        return 1
+    fi
 }
 
 # This function checks if the script is running through SSH and prompts the user to confirm if they want to proceed or exit.
@@ -129,9 +148,27 @@ while true; do
     if [ -z $OS_PASS ]; then
       whiptail --backtitle "Install - Ubuntu VM" --msgbox "Password cannot be empty" 8 58
     elif [[ "$OS_PASS" == *" "* ]]; then
-      whiptail --msgbox "Password cannot contain spaces. Please try again." 8 58
+      whiptail --backtitle "Install - Ubuntu VM" --msgbox "Password cannot contain spaces. Please try again." 8 58
     elif [ ${#OS_PASS} -lt 8 ]; then
-      whiptail --msgbox "Password must be at least 5 characters long. Please try again." 8 58
+      whiptail --backtitle "Install - Ubuntu VM" --msgbox "Password must be at least 8 characters long. Please try again." 8 58
+    else
+      # Using SHA-512 (algorithm 6) for strong hashing
+      HASHED_OS_PASS=$(echo -n "$OS_PASS" | openssl passwd -6 -stdin)
+      break # Password is valid, break out of the loop
+    fi
+  else
+    exit_script
+  fi
+done
+
+while true; do
+  if SSH_PUB_KEY=$(whiptail --backtitle "Install - Ubuntu VM" --title "CLOUD-INIT SSH-KEY" --inputbox "\nPaste the Public SSH Key to use.\n" --cancel-button "Exit Script" 12 58 3>&1 1>&2 2>&3); then
+    if [ -z $SSH_PUB_KEY ]; then
+      whiptail --backtitle "Install - Ubuntu VM" --msgbox "SSH Key cannot be empty" 8 58
+    elif ! [[ "$SSH_PUB_KEY" =~ ^(ssh-rsa|ssh-dss|ecdsa-sha2-nistp256|ecdsa-sha2-nistp384|ecdsa-sha2-nistp521|ssh-ed25519)\s ]]; then
+      whiptail --backtitle "Install - Ubuntu VM" --msgbox "Invalid SSH key prefix. Must start with ssh-rsa, ssh-dss, ecdsa-sha2-nistpXXX, or ssh-ed25519." 8 58
+    elif [ ${#SSH_PUB_KEY} -lt 60 ]; then
+      whiptail --backtitle "Install - Ubuntu VM" --msgbox "SSH Key is too short. It might be incomplete." 8 58
     else
       break # Password is valid, break out of the loop
     fi
@@ -219,13 +256,20 @@ else
   echo "Docker install skipped .."
 fi
 
+# WHIPTAIL INSTALL MINECRAFT JAVA EDITION SERVER
+if whiptail --backtitle "Install - Ubuntu VM" --title "INSTALL MINECRAFT JAVA" --yesno --defaultno "Do you want to install a Minecraft Server?" 10 62; then
+  minecraft=1
+else
+  echo "Minecraft install skipped .."
+fi
+
+
 # Constant variables
 RAM=$(($RAM_COUNT * 1024))
 IMG_LOCATION="/var/lib/vz/template/iso/"
 CPU="x86-64-v3"
 CLOUD_INNIT_ABSOLUTE="/var/lib/vz/snippets/ubuntu-homelab-cloud-init.yml"
 CLOUD_INNIT_LOCAL="snippets/ubuntu-homelab-cloud-init.yml"
-CLOUD_INNIT_GIT="https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/Infrastructure/Proxmox/ubuntu-homelab-cloud-init.yml"
 PortainerComposeUrl="https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/Applications/Portainer/compose.yaml"
 JenkinsDockerfileUrl="https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/CI-CD/Jenkins/Dockerfile"
 JenkinsComposeUrl="https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/CI-CD/Jenkins/compose.yaml"
@@ -253,15 +297,33 @@ qm set $NEXTID --scsi0 local-lvm:vm-$NEXTID-disk-0,discard=on,ssd=1 --ide2 local
 qm disk resize $NEXTID scsi0 "${DISK_SIZE}G" && qm set $NEXTID --boot order=scsi0
 
 # Configure Cloudinit datails
-qm set $NEXTID --ciuser $OS_USER --cipassword $OS_PASS
-qm cloudinit dump $NEXTID user > $CLOUD_INNIT_ABSOLUTE
-wget $CLOUD_INNIT_GIT -O temp_cloud_init.yml
-cat temp_cloud_init.yml >> $CLOUD_INNIT_ABSOLUTE
-# Create custom app folder for deployment
 cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
-  # Create custom app folder for deployment
+#cloud-config
+hostname: $VM_NAME
+manage_etc_hosts: true
+fqdn: $VM_NAME
+users:
+  - default
+  - name: $OS_USER
+    password: $HASHED_OS_PASS
+    chpasswd:
+      expire: False
+    sudo: ALL=(ALL) NOPASSWD:ALL # Grant sudo access without password prompt
+    shell: /bin/bash # Set a default shell
+    ssh_authorized_keys:
+      - $SSH_PUB_KEY
+package_reboot_if_required: true
+packages:
+  - qemu-guest-agent
+  #- openjdk-21-jre-headless
+runcmd:
+  # Configure automatic updates
+  - sed -i 's/\/\/Unattended-Upgrade::Automatic-Reboot-Time "02:00"/Unattended-Upgrade::Automatic-Reboot-Time "06:00"/' /etc/apt/apt.conf.d/50unattended-upgrades
+  # Disable IPv6
+  - sed -i 's/IPV6=yes/IPV6=no/' /etc/default/ufw  # Create custom app folder for deployment
   - mkdir -m 750 /home/$OS_USER/apps && chown -R $OS_USER:$OS_USER /home/$OS_USER/apps
 EOF
+
 # Docker install
 if [ "$docker" == "1" ]; then
   cat <<'EOF' >> $CLOUD_INNIT_ABSOLUTE
@@ -309,8 +371,12 @@ if [[ $docker == 1 ]] && [[ $installContainers =~ "jenkins" ]]; then
 EOF
 fi
 # Install Minecraft server
-if [[ $installContainers =~ "minecraft" ]]; then
-  sed sed -i 's/#- openjdk-21-jre-headless/- openjdk-21-jre-headless/' $CLOUD_INNIT_ABSOLUTE
+if [[ $minecraft == 1 ]]; then
+
+  get_latest_minecraft_release
+  
+  # Instructions for cloud-init
+  sed -i 's/#- openjdk-21-jre-headless/- openjdk-21-jre-headless/' $CLOUD_INNIT_ABSOLUTE
   cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
   # Download server jar
   - mkdir /home/$OS_USER/apps/minecraft
@@ -325,7 +391,6 @@ EOF
 fi
 
 qm set $NEXTID --cicustom "user=local:$CLOUD_INNIT_LOCAL"
-rm temp_cloud_init.yml
 
 # Configure Cluster level firewall rules if not enabled
 if [[ $CLUSTER_FW_ENABLED != 1 ]]; then
