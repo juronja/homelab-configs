@@ -34,26 +34,60 @@ get_latest_minecraft_release() {
       apt-get install jq -y
     fi
 
-    local MANIFEST_URL="https://piston-meta.mojang.com/mc/game/version_manifest.json"
-    local LATEST_RELEASE=""
+    # Get the entire version manifest JSON
+    local MINECRAFT_MANIFEST_JSON
+    MINECRAFT_MANIFEST_JSON=$(curl -s "https://piston-meta.mojang.com/mc/game/version_manifest.json")
 
-    echo "Fetching Minecraft version manifest ..."
+    # Check if curl was successful and returned data
+    if [ -z "$MINECRAFT_MANIFEST_JSON" ]; then
+      echo "Error: Could not fetch JSON data from the version manifest URL. Please check your network connection or the URL."
+      return 1 # Indicate an error
+    fi
 
-    # -r : raw output for jq (removes quotes)
-    LATEST_RELEASE=$(curl -s "$MANIFEST_URL" | jq -r '.latest.release')
+    # Get latest release version ID
+    local LATEST_RELEASE_ID
+    LATEST_RELEASE_ID=$(echo "$MINECRAFT_MANIFEST_JSON" | jq -r '.latest.release')
 
-    # Check if the variable is not empty (i.e., retrieval was successful)
-    if [ -n "$LATEST_RELEASE" ]; then
-        echo "Latest Minecraft release found: $LATEST_RELEASE"
-
-        MINECRAFT_JAR=$LATEST_RELEASE
-        echo "$MINECRAFT_JAR" # Output the version for the function's return value
-        return 0
-    else
-        echo "Error: Failed to retrieve the latest Minecraft release version. JSON parsing might have failed or the 'latest.release' key is missing."
+    # Check if the latest release ID was found
+    if [ -z "$LATEST_RELEASE_ID" ]; then
+        echo "Error: Failed to retrieve the latest Minecraft release version ID. JSON parsing might have failed or the 'latest.release' key is missing."
         return 1
     fi
+
+    # Get the URL for the latest release version
+    local LATEST_RELEASE_URL
+    LATEST_RELEASE_URL=$(echo "$MINECRAFT_MANIFEST_JSON" | jq -r ".versions[] | select(.id == \"$LATEST_RELEASE_ID\") | .url")
+
+    # Check if the URL was found
+    if [ -z "$LATEST_RELEASE_URL" ]; then
+        echo "Error: Failed to find the URL for version $LATEST_RELEASE_ID in the manifest."
+        return 1
+    fi
+
+    # Get the MANIFEST for the latest release version
+    local LATEST_RELEASE_MANIFEST_JSON
+    LATEST_RELEASE_MANIFEST_JSON=$(curl -s "$LATEST_RELEASE_URL")
+
+    # Check if the specific release manifest was fetched successfully
+    if [ -z "$LATEST_RELEASE_MANIFEST_JSON" ]; then
+        echo "Error: Could not fetch specific release manifest from $LATEST_RELEASE_URL."
+        return 1
+    fi
+
+    local SERVER_JAR_URL
+    SERVER_JAR_URL=$(echo "$LATEST_RELEASE_MANIFEST_JSON" | jq -r '.downloads.server.url')
+
+    # Check if the server JAR URL was found
+    if [ -z "$SERVER_JAR_URL" ]; then
+        echo "Error: Could not find the server.jar URL in the specific release manifest."
+        return 1
+    fi
+
+    # For this function, we'll just echo the SERVER_JAR_URL as the primary output
+    echo "$SERVER_JAR_URL"
+    return 0
 }
+
 
 # This function checks if the script is running through SSH and prompts the user to confirm if they want to proceed or exit.
 ssh_check() {
@@ -273,6 +307,7 @@ CLOUD_INNIT_LOCAL="snippets/ubuntu-homelab-cloud-init.yml"
 PortainerComposeUrl="https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/Applications/Portainer/compose.yaml"
 JenkinsDockerfileUrl="https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/CI-CD/Jenkins/Dockerfile"
 JenkinsComposeUrl="https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/CI-CD/Jenkins/compose.yaml"
+FINAL_SERVER_JAR_URL=$(get_latest_minecraft_release)
 
 # Proxmox variables
 CLUSTER_FW_ENABLED=$(pvesh get /cluster/firewall/options --output-format json | sed -n 's/.*"enable": *\([0-9]*\).*/\1/p')
@@ -380,7 +415,7 @@ if [[ $minecraft == 1 ]]; then
   cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
   # Download server jar
   - mkdir /home/$OS_USER/apps/minecraft
-  - wget -nc --directory-prefix=/home/$OS_USER/apps/minecraft $MINECRAFT_JAR
+  - wget -nc --directory-prefix=/home/$OS_USER/apps/minecraft $FINAL_SERVER_JAR_URL
   - cd /home/$OS_USER/apps/minecraft
   # Install server to get eula
   - java -Xmx1024M -Xms1024M -jar server.jar nogui
