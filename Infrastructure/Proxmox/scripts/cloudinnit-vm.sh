@@ -165,7 +165,7 @@ while true; do
   if SSH_PUB_KEY=$(whiptail --backtitle "Install - Ubuntu VM" --title "CLOUD-INIT SSH-KEY" --inputbox "\nPaste the Public SSH Key to use.\n" --cancel-button "Exit Script" 12 58 3>&1 1>&2 2>&3); then
     if [ -z $SSH_PUB_KEY ]; then
       whiptail --backtitle "Install - Ubuntu VM" --msgbox "SSH Key cannot be empty" 8 58
-    elif ! [[ "$SSH_PUB_KEY" =~ ^(ssh-rsa|ssh-dss|ecdsa-sha2-nistp256|ecdsa-sha2-nistp384|ecdsa-sha2-nistp521|ssh-ed25519)\s ]]; then
+    elif ! [[ "$SSH_PUB_KEY" =~ ^(ssh-rsa|ssh-dss|ecdsa-sha2-nistp256|ecdsa-sha2-nistp384|ecdsa-sha2-nistp521|ssh-ed25519)\s* ]]; then
       whiptail --backtitle "Install - Ubuntu VM" --msgbox "Invalid SSH key prefix. Must start with ssh-rsa, ssh-dss, ecdsa-sha2-nistpXXX, or ssh-ed25519." 8 58
     elif [ ${#SSH_PUB_KEY} -lt 60 ]; then
       whiptail --backtitle "Install - Ubuntu VM" --msgbox "SSH Key is too short. It might be incomplete." 8 58
