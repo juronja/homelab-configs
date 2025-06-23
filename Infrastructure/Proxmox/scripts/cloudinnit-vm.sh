@@ -267,8 +267,6 @@ else
   echo "FIREWALL setup skipped .."
 fi
 
-whiptail --backtitle "Install - Ubuntu VM" --title "SSH NOTE" --msgbox "NOTE: Manually add the public SSH key in Proxmox UI before starting the VM!" 10 58 || exit
-
 # WHIPTAIL INSTALL DOCKER & PORTAINER & JENKINS
 if whiptail --backtitle "Install - Ubuntu VM" --title "INSTALL DOCKER" --yesno --defaultno "Do you want to install Docker?" 10 62; then
   docker=1
@@ -417,6 +415,7 @@ if [[ $minecraft == 1 ]]; then
   - mkdir /home/$OS_USER/apps/minecraft
   - wget -nc --directory-prefix=/home/$OS_USER/apps/minecraft $FINAL_SERVER_JAR_URL
   - cd /home/$OS_USER/apps/minecraft
+  - chown -R $OS_USER:$OS_USER .
   # Install server to get eula
   - java -Xmx1024M -Xms1024M -jar server.jar nogui
   # Accept EULA and start server
@@ -460,7 +459,8 @@ if [[ $udp == 1 ]]; then
   echo "UDP ports exposed successfully .."
 fi
 
-printf "\n${BL}## Script finished! Add your SSH key and start the VM .. ##${CL}\n\n"
+printf "\n${BL}## Script finished! Start the VM .. ##${CL}\n\n"
+
 if [[ $installContainers =~ "portainer" ]]; then
   printf "Portainer will be available at: ${BL}https://$(echo "$OS_IPv4_CIDR" | awk -F'./' '{print $1}'):9443${CL}\n\n"
 fi
