@@ -197,4 +197,60 @@
 			}
 		}
 	}
+
+	@icons-app-dev host icons-for-md-dev.homelabtales.com
+	handle @icons-app-dev {
+		basic_auth {
+			juronja pass #hash pass first with 'caddy hash-password'
+		}
+		reverse_proxy 192.168.x.x:x
+		header {
+			# Prevent the site from being embedded in an iframe, mitigating clickjacking.
+			X-Frame-Options DENY
+			# Prevent MIME type sniffing, mitigating certain security vulnerabilities.
+			X-Content-Type-Options nosniff
+			# This will deny website access to the listed hardware features for security purposes.
+			Permissions-Policy autoplay=(), camera=(), microphone=(), midi=(), usb=()
+			# Block XSS attacks to some degree using a report-only CSP.
+			Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' cdn.jsdelivr.net fonts.googleapis.com 'unsafe-inline'; img-src 'self' cdn.jsdelivr.net; font-src 'self' cdn.jsdelivr.net fonts.gstatic.com; connect-src 'self'; frame-ancestors 'none'; upgrade-insecure-requests;"
+		}
+		request_body {
+			max_size 100KB
+		}
+		rate_limit {
+			# distributed # only needed if multiple caddy instances
+			zone limit_by_ip {
+				key {remote_host}
+				events 20
+				window 10s
+			}
+		}
+	}
+
+	@icons-app host icons-for-md.homelabtales.com
+	handle @icons-app {
+		reverse_proxy 192.168.x.x:x
+		header {
+			# Prevent the site from being embedded in an iframe, mitigating clickjacking.
+			X-Frame-Options DENY
+			# Prevent MIME type sniffing, mitigating certain security vulnerabilities.
+			X-Content-Type-Options nosniff
+			# This will deny website access to the listed hardware features for security purposes.
+			Permissions-Policy autoplay=(), camera=(), microphone=(), midi=(), usb=()
+			# Block XSS attacks to some degree using a report-only CSP.
+			Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' cdn.jsdelivr.net fonts.googleapis.com 'unsafe-inline'; img-src 'self' cdn.jsdelivr.net; font-src 'self' cdn.jsdelivr.net fonts.gstatic.com; connect-src 'self'; frame-ancestors 'none'; upgrade-insecure-requests;"
+		}
+		request_body {
+			max_size 100KB
+		}
+		rate_limit {
+			# distributed # only needed if multiple caddy instances
+			zone limit_by_ip {
+				key {remote_host}
+				events 20
+				window 10s
+			}
+		}
+	}
+	
 }
