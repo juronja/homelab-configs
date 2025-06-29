@@ -178,7 +178,7 @@ uci add firewall ipset
 uci set firewall.@ipset[-1].name='cloudflare-ips'
 uci set firewall.@ipset[-1].match='src_net'
 uci set firewall.@ipset[-1].enabled='1'
-uci set firewall.@ipset[-1].loadfile='/tmp/cloudflare-ips.txt' # create file!!
+uci set firewall.@ipset[-1].loadfile='/root/cloudflare-ips.txt' # create file!!
 uci commit
 ```
 
