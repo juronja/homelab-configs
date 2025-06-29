@@ -5,13 +5,12 @@ FILE_NAME="cloudflare-ips.txt"
 
 # rm /tmp/cloudflare-ips.txt
 
-wget -q "https://www.cloudflare.com/ips-v4" -O - > /tmp/$FILE_NAME
+wget -q "https://www.cloudflare.com/ips-v4" -O - > /root/$FILE_NAME
 
 if [ $? -eq 0 ]; then
-    logger -p notice -t $LOG_TAG "Cloudflare IPs downloaded successfully to /tmp/$FILE_NAME"
+    logger -p notice -t $LOG_TAG "Cloudflare IPs downloaded successfully to /root/$FILE_NAME"
 else
     logger -p err -t $LOG_TAG "ERROR Failed to download Cloudflare IPs. Wget exit code: $?."
-    # Exit if wget fails to prevent further commands from running with outdated data
     exit 1
 fi
 
