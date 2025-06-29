@@ -1,3 +1,18 @@
+#cloud-config
+hostname: $VM_NAME
+manage_etc_hosts: true
+fqdn: $VM_NAME
+users:
+  - default
+  - name: $OS_USER
+    password: $HASHED_OS_PASS
+    chpasswd:
+      expire: False
+    sudo: ALL=(ALL) NOPASSWD:ALL # Grant sudo access without password prompt
+    groups: users, docker # Add docker group here so user is in docker group from start
+    shell: /bin/bash # Set a default shell
+    ssh_authorized_keys:
+      - "$SSH_PUB_KEY"
 package_reboot_if_required: true
 packages:
   - qemu-guest-agent
@@ -6,4 +21,5 @@ runcmd:
   # Configure automatic updates
   - sed -i 's/\/\/Unattended-Upgrade::Automatic-Reboot-Time "02:00"/Unattended-Upgrade::Automatic-Reboot-Time "06:00"/' /etc/apt/apt.conf.d/50unattended-upgrades
   # Disable IPv6
-  - sed -i 's/IPV6=yes/IPV6=no/' /etc/default/ufw
+  - sed -i 's/IPV6=yes/IPV6=no/' /etc/default/ufw  # Create custom app folder for deployment
+  - mkdir -m 750 /home/$OS_USER/apps && chown -R $OS_USER:$OS_USER /home/$OS_USER/apps
