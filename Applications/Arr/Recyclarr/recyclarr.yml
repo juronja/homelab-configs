@@ -312,7 +312,7 @@ radarr:
 
         assign_scores_to:
           - name: HD Bluray + WEB
-            score: -1000
+            score: -10000
 
       - trash_ids:
           # Custom Scoring for all items below
