@@ -13,8 +13,8 @@ Docs:
 2. Go to **APIs & Services** and first prepare a 0Auth consent screen:
     - App info details
     - leave app logo blank to avoid approval
-    - App domain (Application home page). e.g. `https://audiobook.repina.eu`
-    - Authorized domains. e.g. `repina.eu`
+    - App domain (Application home page). e.g. `https://audiobook.homelabtales.com`
+    - Authorized domains. e.g. `homelabtales.com`
     - developer contact
     - add default non-sensitive scopes
 3. Go to **Credentials** and add a **0Auth client ID** credential
