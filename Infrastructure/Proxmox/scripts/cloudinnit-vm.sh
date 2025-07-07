@@ -267,16 +267,25 @@ else
   echo "FIREWALL setup skipped .."
 fi
 
-# WHIPTAIL INSTALL DOCKER & PORTAINER & JENKINS
-if whiptail --backtitle "Install - Ubuntu VM" --title "INSTALL DOCKER" --yesno --defaultno "Do you want to install Docker?" 10 62; then
-  docker=1
+# Install additional programs
+if installPrograms=$(whiptail --backtitle "Install - Ubuntu VM" --title "INSTALL PROGRAMS" --checklist "\nInstall these programs? (Spacebar to select)" 12 58 3 \
+  "docker" "" OFF \
+  "ansible" "" OFF \
+  "minecraft" "" OFF \
+  3>&1 1>&2 2>&3); then
+    echo -e "Install programs: $installPrograms"
+else
+  echo "Programs install skipped .."
+fi
+
+if [[ $installPrograms =~ "docker" ]]; then
   if insecReg=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nWrite comma seperated IP:PORT list to allow:" 10 58 "192.168.x.x:PORT" --title "ADD INSECURE REGISTRY RULES?" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
     registries=1
     echo "Added insecure registry rules: $insecReg"
   else
     echo "Add registry rules skipped .."
   fi
-  if installContainers=$(whiptail --backtitle "Install - Ubuntu VM" --title "INSTALL APPS" --checklist "\nInstall these containers? (Spacebar to select)" 12 58 3 \
+  if installContainers=$(whiptail --backtitle "Install - Ubuntu VM" --title "INSTALL CONTAINERS" --checklist "\nInstall these containers? (Spacebar to select)" 12 58 3 \
     "portainer" "" OFF \
     "jenkins" "" OFF \
     3>&1 1>&2 2>&3); then
@@ -284,28 +293,40 @@ if whiptail --backtitle "Install - Ubuntu VM" --title "INSTALL DOCKER" --yesno -
   else
     echo "Container install skipped .."
   fi
-else
-  echo "Docker install skipped .."
 fi
 
-# WHIPTAIL INSTALL MINECRAFT JAVA EDITION SERVER
-if whiptail --backtitle "Install - Ubuntu VM" --title "INSTALL MINECRAFT JAVA" --yesno --defaultno "Do you want to install a Minecraft Server?" 10 62; then
-  minecraft=1
-else
-  echo "Minecraft install skipped .."
-fi
+# WHIPTAIL INSTALL DOCKER & PORTAINER & JENKINS
+# if whiptail --backtitle "Install - Ubuntu VM" --title "INSTALL DOCKER" --yesno --defaultno "Do you want to install Docker?" 10 62; then
+#   docker=1
+#   if insecReg=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nWrite comma seperated IP:PORT list to allow:" 10 58 "192.168.x.x:PORT" --title "ADD INSECURE REGISTRY RULES?" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
+#     registries=1
+#     echo "Added insecure registry rules: $insecReg"
+#   else
+#     echo "Add registry rules skipped .."
+#   fi
+#   if installContainers=$(whiptail --backtitle "Install - Ubuntu VM" --title "INSTALL CONTAINERS" --checklist "\nInstall these containers? (Spacebar to select)" 12 58 3 \
+#     "portainer" "" OFF \
+#     "jenkins" "" OFF \
+#     3>&1 1>&2 2>&3); then
+#       echo -e "Install containers: $installContainers"
+#   else
+#     echo "Container install skipped .."
+#   fi
+# else
+#   echo "Docker install skipped .."
+# fi
 
 
 # Constant variables
 RAM=$(($RAM_COUNT * 1024))
 IMG_LOCATION="/var/lib/vz/template/iso/"
 CPU="x86-64-v3"
+touch /var/lib/vz/snippets/ubuntu-homelab-cloud-init.yml
 CLOUD_INNIT_ABSOLUTE="/var/lib/vz/snippets/ubuntu-homelab-cloud-init.yml"
 CLOUD_INNIT_LOCAL="snippets/ubuntu-homelab-cloud-init.yml"
 PortainerComposeUrl="https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/Applications/Portainer/compose.yaml"
 JenkinsDockerfileUrl="https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/CI-CD/Jenkins/Dockerfile"
 JenkinsComposeUrl="https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/CI-CD/Jenkins/compose.yaml"
-FINAL_SERVER_JAR_URL=$(get_latest_minecraft_release)
 
 # Proxmox variables
 CLUSTER_FW_ENABLED=$(pvesh get /cluster/firewall/options --output-format json | sed -n 's/.*"enable": *\([0-9]*\).*/\1/p')
@@ -354,7 +375,7 @@ apt:
       source: ppa:ansible/ansible
 packages:
   - qemu-guest-agent
-  - ansible
+  #- ansible
   #- openjdk-21-jre-headless
 runcmd:
   # Configure automatic updates
@@ -365,7 +386,7 @@ runcmd:
 EOF
 
 # Docker install
-if [ "$docker" == "1" ]; then
+if [[ $installPrograms =~ "docker" ]]; then
   cat <<'EOF' >> $CLOUD_INNIT_ABSOLUTE
   # Add Docker's official GPG key
   - curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc && chmod a+r /etc/apt/keyrings/docker.asc
@@ -390,7 +411,7 @@ if [[ $registries == 1 ]]; then
 EOF
 fi
 # Install Portainer
-if [[ $docker == 1 ]] && [[ $installContainers =~ "portainer" ]]; then
+if [[ $installPrograms =~ "docker" ]] && [[ $installContainers =~ "portainer" ]]; then
   cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
   # Install Portainer
   - mkdir /home/$OS_USER/apps/portainer
@@ -400,7 +421,7 @@ if [[ $docker == 1 ]] && [[ $installContainers =~ "portainer" ]]; then
 EOF
 fi
 # Install Jenkins
-if [[ $docker == 1 ]] && [[ $installContainers =~ "jenkins" ]]; then
+if [[ $installPrograms =~ "docker" ]] && [[ $installContainers =~ "jenkins" ]]; then
   cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
   # Install Jenkins
   - mkdir /home/$OS_USER/apps/jenkins
@@ -410,11 +431,17 @@ if [[ $docker == 1 ]] && [[ $installContainers =~ "jenkins" ]]; then
   - docker compose up -d
 EOF
 fi
-# Install Minecraft server
-if [[ $minecraft == 1 ]]; then
 
-  get_latest_minecraft_release
+# Install Ansible
+if [[ $installPrograms =~ "ansible" ]]; then
+  sed -i 's/#- ansible/- ansible/' $CLOUD_INNIT_ABSOLUTE
+fi
+
+# Install Minecraft server
+if [[ $installPrograms =~ "minecraft" ]]; then
   
+  FINAL_SERVER_JAR_URL=$(get_latest_minecraft_release)
+
   # Instructions for cloud-init
   sed -i 's/#- openjdk-21-jre-headless/- openjdk-21-jre-headless/' $CLOUD_INNIT_ABSOLUTE
   cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
@@ -432,6 +459,7 @@ EOF
 fi
 
 qm set $NEXTID --cicustom "user=local:$CLOUD_INNIT_LOCAL"
+rm /var/lib/vz/snippets/ubuntu-homelab-cloud-init.yml
 
 # Configure Cluster level firewall rules if not enabled
 if [[ $CLUSTER_FW_ENABLED != 1 ]]; then
