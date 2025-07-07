@@ -295,28 +295,6 @@ if [[ $installPrograms =~ "docker" ]]; then
   fi
 fi
 
-# WHIPTAIL INSTALL DOCKER & PORTAINER & JENKINS
-# if whiptail --backtitle "Install - Ubuntu VM" --title "INSTALL DOCKER" --yesno --defaultno "Do you want to install Docker?" 10 62; then
-#   docker=1
-#   if insecReg=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nWrite comma seperated IP:PORT list to allow:" 10 58 "192.168.x.x:PORT" --title "ADD INSECURE REGISTRY RULES?" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
-#     registries=1
-#     echo "Added insecure registry rules: $insecReg"
-#   else
-#     echo "Add registry rules skipped .."
-#   fi
-#   if installContainers=$(whiptail --backtitle "Install - Ubuntu VM" --title "INSTALL CONTAINERS" --checklist "\nInstall these containers? (Spacebar to select)" 12 58 3 \
-#     "portainer" "" OFF \
-#     "jenkins" "" OFF \
-#     3>&1 1>&2 2>&3); then
-#       echo -e "Install containers: $installContainers"
-#   else
-#     echo "Container install skipped .."
-#   fi
-# else
-#   echo "Docker install skipped .."
-# fi
-
-
 # Constant variables
 RAM=$(($RAM_COUNT * 1024))
 IMG_LOCATION="/var/lib/vz/template/iso/"
