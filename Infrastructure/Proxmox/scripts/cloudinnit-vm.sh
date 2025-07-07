@@ -435,6 +435,10 @@ fi
 # Install Ansible
 if [[ $installPrograms =~ "ansible" ]]; then
   sed -i 's/#- ansible/- ansible/' $CLOUD_INNIT_ABSOLUTE
+  cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
+  # Install Ansible
+  - mkdir /home/$OS_USER/apps/ansible
+EOF
 fi
 
 # Install Minecraft server
