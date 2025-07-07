@@ -14,8 +14,13 @@ users:
     ssh_authorized_keys:
       - "$SSH_PUB_KEY"
 package_reboot_if_required: true
+apt:
+  sources:
+    ansible:
+      source: ppa:ansible/ansible
 packages:
   - qemu-guest-agent
+  - ansible
   #- openjdk-21-jre-headless
 runcmd:
   # Configure automatic updates
