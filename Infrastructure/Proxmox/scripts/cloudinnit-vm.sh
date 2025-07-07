@@ -459,7 +459,6 @@ EOF
 fi
 
 qm set $NEXTID --cicustom "user=local:$CLOUD_INNIT_LOCAL"
-rm /var/lib/vz/snippets/ubuntu-homelab-cloud-init.yml
 
 # Configure Cluster level firewall rules if not enabled
 if [[ $CLUSTER_FW_ENABLED != 1 ]]; then
