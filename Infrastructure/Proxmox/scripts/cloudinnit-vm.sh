@@ -345,6 +345,8 @@ users:
     shell: /bin/bash # Set a default shell
     ssh_authorized_keys:
       - $SSH_PUB_KEY
+package_update: true
+package_upgrade: true
 package_reboot_if_required: true
 apt:
   sources:

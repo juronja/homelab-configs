@@ -13,6 +13,8 @@ users:
     shell: /bin/bash # Set a default shell
     ssh_authorized_keys:
       - "$SSH_PUB_KEY"
+package_update: true
+package_upgrade: true
 package_reboot_if_required: true
 apt:
   sources:
@@ -27,4 +29,4 @@ runcmd:
   - sed -i 's/\/\/Unattended-Upgrade::Automatic-Reboot-Time "02:00"/Unattended-Upgrade::Automatic-Reboot-Time "06:00"/' /etc/apt/apt.conf.d/50unattended-upgrades
   # Disable IPv6
   - sed -i 's/IPV6=yes/IPV6=no/' /etc/default/ufw  # Create custom app folder for deployment
-  - mkdir -m 750 /home/$OS_USER/apps && chown -R $OS_USER:$OS_USER /home/$OS_USER/apps
+  - mkdir -m 750 /home/$OS_USER/apps && chown -R $OS_USER:$OS_USER /home/$OS_USER/apps 
