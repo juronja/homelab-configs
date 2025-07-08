@@ -6,9 +6,9 @@ users:
   - default
   - name: $OS_USER
     passwd: $HASHED_OS_PASS
-    chpasswd:
-      expire: False
-    sudo: ALL=(ALL) NOPASSWD:ALL # Grant sudo access without password prompt
+    # chpasswd:
+    #   expire: False
+    # sudo: ALL=(ALL) NOPASSWD:ALL # Grant sudo access without password prompt
     # lock_passwd: false
     groups: users, docker # Add docker group here so user is in docker group from start
     shell: /bin/bash # Set a default shell
