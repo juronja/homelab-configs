@@ -353,6 +353,7 @@ apt:
       source: ppa:ansible/ansible
 packages:
   - qemu-guest-agent
+  - python3-pip
   #- ansible
   #- openjdk-21-jre-headless
 snap:
@@ -416,6 +417,7 @@ fi
 # Install Ansible and dependencies
 if [[ $installPrograms =~ "ansible" ]]; then
   sed -i 's/#- ansible/- ansible/' $CLOUD_INNIT_ABSOLUTE
+  sed -i 's/#- snap install aws-cli --classic/- snap install aws-cli --classic/' $CLOUD_INNIT_ABSOLUTE
   cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
   # Install Ansible
   - mkdir /home/$OS_USER/apps/ansible

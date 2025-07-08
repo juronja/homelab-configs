@@ -22,6 +22,7 @@ apt:
       source: ppa:ansible/ansible
 packages:
   - qemu-guest-agent
+  - python3-pip
   #- ansible
   #- openjdk-21-jre-headless
 snap:
