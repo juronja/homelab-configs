@@ -421,6 +421,7 @@ if [[ $installPrograms =~ "ansible" ]]; then
   cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
   # Install Ansible
   - mkdir /home/$OS_USER/apps/ansible
+  - pip install --break-system-packages boto3
 EOF
 fi
 
