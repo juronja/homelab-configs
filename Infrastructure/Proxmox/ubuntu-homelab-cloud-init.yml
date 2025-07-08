@@ -22,8 +22,11 @@ apt:
       source: ppa:ansible/ansible
 packages:
   - qemu-guest-agent
-  - ansible
+  #- ansible
   #- openjdk-21-jre-headless
+snap:
+  commands:
+  #- snap install aws-cli --classic
 runcmd:
   # Configure automatic updates
   - sed -i 's/\/\/Unattended-Upgrade::Automatic-Reboot-Time "02:00"/Unattended-Upgrade::Automatic-Reboot-Time "06:00"/' /etc/apt/apt.conf.d/50unattended-upgrades

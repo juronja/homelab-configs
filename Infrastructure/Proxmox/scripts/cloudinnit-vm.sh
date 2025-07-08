@@ -355,6 +355,9 @@ packages:
   - qemu-guest-agent
   #- ansible
   #- openjdk-21-jre-headless
+snap:
+  commands:
+  #- snap install aws-cli --classic
 runcmd:
   # Configure automatic updates
   - sed -i 's/\/\/Unattended-Upgrade::Automatic-Reboot-Time "02:00"/Unattended-Upgrade::Automatic-Reboot-Time "06:00"/' /etc/apt/apt.conf.d/50unattended-upgrades
@@ -410,7 +413,7 @@ if [[ $installPrograms =~ "docker" ]] && [[ $installContainers =~ "jenkins" ]]; 
 EOF
 fi
 
-# Install Ansible
+# Install Ansible and dependencies
 if [[ $installPrograms =~ "ansible" ]]; then
   sed -i 's/#- ansible/- ansible/' $CLOUD_INNIT_ABSOLUTE
   cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
