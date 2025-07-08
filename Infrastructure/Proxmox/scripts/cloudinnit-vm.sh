@@ -337,14 +337,15 @@ fqdn: $VM_NAME
 users:
   - default
   - name: $OS_USER
-    password: $HASHED_OS_PASS
+    passwd: $HASHED_OS_PASS
     chpasswd:
       expire: False
     sudo: ALL=(ALL) NOPASSWD:ALL # Grant sudo access without password prompt
-    lock_passwd: false
+    # lock_passwd: false
+    groups: users, docker # Add docker group here so user is in docker group from start
     shell: /bin/bash # Set a default shell
     ssh_authorized_keys:
-      - $SSH_PUB_KEY
+      - "$SSH_PUB_KEY"
 package_update: true
 package_upgrade: true
 package_reboot_if_required: true
