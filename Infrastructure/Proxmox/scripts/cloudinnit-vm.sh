@@ -341,6 +341,7 @@ users:
     chpasswd:
       expire: False
     sudo: ALL=(ALL) NOPASSWD:ALL # Grant sudo access without password prompt
+    lock_passwd: false
     shell: /bin/bash # Set a default shell
     ssh_authorized_keys:
       - $SSH_PUB_KEY
