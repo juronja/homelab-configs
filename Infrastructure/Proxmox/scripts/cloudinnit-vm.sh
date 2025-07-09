@@ -155,7 +155,7 @@ else
 fi
 
 if VM_NAME=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nSet the name of the VM" 8 58 "homelab" --title "NAME" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
-  if [ -z $VM_NAME ]; then
+  if [[ -z $VM_NAME ]]; then
     VM_NAME="homelab"
     echo -e "Name: $VM_NAME"
   else
@@ -167,7 +167,7 @@ fi
 
 while true; do
   if OS_USER=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nCloud-innit username" 8 58 --title "CLOUD-INIT USERNAME" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
-    if [ -z $OS_USER ]; then
+    if [[ -z $OS_USER ]]; then
       whiptail --backtitle "Install - Ubuntu VM" --msgbox "Username cannot be empty" 8 58
     else
       break # Username is not empty, break out of the loop
@@ -179,7 +179,7 @@ done
 
 while true; do
   if OS_PASS=$(whiptail --backtitle "Install - Ubuntu VM" --passwordbox "\nCloud-innit password" 8 58 --title "CLOUD-INIT PASSWORD" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
-    if [ -z $OS_PASS ]; then
+    if [[ -z $OS_PASS ]]; then
       whiptail --backtitle "Install - Ubuntu VM" --msgbox "Password cannot be empty" 8 58
     elif [[ "$OS_PASS" == *" "* ]]; then
       whiptail --backtitle "Install - Ubuntu VM" --msgbox "Password cannot contain spaces. Please try again." 8 58
@@ -196,8 +196,8 @@ while true; do
 done
 
 while true; do
-  if SSH_PUB_KEY=$(whiptail --backtitle "Install - Ubuntu VM" --title "CLOUD-INIT SSH-KEY" --inputbox "\nPaste the Public SSH Key to use. (leave empty for no SSH) \n" --cancel-button "Exit Script" 12 58 3>&1 1>&2 2>&3); then
-    if [ -z $SSH_PUB_KEY ]; then
+  if SSH_PUB_KEY=$(whiptail --backtitle "Install - Ubuntu VM" --title "CLOUD-INIT SSH-KEY" --inputbox "\nPaste the Public SSH Key to use.\nLeave empty for no SSH \n" --cancel-button "Exit Script" 12 58 3>&1 1>&2 2>&3); then
+    if [[ -z $SSH_PUB_KEY ]]; then
       ssh=0
       break
     elif ! [[ "$SSH_PUB_KEY" =~ ^(ssh-rsa|ssh-dss|ecdsa-sha2-nistp256|ecdsa-sha2-nistp384|ecdsa-sha2-nistp521|ssh-ed25519)\s* ]]; then
@@ -234,7 +234,7 @@ if [[ $OS_IPv4_CIDR != "dhcp" ]]; then
   SUGGESTED_GW=$(echo "$OS_IPv4_CIDR" | sed 's/\.[0-9]\{1,3\}\/\([0-9]\+\)$/.1/')
   while true; do
     if OS_IPv4_GW=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nEnter gateway IP address" 8 58 "$SUGGESTED_GW" --title "CLOUD-INIT IPv4 GATEWAY" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
-      if [ -z $OS_IPv4_GW ]; then
+      if [[ -z $OS_IPv4_GW ]]; then
           whiptail --backtitle "Install - Ubuntu VM" --msgbox "Gateway IP address cannot be empty" 8 58
       elif [[ ! "$OS_IPv4_GW" =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then
         whiptail --backtitle "Install - Ubuntu VM" --msgbox "Invalid IP address format" 8 58
@@ -279,7 +279,7 @@ else
   echo "Programs install skipped .."
 fi
 
-if [[ $installPrograms =~ "docker" ]]; then
+if [[ "$installPrograms" =~ "docker" ]]; then
   if insecReg=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nWrite comma seperated IP:PORT list to allow:" 10 58 "192.168.x.x:PORT" --title "ADD INSECURE REGISTRY RULES?" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
     registries=1
     echo "Added insecure registry rules: $insecReg"
@@ -341,7 +341,7 @@ users:
     groups: users, docker # Add docker group here so user is in docker group from start
     shell: /bin/bash # Set a default shell
     passwd: $HASHED_OS_PASS
-    lock_passwd: false
+    lock_passwd: false # Lock the password to disable password login
     #sudo: "ALL=(ALL) NOPASSWD:ALL" # Grant sudo access without password prompt
     #ssh_authorized_keys:
       #- "$SSH_PUB_KEY"
@@ -375,7 +375,7 @@ if [[ $ssh != 0 ]]; then
 fi
 
 # Docker install
-if [[ $installPrograms =~ "docker" ]]; then
+if [[ "$installPrograms" =~ "docker" ]]; then
   cat <<'EOF' >> $CLOUD_INNIT_ABSOLUTE
   # Add Docker's official GPG key
   - curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc && chmod a+r /etc/apt/keyrings/docker.asc
@@ -400,7 +400,7 @@ if [[ $registries == 1 ]]; then
 EOF
 fi
 # Install Portainer
-if [[ $installPrograms =~ "docker" ]] && [[ $installContainers =~ "portainer" ]]; then
+if [[ "$installPrograms" =~ "docker" ]] && [[ "$installContainers" =~ "portainer" ]]; then
   cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
   # Install Portainer
   - mkdir /home/$OS_USER/apps/portainer
@@ -410,7 +410,7 @@ if [[ $installPrograms =~ "docker" ]] && [[ $installContainers =~ "portainer" ]]
 EOF
 fi
 # Install Jenkins
-if [[ $installPrograms =~ "docker" ]] && [[ $installContainers =~ "jenkins" ]]; then
+if [[ "$installPrograms" =~ "docker" ]] && [[ "$installContainers" =~ "jenkins" ]]; then
   cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
   # Install Jenkins
   - mkdir /home/$OS_USER/apps/jenkins
@@ -422,7 +422,7 @@ EOF
 fi
 
 # Install Ansible and dependencies
-if [[ $installPrograms =~ "ansible" ]]; then
+if [[ "$installPrograms" =~ "ansible" ]]; then
   sed -i 's/#- ansible/- ansible/' $CLOUD_INNIT_ABSOLUTE
   sed -i 's/#- snap install aws-cli --classic/- snap install aws-cli --classic/' $CLOUD_INNIT_ABSOLUTE
   cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
@@ -433,7 +433,7 @@ EOF
 fi
 
 # Install Minecraft server
-if [[ $installPrograms =~ "minecraft" ]]; then
+if [[ "$installPrograms" =~ "minecraft" ]]; then
   
   FINAL_SERVER_JAR_URL=$(get_latest_minecraft_release)
 
@@ -490,9 +490,9 @@ fi
 
 printf "\n${BL}## Script finished! Start the VM .. ##${CL}\n\n"
 
-if [[ $installContainers =~ "portainer" ]]; then
+if [[ "$installContainers" =~ "portainer" ]]; then
   printf "Portainer will be available at: ${BL}https://$(echo "$OS_IPv4_CIDR" | awk -F'./' '{print $1}'):9443${CL}\n\n"
 fi
-if [[ $installContainers =~ "jenkins" ]]; then
+if [[ "$installContainers" =~ "jenkins" ]]; then
   printf "Jenkins will be available at: ${BL}http://$(echo "$OS_IPv4_CIDR" | awk -F'./' '{print $1}'):8080${CL}\n\n"
 fi
