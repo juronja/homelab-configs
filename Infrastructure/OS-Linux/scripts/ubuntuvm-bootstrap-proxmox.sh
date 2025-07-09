@@ -72,7 +72,7 @@ whiptail --backtitle "Customize - Ubuntu VM" --title "REMINDER" --msgbox "Don't 
 sudo apt-get update -y && sudo apt-get upgrade -y
 
 # Configure automatic updates
-sudo sed -i 's/\/\/Unattended-Upgrade::Automatic-Reboot-Time "02:00"/Unattended-Upgrade::Automatic-Reboot-Time "06:30"/' /etc/apt/apt.conf.d/50unattended-upgrades
+sudo sed -i 's|//Unattended-Upgrade::Automatic-Reboot-Time "02:00"|Unattended-Upgrade::Automatic-Reboot-Time "06:30"|' /etc/apt/apt.conf.d/50unattended-upgrades
 echo "Automatic upgrades configured successfully!"
 
 # Disable IPv6
