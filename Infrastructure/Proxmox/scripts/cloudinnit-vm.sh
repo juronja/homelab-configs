@@ -300,7 +300,6 @@ fi
 RAM=$(($RAM_COUNT * 1024))
 IMG_LOCATION="/var/lib/vz/template/iso/"
 CPU="x86-64-v3"
-touch /var/lib/vz/snippets/ubuntu-homelab-cloud-init.yml
 CLOUD_INNIT_ABSOLUTE="/var/lib/vz/snippets/ubuntu-homelab-cloud-init.yml"
 CLOUD_INNIT_LOCAL="snippets/ubuntu-homelab-cloud-init.yml"
 PortainerComposeUrl="https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/Applications/Portainer/compose.yaml"
@@ -330,6 +329,10 @@ qm set $NEXTID --scsi0 local-lvm:vm-$NEXTID-disk-0,discard=on,ssd=1 --ide2 local
 qm disk resize $NEXTID scsi0 "${DISK_SIZE}G" && qm set $NEXTID --boot order=scsi0
 
 # Configure Cloudinit datails
+
+rm $CLOUD_INNIT_ABSOLUTE
+touch $CLOUD_INNIT_ABSOLUTE
+
 cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
 #cloud-config
 hostname: $VM_NAME
@@ -343,8 +346,8 @@ users:
     passwd: $HASHED_OS_PASS
     lock_passwd: false # Lock the password to disable password login
     #sudo: "ALL=(ALL) NOPASSWD:ALL" # Grant sudo access without password prompt
-    #ssh_authorized_keys:
-      #SSH_PUB_KEY
+    ssh_authorized_keys:
+      #- "SSH_PUB_KEY"
 package_update: true
 package_upgrade: true
 package_reboot_if_required: true
@@ -371,7 +374,7 @@ EOF
 # SSH manage
 if [[ $ssh != 0 ]]; then
   sed -i 's/#ssh_authorized_keys:/ssh_authorized_keys:/' $CLOUD_INNIT_ABSOLUTE
-  sed -i "s/#SSH_PUB_KEY/- \"$SSH_PUB_KEY\"/" $CLOUD_INNIT_ABSOLUTE
+  sed -i "s/#- \"SSH_PUB_KEY\"/- \"$SSH_PUB_KEY\"/" $CLOUD_INNIT_ABSOLUTE
 fi
 
 # Docker install
