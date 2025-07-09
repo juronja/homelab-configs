@@ -12,8 +12,8 @@ users:
     # lock_passwd: false
     groups: users, docker # Add docker group here so user is in docker group from start
     shell: /bin/bash # Set a default shell
-    ssh_authorized_keys:
-      - "$SSH_PUB_KEY"
+    #ssh_authorized_keys:
+      #- "$SSH_PUB_KEY"
 package_update: true
 package_upgrade: true
 package_reboot_if_required: true
