@@ -1,0 +1,37 @@
+---
+- name: Install node and npm
+  hosts: ubuntu
+  become: yes # This line tells Ansible to use privilege escalation (sudo) for all tasks
+  tasks:
+  - name: apt update and upgrade
+    apt:
+      force_apt_get: true
+      update_cache: true
+      upgrade: yes
+      cache_valid_time: 3600
+  - name: install dependencies
+    apt:
+      name:
+      - nodejs
+      - npm
+      state: present
+- name: Deploy nodejs app
+  hosts: ubuntu
+  vars_files:
+    - vars/variables.yaml
+  tasks:
+  - name: Unpack the nodejs file
+    unarchive:
+      src: ~/apps/mynodeapp.tar.gz
+      dest: "{{location}}"
+  - name: Run NPM install
+    npm:
+      path: "{{location}}"
+  - name: Start the application
+    command: npm start
+    async: 1000
+    poll: 0
+  - name: Ensure app is running
+    shell: ps aux | grep node
+    register: app_status
+  - debug: msg={{ app_status.stdout_lines }}

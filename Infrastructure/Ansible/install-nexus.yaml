@@ -1,0 +1,93 @@
+---
+- name: Install dependencies
+  hosts: ubuntu
+  become: yes # This line tells Ansible to use privilege escalation (sudo) for all tasks
+  tasks:
+    - name: apt update and upgrade
+      apt:
+        force_apt_get: true
+        update_cache: true
+        upgrade: yes
+        cache_valid_time: 3600
+    - name: install java, net tools, unzip
+      apt:
+        name:
+        - openjdk-17-jre-headless
+        - net-tools
+        - unzip
+        state: present
+- name: Download and unpack nexus
+  hosts: ubuntu
+  become: yes # This line tells Ansible to use privilege escalation (sudo) for all tasks
+  vars_files:
+    - vars/variables.yaml
+  tasks:
+    - name: Download nexus
+      get_url:
+        url: https://download.sonatype.com/nexus/3/sonatype-nexus-repository-{{nexus_latest_version}}-assembly.zip
+        dest: /tmp/
+      register: download_result
+    - name: Create directory for nexus
+      file:
+        path: /opt/sonatype/
+        state: directory
+        # mode: "0755"
+    - name: Unzip Nexus
+      unarchive:
+        src: "{{download_result.dest}}"
+        dest: /opt/sonatype
+        remote_src: true
+    - name: Check unarchived folder stats
+      stat:
+        path: /opt/sonatype/nexus-{{nexus_latest_version}}
+      register: stats_result
+    - name: Rename nexus folder
+      shell: mv /opt/sonatype/nexus-{{nexus_latest_version}} /opt/sonatype/nexus
+      when: not stats_result.stat.exists
+- name: Create nexus user and chown
+  hosts: ubuntu
+  become: yes # This line tells Ansible to use privilege escalation (sudo) for all tasks
+  tasks:
+    # - name: Create nexus group
+    #   group:
+    #     name: nexus
+    #     state: present
+    # - name: Create nexus user and add to group
+    #   user:
+    #     name: nexus
+    #     group: nexus
+    - name: Create rc file
+      file:
+        path: /opt/sonatype/nexus/bin/nexus.rc
+        state: touch
+    - name: Start as nexus user
+      blockinfile:
+        path: /opt/sonatype/nexus/bin/nexus.rc
+        block: |
+          runas_as_user="juronja"
+    - name: Make user folder owner
+      file:
+        path: /opt/sonatype
+        state: directory
+        owner: juronja
+        group: juronja
+        recurse: true
+- name: Start nexus
+  hosts: ubuntu
+  # become: yes
+  # become_user: juronja
+  tasks:
+    - name: Start Nexus as user
+      command: /opt/sonatype/nexus/bin/nexus start
+    - name: Verify if running with ps
+      shell: ps aux | grep nexus
+      register: app_status
+    - debug: msg={{app_status.stdout_lines}}
+    - name: Wait one minute
+      pause:
+        minutes: 1
+    - name: Verify if running with netstat
+      shell: netstat -plnt
+      register: app_status
+    - debug: msg={{app_status.stdout_lines}}
+

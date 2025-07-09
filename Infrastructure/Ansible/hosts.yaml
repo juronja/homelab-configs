@@ -1,0 +1,13 @@
+ubuntu:
+  hosts:
+    IP
+  vars:
+    ansible_ssh_private_key_file: ~/.ssh/id_k8s
+    ansible_user: juronja
+
+ec2:
+  hosts:
+    3.121.78.3
+  vars:
+    ansible_ssh_private_key_file: ~/.ssh/id_amazon.pem
+    ansible_user: ec2-user
