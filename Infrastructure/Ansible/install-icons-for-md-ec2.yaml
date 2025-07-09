@@ -1,6 +1,6 @@
 ---
 - name: Install dependencies
-  hosts: all
+  hosts: tag_Environment_dev
   become: yes # This line tells Ansible to use privilege escalation (sudo) for all tasks
   vars_files:
     - vars/variables.yaml  
@@ -34,7 +34,7 @@
         dest: /usr/local/lib/docker/cli-plugins/docker-compose
         mode: 755
 - name: Start docker containers
-  hosts: all
+  hosts: tag_Environment_dev
   vars_files:
     - vars/variables.yaml
   tasks:
@@ -53,3 +53,7 @@
     - name: Start docker compose
       community.docker.docker_compose_v2:
         project_src: /home/{{ ec2_user }}/icons-for-md/
+        files:
+          - compose.base.yaml
+          - compose.dev.yaml
+        state: present
