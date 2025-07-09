@@ -196,9 +196,10 @@ while true; do
 done
 
 while true; do
-  if SSH_PUB_KEY=$(whiptail --backtitle "Install - Ubuntu VM" --title "CLOUD-INIT SSH-KEY" --inputbox "\nPaste the Public SSH Key to use.\n" --cancel-button "Exit Script" 12 58 3>&1 1>&2 2>&3); then
+  if SSH_PUB_KEY=$(whiptail --backtitle "Install - Ubuntu VM" --title "CLOUD-INIT SSH-KEY" --inputbox "\nPaste the Public SSH Key to use. (leave empty for no SSH) \n" --cancel-button "Exit Script" 12 58 3>&1 1>&2 2>&3); then
     if [ -z $SSH_PUB_KEY ]; then
-      whiptail --backtitle "Install - Ubuntu VM" --msgbox "SSH Key cannot be empty" 8 58
+      ssh=0
+      break
     elif ! [[ "$SSH_PUB_KEY" =~ ^(ssh-rsa|ssh-dss|ecdsa-sha2-nistp256|ecdsa-sha2-nistp384|ecdsa-sha2-nistp521|ssh-ed25519)\s* ]]; then
       whiptail --backtitle "Install - Ubuntu VM" --msgbox "Invalid SSH key prefix. Must start with ssh-rsa, ssh-dss, ecdsa-sha2-nistpXXX, or ssh-ed25519." 8 58
     elif [ ${#SSH_PUB_KEY} -lt 60 ]; then
@@ -366,6 +367,12 @@ runcmd:
   - sed -i 's/IPV6=yes/IPV6=no/' /etc/default/ufw  # Create custom app folder for deployment
   - mkdir -m 750 /home/$OS_USER/apps && chown -R $OS_USER:$OS_USER /home/$OS_USER/apps
 EOF
+
+# SSH manage
+if [[ $ssh != 0 ]]; then
+  sed -i 's/#ssh_authorized_keys:/ssh_authorized_keys:/' $CLOUD_INNIT_ABSOLUTE
+  sed -i 's/#- "$SSH_PUB_KEY"/- "$SSH_PUB_KEY"/' $CLOUD_INNIT_ABSOLUTE
+fi
 
 # Docker install
 if [[ $installPrograms =~ "docker" ]]; then
