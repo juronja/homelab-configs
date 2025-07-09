@@ -347,7 +347,7 @@ users:
     lock_passwd: false # Lock the password to disable password login
     #sudo: "ALL=(ALL) NOPASSWD:ALL" # Grant sudo access without password prompt
     ssh_authorized_keys:
-      #- "SSH_PUB_KEY"
+      #- SSH_PUB_KEY
 package_update: true
 package_upgrade: true
 package_reboot_if_required: true
@@ -373,8 +373,7 @@ EOF
 
 # SSH manage
 if [[ $ssh != 0 ]]; then
-  sed -i 's/#ssh_authorized_keys:/ssh_authorized_keys:/' $CLOUD_INNIT_ABSOLUTE
-  sed -i "s/#- \"SSH_PUB_KEY\"/- \"$SSH_PUB_KEY\"/" $CLOUD_INNIT_ABSOLUTE
+  sed -i "s|#- SSH_PUB_KEY|- \"$SSH_PUB_KEY\"|" $CLOUD_INNIT_ABSOLUTE
 fi
 
 # Docker install
