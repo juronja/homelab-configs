@@ -27,7 +27,7 @@ module "vpc" {
   azs             = [data.aws_availability_zones.azs.names[0]]
   public_subnets  = var.public_cidr_block
 
-  enable_dns_hostnames = true
+  enable_dns_hostnames = true # Will add public dns hostnames
   enable_dns_support = true
 
   tags = {
@@ -104,7 +104,7 @@ module "ec2_instance" {
   
   ami                    = data.aws_ami.amazon-linux.id
   instance_type          = var.instance_type
-  count                  = 1
+  count                  = 3
   key_name               = aws_key_pair.ssh_key_amazon.key_name
   vpc_security_group_ids = [aws_security_group.security-group.id]
   subnet_id              = module.vpc.public_subnets[0]
