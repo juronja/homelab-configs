@@ -344,7 +344,7 @@ users:
     lock_passwd: false # Lock the password to disable password login
     #sudo: "ALL=(ALL) NOPASSWD:ALL" # Grant sudo access without password prompt
     #ssh_authorized_keys:
-      #- "$SSH_PUB_KEY"
+      #SSH_PUB_KEY
 package_update: true
 package_upgrade: true
 package_reboot_if_required: true
@@ -362,7 +362,7 @@ snap:
   #- snap install aws-cli --classic
 runcmd:
   # Configure automatic updates
-  - sed -i 's/\/\/Unattended-Upgrade::Automatic-Reboot-Time "02:00"/Unattended-Upgrade::Automatic-Reboot-Time "06:00"/' /etc/apt/apt.conf.d/50unattended-upgrades
+  - sed -i 's|//Unattended-Upgrade::Automatic-Reboot-Time "02:00"|Unattended-Upgrade::Automatic-Reboot-Time "06:00"|' /etc/apt/apt.conf.d/50unattended-upgrades
   # Disable IPv6
   - sed -i 's/IPV6=yes/IPV6=no/' /etc/default/ufw  # Create custom app folder for deployment
   - mkdir -m 750 /home/$OS_USER/apps && chown -R $OS_USER:$OS_USER /home/$OS_USER/apps
@@ -371,7 +371,7 @@ EOF
 # SSH manage
 if [[ $ssh != 0 ]]; then
   sed -i 's/#ssh_authorized_keys:/ssh_authorized_keys:/' $CLOUD_INNIT_ABSOLUTE
-  sed -i 's/#- "$SSH_PUB_KEY"/- "$SSH_PUB_KEY"/' $CLOUD_INNIT_ABSOLUTE
+  sed -i "s/#SSH_PUB_KEY/- \"$SSH_PUB_KEY\"/" $CLOUD_INNIT_ABSOLUTE
 fi
 
 # Docker install

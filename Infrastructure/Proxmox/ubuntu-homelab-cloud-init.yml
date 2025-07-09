@@ -11,7 +11,7 @@ users:
     lock_passwd: false # Lock the password to disable password login
     #sudo: "ALL=(ALL) NOPASSWD:ALL" # Grant sudo access without password prompt
     #ssh_authorized_keys:
-      #- "$SSH_PUB_KEY"
+      #SSH_PUB_KEY
 package_update: true
 package_upgrade: true
 package_reboot_if_required: true
