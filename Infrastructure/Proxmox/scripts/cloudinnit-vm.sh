@@ -427,7 +427,8 @@ if [[ "$installPrograms" =~ "ansible" ]]; then
   sed -i 's/#- snap install aws-cli --classic/- snap install aws-cli --classic/' $CLOUD_INNIT_ABSOLUTE
   cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
   # Install Ansible
-  - mkdir /home/$OS_USER/apps/ansible
+  - mkdir -m 750 /home/$OS_USER/apps/ansible
+  - chown -R $OS_USER:$OS_USER /home/$OS_USER/apps/ansible
   - pip install --break-system-packages boto3
 EOF
 fi
