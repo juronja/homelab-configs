@@ -1,8 +1,8 @@
 ubuntu:
   hosts:
-    IP
+    192.168.84.56    
   vars:
-    ansible_ssh_private_key_file: ~/.ssh/id_k8s
+    ansible_ssh_private_key_file: ~/.ssh/id_ubuntu-homelab
     ansible_user: juronja
 
 ec2:
