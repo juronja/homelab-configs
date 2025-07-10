@@ -58,8 +58,8 @@ resource "aws_vpc_security_group_ingress_rule" "allow-ssh" {
 resource "aws_vpc_security_group_ingress_rule" "allow-utm-builder" {
   security_group_id = aws_security_group.security-group.id
   cidr_ipv4 = "0.0.0.0/0"
-  from_port =7474
-  to_port = 7474
+  from_port = var.exposed_app_port
+  to_port = var.exposed_app_port
   ip_protocol = "tcp"
 }
 
@@ -74,9 +74,9 @@ resource "aws_vpc_security_group_egress_rule" "allow-all" {
 # #######################
 
 # Generate a key in AWS from your local pub key
-resource "aws_key_pair" "ssh_key_amazon" {
+resource "aws_key_pair" "ssh_key_amazon_public" {
   key_name = "id_amazon_terraform"
-  public_key = file(var.ssh_key_amazon)
+  public_key = file(var.ssh_key_amazon_public)
 }
 
 data "aws_ami" "amazon-linux" {
@@ -104,8 +104,8 @@ module "ec2_instance" {
   
   ami                    = data.aws_ami.amazon-linux.id
   instance_type          = var.instance_type
-  count                  = 3
-  key_name               = aws_key_pair.ssh_key_amazon.key_name
+  count                  = 2
+  key_name               = aws_key_pair.ssh_key_amazon_public.key_name
   vpc_security_group_ids = [aws_security_group.security-group.id]
   subnet_id              = module.vpc.public_subnets[0]
 
