@@ -431,7 +431,8 @@ if [[ "$installPrograms" =~ "ansible" ]]; then
   # Install Ansible
   - mkdir -m 750 /home/$OS_USER/apps/ansible
   - chown -R $OS_USER:$OS_USER /home/$OS_USER/apps/ansible
-  - pip install --break-system-packages boto3
+  - pip install boto3 --user --break-system-packages # Needed for aws module
+  - pip install openshift --user --break-system-packages # Needed for k8s module
 EOF
 fi
 
