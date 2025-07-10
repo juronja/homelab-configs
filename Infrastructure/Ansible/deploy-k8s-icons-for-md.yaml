@@ -1,0 +1,8 @@
+- name: Create a k8s namespace
+  hosts: localhost
+  kubernetes.core.k8s:
+    name: testing
+    api_version: v1
+    kind: Namespace
+    state: present
+    kubeconfig: ~/.kube/config

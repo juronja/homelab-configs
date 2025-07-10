@@ -1,6 +1,6 @@
 ---
 - name: Install dependencies
-  hosts: tag_Environment_dev
+  hosts: tag_Environment_prod
   become: yes # This line tells Ansible to use privilege escalation (sudo) for all tasks
   vars_files:
     - vars/variables.yaml  
@@ -15,9 +15,9 @@
       systemd:
         name: docker
         state: started
-    - name: Add {{ ec2_user }} to docker group
+    - name: Add user to docker group
       user:
-        name: "{{ ec2_user }}"
+        name: "{{ec2_user}}"
         groups: docker
         append: true
       register: user
@@ -34,26 +34,26 @@
         dest: /usr/local/lib/docker/cli-plugins/docker-compose
         mode: 755
 - name: Start docker containers
-  hosts: tag_Environment_dev
+  hosts: tag_Environment_prod
   vars_files:
     - vars/variables.yaml
   tasks:
     - name: Create directory for project
       file:
-        path: /home/{{ ec2_user }}/icons-for-md/
+        path: "{{location}}/{{project}}/"
         state: directory
     - name: Fetch docker compose base
       get_url:
-        url: https://raw.githubusercontent.com/juronja/icons-for-md/refs/heads/main/compose.base.yaml
-        dest: /home/{{ ec2_user }}/icons-for-md/
-    - name: Fetch docker compose dev
+        url: https://raw.githubusercontent.com/juronja/{{project}}/refs/heads/main/compose.base.yaml
+        dest: "{{location}}/{{project}}/"
+    - name: Fetch docker compose prod
       get_url:
-        url: https://raw.githubusercontent.com/juronja/icons-for-md/refs/heads/main/compose.dev.yaml
-        dest: /home/{{ ec2_user }}/icons-for-md/
+        url: https://raw.githubusercontent.com/juronja/{{project}}/refs/heads/main/compose.prod.yaml
+        dest: "{{location}}/{{project}}/"
     - name: Start docker compose
       community.docker.docker_compose_v2:
-        project_src: /home/{{ ec2_user }}/icons-for-md/
+        project_src: "{{location}}/{{project}}/"
         files:
           - compose.base.yaml
-          - compose.dev.yaml
+          - compose.prod.yaml
         state: present

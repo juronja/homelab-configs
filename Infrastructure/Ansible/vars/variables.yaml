@@ -1,3 +1,5 @@
-location: ~/apps/mynodeapp/
-nexus_latest_version: 3.81.1-01
+project: icons-for-md # When using docker, must be same as the github repo name
+location: ~/apps/
 ec2_user: ec2-user
+
+nexus_latest_version: 3.81.1-01
