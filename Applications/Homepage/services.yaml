@@ -5,43 +5,40 @@
     - Proxmox 4750g:
         icon: proxmox.svg
         href: https://pve-4750g.lan:8006
-        ping: 192.168.84.3
+        ping: pve-4750g.lan
         #description: pve-critical
         #widget:
         #  type: proxmox
         #  url: https://pve.lan:8006
         #  username: {{HOMEPAGE_VAR_PROXMOX_USER}}
         #  password: {{HOMEPAGE_VAR_PROXMOX_PASS}}
-    - Truenas Scale:
+    - Truenas:
         icon: truenas.svg
         href: http://nas.lan
-        ping: 192.168.84.6
-        #description: pve1
+        ping: nas.lan
     - Portainer Homelab:
         icon: portainer.svg
         href: https://homelab.lan:9443
-        ping: 192.168.84.20
-        # description: homelab.lan
+        ping: homelab.lan
 
 - Networking:
     - Gateway Router:
         icon: openwrt.svg
-        href: http://router.lan
-        #description: OpenWRT OS
+        href: http://gateway.lan
+    - Unifi Network Server:
+        icon: unifi.svg
+        href: https://unifi.lan:8443
+        description: pernica
     - Adguard Home:
         icon: adguard-home.svg
         href: http://adguard.lan
     - WGDashboard:
         icon: wireguard.svg
         href: http://wireguard.lan:10086
-        ping: 192.168.84.252
+        ping: wireguard.lan
     - Unifi Site Manager:
         icon: unifi.svg
         href: https://unifi.ui.com
-    - Unifi Network Server:
-        icon: unifi.svg
-        href: https://unifi.lan:8443
-        description: pernica
 
 - Tools:
     - Home Assistant:
@@ -55,7 +52,7 @@
     - Nexus:
         icon: https://raw.githubusercontent.com/juronja/homelab-configs/main/Applications/Homepage/icons/sonatype-nexus.png
         href: http://homelab.lan:8081
-        ping: 192.168.84.20
+        ping: homelab.lan
     - Jenkins:
         icon: jenkins.svg
         href: https://jenkins.homelabtales.com
@@ -63,7 +60,7 @@
     - Open WebUI:
         icon: open-webui.svg
         href: http://openwebui.lan:8080
-        ping: 192.168.84.10
+        ping: openwebui.lan
 
 - Media:
     - Audiobookshelf:
@@ -73,18 +70,24 @@
     - Readarr:
         icon: readarr.svg
         href: http://nas.lan:30045
+        ping: nas.lan
     - qBittorrent:
         icon: qbittorrent.svg
         href: http://nas.lan:30024
+        ping: nas.lan
     - Prowlarr:
         icon: prowlarr.svg
         href: http://nas.lan:30050
+        ping: nas.lan
     - Radarr:
         icon: radarr.svg
         href: http://nas.lan:30025
+        ping: nas.lan
     - Sonarr:
         icon: sonarr.svg
         href: http://nas.lan:30113
+        ping: nas.lan
     - Lidarr:
         icon: lidarr.svg
         href: http://nas.lan:30071
+        ping: nas.lan
