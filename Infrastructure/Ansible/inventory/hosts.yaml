@@ -1,6 +1,6 @@
 ubuntu:
   hosts:
-    192.168.84.56    
+    ansible.lan   
   vars:
     ansible_ssh_private_key_file: ~/.ssh/id_ubuntu-homelab
     ansible_user: juronja
