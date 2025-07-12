@@ -1,8 +1,22 @@
-- name: Create a k8s namespace
-  hosts: localhost
-  kubernetes.core.k8s:
-    name: testing
-    api_version: v1
-    kind: Namespace
-    state: present
-    kubeconfig: ~/.kube/config
+- name: Deploy app in namespace
+  hosts: ubuntu
+  vars_files:
+    - vars/variables.yaml  
+  tasks:
+    - name: Create k8s namespace
+      kubernetes.core.k8s:
+        name: testing
+        api_version: v1
+        kind: Namespace
+        state: present
+        kubeconfig: ~/.kube/config
+    - name: Fetch deployment yaml
+      get_url:
+        url: https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/Infrastructure/Terraform/eks/simple-nginx.yaml
+        dest: "{{location}}/ansible/"
+    - name: Deploy nginx app
+      kubernetes.core.k8s:
+        src: "{{location}}/ansible/simple-nginx.yaml"
+        state: present
+        kubeconfig: ~/.kube/config
+        namespace: testing
