@@ -7,6 +7,10 @@ Install default plugins. The logic is that you install the plugin first and **th
 ### Useful plugins
 
 - NodeJS Plugin
+- Version Number Plugin?
+- Multibranch Scan Webhook Trigger
+- SSH Agent plugin
+- SSH steps plugin
 
 
 ```shell
