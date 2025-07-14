@@ -27,7 +27,6 @@
       file:
         path: /usr/local/lib/docker/cli-plugins/
         state: directory
-
     - name: Install docker compose
       get_url:
         url: https://github.com/docker/compose/releases/latest/download/docker-compose-linux-{{lookup('pipe', 'uname -m')}}
