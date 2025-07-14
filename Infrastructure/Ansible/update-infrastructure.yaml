@@ -1,0 +1,11 @@
+---
+- name: Update VMs
+  hosts: ubuntu
+  # become: yes # This line tells Ansible to use privilege escalation (sudo) for all tasks
+  tasks:
+  - name: apt update and upgrade
+    apt:
+      force_apt_get: true
+      update_cache: true
+      upgrade: yes
+      cache_valid_time: 3600

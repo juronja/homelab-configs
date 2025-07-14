@@ -1,0 +1,8 @@
+    - name: Create nexus group
+      group:
+        name: nexus
+        state: present
+    - name: Create nexus user and add to group
+      user:
+        name: nexus
+        group: nexus
