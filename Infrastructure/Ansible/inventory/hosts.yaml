@@ -1,13 +1,20 @@
 ubuntu:
   hosts:
-    ansible.lan
+    ansible:
+      ansible_host: ansible.lan
+      ansible_ssh_private_key_file: ~/.ssh/id_ansible
+    homelab:
+      ansible_host: homelab.lan
+      ansible_ssh_private_key_file: ~/.ssh/id_ubuntu-homelab
+    hosting-prod:
+      ansible_host: hosting-prod.lan
+      ansible_ssh_private_key_file: ~/.ssh/id_hosting-prod
   vars:
-    ansible_ssh_private_key_file: ~/.ssh/id_ubuntu-homelab
     ansible_user: juronja
-
-ec2:
+proxmox:
   hosts:
-    3.121.78.3
+    pve-4750g.lan
   vars:
-    ansible_ssh_private_key_file: ~/.ssh/id_amazon.pem
-    ansible_user: ec2-user
+    ansible_ssh_private_key_file: ~/.ssh/id_proxmoxes
+    ansible_user: root
+
