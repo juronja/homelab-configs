@@ -12,18 +12,12 @@ NODE=$(hostname)
 
 # Colors
 YW=$(echo "\033[33m")
-YWB=$(echo "\033[93m")
 BL=$(echo "\033[36m")
 RD=$(echo "\033[01;31m")
-BGN=$(echo "\033[4;92m")
 GN=$(echo "\033[1;92m")
-DGN=$(echo "\033[32m")
 
 # Formatting
 CL=$(echo "\033[m")
-BOLD=$(echo "\033[1m")
-HOLD=" "
-TAB="  "
 
 # FUNCTIONS
 get_latest_minecraft_release() {
