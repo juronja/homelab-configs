@@ -1,7 +1,12 @@
 variable "project" {
   description = "Project name"
   type        = string
-  default     = "test"
+  default     = "prometheus"
+}
+variable "aws_region" {
+  description = "AWS region"
+  type        = string
+  default     = "eu-central-1"
 }
 variable "vpc_cidr_block" {
   description = "VPC cidr block"
