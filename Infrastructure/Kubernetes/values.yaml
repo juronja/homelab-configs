@@ -1,0 +1,6 @@
+architecture: replicaset
+auth:
+    rootPassword: passs
+replicaCount: 3
+persistence:
+    storageClass: "do-block-storage"

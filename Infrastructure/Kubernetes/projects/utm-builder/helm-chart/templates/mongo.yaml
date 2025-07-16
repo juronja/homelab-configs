@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.databaseService.name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app.kubernetes.io/name: {{ .Values.databaseService.name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ .Values.databaseService.name }}
+  template:
+    metadata:
+       labels:
+        app.kubernetes.io/name: {{ .Values.databaseService.name }}
+    spec:
+      containers:
+      - name: {{ .Values.databaseService.name }}
+        image: mongo
+        ports:
+        - containerPort: {{ .Values.databaseService.containerPort }}
+        env:
+        {{- toYaml .Values.databaseService.env | nindent 8 }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.databaseService.name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  selector:
+    app.kubernetes.io/name: {{ .Values.databaseService.name }}
+  ports:
+    - name: mongodb
+      protocol: TCP
+      port: {{ .Values.databaseService.servicePort }}
+      targetPort: {{ .Values.databaseService.containerPort }}

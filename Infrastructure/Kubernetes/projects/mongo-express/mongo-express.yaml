@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo-express
+  labels:
+    app.kubernetes.io/name: mongo-express
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: mongo-express
+  template:
+    metadata:
+       labels:
+        app.kubernetes.io/name: mongo-express
+    spec:
+      containers:
+      - name: mongo-express
+        image: mongo-express
+        ports:
+        - containerPort: 8081
+        env:
+        - name: ME_CONFIG_MONGODB_ADMINUSERNAME
+          value: root
+        - name: ME_CONFIG_MONGODB_SERVER
+          value: my-mongodb-0.my-mongodb-headless
+        - name: ME_CONFIG_MONGODB_ADMINPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: my-mongodb
+              key: mongodb-root-password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-express-service
+spec:
+  selector:
+    app.kubernetes.io/name: mongo-express
+  # type: LoadBalancer #this type makes the service external
+  ports:
+    - protocol: TCP
+      port: 8081
+      targetPort: 8081
+      # nodePort: 30080
