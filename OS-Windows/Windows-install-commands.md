@@ -51,6 +51,7 @@ winget install -e --id OpenJS.NodeJS.LTS # Have to manually upgrade with "winget
 winget install -e --id Python.Python.3.14 
 winget install -e --id Amazon.AWSCLI
 winget install -e --id Kubernetes.kubectl
+winget install -e --id Helm.Helm
 winget install -e --id Hashicorp.Terraform
 winget install -e --id Docker.DockerDesktop
 ```
