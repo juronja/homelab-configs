@@ -1,4 +1,4 @@
-replicaCount: 2
+replicaCount: 1
 
 images:
   repository: us-central1-docker.pkg.dev/google-samples/microservices-demo
