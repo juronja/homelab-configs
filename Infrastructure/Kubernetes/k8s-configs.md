@@ -104,7 +104,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: ingress.repina.eu
+  - host: ingress.homelabtales.com
     http:
       paths:
       - path: /
