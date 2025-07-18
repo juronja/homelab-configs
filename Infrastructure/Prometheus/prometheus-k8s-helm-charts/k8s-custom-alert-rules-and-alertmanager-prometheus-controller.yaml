@@ -53,11 +53,11 @@ spec:
   receivers:
   - name: "email"
     emailConfigs:
-    - to: "juronja@gmail.com"
-      from: "juronja@gmail.com"
+    - to: "email"
+      from: "email"
       smarthost: 'smtp.gmail.com:587'
-      authUsername: "juronja@gmail.com"
-      authIdentity: "juronja@gmail.com"
+      authUsername: "email"
+      authIdentity: "email"
       authPassword:
         name: gmail-auth
         key: password
