@@ -1,0 +1,11 @@
+# Networking
+wifi:
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: ${friendly_name}
+    password: ${ap_pass}
+  # custom local domain for openwrt
+  domain: .lan
+
+# This is needed to access the settings via web IP
+web_server:
