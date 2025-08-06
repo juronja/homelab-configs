@@ -24,9 +24,11 @@ Official documentation: https://openwrt.org/docs/guide-user/network/openwrt_as_r
 
 ```shell
 # uci show dhcp.lan
-uci set network.lan.proto="static"
-uci set network.lan.ipaddr="192.168.84.1"
-uci set network.lan.netmask="255.255.255.0"
+uci set network.lan.proto='static'
+uci set network.lan.ipaddr='192.168.84.1'
+uci set network.lan.netmask='255.255.255.0'
+uci add_list network.lan.dns='1.1.1.2'
+uci add_list network.lan.dns='9.9.9.9'
 uci set dhcp.lan=dhcp
 uci set dhcp.lan.interface='lan'
 uci set dhcp.lan.start='50'
