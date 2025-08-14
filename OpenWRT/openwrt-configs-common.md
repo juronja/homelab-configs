@@ -18,14 +18,11 @@ Make a SSH keypair for easy management.
 ssh-keygen -t ed25519 -C "gateway"
 
 ```
-
 When asked rename to: `C:\Users\Jure/.ssh/id_gateway`
 
-upload:
+Copy paste key
 
-```shell
-scp $env:USERPROFILE/.ssh/id_gateway.pub root@192.168.X.X:/etc/dropbear/authorized_keys
-```
+System > Administration > SSH-Keys
 
 #### Disable password authentication (OpenWRT CLI)
 
@@ -36,6 +33,10 @@ uci commit
 service dropbear restart
 
 ```
+
+### Delete WAN6
+
+If you don't need ipv6 connectivity you can delete `wan6` interface.
 
 ### Common router software
 
@@ -50,17 +51,6 @@ opkg install luci-app-wol
 
 ```
 
-## Add static leases
-
-VM homelab example
-```shell
-uci add dhcp host
-uci set dhcp.@host[-1].name='lt-jure'
-uci add_list dhcp.@host[-1].mac='MACADRESS'
-uci set dhcp.@host[-1].ip='RESERVEIPADDRESS'
-uci commit
-
-```
 
 ## Notes
 

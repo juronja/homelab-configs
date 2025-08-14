@@ -23,7 +23,7 @@ Official documentation: https://openwrt.org/docs/guide-user/network/wifi/dumbap
 ### Set dynamic IP, disable wan and disable services to safe resources
 
 If you need static IP, better reserve/lease in router.
-You can also delete the WAN and WAN6 interfaces in UI.
+<!-- You can also delete the WAN and WAN6 interfaces in UI. -->
 
 ```shell
 uci set network.lan.proto="dhcp"
@@ -42,7 +42,22 @@ uci commit
 reboot
 ```
 
-After reboot reserve a static IP in gateway router and go to that IP to manage further.
+After reboot lookup for the IP in the gateway router and go to that IP to manage further.
+
+#### Disable Daemons Persistently on AP mode
+
+Add bellow `for` loop to /etc/rc.local. You can access this also in the UI. System > Startup > Local Startup
+
+```shell
+# these services do not run on dumb APs
+for i in firewall dnsmasq odhcpd; do
+  if /etc/init.d/"$i" enabled; then
+    /etc/init.d/"$i" disable
+    /etc/init.d/"$i" stop
+  fi
+done
+
+```
 
 ### Enable Wifi band 2G/802.11b/g/n
 
@@ -72,19 +87,4 @@ uci set wireless.default_radio0.ssid='rw_lan' # Enter SSID
 # uci set wireless.default_radio0.bss_transition='1'
 uci commit
 wifi up #Turns Wifi ON
-```
-
-#### Disable Daemons Persistently on AP mode
-
-Add bellow `for` loop to /etc/rc.local. You can access this also in the UI. System > Startup > Local Startup
-
-```shell
-# these services do not run on dumb APs
-for i in firewall dnsmasq odhcpd; do
-  if /etc/init.d/"$i" enabled; then
-    /etc/init.d/"$i" disable
-    /etc/init.d/"$i" stop
-  fi
-done
-
 ```

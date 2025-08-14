@@ -20,7 +20,7 @@ uci set system.@system[0].hostname=GW-TP-Link-Archer-C7v4 #Change te device name
 
 Official documentation: https://openwrt.org/docs/guide-user/network/openwrt_as_routerdevice
 
-#### Static IP settings, DHCP, Firewall syn-flood
+#### Static IP settings, DHCP, Firewall syn-flood, disable wan ipv6
 
 ```shell
 # uci show dhcp.lan
@@ -35,6 +35,8 @@ uci set dhcp.lan.start='50'
 uci set dhcp.lan.limit='150'
 uci set dhcp.lan.leasetime='12h'
 uci set dhcp.lan.dhcp_option='6,192.168.84.253' #Adguard server address
+uci set dhcp.lan.ra='disable'
+uci set dhcp.lan.dhcpv6='disable'
 uci set dhcp.lan.ndp='disable'
 uci set dhcp.wan.ra='disable'
 uci set dhcp.wan.dhcpv6='disable'
@@ -143,16 +145,6 @@ config redirect
         list proto 'tcp'
         option dest_port '50413'
 
-config redirect
-        option dest 'lan'
-        option target 'DNAT'
-        option name 'Storj'
-        option src 'wan'
-        option src_dport '28967'
-        option dest_ip '192.168.84.x' # Adjust IP
-        list proto 'tcp'
-        option dest_port '28967'
-
 ```
 Restart firewall for effect
 ```shell
@@ -164,13 +156,18 @@ service firewall restart
 Cloudflare IPs: https://www.cloudflare.com/en-in/ips/
 
 
-Download the script and add to cron:
+Download the script and run:
 
 ```shell
 wget -P /root https://raw.githubusercontent.com/juronja/homelab-configs/main/OpenWRT/scripts/cloudflare-ips-set.sh && chmod +x /root/cloudflare-ips-set.sh
+ash /root/cloudflare-ips-set.sh
+```
 
-echo "0 3 * * 1 /root/cloudflare-ips-set.sh" | tee -a "/var/spool/cron/crontabs/root"
+add to cron:
+System > Scheduled Tasks
 
+```shell
+0 3 * * 1 /root/cloudflare-ips-set.sh
 ```
 
 Add and load ipsets from file that cron generates.
@@ -248,12 +245,12 @@ uci set dhcp.iot.interface='iot'
 uci set dhcp.iot.start='20'
 uci set dhcp.iot.limit='200'
 uci set dhcp.iot.leasetime='12h'
-uci add_list dhcp.iot.dhcp_option='6,9.9.9.11,1.1.1.2' #Public DNS
+uci add_list dhcp.iot.dhcp_option='6,1.1.1.2,9.9.9.9' #Public DNS
 uci commit
 # Add firewall entry
 uci add firewall zone
 uci set firewall.@zone[-1].name='iot'
-uci set firewall.@zone[-1].input='REJECT'
+uci set firewall.@zone[-1].input='ACCEPT'
 uci set firewall.@zone[-1].output='ACCEPT'
 uci set firewall.@zone[-1].forward='ACCEPT'
 uci commit
@@ -264,31 +261,20 @@ uci set firewall.@forwarding[-1].src='iot'
 uci set firewall.@forwarding[-1].dest='wan'
 uci commit
 # Add a firewall traffic rule for network so they can use DNS and DHCP
-uci add firewall rule
-uci set firewall.@rule[-1].name='iot DHCP and DNS'
-uci set firewall.@rule[-1].src='iot'
-uci set firewall.@rule[-1].dest_port='53 67 68'
-uci set firewall.@rule[-1].target='ACCEPT'
-uci commit
+# uci add firewall rule
+# uci set firewall.@rule[-1].name='iot DHCP and DNS'
+# uci set firewall.@rule[-1].src='iot'
+# uci set firewall.@rule[-1].dest_port='53 67 68'
+# uci set firewall.@rule[-1].target='ACCEPT'
+# uci commit
 # also allow tv to plex
 uci add firewall rule
-uci set firewall.@rule[-1].name='allow tv to plex'
+uci set firewall.@rule[-1].name='allow HA to TV'
 uci add_list firewall.@rule[-1].proto='tcp'
 uci set firewall.@rule[-1].src='iot'
 uci add_list firewall.@rule[-1].src_ip='192.168.3.X'
 uci set firewall.@rule[-1].dest='lan'
 uci add_list firewall.@rule[-1].dest_ip='192.168.84.X'
-uci set firewall.@rule[-1].dest_port='32400'
-uci set firewall.@rule[-1].target='ACCEPT'
-uci commit
-# also allow guest devices to plex
-uci add firewall rule
-uci set firewall.@rule[-1].name='allow guests to plex'
-uci add_list firewall.@rule[-1].proto='tcp'
-uci set firewall.@rule[-1].src='guest'
-uci set firewall.@rule[-1].dest='lan'
-uci add_list firewall.@rule[-1].dest_ip='192.168.84.X'
-uci set firewall.@rule[-1].dest_port='32400'
 uci set firewall.@rule[-1].target='ACCEPT'
 uci commit
 # Enable Wifi band 2G/802.11b/g/n
@@ -338,14 +324,14 @@ uci set dhcp.guest.interface='guest'
 uci set dhcp.guest.start='10'
 uci set dhcp.guest.limit='200'
 uci set dhcp.guest.leasetime='12h'
-uci add_list dhcp.guest.dhcp_option='6,9.9.9.11,1.1.1.2' #Public DNS
+uci add_list dhcp.guest.dhcp_option='6,1.1.1.2,9.9.9.9' #Public DNS
 uci commit
 # Add firewall entry
 uci add firewall zone
 uci set firewall.@zone[-1].name='guest'
 uci set firewall.@zone[-1].input='REJECT'
 uci set firewall.@zone[-1].output='ACCEPT'
-uci set firewall.@zone[-1].forward='REJECT'
+uci set firewall.@zone[-1].forward='ACCEPT'
 uci commit
 # Connect firewall and create forwarding rule
 uci add_list firewall.@zone[-1].network='guest'
@@ -353,11 +339,21 @@ uci add firewall forwarding
 uci set firewall.@forwarding[-1].src='guest'
 uci set firewall.@forwarding[-1].dest='wan'
 uci commit
-# Add a firewall traffic rule for network so they can use DNS and DHCP
+# Allow guests to access DNS and DHCP
 uci add firewall rule
 uci set firewall.@rule[-1].name='guest DHCP and DNS'
 uci set firewall.@rule[-1].src='guest'
 uci set firewall.@rule[-1].dest_port='53 67 68'
+uci set firewall.@rule[-1].target='ACCEPT'
+uci commit
+# also allow guest devices to plex
+uci add firewall rule
+uci set firewall.@rule[-1].name='allow guests to plex'
+uci add_list firewall.@rule[-1].proto='tcp'
+uci set firewall.@rule[-1].src='guest'
+uci set firewall.@rule[-1].dest='lan'
+uci add_list firewall.@rule[-1].dest_ip='192.168.84.X'
+uci set firewall.@rule[-1].dest_port='32400'
 uci set firewall.@rule[-1].target='ACCEPT'
 uci commit
 # Enable Wifi band 2G/802.11b/g/n
@@ -380,5 +376,18 @@ uci set wireless.wifinet3.key='PASSWORD' # Enter password
 uci commit
 service network restart
 ```
+
+## Add static leases
+
+VM homelab example
+```shell
+uci add dhcp host
+uci set dhcp.@host[-1].name='lt-jure'
+uci add_list dhcp.@host[-1].mac='MACADRESS'
+uci set dhcp.@host[-1].ip='RESERVEIPADDRESS'
+uci commit
+
+```
+
 
 
