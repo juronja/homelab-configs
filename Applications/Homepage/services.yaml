@@ -2,6 +2,10 @@
 # Icons library: https://github.com/homarr-labs/dashboard-icons
 
 - Infrastructure:
+    - Proxmox 9700:
+        icon: proxmox.svg
+        href: https://pve-9700.lan:8006
+        ping: pve-9700.lan
     - Proxmox 4750g:
         icon: proxmox.svg
         href: https://pve-4750g.lan:8006
@@ -16,7 +20,7 @@
         icon: truenas.svg
         href: http://nas.lan
         ping: nas.lan
-    - Portainer Homelab:
+    - Portainer | Homelab:
         icon: portainer.svg
         href: https://homelab.lan:9443
         ping: homelab.lan
