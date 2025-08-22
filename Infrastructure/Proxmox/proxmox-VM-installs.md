@@ -23,6 +23,9 @@ Copy this line in the Proxmox Shell.
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/Infrastructure/Proxmox/scripts/truenas-vm.sh)"
 ```
 
+After installed, import PCI Device to be able to access the disks.
+
+
 ### Attach Motherboard Hard disks manually
 
 Find out the unique ID for hard disks. Filtering results having "ata-"" and "nvme-"" but excluding results containing "part".
