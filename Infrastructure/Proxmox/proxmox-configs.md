@@ -67,14 +67,14 @@ You can use this to migrate VMs from one machine to another.
 
 1. Create a backup with Mode `Stop`. Other settings can be default.
 2. By default it will save backups to `local` storage and to `/var/lib/vz/dump` folder.
-3. Copy backup folder to another machine via SCP: `scp -r /var/lib/vz/dump root@IP:/var/lib/vz/`
+3. Copy backup folder to another machine via SCP: `scp -r /var/lib/vz/dump root@pve-9700.lan:/var/lib/vz/`
 4. Restore VM from backups
 5. Check if Firewall needs to be set (this does not get copied)
 
 ## VM Boot order
 
 Order 1: adguard, (startup delay: 20s)
-Order 2: truenas-scale (startup delay: 120s), haos, hosting-prod, nginxproxymanager
+Order 2: truenas-scale (startup delay: 120s), haos, hosting-prod, caddy
 Order 3: Any
 
 
