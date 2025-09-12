@@ -36,9 +36,8 @@ When installing a LXC container in proxmox you can mount a network Samba share d
 2. Mount network drive with nas/share username and the right IP
 
 ```bash
-apt update && apt install cifs-utils
-mkdir /mnt/media
-mount -t cifs //192.168.x.x/media /mnt/media -o username=NAS_USERNAME,password=NAS_PASSWORD
+apt update && apt install cifs-utils && mkdir /mnt/media
+mount -t cifs //nas.lan/media/Plex /mnt/media -o username=NAS_USERNAME,password=NAS_PASSWORD
 
 ```
 
@@ -48,7 +47,6 @@ mount -t cifs //192.168.x.x/media /mnt/media -o username=NAS_USERNAME,password=N
 crontab -e
 
 # Add this line:
-@reboot mount -t cifs //192.168.x.x/media /mnt/media -o username=NAS_USERNAME,password=NAS_PASSWORD
+@reboot mount -t cifs //nas.lan/media/Plex /mnt/media -o username=NAS_USERNAME,password=NAS_PASSWORD
 
 ```
-
