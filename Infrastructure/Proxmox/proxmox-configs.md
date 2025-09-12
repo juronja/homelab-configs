@@ -124,7 +124,7 @@ killall pmxcfs
 systemctl start pve-cluster
 ```
 
-### Intel e1000e NIC Offloading Fix for node i7-9700
+### Intel e1000e NIC Offloading Fix for node pve-9700
 
 Edit the `/etc/network/interfaces` file and ad the `post-up` line.
 
