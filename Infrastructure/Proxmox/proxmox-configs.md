@@ -54,7 +54,8 @@ pvesh set /nodes/$NODE/lxc/{{LXCID}}/firewall/options --enable 1
 
 ## Enable VLANs on nodes vmbr0
 
-Go to node System > Network > vmbr0 and tick the VLAN aware option, also limit VLAN IDs in advanced options.
+Go to node System > Network > vmbr0 and tick the VLAN aware option, also limit VLAN IDs in advanced options (2-4).
+
 
 ## Drive share for Truenas Rsync
 
@@ -121,4 +122,19 @@ rm -r /etc/corosync/*
 # You can now start the file system again as a normal service:
 killall pmxcfs
 systemctl start pve-cluster
+```
+
+### Intel e1000e NIC Offloading Fix for node i7-9700
+
+Edit the `/etc/network/interfaces` file and ad the `post-up` line.
+
+```shell
+iface eno1 inet manual
+post-up ethtool -K eno1 gso off tso off rxvlan off txvlan off gro off tx off rx off sg off
+```
+
+Alternatively you can use the community script:
+
+```shell
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/tools/pve/nic-offloading-fix.sh)"
 ```
