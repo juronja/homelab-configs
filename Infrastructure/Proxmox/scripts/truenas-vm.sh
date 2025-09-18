@@ -59,8 +59,8 @@ else
 fi
 
 if RAM_COUNT=$(whiptail --backtitle "Install - TrueNAS SCALE VM" --title "RAM COUNT" --radiolist "\nAllocate amount of RAM. (Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 3 \
-    "8" "GB" OFF \
-    "16" "GB" ON \
+    "16" "GB" OFF \
+    "24" "GB" ON \
     "32" "GB" OFF \
     3>&1 1>&2 2>&3); then
         echo -e "Allocated RAM: $RAM_COUNT GB"
