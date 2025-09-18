@@ -294,9 +294,9 @@ fi
 RAM=$(($RAM_COUNT * 1024))
 IMG_LOCATION="/var/lib/vz/template/iso/"
 CPU="x86-64-v3"
-CLOUD_INNIT_ABSOLUTE="/var/lib/vz/snippets/ubuntu-homelab-cloud-init.yml"
-CLOUD_INNIT_LOCAL="snippets/ubuntu-homelab-cloud-init.yml"
-PortainerComposeUrl="https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/Applications/Portainer/compose.yaml"
+CLOUD_INNIT_ABSOLUTE="/var/lib/vz/snippets/ubuntu-$VM_NAME-cloud-init.yml"
+CLOUD_INNIT_LOCAL="snippets/ubuntu-$VM_NAME-cloud-init.yml"
+PortainerComposeUrl="https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/Infrastructure/Portainer/Enterprise/compose.yaml"
 JenkinsDockerfileUrl="https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/CI-CD/Jenkins/Dockerfile"
 JenkinsComposeUrl="https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/CI-CD/Jenkins/compose.yaml"
 
