@@ -1,4 +1,4 @@
-name: monitoring #will be used for network auto naming and image names
+name: monitoring_homelab #will be used for network auto naming and image names
 services:
   prometheus:
     image: prom/prometheus:latest
