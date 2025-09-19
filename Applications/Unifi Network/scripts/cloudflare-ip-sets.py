@@ -3,7 +3,7 @@ import os
 from dotenv import load_dotenv
 from cloudflare import Cloudflare
 
-load_dotenv()
+load_dotenv() #get cf api data from .env
 
 client = Cloudflare(
     api_email=os.environ.get("CF_API_EMAIL"),
