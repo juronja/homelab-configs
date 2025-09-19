@@ -5,7 +5,7 @@ services:
     container_name: prometheus
     restart: unless-stopped
     volumes:
-      - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus-data:/prometheus #Volume mapping for persistency
     ports:
       - 9090:9090
