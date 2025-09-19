@@ -1,0 +1,26 @@
+name: monitoring #will be used for network auto naming and image names
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    restart: unless-stopped
+    volumes:
+      - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-data:/prometheus #Volume mapping for persistency
+    ports:
+      - 9090:9090
+    # command:
+    #   - --config.file=/etc/prometheus/prometheus.yaml
+      # - --storage.tsdb.retention.time=7d
+      # - --storage.tsdb.retention.size=2GB
+  grafana:
+    image: grafana/grafana:main
+    container_name: grafana
+    restart: unless-stopped
+    volumes:
+      - grafana-data:/var/lib/grafana #Volume mapping for persistency
+    ports:
+      - 9091:3000
+volumes:
+  prometheus-data: # It will prepend the project name
+  grafana-data: # It will prepend the project name
