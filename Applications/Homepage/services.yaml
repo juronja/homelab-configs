@@ -49,10 +49,10 @@
         icon: home-assistant.svg
         href: https://ha.homelabtales.com
         ping: https://ha.homelabtales.com
-    - Frigate NVR:
-        icon: frigate.svg
-        href: http://frigate.lan:5000
-        ping: 192.168.84.13
+    # - Frigate NVR:
+    #     icon: frigate.svg
+    #     href: http://frigate.lan:5000
+    #     ping: frigate.lan
     - Nexus:
         icon: https://raw.githubusercontent.com/juronja/homelab-configs/main/Applications/Homepage/icons/sonatype-nexus.png
         href: http://homelab.lan:8081
@@ -65,6 +65,10 @@
         icon: open-webui.svg
         href: http://openwebui.lan:8080
         ping: openwebui.lan
+    - Prometheus:
+        icon: prometheus.svg
+        href: http://homelab.lan:9090
+        ping: homelab.lan
 
 - Media:
     - Audiobookshelf:
