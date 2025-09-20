@@ -263,8 +263,9 @@ else
 fi
 
 # Install additional programs
-if installPrograms=$(whiptail --backtitle "Install - Ubuntu VM" --title "INSTALL PROGRAMS" --checklist "\nInstall these programs? (Spacebar to select)" 12 58 3 \
+if installPrograms=$(whiptail --backtitle "Install - Ubuntu VM" --title "INSTALL PROGRAMS" --checklist "\nInstall these programs? (Spacebar to select)" 12 58 4 \
   "docker" "" OFF \
+  "prometheus-node-exporter" "" OFF \
   "ansible" "" OFF \
   "minecraft" "" OFF \
   3>&1 1>&2 2>&3); then
@@ -352,6 +353,7 @@ apt:
 packages:
   - qemu-guest-agent
   - python3-pip
+  #- prometheus-node-exporter
   #- ansible
   #- openjdk-21-jre-headless
 snap:
@@ -362,7 +364,8 @@ runcmd:
   # Configure automatic updates
   - sed -i 's|//Unattended-Upgrade::Automatic-Reboot-Time "02:00"|Unattended-Upgrade::Automatic-Reboot-Time "06:00"|' /etc/apt/apt.conf.d/50unattended-upgrades
   # Disable IPv6
-  - sed -i 's/IPV6=yes/IPV6=no/' /etc/default/ufw  # Create custom app folder for deployment
+  - sed -i 's/IPV6=yes/IPV6=no/' /etc/default/ufw
+  # Create custom app folder for deployments
   - mkdir -m 750 /home/$OS_USER/apps && chown -R $OS_USER:$OS_USER /home/$OS_USER/apps
 EOF
 
@@ -417,6 +420,12 @@ if [[ "$installPrograms" =~ "docker" ]] && [[ "$installContainers" =~ "jenkins" 
   - docker compose up -d
 EOF
 fi
+
+# Install Prometheus Node Exporter
+if [[ "$installPrograms" =~ "prometheus-node-exporter" ]]; then
+  sed -i 's/#- prometheus-node-exporter/- prometheus-node-exporter/' $CLOUD_INNIT_ABSOLUTE
+fi
+
 
 # Install Ansible and dependencies
 if [[ "$installPrograms" =~ "ansible" ]]; then
