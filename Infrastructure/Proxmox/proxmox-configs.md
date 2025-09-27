@@ -68,7 +68,10 @@ You can use this to migrate VMs from one machine to another.
 
 1. Create a backup with Mode `Stop`. Other settings can be default.
 2. By default it will save backups to `local` storage and to `/var/lib/vz/dump` folder.
-3. Copy backup folder to another machine via SCP: `scp -r /var/lib/vz/dump root@pve-9700.lan:/var/lib/vz/`
+3. Copy backup folder and cloud-init scripts to another machine via SCP:
+```bash
+scp -r /var/lib/vz/dump /var/lib/vz/snippets root@pve-9700.lan:/var/lib/vz/
+```
 4. Restore VM from backups
 5. Check if Firewall needs to be set (this does not get copied)
 
