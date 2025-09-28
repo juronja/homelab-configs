@@ -69,6 +69,10 @@
         icon: prometheus.svg
         href: http://homelab.lan:9090
         ping: homelab.lan
+    - Grafana:
+        icon: grafana.svg
+        href: http://homelab.lan:9091
+        ping: homelab.lan
 
 - Media:
     - Audiobookshelf:
