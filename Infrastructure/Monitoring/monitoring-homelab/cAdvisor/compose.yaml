@@ -1,0 +1,18 @@
+#VERSION=v0.53.0 # use the latest release version from https://github.com/google/cadvisor/releases
+name: cAdvisor
+services:
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: cadvisor
+    restart: unless-stopped
+    volumes:
+      - /:/rootfs:ro
+      - /sys:/sys:ro
+      - /run:/run:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    ports:
+      - 9092:8080
+    devices:
+      - /dev/kmsg
+    privileged: true
