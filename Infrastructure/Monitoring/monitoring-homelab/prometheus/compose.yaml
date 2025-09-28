@@ -1,4 +1,4 @@
-name: monitoring_homelab #will be used for network auto naming and image names
+name: prometheus #will be used for network auto naming and image names
 services:
   prometheus:
     image: prom/prometheus:latest
@@ -12,14 +12,5 @@ services:
     # command:
     #   - --storage.tsdb.retention.time=7d
     #   - --storage.tsdb.retention.size=2GB
-  grafana:
-    image: grafana/grafana:main
-    container_name: grafana
-    restart: unless-stopped
-    volumes:
-      - grafana-data:/var/lib/grafana #Volume mapping for persistency
-    ports:
-      - 9091:3000
 volumes:
   prometheus-data: # It will prepend the project name
-  grafana-data: # It will prepend the project name

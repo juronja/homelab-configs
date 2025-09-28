@@ -1,0 +1,12 @@
+name: grafana #will be used for network auto naming and image names
+services:
+  grafana:
+    image: grafana/grafana:main
+    container_name: grafana
+    restart: unless-stopped
+    volumes:
+      - grafana-data:/var/lib/grafana #Volume mapping for persistency
+    ports:
+      - 9091:3000
+volumes:
+  grafana-data: # It will prepend the project name
