@@ -1,0 +1,15 @@
+name: graphite #will be used for network auto naming and image names
+services:
+  graphite:
+    image: graphiteapp/graphite-statsd:latest
+    container_name: graphite
+    restart: unless-stopped
+    volumes:
+      - data:/opt/graphite/storage
+      - conf:/opt/graphite/conf
+    ports:
+      - 9093:8080 # Gunicorn webUI
+      - 2003:2003 # Carbon receiver plaintext
+volumes:
+  data:
+  conf:
