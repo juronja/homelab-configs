@@ -10,6 +10,10 @@ disableCollapse: true
 statusStyle: dot
 hideVersion: true
 
+maxGroupColumns: 6 # default is 4 for services, 6 for bookmarks, max 8
+maxBookmarkGroupColumns: 6 # default is 6, max 8
+# fullWidth: true
+
 background:
   image: https://images.unsplash.com/photo-1532019333101-b0f43c16a912
   #image: https://images.unsplash.com/photo-1485841890310-6a055c88698a
@@ -24,8 +28,10 @@ layout:
     icon: mdi-server
   Networking:
     icon: mdi-lan
-  Tools:
+  Utilities:
     icon: mdi-tools
+  Monitoring:
+    icon: mdi-chart-timeline-variant
   Media:
     icon: mdi-multimedia
   Bookmarks:
