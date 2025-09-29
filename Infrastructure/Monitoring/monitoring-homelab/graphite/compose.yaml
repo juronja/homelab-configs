@@ -5,6 +5,7 @@ services:
     container_name: graphite
     restart: unless-stopped
     volumes:
+      - ./storage-schemas.conf:/opt/graphite/conf/storage-schemas.conf
       - data:/opt/graphite/storage
       - conf:/opt/graphite/conf
     ports:
