@@ -5,12 +5,12 @@ services:
     container_name: prometheus
     restart: unless-stopped
     volumes:
-      - /home/juronja/apps/monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
       - data:/prometheus #Volume mapping for persistency
     ports:
       - 9090:9090
     # command:
-    #   - --storage.tsdb.retention.time=7d
+    #   - --storage.tsdb.retention.time=30d # default is 15 days
     #   - --storage.tsdb.retention.size=2GB
 volumes:
   data: # It will prepend the project name
