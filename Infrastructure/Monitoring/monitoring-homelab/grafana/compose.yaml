@@ -5,8 +5,8 @@ services:
     container_name: grafana
     restart: unless-stopped
     volumes:
-      - grafana-data:/var/lib/grafana #Volume mapping for persistency
+      - data:/var/lib/grafana #Volume mapping for persistency
     ports:
       - 9091:3000
 volumes:
-  grafana-data: # It will prepend the project name
+  data: # It will prepend the project name
