@@ -5,12 +5,30 @@ services:
     container_name: prometheus
     restart: unless-stopped
     volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro # use Portainer relative path volumes for this to work
+      - ~/apps/monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro # use Portainer relative path volumes for this to work
       - prometheus_data:/prometheus
     ports:
       - 9090:9090
     # command:
     #   - --storage.tsdb.retention.time=30d # default is 15 days
     #   - --storage.tsdb.retention.size=2GB
+  grafana:
+    image: grafana/grafana:main
+    container_name: grafana
+    restart: unless-stopped
+    volumes:
+      - grafana_data:/var/lib/grafana #Volume mapping for persistency
+    ports:
+      - 9091:3000
+  telegraf:
+    image: telegraf:latest
+    container_name: telegraf
+    restart: unless-stopped
+    volumes:
+      - ~/apps/monitoring/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+    ports:
+      - 2003:2003 # Graphite plaintext protocol format
+      - 9273:9273 # Prometheus scrape endpoint
 volumes:
   prometheus_data:
+  grafana_data:
