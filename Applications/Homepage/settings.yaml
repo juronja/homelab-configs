@@ -10,7 +10,7 @@ disableCollapse: true
 statusStyle: dot
 hideVersion: true
 
-maxGroupColumns: 6 # default is 4 for services, 6 for bookmarks, max 8
+maxGroupColumns: 5 # default is 4 for services, 6 for bookmarks, max 8
 maxBookmarkGroupColumns: 6 # default is 6, max 8
 # fullWidth: true
 
