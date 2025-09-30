@@ -5,12 +5,12 @@ services:
     container_name: graphite
     restart: unless-stopped
     volumes:
-      - ./storage-schemas.conf:/opt/graphite/conf/storage-schemas.conf
+      - ./storage-schemas.conf:/opt/graphite/conf/storage-schemas.conf:ro
       - data:/opt/graphite/storage
       - conf:/opt/graphite/conf
     ports:
       - 9093:8080 # Gunicorn webUI
-      - 2003:2003 # Carbon receiver plaintext
+      - 2003:2003 # Graphite plaintext protocol format
 volumes:
   data:
   conf:
