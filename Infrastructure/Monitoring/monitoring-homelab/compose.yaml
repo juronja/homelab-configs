@@ -1,16 +1,16 @@
-name: prometheus #will be used for network auto naming and image names
+name: monitoring #will be used for network auto naming and image names
 services:
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
     restart: unless-stopped
     volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml # use Portainer relative path volumes for this to work
-      - data:/prometheus
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro # use Portainer relative path volumes for this to work
+      - prometheus_data:/prometheus
     ports:
       - 9090:9090
     # command:
     #   - --storage.tsdb.retention.time=30d # default is 15 days
     #   - --storage.tsdb.retention.size=2GB
 volumes:
-  data:
+  prometheus_data:
