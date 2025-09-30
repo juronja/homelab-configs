@@ -5,7 +5,7 @@ services:
     container_name: prometheus
     restart: unless-stopped
     volumes:
-      - ~/apps/monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro # use Portainer relative path volumes for this to work
+      - /home/juronja/apps/monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro # use Portainer relative path volumes for this to work
       - prometheus_data:/prometheus
     ports:
       - 9090:9090
@@ -25,7 +25,7 @@ services:
     container_name: telegraf
     restart: unless-stopped
     volumes:
-      - ~/apps/monitoring/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+      - /home/juronja/apps/monitoring/telegraf.conf:/etc/telegraf/telegraf.conf:ro
     ports:
       - 2003:2003 # Graphite plaintext protocol format
       - 9273:9273 # Prometheus scrape endpoint
