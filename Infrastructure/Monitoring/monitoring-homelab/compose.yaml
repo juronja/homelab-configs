@@ -1,5 +1,14 @@
 name: monitoring #will be used for network auto naming and image names
 services:
+  telegraf:
+    image: telegraf:latest
+    container_name: telegraf
+    restart: unless-stopped
+    volumes:
+      - /home/juronja/apps/monitoring/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+    ports:
+      - 2003:2003 # Graphite plaintext protocol format
+      - 9273:9273 # Prometheus scrape endpoint
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
@@ -9,6 +18,8 @@ services:
       - prometheus_data:/prometheus
     ports:
       - 9090:9090
+    depends_on:
+      - telegraf
     # command:
     #   - --storage.tsdb.retention.time=30d # default is 15 days
     #   - --storage.tsdb.retention.size=2GB
@@ -20,15 +31,8 @@ services:
       - grafana_data:/var/lib/grafana #Volume mapping for persistency
     ports:
       - 9091:3000
-  telegraf:
-    image: telegraf:latest
-    container_name: telegraf
-    restart: unless-stopped
-    volumes:
-      - /home/juronja/apps/monitoring/telegraf.conf:/etc/telegraf/telegraf.conf:ro
-    ports:
-      - 2003:2003 # Graphite plaintext protocol format
-      - 9273:9273 # Prometheus scrape endpoint
+    depends_on:
+      - prometheus
 volumes:
   prometheus_data:
   grafana_data:
