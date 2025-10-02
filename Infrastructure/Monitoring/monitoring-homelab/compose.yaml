@@ -6,6 +6,7 @@ services:
     restart: unless-stopped
     volumes:
       - /home/juronja/apps/monitoring/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     ports:
       - 2003:2003 # Graphite plaintext protocol format
       - 9273:9273 # Prometheus scrape endpoint
