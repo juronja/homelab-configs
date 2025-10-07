@@ -238,7 +238,7 @@ uci commit
 uci set network.iot=interface
 uci set network.iot.proto="static"
 uci set network.iot.device='br-iot'
-uci set network.iot.ipaddr="192.168.3.1"
+uci set network.iot.ipaddr="10.9.3.1"
 uci set network.iot.netmask="255.255.255.0"
 uci set dhcp.iot=dhcp
 uci set dhcp.iot.interface='iot'
@@ -267,12 +267,12 @@ uci commit
 # uci set firewall.@rule[-1].dest_port='53 67 68'
 # uci set firewall.@rule[-1].target='ACCEPT'
 # uci commit
-# also allow tv to plex
+# also allow HA to TV
 uci add firewall rule
 uci set firewall.@rule[-1].name='allow HA to TV'
 uci add_list firewall.@rule[-1].proto='tcp'
 uci set firewall.@rule[-1].src='iot'
-uci add_list firewall.@rule[-1].src_ip='192.168.3.X'
+uci add_list firewall.@rule[-1].src_ip='10.9.3.X'
 uci set firewall.@rule[-1].dest='lan'
 uci add_list firewall.@rule[-1].dest_ip='192.168.84.X'
 uci set firewall.@rule[-1].target='ACCEPT'
