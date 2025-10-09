@@ -238,7 +238,7 @@ uci commit
 uci set network.iot=interface
 uci set network.iot.proto="static"
 uci set network.iot.device='br-iot'
-uci set network.iot.ipaddr="10.9.3.1"
+uci set network.iot.ipaddr="192.168.3.1"
 uci set network.iot.netmask="255.255.255.0"
 uci set dhcp.iot=dhcp
 uci set dhcp.iot.interface='iot'
@@ -272,7 +272,7 @@ uci add firewall rule
 uci set firewall.@rule[-1].name='allow HA to TV'
 uci add_list firewall.@rule[-1].proto='tcp'
 uci set firewall.@rule[-1].src='iot'
-uci add_list firewall.@rule[-1].src_ip='10.9.3.X'
+uci add_list firewall.@rule[-1].src_ip='192.168.3.X'
 uci set firewall.@rule[-1].dest='lan'
 uci add_list firewall.@rule[-1].dest_ip='192.168.84.X'
 uci set firewall.@rule[-1].target='ACCEPT'
@@ -341,14 +341,14 @@ uci set firewall.@forwarding[-1].dest='wan'
 uci commit
 # Allow guests to access DNS and DHCP
 uci add firewall rule
-uci set firewall.@rule[-1].name='guest DHCP and DNS'
+uci set firewall.@rule[-1].name='allow guest to DNS DHCP'
 uci set firewall.@rule[-1].src='guest'
 uci set firewall.@rule[-1].dest_port='53 67 68'
 uci set firewall.@rule[-1].target='ACCEPT'
 uci commit
 # also allow guest devices to plex
 uci add firewall rule
-uci set firewall.@rule[-1].name='allow guests to plex'
+uci set firewall.@rule[-1].name='allow guest to plex'
 uci add_list firewall.@rule[-1].proto='tcp'
 uci set firewall.@rule[-1].src='guest'
 uci set firewall.@rule[-1].dest='lan'
