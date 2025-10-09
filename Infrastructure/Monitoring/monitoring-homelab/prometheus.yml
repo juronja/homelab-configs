@@ -31,9 +31,6 @@ scrape_configs:
   - job_name: "homelab-telegraf"
     static_configs:
       - targets: ["telegraf:9273"]
-  # - job_name: "homelab-cadvisor"
-  #   static_configs:
-  #     - targets: ["homelab.lan:9092"]
   - job_name: "hosting-prod-node"
     static_configs:
       - targets: ["hosting-prod.lan:9100"]
