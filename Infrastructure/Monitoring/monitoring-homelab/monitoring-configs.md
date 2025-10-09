@@ -1,8 +1,8 @@
 # Monitoring configurations
 
-## Exporter setup
+## Proxmox
 
-### Proxmox
+### Exporter
 
 Run this command on node:
 
@@ -19,14 +19,10 @@ pvesh create /cluster/metrics/server/graphite --type graphite --server homelab.l
 | Protocol | TCP |
 | TCP Timeout | 2 |
 
-### TrueNAS
+### Telegraf API Access
 
-| Setting | Value |
-| :--- | :--- |
-| Name | truenas |
-| Type | GRAPHITE |
-| Server | homelab.lan |
-| Port | 2003 |
-| Namespace | truenas |
-| Update Every | 10 |
-| Buffer On Failures | 5 |
+Required permissions for user and token: PVEAuditor role on /.
+
+1. Create a `metrics` user.
+2. Create API TOKEN for above user.
+3. Add Permissions for user AND API Token on root / with PVEAuditor
