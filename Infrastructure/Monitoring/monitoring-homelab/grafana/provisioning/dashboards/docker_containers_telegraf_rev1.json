@@ -19,7 +19,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 0,
+  "id": 4,
   "links": [],
   "panels": [
     {
@@ -574,11 +574,12 @@
   ],
   "preload": false,
   "schemaVersion": 42,
-  "tags": [],
+  "tags": [
+    "docker"
+  ],
   "templating": {
     "list": [
       {
-        "allValue": "",
         "allowCustomValue": false,
         "current": {
           "text": "All",
@@ -612,5 +613,5 @@
   "timezone": "browser",
   "title": "Docker Containers Telegraf",
   "uid": "adgrqvz",
-  "version": 21
+  "version": 1
 }
