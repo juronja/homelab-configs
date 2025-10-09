@@ -11,6 +11,13 @@ install -m 640 /dev/null /etc/caddy/certs/repina_eu-private-key.key
 chown -R root:caddy /etc/caddy/certs
 ```
 
+## Hash passwords
+
+```shell
+caddy hash-password
+
+```
+
 ## Rate limit 3rd party module
 
 Build a custom caddy binary with module with xcaddy and move new binary to /usr/bin/ and overwrite.
@@ -29,6 +36,7 @@ Try this at some point.
 ```shell
 xcaddy build --with github.com/corazawaf/coraza-caddy/v2
 ```
+
 https://medium.com/@jptosso/oss-waf-stack-using-coraza-caddy-and-elastic-3a715dcbf2f2
 
 "$@" >/dev/null 2>&1 echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
