@@ -30,9 +30,9 @@
         "x": 0,
         "y": 0
       },
-      "id": 17,
+      "id": 5,
       "panels": [],
-      "title": "Docker",
+      "title": "Proxmox",
       "type": "row"
     },
     {
@@ -51,11 +51,10 @@
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
-            "axisSoftMin": 0,
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 100,
+            "fillOpacity": 0,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -69,12 +68,107 @@
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "never",
+            "showPoints": "auto",
             "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
-              "mode": "normal"
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 1
+      },
+      "id": 9,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.0-18185173422",
+      "targets": [
+        {
+          "editorMode": "builder",
+          "expr": "proxmox_cpuload{node_fqdn=\"$proxmox_node\"} > 0",
+          "legendFormat": "{{vm_name}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "VM CPU Usage",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "ds_prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
             },
             "thresholdsStyle": {
               "mode": "off"
@@ -101,113 +195,10 @@
       "gridPos": {
         "h": 7,
         "w": 12,
-        "x": 0,
-        "y": 1
-      },
-      "id": 18,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "right",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "12.3.0-18185173422",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ds_prometheus"
-          },
-          "editorMode": "builder",
-          "expr": "docker_container_cpu_usage_percent{container_name=~\"$container\"}",
-          "legendFormat": "{{container_name}}",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "CPU Usage",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "ds_prometheus"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "axisSoftMin": 0,
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 100,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineStyle": {
-              "fill": "solid"
-            },
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "normal"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "decbytes"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 12,
         "x": 12,
         "y": 1
       },
-      "id": 19,
+      "id": 22,
       "options": {
         "legend": {
           "calcs": [],
@@ -224,18 +215,14 @@
       "pluginVersion": "12.3.0-18185173422",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ds_prometheus"
-          },
           "editorMode": "builder",
-          "expr": "docker_container_mem_usage{container_name=~\"$container\"}",
-          "legendFormat": "{{container_name}}",
+          "expr": "proxmox_mem_used_percentage{node_fqdn=\"$proxmox_node\"} > 0",
+          "legendFormat": "{{vm_name}}",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "RAM Usage",
+      "title": "VM RAM Usage",
       "type": "timeseries"
     },
     {
@@ -257,7 +244,7 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 10,
+            "fillOpacity": 0,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -266,15 +253,12 @@
             },
             "insertNulls": false,
             "lineInterpolation": "linear",
-            "lineStyle": {
-              "fill": "solid"
-            },
             "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "never",
+            "showPoints": "auto",
             "showValues": false,
             "spanNulls": false,
             "stacking": {
@@ -285,7 +269,6 @@
               "mode": "off"
             }
           },
-          "fieldMinMax": false,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -300,35 +283,38 @@
               }
             ]
           },
-          "unit": "Bps"
+          "unit": "percent"
         },
         "overrides": [
           {
+            "__systemRef": "hideSeriesFrom",
             "matcher": {
-              "id": "byFrameRefID",
-              "options": "TX Bytes (Outgoing)"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "orange",
-                  "mode": "shades"
-                }
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "adguard",
+                  "alpine-wireguard",
+                  "caddy",
+                  "homelab",
+                  "homepage",
+                  "hosting-prod",
+                  "openwebui",
+                  "plexlxc",
+                  "truenas-scale",
+                  "unifi"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
               }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byFrameRefID",
-              "options": "RX Bytes (Incoming)"
             },
             "properties": [
               {
-                "id": "color",
+                "id": "custom.hideFrom",
                 "value": {
-                  "fixedColor": "blue",
-                  "mode": "shades"
+                  "legend": false,
+                  "tooltip": true,
+                  "viz": true
                 }
               }
             ]
@@ -341,7 +327,7 @@
         "x": 0,
         "y": 8
       },
-      "id": 20,
+      "id": 16,
       "options": {
         "legend": {
           "calcs": [],
@@ -358,133 +344,14 @@
       "pluginVersion": "12.3.0-18185173422",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ds_prometheus"
-          },
           "editorMode": "builder",
-          "exemplar": false,
-          "expr": "rate(docker_container_net_rx_bytes{container_name=~\"$container\"}[5m])",
-          "instant": false,
-          "legendFormat": "RX {{container_name}}",
-          "range": true,
-          "refId": "RX Bytes (Incoming)"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ds_prometheus"
-          },
-          "editorMode": "builder",
-          "expr": "rate(docker_container_net_tx_bytes{container_name=~\"$container\"}[5m]) * -1",
-          "hide": false,
-          "instant": false,
-          "legendFormat": "TX {{container_name}}",
-          "range": true,
-          "refId": "TX Bytes (Outgoing)"
-        }
-      ],
-      "title": "Network RxTx",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "ds_prometheus"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "axisSoftMin": 0,
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 100,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "showValues": false,
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "normal"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "decbytes"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 12,
-        "x": 12,
-        "y": 8
-      },
-      "id": 21,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "right",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "12.3.0-18185173422",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "ds_prometheus"
-          },
-          "editorMode": "builder",
-          "expr": "docker_disk_usage_size_root_fs{container_name=~\"$container\"}",
-          "legendFormat": "{{container_name}}",
+          "expr": "proxmox_disk_used_percentage{node_fqdn=\"$proxmox_node\"} > 0",
+          "legendFormat": "{{vm_name}}",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Disk Usage",
+      "title": "VM Disk Usage",
       "type": "timeseries"
     },
     {
@@ -751,9 +618,10 @@
         "x": 0,
         "y": 25
       },
-      "id": 5,
+      "id": 17,
       "panels": [],
-      "title": "Proxmox",
+      "repeat": "docker_node",
+      "title": "Docker $docker_node",
       "type": "row"
     },
     {
@@ -772,10 +640,11 @@
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
+            "axisSoftMin": 0,
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 0,
+            "fillOpacity": 100,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -789,12 +658,12 @@
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
+            "showPoints": "never",
             "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
-              "mode": "none"
+              "mode": "normal"
             },
             "thresholdsStyle": {
               "mode": "off"
@@ -814,17 +683,17 @@
               }
             ]
           },
-          "unit": "percentunit"
+          "unit": "percent"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 10,
+        "h": 7,
         "w": 12,
         "x": 0,
         "y": 26
       },
-      "id": 9,
+      "id": 18,
       "options": {
         "legend": {
           "calcs": [],
@@ -841,14 +710,18 @@
       "pluginVersion": "12.3.0-18185173422",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ds_prometheus"
+          },
           "editorMode": "builder",
-          "expr": "proxmox_cpuload{node_fqdn=\"$proxmox_node\"} > 0",
-          "legendFormat": "{{vm_name}}",
+          "expr": "docker_container_cpu_usage_percent{container_name=~\"$container\"}",
+          "legendFormat": "{{container_name}}",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "VM CPU Usage",
+      "title": "CPU Usage",
       "type": "timeseries"
     },
     {
@@ -867,10 +740,11 @@
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
+            "axisSoftMin": 0,
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 0,
+            "fillOpacity": 100,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -879,17 +753,20 @@
             },
             "insertNulls": false,
             "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
             "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
+            "showPoints": "never",
             "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
-              "mode": "none"
+              "mode": "normal"
             },
             "thresholdsStyle": {
               "mode": "off"
@@ -909,17 +786,17 @@
               }
             ]
           },
-          "unit": "percent"
+          "unit": "decbytes"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 10,
+        "h": 7,
         "w": 12,
         "x": 12,
         "y": 26
       },
-      "id": 22,
+      "id": 19,
       "options": {
         "legend": {
           "calcs": [],
@@ -936,14 +813,18 @@
       "pluginVersion": "12.3.0-18185173422",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ds_prometheus"
+          },
           "editorMode": "builder",
-          "expr": "proxmox_mem_used_percentage{node_fqdn=\"$proxmox_node\"} > 0",
-          "legendFormat": "{{vm_name}}",
+          "expr": "docker_container_mem_usage{container_name=~\"$container\"}",
+          "legendFormat": "{{container_name}}",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "VM RAM Usage",
+      "title": "RAM Usage",
       "type": "timeseries"
     },
     {
@@ -965,7 +846,7 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 0,
+            "fillOpacity": 10,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -974,12 +855,15 @@
             },
             "insertNulls": false,
             "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
             "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
+            "showPoints": "never",
             "showValues": false,
             "spanNulls": false,
             "stacking": {
@@ -990,6 +874,7 @@
               "mode": "off"
             }
           },
+          "fieldMinMax": false,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -1004,38 +889,35 @@
               }
             ]
           },
-          "unit": "percent"
+          "unit": "Bps"
         },
         "overrides": [
           {
-            "__systemRef": "hideSeriesFrom",
             "matcher": {
-              "id": "byNames",
-              "options": {
-                "mode": "exclude",
-                "names": [
-                  "adguard",
-                  "alpine-wireguard",
-                  "caddy",
-                  "homelab",
-                  "homepage",
-                  "hosting-prod",
-                  "openwebui",
-                  "plexlxc",
-                  "truenas-scale",
-                  "unifi"
-                ],
-                "prefix": "All except:",
-                "readOnly": true
-              }
+              "id": "byFrameRefID",
+              "options": "TX Bytes (Outgoing)"
             },
             "properties": [
               {
-                "id": "custom.hideFrom",
+                "id": "color",
                 "value": {
-                  "legend": false,
-                  "tooltip": true,
-                  "viz": true
+                  "fixedColor": "orange",
+                  "mode": "shades"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "RX Bytes (Incoming)"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "shades"
                 }
               }
             ]
@@ -1043,12 +925,12 @@
         ]
       },
       "gridPos": {
-        "h": 10,
+        "h": 7,
         "w": 12,
         "x": 0,
-        "y": 36
+        "y": 33
       },
-      "id": 16,
+      "id": 20,
       "options": {
         "legend": {
           "calcs": [],
@@ -1065,14 +947,133 @@
       "pluginVersion": "12.3.0-18185173422",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ds_prometheus"
+          },
           "editorMode": "builder",
-          "expr": "proxmox_disk_used_percentage{node_fqdn=\"$proxmox_node\"} > 0",
-          "legendFormat": "{{vm_name}}",
+          "exemplar": false,
+          "expr": "rate(docker_container_net_rx_bytes{container_name=~\"$container\"}[5m])",
+          "instant": false,
+          "legendFormat": "RX {{container_name}}",
+          "range": true,
+          "refId": "RX Bytes (Incoming)"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ds_prometheus"
+          },
+          "editorMode": "builder",
+          "expr": "rate(docker_container_net_tx_bytes{container_name=~\"$container\"}[5m]) * -1",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "TX {{container_name}}",
+          "range": true,
+          "refId": "TX Bytes (Outgoing)"
+        }
+      ],
+      "title": "Network RxTx",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "ds_prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisSoftMin": 0,
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 100,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "normal"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "decbytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 33
+      },
+      "id": 21,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.3.0-18185173422",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "ds_prometheus"
+          },
+          "editorMode": "builder",
+          "expr": "docker_disk_usage_size_root_fs{container_name=~\"$container\"}",
+          "legendFormat": "{{container_name}}",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "VM Disk Usage",
+      "title": "Disk Usage",
       "type": "timeseries"
     }
   ],
@@ -1121,6 +1122,24 @@
         "type": "query"
       },
       {
+        "current": {
+          "text": "homelab-node",
+          "value": "homelab-node"
+        },
+        "definition": "label_values(job)",
+        "label": "Docker node",
+        "name": "docker_node",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(job)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": ".*-telegraf.*",
+        "type": "query"
+      },
+      {
         "allowCustomValue": false,
         "current": {
           "text": "All",
@@ -1153,5 +1172,5 @@
   "timezone": "browser",
   "title": "Homelab Overview",
   "uid": "addqj8m",
-  "version": 29
+  "version": 35
 }
