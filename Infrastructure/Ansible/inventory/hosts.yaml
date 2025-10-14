@@ -1,8 +1,8 @@
 ubuntu:
   hosts:
-    ansible:
-      ansible_host: ansible.lan
-      ansible_ssh_private_key_file: ~/.ssh/id_ansible
+    # ansible:
+    #   ansible_host: ansible.lan
+    #   ansible_ssh_private_key_file: ~/.ssh/id_ansible
     homelab:
       ansible_host: homelab.lan
       ansible_ssh_private_key_file: ~/.ssh/id_ubuntu-homelab
@@ -13,8 +13,8 @@ ubuntu:
     ansible_user: juronja
 proxmox:
   hosts:
-    pve-4750g.lan
     pve-9700.lan
+    # pve-4750g.lan
   vars:
     ansible_ssh_private_key_file: ~/.ssh/id_proxmoxes
     ansible_user: root
