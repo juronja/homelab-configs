@@ -1,10 +1,9 @@
 # Recyclarr yaml configuration
 
-For now I only use Radarr, Sonarr is commented out.
-To access the yml file enable the Codeserver addon in true nas scale app. The port then should be 36107.
+To access the yml file exec into the container.
 
-You can then just upload the files to the /config folder:
+You have to have these two files in the `/config` folder:
 - recyclarr.yml
 - secrets.yml
 
-Run `recyclarr sync` to update settings.
+Run `recyclarr sync` to sync settings.
