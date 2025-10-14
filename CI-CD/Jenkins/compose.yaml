@@ -2,8 +2,9 @@ name: jenkins # Will be used for network auto naming and image names
 services:
   jenkins:
     build: .
-#    image: jenkins/jenkins:lts
+#    image: jenkins/jenkins:latest-jdk21
     container_name: jenkins
+    pull_policy: always
     restart: unless-stopped
 #    healthcheck:
 #      test: curl http://localhost:8081/
