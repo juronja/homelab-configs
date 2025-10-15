@@ -6,8 +6,8 @@ Copy the cloudflare certs to a folder.
 
 ```shell
 mkdir -m 750 /etc/caddy/certs
-install -m 640 /dev/null /etc/caddy/certs/repina_eu-origin-cert.pem
-install -m 640 /dev/null /etc/caddy/certs/repina_eu-private-key.key
+install -m 640 /dev/null /etc/caddy/certs/homelabtales_com-origin-cert.pem
+install -m 640 /dev/null /etc/caddy/certs/homelabtales_com-private-key.key
 chown -R root:caddy /etc/caddy/certs
 ```
 
