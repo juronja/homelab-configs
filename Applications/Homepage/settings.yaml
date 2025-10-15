@@ -30,8 +30,8 @@ layout:
     icon: mdi-lan
   Utilities:
     icon: mdi-tools
-  Monitoring:
-    icon: mdi-chart-timeline-variant
+  # Monitoring:
+  #   icon: mdi-chart-timeline-variant
   Media:
     icon: mdi-multimedia
   Bookmarks:

@@ -19,6 +19,14 @@
         icon: portainer.svg
         href: https://homelab.lan:9443
         ping: homelab.lan
+    - Nexus:
+        icon: https://raw.githubusercontent.com/juronja/homelab-configs/main/Applications/Homepage/icons/sonatype-nexus.png
+        href: http://homelab.lan:8081
+        ping: homelab.lan
+    - Jenkins:
+        icon: jenkins.svg
+        href: https://jenkins.homelabtales.com
+        ping: https://jenkins.homelabtales.com
 
 - Networking:
     - Gateway Router:
@@ -44,24 +52,10 @@
         icon: home-assistant.svg
         href: https://ha.homelabtales.com
         ping: https://ha.homelabtales.com
-    # - Frigate NVR:
-    #     icon: frigate.svg
-    #     href: http://frigate.lan:5000
-    #     ping: frigate.lan
-    - Nexus:
-        icon: https://raw.githubusercontent.com/juronja/homelab-configs/main/Applications/Homepage/icons/sonatype-nexus.png
-        href: http://homelab.lan:8081
-        ping: homelab.lan
-    - Jenkins:
-        icon: jenkins.svg
-        href: https://jenkins.homelabtales.com
-        ping: https://jenkins.homelabtales.com
     - Open WebUI:
         icon: open-webui.svg
         href: http://openwebui.lan:8080
         ping: openwebui.lan
-
-- Monitoring:
     - Prometheus:
         icon: prometheus.svg
         href: http://homelab.lan:9090
