@@ -37,6 +37,6 @@ Try this at some point.
 xcaddy build --with github.com/corazawaf/coraza-caddy/v2
 ```
 
-https://medium.com/@jptosso/oss-waf-stack-using-coraza-caddy-and-elastic-3a715dcbf2f2
+<https://medium.com/@jptosso/oss-waf-stack-using-coraza-caddy-and-elastic-3a715dcbf2f2>
 
 "$@" >/dev/null 2>&1 echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
