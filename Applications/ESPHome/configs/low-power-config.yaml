@@ -5,4 +5,4 @@ wifi:
     ssid: ${friendly_name}
     password: ${ap_pass}
   # custom local domain for openwrt
-  domain: .lan
+  # domain: .lan
