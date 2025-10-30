@@ -69,7 +69,7 @@ Get-AppxPackage -alluser Microsoft.People | Remove-AppxPackage
 Get-AppxPackage -alluser Microsoft.OutlookForWindows | Remove-AppxPackage
 Get-AppxPackage -alluser Microsoft.ZuneMusic | Remove-AppxPackage
 Get-AppxPackage -alluser Microsoft.ZuneVideo | Remove-AppxPackage
-Get-AppxPackage -alluser Microsoft.MicrosoftOfficeHub | Remove-AppxPackage
+# Get-AppxPackage -alluser Microsoft.MicrosoftOfficeHub | Remove-AppxPackage
 Get-AppxPackage -alluser Microsoft.WindowsFeedbackHub | Remove-AppxPackage
 Get-AppxPackage -alluser Microsoft.WindowsSoundRecorder | Remove-AppxPackage
 Get-AppxPackage -alluser Microsoft.GetHelp | Remove-AppxPackage
