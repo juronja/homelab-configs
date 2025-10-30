@@ -1,0 +1,10 @@
+prometheus:
+  prometheusSpec:
+    additionalScrapeConfigs: |
+      - job_name: 'icons-for-md-app'
+        static_configs:
+          - targets: ['icons-for-md.homelabtales.com']
+            labels:
+              app: 'icons-for-md'
+        metrics_path: '/metrics'
+        scheme: https
