@@ -25,7 +25,7 @@ variable "public_cidr_blocks" {
 }
 variable "instance_type" {
   description = "Instance type"
-  default     = ["t2.micro"]
+  default     = ["t3.medium"] # t3.medium for microservices app
 }
 variable "environment" {
   description = "Environment name"
