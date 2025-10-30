@@ -7,3 +7,13 @@ You have to have these two files in the `/config` folder:
 - secrets.yml
 
 Run `recyclarr sync` to sync settings.
+
+# Navigate recyclar with vi
+
+```shell
+vi recyclarr.yml
+ggdG # delete all text
+Shift + Insert # paste new text
+Esc
+:wq
+```
