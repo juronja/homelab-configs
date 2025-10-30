@@ -91,7 +91,7 @@ Get-AppxPackage -alluser MSTeams | Remove-AppxPackage
 
 # winget uninstall onedrive
 winget install -e --id Google.Chrome
-winget install -e --id Adobe.Acrobat.Reader.64-bit
+# winget install -e --id Adobe.Acrobat.Reader.64-bit # I will try use edge/chrome for pdf files from now on
 winget install -e --id Microsoft.PowerToys --source winget
 
 Write-Host "`nScript finished." -ForegroundColor Green
