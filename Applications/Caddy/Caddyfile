@@ -192,4 +192,27 @@
 			}
 		}
 	}
+
+	@n8n host n8n.homelabtales.com
+	handle @n8n {
+		reverse_proxy n8n.lan:5678
+		header {
+			# Prevent the site from being embedded in an iframe, mitigating clickjacking.
+			X-Frame-Options DENY
+			# This will deny website access to the listed hardware features for security purposes.
+			Permissions-Policy autoplay=(), camera=(), microphone=(), midi=(), usb=()
+			# Block XSS attacks to some degree using a report-only CSP.
+			Content-Security-Policy-Report-Only "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' cdn.jsdelivr.net fonts.googleapis.com 'unsafe-inline'; img-src 'self' cdn.jsdelivr.net; font-src 'self' cdn.jsdelivr.net fonts.gstatic.com; connect-src 'self'; frame-ancestors 'none';"
+		}
+		request_body {
+			max_size 1000KB
+		}
+		rate_limit {
+			zone limit_by_ip {
+				key {remote_host}
+				events 50
+				window 10s
+			}
+		}
+	}
 }
