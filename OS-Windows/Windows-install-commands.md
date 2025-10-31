@@ -29,20 +29,33 @@ wsl --install -d Ubuntu
 ```
 
 ## Install Apps
+
+⚠️ `msstore` sources should autoupdate
+
 ```shell
-winget install -e --id Plex.Plex
+winget install -e --id XP9CDQW6ML4NQN -s msstore # Plex
 winget install -e --id Plex.Plexamp
 winget install -e --id Telegram.TelegramDesktop
-winget install -e --id WhatsApp.WhatsApp
+winget install -e --id 9NKSQGP7F2NH -s msstore # WhatsApp
 winget install -e --id Discord.Discord
 winget install -e --id Logitech.OptionsPlus
 winget install -e --id Logitech.GHUB
-winget install -e --id Nvidia.GeForceExperience
+# winget install -e --id Nvidia.GeForceExperience # outdated
 winget install -e --id Valve.Steam
 winget install -e --id WireGuard.WireGuard
+winget install -e --name "Blender 4.5 LTS" -s msstore
+winget install -e --id calibre.calibre
+winget install -e --id RustDesk.RustDesk
+winget install -e --id CrystalDewWorld.CrystalDiskInfo
+winget install -e --id OBSProject.OBSStudio
+
+
+
+
+
 # Development
-winget install -e --id Microsoft.VisualStudioCode # Have to manually upgrade with "winget upgrade -e --id Microsoft.VisualStudioCode"
-winget install -e --id OpenJS.NodeJS.LTS # Have to manually upgrade with "winget upgrade -e --id OpenJS.NodeJS.LTS"
+winget install -e --id XP9KHM4BK9FZ7Q -s msstore # Visual Studio Code
+winget install -e --id OpenJS.NodeJS.LTS # Manually upgrade with "winget upgrade -e --id OpenJS.NodeJS.LTS"
 winget install -e --id Git.Git
 winget install -e --id Python.Python.3.14 
 winget install -e --id Amazon.AWSCLI
@@ -50,6 +63,11 @@ winget install -e --id Kubernetes.kubectl
 winget install -e --id Helm.Helm
 winget install -e --id Hashicorp.Terraform
 winget install -e --id Docker.DockerDesktop
+winget install -e --id MongoDB.Server
+winget install -e --id MongoDB.Shell
+winget install -e --id MongoDB.Compass.Full
+winget install -e --id Postman.PostmanAgent
+
 ```
 
 ## Networking
@@ -81,10 +99,11 @@ Disable-NetAdapterBinding -Name "Ethernet" -ComponentID ms_tcpip6
 ```
 
 ## Map network drives
+
 ```shell
 New-PSDrive -Name "M" -Root "\\nas.lan\media" -Persist -Scope Global -PSProvider "FileSystem"
 
-New-PSDrive -Name "X" -Root "\\nas.lan\personal" -Persist -Scope Global -PSProvider "FileSystem" -Credential juronja
+New-PSDrive -Name "P" -Root "\\nas.lan\personal" -Persist -Scope Global -PSProvider "FileSystem" -Credential juronja
 
 ```
 
@@ -97,6 +116,6 @@ setx MONGO_ADMIN_PASS "pass"
 
 ```
 
-## TO DO Windows setup ##
-- [ ] disable sounds
+## TO DO Windows setup
 
+- [ ] disable sounds

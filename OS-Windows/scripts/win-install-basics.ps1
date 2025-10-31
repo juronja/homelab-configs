@@ -56,29 +56,29 @@ powercfg /change hibernate-timeout-dc 0
 powercfg /change disk-timeout-ac 0
 powercfg /change disk-timeout-dc 0
 
+Show-Message "`nLanguage configuration... has to be tested"
+
+$NewLangList = New-WinUserLanguageList -Language "en-US"
+$NewLangList[0].InputMethodTips.Clear()
+$NewLangList[0].InputMethodTips.Add("0409:00000424")
+Set-WinUserLanguageList -LanguageList $NewLangList -Force
+
 Show-Message "`nManaging AppX packages and Winget applications..."
 
 # Install / Uninstall apps
 Get-AppxPackage -alluser Microsoft.BingNews | Remove-AppxPackage
 Get-AppxPackage -alluser Microsoft.BingWeather | Remove-AppxPackage
 Get-AppxPackage -alluser Microsoft.WindowsMaps | Remove-AppxPackage
-Get-AppxPackage -alluser Microsoft.MicrosoftStickyNotes | Remove-AppxPackage
-Get-AppxPackage -alluser Microsoft.Todos | Remove-AppxPackage
 Get-AppxPackage -alluser Microsoft.YourPhone | Remove-AppxPackage
 Get-AppxPackage -alluser Microsoft.People | Remove-AppxPackage
 Get-AppxPackage -alluser Microsoft.OutlookForWindows | Remove-AppxPackage
-Get-AppxPackage -alluser Microsoft.ZuneMusic | Remove-AppxPackage
-Get-AppxPackage -alluser Microsoft.ZuneVideo | Remove-AppxPackage
-# Get-AppxPackage -alluser Microsoft.MicrosoftOfficeHub | Remove-AppxPackage
 Get-AppxPackage -alluser Microsoft.WindowsFeedbackHub | Remove-AppxPackage
 Get-AppxPackage -alluser Microsoft.WindowsSoundRecorder | Remove-AppxPackage
 Get-AppxPackage -alluser Microsoft.GetHelp | Remove-AppxPackage
-Get-AppxPackage -alluser Microsoft.Getstarted | Remove-AppxPackage
 Get-AppxPackage -alluser Clipchamp.Clipchamp | Remove-AppxPackage
 Get-AppxPackage -alluser MicrosoftCorporationII.QuickAssist | Remove-AppxPackage
 Get-AppxPackage -alluser microsoft.windowscommunicationsapps | Remove-AppxPackage # Mail app
 Get-AppxPackage -alluser MicrosoftWindows.Client.WebExperience | Remove-AppxPackage # Widget app
-Get-AppxPackage -alluser Microsoft.549981C3F5F10 | Remove-AppxPackage # Cortana app
 Get-AppxPackage -alluser Microsoft.Teams | Remove-AppxPackage
 Get-AppxPackage -alluser Microsoft.Copilot | Remove-AppxPackage
 Get-AppxPackage -alluser Microsoft.WindowsAlarms | Remove-AppxPackage
@@ -89,10 +89,19 @@ Get-AppxPackage -alluser Microsoft.XboxSpeechToTextOverlay | Remove-AppxPackage
 Get-AppxPackage -alluser Microsoft.Xbox.TCUI | Remove-AppxPackage
 Get-AppxPackage -alluser MSTeams | Remove-AppxPackage
 
+winget uninstall 9NBLGGH4QGHW # StickyNotes
+winget uninstall 9WZDNCRFHVFW # Microsoft News
+winget uninstall 9NBLGGH5R558 # Microsoft To Do
+winget uninstall 9WZDNCRFJ3Q2 # MSN Weather
+winget uninstall 9NFTCH6J7FHV # Power Automate
 # winget uninstall onedrive
+
 winget install -e --id Google.Chrome
-# winget install -e --id Adobe.Acrobat.Reader.64-bit # I will try use edge/chrome for pdf files from now on
-winget install -e --id Microsoft.PowerToys --source winget
+winget install -e --id Google.GoogleDrive
+winget install -e --id XP89DCGQ3K6VLD -s msstore # PowerToys
+winget install -e --id Adobe.Acrobat.Reader.64-bit
+winget install -e --id 7zip.7zip
+winget install -e --id FlorianHeidenreich.Mp3tag
 
 Write-Host "`nScript finished." -ForegroundColor Green
 Write-Host "Some changes (like UAC) require a system reboot to take full effect." -ForegroundColor Yellow
