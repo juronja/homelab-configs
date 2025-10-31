@@ -17,20 +17,20 @@ function Confirm-Step {
     Write-Host -ForegroundColor Yellow ">> STEP: $Description"
     Write-Host "==========================================================" -ForegroundColor Cyan
 
-    $prompt = "Type 'continue' to run this step, 'skip' to skip, or 'abort' to stop the script: "
+    $prompt = "'y' to run this step, 'n' to skip, or 'abort' to stop the script: "
     $choice = Read-Host -Prompt $prompt
 
     # Loop until a valid choice is made
-    while ($choice -ne 'continue' -and $choice -ne 'skip' -and $choice -ne 'abort') {
-        Write-Host "Invalid choice. Please type 'continue', 'skip', or 'abort'." -ForegroundColor Red
+    while ($choice -ne 'y' -and $choice -ne 'n' -and $choice -ne 'abort') {
+        Write-Host "Invalid choice. Please type 'y', 'n', or 'abort'." -ForegroundColor Red
         $choice = Read-Host -Prompt $prompt
     }
 
-    if ($choice -eq 'continue') {
+    if ($choice -eq 'y') {
         Write-Host "-> Continuing with step: $Description" -ForegroundColor Green
         # Execute the script block (the actual step logic)
         & $Action
-    } elseif ($choice -eq 'skip') {
+    } elseif ($choice -eq 'n') {
         Write-Host "-> Skipping step: $Description" -ForegroundColor DarkGray
     } else { # Abort
         Write-Host "`n!!! ABORTING SCRIPT as requested. !!!" -ForegroundColor Red
