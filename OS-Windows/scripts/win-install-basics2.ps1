@@ -25,13 +25,12 @@ function Confirm-Step {
 
     if ($choice -eq 'y') {
         Write-Host "-> Continuing with step: $Description" -ForegroundColor Green
-        # Execute the script block (the actual step logic)
-        & $Action
+        & $Action # Execute the script block (the actual step logic)
     } elseif ($choice -eq 'n') {
         Write-Host "-> Skipping step: $Description" -ForegroundColor DarkGray
-    } else { # Abort
+    } else {
         Write-Host "`n!! ABORTING SCRIPT as requested. !!" -ForegroundColor Red
-        exit # Terminate the script
+        return # Terminate the script
     }
     Write-Host ""
     Start-Sleep -Seconds 1
@@ -41,8 +40,7 @@ function Confirm-Step {
 
 # Step 1: System Settings
 Confirm-Step -Description "Configuring System Settings (UAC, Taskbar, Start Menu, File Explorer, Theme)..." -Action {
-    # The logic from your original script goes inside the { ... }
-    
+  
     # Disable UAC (requires reboot)
     Set-itemproperty "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System" -Name "EnableLUA" -Value "0" -Type DWord
     # Disable Password expiry
@@ -112,14 +110,28 @@ Confirm-Step -Description "Managing AppX packages and Winget applications..." -A
     Write-Host "-> Uninstalling bloatware..." -ForegroundColor Yellow
     # Uninstall AppX
     $AppXPackages = @(
-        "Microsoft.BingNews", "Microsoft.BingWeather", "Microsoft.WindowsMaps", 
-        "Microsoft.YourPhone", "Microsoft.People", "Microsoft.OutlookForWindows", 
-        "Microsoft.WindowsFeedbackHub", "Microsoft.WindowsSoundRecorder", "Microsoft.GetHelp", 
-        "Clipchamp.Clipchamp", "MicrosoftCorporationII.QuickAssist", 
-        "microsoft.windowscommunicationsapps", "MicrosoftWindows.Client.WebExperience",
-        "Microsoft.Teams", "Microsoft.Copilot", "Microsoft.WindowsAlarms", 
-        "Microsoft.WindowsCamera", "Microsoft.GamingApp", "Microsoft.XboxGamingOverlay", 
-        "Microsoft.XboxSpeechToTextOverlay", "Microsoft.Xbox.TCUI", "MSTeams"
+        "Microsoft.BingNews",
+        "Microsoft.BingWeather",
+        "Microsoft.WindowsMaps",
+        "Microsoft.YourPhone",
+        "Microsoft.People",
+        "Microsoft.OutlookForWindows",
+        "Microsoft.WindowsFeedbackHub",
+        "Microsoft.WindowsSoundRecorder",
+        "Microsoft.GetHelp",
+        "Clipchamp.Clipchamp",
+        "MicrosoftCorporationII.QuickAssist",
+        "microsoft.windowscommunicationsapps",
+        "MicrosoftWindows.Client.WebExperience",
+        "Microsoft.Teams",
+        "Microsoft.Copilot",
+        "Microsoft.WindowsAlarms",
+        "Microsoft.WindowsCamera",
+        "Microsoft.GamingApp",
+        "Microsoft.XboxGamingOverlay",
+        "Microsoft.XboxSpeechToTextOverlay",
+        "Microsoft.Xbox.TCUI",
+        "MSTeams"
     )
     
     foreach ($AppID in $AppXPackages) {
@@ -138,7 +150,7 @@ Confirm-Step -Description "Managing AppX packages and Winget applications..." -A
     # Install using winget
     winget install -e --id Google.Chrome
     winget install -e --id Google.GoogleDrive
-    winget install -e --id XP89DCGQ3K6VLD -s msstore # PowerToys
+    winget install -e --id XP89DCGQ3K6VLD -s msstore -h # PowerToys
     winget install -e --id Adobe.Acrobat.Reader.64-bit
     winget install -e --id 7zip.7zip
     winget install -e --id FlorianHeidenreich.Mp3tag
@@ -148,6 +160,5 @@ Confirm-Step -Description "Managing AppX packages and Winget applications..." -A
 
 # --- SCRIPT END ---
 Write-Host "`n==========================================================" -ForegroundColor Green
-Write-Host "Script execution flow finished." -ForegroundColor Green
+Write-Host "Script finished." -ForegroundColor Green
 Write-Host "Some changes (like UAC) require a system reboot to take full effect." -ForegroundColor Yellow
-Write-Host "==========================================================" -ForegroundColor Green
