@@ -13,11 +13,8 @@ function Confirm-Step {
     
     # Display the step description and prompt
     Write-Host ""
-    Write-Host "==========================================================" -ForegroundColor Cyan
     Write-Host -ForegroundColor Yellow ">> STEP: $Description"
-    Write-Host "==========================================================" -ForegroundColor Cyan
-
-    $prompt = "'y' to run this step, 'n' to skip, or 'abort' to stop the script: "
+    $prompt = "y/n to run step, 'abort' to stop script: "
     $choice = Read-Host -Prompt $prompt
 
     # Loop until a valid choice is made
@@ -33,7 +30,7 @@ function Confirm-Step {
     } elseif ($choice -eq 'n') {
         Write-Host "-> Skipping step: $Description" -ForegroundColor DarkGray
     } else { # Abort
-        Write-Host "`n!!! ABORTING SCRIPT as requested. !!!" -ForegroundColor Red
+        Write-Host "`n!! ABORTING SCRIPT as requested. !!" -ForegroundColor Red
         exit # Terminate the script
     }
     Write-Host ""
