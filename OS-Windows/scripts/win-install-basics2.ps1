@@ -14,7 +14,7 @@ function Confirm-Step {
     # Display the step description and prompt
     Write-Host ""
     Write-Host -ForegroundColor Yellow ">> STEP: $Description"
-    $prompt = "y/n to run step, 'abort' to stop script: "
+    $prompt = "y/n to run step, 'abort' to stop script"
     $choice = Read-Host -Prompt $prompt
 
     # Loop until a valid choice is made
