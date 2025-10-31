@@ -30,7 +30,7 @@ function Confirm-Step {
         Write-Host "-> Skipping step: $Description" -ForegroundColor DarkGray
     } else {
         Write-Host "`n!! ABORTING SCRIPT as requested. !!" -ForegroundColor Red
-        return # Terminate the script
+        exit # Terminate the script
     }
     Write-Host ""
     Start-Sleep -Seconds 1
