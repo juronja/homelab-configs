@@ -162,3 +162,4 @@ Confirm-Step -Description "Managing AppX packages and Winget applications..." -A
 Write-Host "`n==========================================================" -ForegroundColor Green
 Write-Host "Script finished." -ForegroundColor Green
 Write-Host "Some changes (like UAC) require a system reboot to take full effect." -ForegroundColor Yellow
+Write-Host ""
