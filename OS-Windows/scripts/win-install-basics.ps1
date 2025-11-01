@@ -147,6 +147,7 @@ Confirm-Step -Description "Managing AppX packages and Winget applications..." -A
     # winget uninstall onedrive -e -h
 
     Write-Host "-> Installing desired applications..." -ForegroundColor Yellow
+    
     # Install using winget
     winget install -e --id Google.Chrome
     winget install -e --id Google.GoogleDrive
@@ -203,14 +204,14 @@ Confirm-Step -Description "Downloading and setting desktop backgrounds from GitH
     if ($DownloadedFiles.Count -ge 1) {
         Write-Host "-> Configuring Windows for daily desktop slideshow..." -ForegroundColor Yellow
         
-        # Set Background Type
-        # The value '2' represents Slideshow
-        Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Wallpapers" -Name 'BackgroundType' -Value 2 -Type DWord -Force
+        # # Set Background Type
+        # # The value '2' represents Slideshow
+        # Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Wallpapers" -Name 'BackgroundType' -Value 2 -Type DWord -Force
 
         # Set Slideshow Interval to 1 Day
         Set-ItemProperty -Path "HKCU:\Control Panel\Personalization\Desktop Slideshow" -Name 'Interval' -Value 86400000 -Type DWord -Force
 
-        Write-Host "✔️ Slideshow configuration applied. Pictures will change daily." -ForegroundColor Green
+        Write-Host "✔️ Slideshow configuration applied." -ForegroundColor Green
     } else {
         Write-Host "-> Wallpaper step finished, but no files were found or set." -ForegroundColor DarkGray
     }
