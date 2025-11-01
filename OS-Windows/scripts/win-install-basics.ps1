@@ -200,7 +200,7 @@ Confirm-Step -Description "Downloading and setting desktop backgrounds from GitH
     }
 
 # 3. Configure Registry for Slideshow
-    if ($DownloadedFilesCount -ge 1) {
+    if ($DownloadedFiles.Count -ge 1) {
         Write-Host "-> Configuring Windows for daily desktop slideshow..." -ForegroundColor Yellow
         
         # Set Background Type
