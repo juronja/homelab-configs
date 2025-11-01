@@ -95,11 +95,14 @@ Confirm-Step -Description "Configuring Power settings..." -Action {
 
 
 # Step 4: Language Configuration
-Confirm-Step -Description "Language configuration... (has to be tested)" -Action {
+Confirm-Step -Description "Language and Regional format configuration..." -Action {
     $NewLangList = New-WinUserLanguageList -Language "en-US"
     $NewLangList[0].InputMethodTips.Clear()
     $NewLangList[0].InputMethodTips.Add("0409:00000424")
     Set-WinUserLanguageList -LanguageList $NewLangList -Force
+
+    # Set the Regional Format (Locale) to English (Slovenia)
+    Set-Culture -Culture "en-SI"
 
     Write-Host "✔️ Language settings applied." -ForegroundColor Green
 }
