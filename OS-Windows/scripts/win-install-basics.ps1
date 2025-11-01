@@ -68,7 +68,7 @@ Confirm-Step -Description "Configuring System Settings (UAC, Taskbar, Start Menu
 # Step 2: Windows Defender Configuration
 Confirm-Step -Description "Configuring Windows Defender settings..." -Action {
     # Defender exclusion list
-    Add-MpPreference -ExclusionPath "C:\Music_production","C:\Users\Jure\Downloads","C:\Windows","D:\","E:\","F:\","H:\","I:\","M:\","X:\"
+    Add-MpPreference -ExclusionPath "C:\Music_production","C:\Users\Jure\Downloads","C:\Windows","D:\","E:\","F:\","H:\","M:\","P:\","T:\"
     # Defender - disable (Uncomment if needed)
     # Set-itemproperty "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender" -Name "DisableAntiSpyware" -Value "1" -Type DWord -Force
     
@@ -199,52 +199,21 @@ Confirm-Step -Description "Downloading and setting desktop backgrounds from GitH
         }
     }
 
-# # 3. Configure Registry for Slideshow
-#     if ($DownloadedFilesCount -ge 1) {
-#         Write-Host "-> Configuring Windows for daily desktop slideshow..." -ForegroundColor Yellow
+# 3. Configure Registry for Slideshow
+    if ($DownloadedFilesCount -ge 1) {
+        Write-Host "-> Configuring Windows for daily desktop slideshow..." -ForegroundColor Yellow
         
-#         # # A. Set the source folder for the slideshow (WallpaperSource)
-#         # $PersonalizeKey = "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Personalization\DesktopSlideshow"
-#         # if (-not (Test-Path $PersonalizeKey)) {
-#         #     New-Item -Path $PersonalizeKey -Force | Out-Null
-#         # }
-#         # # The key stores the path to the folder to be used for the slideshow
-#         # Set-ItemProperty -Path $PersonalizeKey -Name 'ImagePath0' -Value $DownloadFolder -Type String -Force
-        
-#         # B. Set Slideshow Interval to 1 Day (86400 seconds)
-#         $DesktopKey = "HKCU:\Control Panel\Desktop"
-#         # The DWORD value stores the time in milliseconds. 1 day = 86400000 ms
-#         Set-ItemProperty -Path $DesktopKey -Name 'Interval' -Value 86400000 -Type DWord -Force
-        
-#         # C. Set Wallpaper Style and Status
-#         # The registry key for 'TileWallpaper' also controls slideshow status:
-#         # 2: Slideshow is enabled
-#         Set-ItemProperty -Path $DesktopKey -Name 'TileWallpaper' -Value 2 -Type String -Force
-#         # 2: Stretch/Fill mode (WallpaperStyle is often ignored for slideshow, but set to a common value)
-#         Set-ItemProperty -Path $DesktopKey -Name 'WallpaperStyle' -Value 2 -Type String -Force
-        
-#         # D. Set Background Type
-#         $ControlKey = "HKCU:\Control Panel\Personalization"
-#         # The value '2' represents Slideshow
-#         Set-ItemProperty -Path $ControlKey -Name 'BackgroundType' -Value 2 -Type DWord -Force
-        
-#         # 4. Refresh the desktop immediately
-#         Write-Host "-> Refreshing desktop to apply the slideshow configuration." -ForegroundColor Cyan
-        
-#         # Use SystemParametersInfo to force a refresh (Wallpaper parameter is needed for the call, but it's the refresh action that matters)
-#         $signature = @'
-# [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-# public static extern int SystemParametersInfo(int uAction, int uParam, string lpvParam, int fuWinIni);
-# '@
-#         Add-Type -MemberDefinition $signature -Name "User32" -Namespace "Win32" -PassThru | Out-Null
-#         # SPI_SETDESKWALLPAPER = 20, SPIF_UPDATEINIFILE = 0x01, SPIF_SENDCHANGE = 0x02
-#         # Set the Wallpaper value to the folder path to ensure the Slideshow control is triggered on refresh.
-#         [Win32.User32]::SystemParametersInfo(20, 0, $DownloadFolder, 3) | Out-Null
-        
-#         Write-Host "✔️ Slideshow configuration applied. Pictures will change daily." -ForegroundColor Green
-#     } else {
-#         Write-Host "-> Wallpaper step finished, but no files were found or set." -ForegroundColor DarkGray
-#     }
+        # Set Background Type
+        # The value '2' represents Slideshow
+        Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Wallpapers" -Name 'BackgroundType' -Value 2 -Type DWord -Force
+
+        # Set Slideshow Interval to 1 Day
+        Set-ItemProperty -Path "HKCU:\Control Panel\Personalization\Desktop Slideshow" -Name 'Interval' -Value 86400000 -Type DWord -Force
+
+        Write-Host "✔️ Slideshow configuration applied. Pictures will change daily." -ForegroundColor Green
+    } else {
+        Write-Host "-> Wallpaper step finished, but no files were found or set." -ForegroundColor DarkGray
+    }
 }
 
 
