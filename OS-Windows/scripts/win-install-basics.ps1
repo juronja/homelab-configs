@@ -89,7 +89,7 @@ Confirm-Step -Description "Configuring Power settings..." -Action {
     powercfg /change hibernate-timeout-dc 0
     powercfg /change disk-timeout-ac 0
     powercfg /change disk-timeout-dc 0
-    
+        
     Write-Host "✔️ Power settings applied." -ForegroundColor Green
 }
 
@@ -121,11 +121,10 @@ Confirm-Step -Description "Managing AppX packages and Winget applications..." -A
         "Microsoft.OutlookForWindows",
         "Microsoft.WindowsFeedbackHub",
         "Microsoft.WindowsSoundRecorder",
-        "Microsoft.GetHelp",
         "Clipchamp.Clipchamp",
         "MicrosoftCorporationII.QuickAssist",
-        "microsoft.windowscommunicationsapps",
-        "MicrosoftWindows.Client.WebExperience",
+        # "microsoft.windowscommunicationsapps", # Mail app
+        "MicrosoftWindows.Client.WebExperience", # Widget app
         "Microsoft.Teams",
         "Microsoft.Copilot",
         "Microsoft.WindowsAlarms",
@@ -136,7 +135,7 @@ Confirm-Step -Description "Managing AppX packages and Winget applications..." -A
         "Microsoft.Xbox.TCUI",
         "MSTeams"
     )
-    
+        
     foreach ($AppID in $AppXPackages) {
         Get-AppxPackage -alluser $AppID | Remove-AppxPackage -ErrorAction SilentlyContinue
     }
