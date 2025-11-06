@@ -2,7 +2,6 @@
 
 How to setup various VMs in Proxmox.
 
-
 ## Ubuntu Cloud innit VM
 
 Copy this line in the Proxmox Shell.
@@ -14,7 +13,6 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/juronja/homelab-configs/
 - POST INSTALL - Edit SSH KEY cloud-innit before starting
 And you are done!
 
-
 ## TrueNAS VM
 
 Copy this line in the Proxmox Shell.
@@ -24,7 +22,6 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/juronja/homelab-configs/
 ```
 
 After installed, import PCI Device to be able to access the disks.
-
 
 ### Attach Motherboard Hard disks manually
 
@@ -40,9 +37,7 @@ Attach the disks -scsi1, -scsi2, -scsi3, etc
 qm set 101 -scsi1 /dev/disk/by-id/ata-Hitachi_HTS547564A9E384_J2180053HELJ4C
 
 qm set 101 -scsi2 /dev/disk/by-id/ata-Hitachi_HTS727575A9E364_J3390084GMAGND
-
 ```
-
 
 ## Windows 11 VM
 
@@ -52,21 +47,26 @@ Copy this line in the Proxmox Shell.
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/Infrastructure/Proxmox/scripts/windows11-vm.sh)"
 ```
 
-- STEP 1 - Choose Enterprise edition
+STEPS:
 
-- STEP 2 - Load Drivers
-Load virtio **disk** (amd64>w11) and **network** drivers (NetKVM>w11>amd64) when installing!
+1. Choose Enterprise edition
 
-- STEP 3 - Use local account
-When asked to sign in use local domain (account) option.
+2. Load virtio drivers when installing
 
-- STEP 4 - Install guest-agent and other virtio drivers
-Run the wizard in the iso drive (qemu-ga-x86_64 and virtio-win-gt-x64.msi).
+    - **disk** (amd64>w11)
+    - **network** (NetKVM>w11>amd64)
+
+3. Use local domain (account) when asked to sign in
+
+4. Install guest-agent and other virtio drivers, run the wizard in the iso drive
+
+    - **qemu-ga-x86_64**
+    - **virtio-win-gt-x64.msi**
 
 ### PCIe Passthrough a GPU (WIP)
 
 1. Make sure IOMMU is enabled on the motherboard and CPU supports it
-2. With recent kernels (6.8 or newer), IOMMU is enabled by default.
+2. With recent linux kernels (6.8 or newer), IOMMU is enabled by default.
 3. Add these modules: `printf "\nvfio\nvfio_iommu_type1\nvfio_pci" >> /etc/modules`
 4. Find vendor & device ID with: `lspci -ns 01:00 -v`
 5. Disable VGA: `echo "options vfio-pci ids=10de:1f02 disable_vga=1" > /etc/modprobe.d/vfio.conf`
@@ -78,5 +78,4 @@ Run the wizard in the iso drive (qemu-ga-x86_64 and virtio-win-gt-x64.msi).
 ```bash
 echo "options vfio_iommu_type1 allow_unsafe_interrupts=1" > /etc/modprobe.d/iommu_unsafe_interrupts.conf
 echo "options kvm ignore_msrs=1" > /etc/modprobe.d/kvm.conf
-
 ```
