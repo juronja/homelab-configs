@@ -1,7 +1,6 @@
 # First steps after installing Windows
 
 - Use Windows Terminal with Admin privileges!
-- Update `App Installer` in MS Store to update winget
 
 ## Basics
 
@@ -48,16 +47,14 @@ winget install -e --id calibre.calibre
 winget install -e --id RustDesk.RustDesk
 winget install -e --id CrystalDewWorld.CrystalDiskInfo
 winget install -e --id OBSProject.OBSStudio
-
-
-
-
+winget install -e --id ch.LosslessCut
+winget install -e --id Ollama.Ollama
 
 # Development
 winget install -e --id XP9KHM4BK9FZ7Q -s msstore # Visual Studio Code
 winget install -e --id OpenJS.NodeJS.LTS # Manually upgrade with "winget upgrade -e --id OpenJS.NodeJS.LTS"
 winget install -e --id Git.Git
-winget install -e --id Python.Python.3.14 
+winget install -e --id Python.Python.3.14
 winget install -e --id Amazon.AWSCLI
 winget install -e --id Kubernetes.kubectl
 winget install -e --id Helm.Helm
@@ -67,7 +64,6 @@ winget install -e --id MongoDB.Server
 winget install -e --id MongoDB.Shell
 winget install -e --id MongoDB.Compass.Full
 winget install -e --id Postman.PostmanAgent
-
 ```
 
 ## Networking
@@ -102,7 +98,9 @@ Disable-NetAdapterBinding -Name "Ethernet" -ComponentID ms_tcpip6
 
 ```shell
 New-PSDrive -Name "M" -Root "\\nas.lan\media" -Persist -Scope Global -PSProvider "FileSystem"
+```
 
+```shell
 New-PSDrive -Name "P" -Root "\\nas.lan\personal" -Persist -Scope Global -PSProvider "FileSystem" -Credential juronja
 
 ```
