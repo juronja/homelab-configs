@@ -39,10 +39,10 @@ function Confirm-Step {
 # --- MAIN SCRIPT EXECUTION ---
 
 # Step 1: System Settings
-Confirm-Step -Description "Configuring System Settings (UAC, Taskbar, Start Menu, File Explorer, Theme)..." -Action {
+Confirm-Step -Description "Configuring System Settings (Taskbar, Start Menu, File Explorer, Theme)..." -Action {
   
-    # Disable UAC (requires reboot)
-    Set-itemproperty "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System" -Name "EnableLUA" -Value "0" -Type DWord
+    # Disable UAC (does not work because of UAC protection) do it manually
+    # Set-itemproperty "HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System" -Name "EnableLUA" -Value "0" -Type DWord
     # Disable Password expiry
     # wmic UserAccount set PasswordExpires=False
     # TASKBAR - Removes Widgets and Task View from the Taskbar / Aligns the taskbar to the left
