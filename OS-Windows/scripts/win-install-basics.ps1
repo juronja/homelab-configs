@@ -61,7 +61,7 @@ Confirm-Step -Description "Configuring System Settings (Taskbar, Start Menu, Fil
     # StorageSense - set to run every day.
     # Set-itemproperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy" -Name "2048" -Value "1" -Type DWord #-Force
     
-    Write-Host "✔️ System settings applied." -ForegroundColor Green
+    Write-Host "✔️ System settings applied. Recommended to restart PC before continuing..." -ForegroundColor Green
 }
 
 
@@ -146,14 +146,14 @@ Confirm-Step -Description "Managing AppX packages and Winget applications..." -A
     winget uninstall 9NBLGGH5R558 -e -h # Microsoft To Do
     winget uninstall 9WZDNCRFJ3Q2 -e -h # MSN Weather
     winget uninstall 9NFTCH6J7FHV -e -h # Power Automate
-    # winget uninstall onedrive -e -h
+    winget uninstall onedrive -e -h
 
     Write-Host "-> Installing desired applications..." -ForegroundColor Yellow
     
     # Install using winget
     winget install -e --id Google.Chrome
     winget install -e --id Google.GoogleDrive
-    winget install -e --id XP89DCGQ3K6VLD -s msstore -h # PowerToys
+    winget install -e --id XP89DCGQ3K6VLD -s msstore -h --accept-package-agreements # PowerToys
     winget install -e --id Adobe.Acrobat.Reader.64-bit
     winget install -e --id 7zip.7zip
     winget install -e --id FlorianHeidenreich.Mp3tag
@@ -223,5 +223,5 @@ Confirm-Step -Description "Downloading and setting desktop backgrounds from GitH
 # --- SCRIPT END ---
 Write-Host "`n==========================================================" -ForegroundColor Green
 Write-Host "Script finished." -ForegroundColor Green
-Write-Host "Some changes (like UAC) require a system reboot to take full effect." -ForegroundColor Yellow
+Write-Host "Some changes require a system reboot to take full effect." -ForegroundColor Yellow
 Write-Host ""
