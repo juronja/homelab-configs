@@ -34,6 +34,7 @@ wsl --install -d Ubuntu
 ```shell
 winget install -e --id XP9CDQW6ML4NQN -s msstore # Plex
 winget install -e --id Plex.Plexamp
+winget install -e --id 9NCBCSZSJRSB -s msstore --accept-package-agreements # Spotify
 winget install -e --id Telegram.TelegramDesktop
 winget install -e --id 9NKSQGP7F2NH -s msstore # WhatsApp
 winget install -e --id Discord.Discord
