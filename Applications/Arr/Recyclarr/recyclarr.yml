@@ -276,7 +276,7 @@ sonarr:
           - 90501962793d580d011511155c97e4e5 # VP9
           - cddfb4e32db826151d97352b8e37c648 # x264
           - c9eafd50846d299b862ca9bb6ea91950 # x265
-          - 9b64dff695c2115facf1b6ea59c9bd07 # x265 (no HDR/DV)
+          # - 9b64dff695c2115facf1b6ea59c9bd07 # x265 (no HDR/DV)
           - 041d90b435ebd773271cea047a457a6a # x266
 
           # Optional Streaming Services
@@ -587,7 +587,6 @@ radarr:
           - e204b80c87be9497a8a6eaff48f72905 # LQ (Release Title)
           - 712d74cd88bceb883ee32f773656b1f5 # Sing-Along Versions
           - bfd8eb01832d646a0a89c4deb46f8564 # Upscaled
-          - dc98083864ea246d05a42df0d05f81cc # x265 (HD)
 
         # Uncomment the below properties to specify one or more quality profiles that should be updated with scores from the guide for each custom format. Without this, custom formats are synced to Radarr but no scores are set in any quality profiles.
         assign_scores_to:

@@ -14,6 +14,7 @@ Run `recyclarr sync` to sync settings.
 vi recyclarr.yml
 ggdG # delete all text
 Shift + Insert # paste new text
+#correct first line!!
 Esc
 :wq
 ```
