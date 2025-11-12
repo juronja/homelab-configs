@@ -207,12 +207,24 @@
 		request_body {
 			max_size 1000KB
 		}
-		rate_limit {
+		rate_limit /signin {
 			zone limit_by_ip {
 				key {remote_host}
-				events 50
+				events 20
 				window 10s
 			}
+		}
+	}
+}
+*.lan {
+	tls internal
+    
+	@owui host openwebui.lan
+	handle @owui {
+		reverse_proxy openwebui.fromproxy:8080
+		header {
+			# Prevent the site from being embedded in an iframe, mitigating clickjacking.
+			X-Frame-Options DENY
 		}
 	}
 }

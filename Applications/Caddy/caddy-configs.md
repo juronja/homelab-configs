@@ -1,7 +1,6 @@
 # Caddy configurations
 
 ## Cloudflare CA certificates
-
 Copy the cloudflare certs to a folder.
 
 ```shell
@@ -9,6 +8,14 @@ mkdir -m 750 /etc/caddy/certs
 install -m 640 /dev/null /etc/caddy/certs/homelabtales_com-origin-cert.pem
 install -m 640 /dev/null /etc/caddy/certs/homelabtales_com-private-key.key
 chown -R root:caddy /etc/caddy/certs
+```
+
+## Copy Caddy local cert to windows (powershell)
+
+```bash
+scp root@caddy:/var/lib/caddy/.local/share/caddy/pki/authorities/local/root.crt $env:USERPROFILE/caddy.crt
+
+Import-Certificate -FilePath "$env:USERPROFILE\caddy.crt" -CertStoreLocation Cert:\LocalMachine\Root
 ```
 
 ## Hash passwords
