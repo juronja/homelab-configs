@@ -263,9 +263,10 @@ else
 fi
 
 # Install additional programs
-if installPrograms=$(whiptail --backtitle "Install - Ubuntu VM" --title "INSTALL PROGRAMS" --checklist "\nInstall these programs? (Spacebar to select)" 12 58 4 \
+if installPrograms=$(whiptail --backtitle "Install - Ubuntu VM" --title "INSTALL PROGRAMS" --checklist "\nInstall these programs? (Spacebar to select)" 12 58 5 \
   "docker" "" OFF \
   "prometheus-node-exporter" "" OFF \
+  "code-server" "" OFF \
   "ansible" "" OFF \
   "minecraft" "" OFF \
   3>&1 1>&2 2>&3); then
@@ -291,17 +292,18 @@ if [[ "$installPrograms" =~ "docker" ]]; then
   fi
 fi
 
-# Constant variables
+# Constant variables for app installs
+PortainerComposeUrl="https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/Infrastructure/Portainer/Enterprise/compose.yaml"
+JenkinsDockerfileUrl="https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/CI-CD/Jenkins/Dockerfile"
+JenkinsComposeUrl="https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/CI-CD/Jenkins/compose.yaml"
+CodeServerComposeUrl="https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/Applications/Code-server/compose.yaml"
+
+# Proxmox variables
 RAM=$(($RAM_COUNT * 1024))
 IMG_LOCATION="/var/lib/vz/template/iso/"
 CPU="x86-64-v3"
 CLOUD_INNIT_ABSOLUTE="/var/lib/vz/snippets/ubuntu-$VM_NAME-cloud-init.yml"
 CLOUD_INNIT_LOCAL="snippets/ubuntu-$VM_NAME-cloud-init.yml"
-PortainerComposeUrl="https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/Infrastructure/Portainer/Enterprise/compose.yaml"
-JenkinsDockerfileUrl="https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/CI-CD/Jenkins/Dockerfile"
-JenkinsComposeUrl="https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/CI-CD/Jenkins/compose.yaml"
-
-# Proxmox variables
 CLUSTER_FW_ENABLED=$(pvesh get /cluster/firewall/options --output-format json | sed -n 's/.*"enable": *\([0-9]*\).*/\1/p')
 LOCAL_NETWORK=$(pve-firewall localnet | grep local_network | cut -d':' -f2 | sed 's/ //g')
 ALIAS_HOME_NETWORK="home_network"
@@ -426,6 +428,19 @@ if [[ "$installPrograms" =~ "prometheus-node-exporter" ]]; then
   sed -i 's/#- prometheus-node-exporter/- prometheus-node-exporter/' $CLOUD_INNIT_ABSOLUTE
 fi
 
+# Install Code-server
+if [[ "$installPrograms" =~ "code-server" ]]; then
+  cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
+  # Mount SMB for code-server
+  - mkdir -m 750 /home/$OS_USER/apps/code-server
+  - chown -R $OS_USER:$OS_USER /home/$OS_USER/apps/code-server
+  # Install Code-server
+  - curl -fsSL https://code-server.dev/install.sh | sh
+  - sed -i 's/bind-addr: 127.0.0.1:8080/bind-addr: 0.0.0.0:8080' ~/.config/code-server/config.yaml
+  - sed -i 's/auth: password/auth: none' ~/.config/code-server/config.yaml
+  - sudo systemctl enable --now code-server@$USER
+EOF
+fi
 
 # Install Ansible and dependencies
 if [[ "$installPrograms" =~ "ansible" ]]; then
