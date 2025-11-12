@@ -26,19 +26,17 @@ Do not set HTTP/2 Support
 
 Note you can force SSL by setting required and not adding the HTTP URL, however some players which do not support HTTPS (e.g: Roku, Playstations, some SmartTVs) will no longer function.
 
-
 ### Plex LXC - mount SMB
 
 When installing a LXC container in proxmox you can mount a network Samba share drive.
 
 1. Install cifs-utils
 2. Make a directory in /mnt
-2. Mount network drive with nas/share username and the right IP
+3. Mount network drive with nas/share username and the right IP
 
 ```bash
 apt update && apt install cifs-utils && mkdir /mnt/media
 mount -t cifs //nas.lan/media/Plex /mnt/media -o username=NAS_USERNAME,password=NAS_PASSWORD
-
 ```
 
 #### Mount on system reboot with crontab
@@ -48,5 +46,4 @@ crontab -e
 
 # Add this line:
 @reboot mount -t cifs //nas.lan/media/Plex /mnt/media -o username=NAS_USERNAME,password=NAS_PASSWORD
-
 ```

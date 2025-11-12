@@ -1,7 +1,7 @@
 # Useful Proxmox configurations
 
-- When installing I use `.lan` local domain. e.g. `pve-i7-8700.lan`.
-- API URL endpoint for `pvesh` command: https://pve-i7-8700.lan:8006/api2/html/
+- When installing I use `.lan` local domain. e.g. `pve-i7-9700.lan`.
+- API URL endpoint for `pvesh` command: <https://pve-i7-9700.lan:8006/api2/html/>
 
 ## First time setup
 
@@ -9,10 +9,9 @@ Common steps when installing proxmox for the first time. Use this script:
 
 https://community-scripts.github.io/ProxmoxVE/scripts?id=post-pve-install
 
-
 ## Firewall setup
 
-Official docs: https://pve.proxmox.com/wiki/Firewall
+Official docs: <https://pve.proxmox.com/wiki/Firewall>
 
 ### Cluster level Firewall
 
@@ -56,7 +55,6 @@ pvesh set /nodes/$NODE/lxc/{{LXCID}}/firewall/options --enable 1
 
 Go to node System > Network > vmbr0 and tick the VLAN aware option, also limit VLAN IDs in advanced options (2-4).
 
-
 ## Drive share for Truenas Rsync
 
 1. Create a **directory** type disk with **ext4** filesystem. pvenode>Disks>Directory>Create: Directory
@@ -69,9 +67,11 @@ You can use this to migrate VMs from one machine to another.
 1. Create a backup with Mode `Stop`. Other settings can be default.
 2. By default it will save backups to `local` storage and to `/var/lib/vz/dump` folder.
 3. Copy backup folder and cloud-init scripts to another machine via SCP:
-```bash
-scp -r /var/lib/vz/dump /var/lib/vz/snippets root@pve-9700.lan:/var/lib/vz/
-```
+
+    ```bash
+    scp -r /var/lib/vz/dump /var/lib/vz/snippets root@pve-9700.lan:/var/lib/vz/
+    ```
+
 4. Restore VM from backups
 5. Check if Firewall needs to be set (this does not get copied)
 
@@ -81,8 +81,6 @@ Order 1: adguard, (startup delay: 20s)
 Order 2: truenas-scale (startup delay: 120s), haos, hosting-prod, caddy
 Order 3: Any
 
-
-
 ## Clustering
 
 Official docs: https://pve.proxmox.com/wiki/Cluster_Manager
@@ -91,23 +89,23 @@ Official docs: https://pve.proxmox.com/wiki/Cluster_Manager
 
 1. Identify the node ID to remove:
 
-```bash
-pvecm nodes
-```
-At this point, you must power off hp4 and ensure that it will not power on again (in the network) with its current configuration.
+    ```bash
+    pvecm nodes
+    ```
 
-2. IMPORTANT: Set the quorum votes on the last node to 1!! 
+    At this point, you must power off hp4 and ensure that it will not power on again (in the network) with its current configuration.
 
-```bash
-pvecm expected 1
-```
+2. IMPORTANT: Set the quorum votes on the last node to 1!!
 
+    ```bash
+    pvecm expected 1
+    ```
 
 3. We can safely remove it from the cluster now. error = CS_ERR_NOT_EXIST can be ignored.
 
-```bash
-pvecm delnode pve-nodename
-```
+    ```bash
+    pvecm delnode pve-nodename
+    ```
 
 ### Remove the cluster
 
