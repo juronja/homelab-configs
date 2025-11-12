@@ -22,6 +22,7 @@ apt:
 packages:
   - qemu-guest-agent
   - python3-pip
+  - cifs-utils
   #- ansible
   #- openjdk-21-jre-headless
 snap:
