@@ -42,14 +42,19 @@ winget install -e --id Logitech.OptionsPlus
 winget install -e --id Logitech.GHUB
 # winget install -e --id Nvidia.GeForceExperience # outdated
 winget install -e --id Valve.Steam
+
 winget install -e --id WireGuard.WireGuard
+winget install -e --id RustDesk.RustDesk
+winget install -e --id Ollama.Ollama
+
 winget install -e --name "Blender 4.5 LTS" -s msstore
 winget install -e --id calibre.calibre
-winget install -e --id RustDesk.RustDesk
-winget install -e --id CrystalDewWorld.CrystalDiskInfo
+
 winget install -e --id OBSProject.OBSStudio
+winget install -e --id Elgato.StreamDeck
 winget install -e --id ch.LosslessCut
-winget install -e --id Ollama.Ollama
+
+winget install -e --id CrystalDewWorld.CrystalDiskInfo
 
 # Development
 winget install -e --id XP9KHM4BK9FZ7Q -s msstore # Visual Studio Code
