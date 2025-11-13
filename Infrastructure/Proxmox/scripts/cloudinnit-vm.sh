@@ -292,11 +292,44 @@ if [[ "$installPrograms" =~ "docker" ]]; then
   fi
 fi
 
+if [[ "$installPrograms" =~ "code-server" ]]; then
+  while true; do
+    if NAS_USERNAME=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nSMB username" 8 58 --title "SMB USERNAME" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
+      if [[ -z $NAS_USERNAME ]]; then
+        whiptail --backtitle "Install - Ubuntu VM" --msgbox "Username cannot be empty" 8 58
+      else
+        break # Username is not empty, break out of the loop
+      fi
+    else
+      exit_script
+    fi
+  done
+
+  while true; do
+    if NAS_PASSWORD=$(whiptail --backtitle "Install - Ubuntu VM" --passwordbox "\nSMB password" 8 58 --title "SMB PASSWORD" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
+      if [[ -z $NAS_PASSWORD ]]; then
+        whiptail --backtitle "Install - Ubuntu VM" --msgbox "Password cannot be empty" 8 58
+      elif [[ "$NAS_PASSWORD" == *" "* ]]; then
+        whiptail --backtitle "Install - Ubuntu VM" --msgbox "Password cannot contain spaces. Please try again." 8 58
+      elif [ ${#NAS_PASSWORD} -lt 8 ]; then
+        whiptail --backtitle "Install - Ubuntu VM" --msgbox "Password must be at least 8 characters long. Please try again." 8 58
+      else
+        break # Password is valid, break out of the loop
+      fi
+    else
+      exit_script
+    fi
+  done
+fi
+
+
 # Constant variables for app installs
 PortainerComposeUrl="https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/Infrastructure/Portainer/Enterprise/compose.yaml"
 JenkinsDockerfileUrl="https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/CI-CD/Jenkins/Dockerfile"
 JenkinsComposeUrl="https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/CI-CD/Jenkins/compose.yaml"
 CodeServerComposeUrl="https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/Applications/Code-server/compose.yaml"
+NAS_USERNAME="juronja"
+NAS_PASSWORD="pass"
 
 # Proxmox variables
 RAM=$(($RAM_COUNT * 1024))
@@ -431,9 +464,10 @@ fi
 # Install Code-server
 if [[ "$installPrograms" =~ "code-server" ]]; then
   cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
-  # Mount SMB for code-server
+  # Mount SMB
   - mkdir -m 750 /home/$OS_USER/apps/code-server
   - chown -R $OS_USER:$OS_USER /home/$OS_USER/apps/code-server
+  - sudo sed -i '\$a //nas.lan/personal/Development /home/$OS_USER/apps/code-server cifs username=$NAS_USERNAME,password=$NAS_PASSWORD,uid=$OS_USER,gid=$OS_USER,_netdev 0 0' /etc/fstab
   # Install Code-server
   - curl -fsSL https://code-server.dev/install.sh | sh
   - sed -i 's/bind-addr: 127.0.0.1:8080/bind-addr: 0.0.0.0:8080' ~/.config/code-server/config.yaml
