@@ -463,12 +463,12 @@ fi
 if [[ "$installPrograms" =~ "code-server" ]]; then
   cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
   # Mount SMB
-  - mkdir -m 750 /home/$OS_USER/apps/code-server
-  - chown -R $OS_USER:$OS_USER /home/$OS_USER/apps/code-server
-  - sudo sed -i '\$a //nas.lan/personal/Development /home/$OS_USER/apps/code-server cifs username=$NAS_USERNAME,password=$NAS_PASSWORD,uid=$OS_USER,gid=$OS_USER,_netdev 0 0' /etc/fstab
+  - mkdir -m 750 /home/$OS_USER/code-server-repos
+  - chown -R $OS_USER:$OS_USER /home/$OS_USER/code-server-repos
+  - sudo sed -i '\$a //nas.lan/personal/Development /home/$OS_USER/code-server-repos cifs username=$NAS_USERNAME,password=$NAS_PASSWORD,uid=$OS_USER,gid=$OS_USER,_netdev 0 0' /etc/fstab
   # Install Code-server
-  - curl -fsSL https://code-server.dev/install.sh | sh
-  - sudo systemctl enable --now code-server@\$USER
+  - su - juronja -c 'curl -fsSL https://code-server.dev/install.sh | sh'
+  # - sudo systemctl enable --now code-server@\$USER
   # - sed -i 's|bind-addr":" 127.0.0.1|bind-addr":" 0.0.0.0|' ~/.config/code-server/config.yaml
   # - sed -i 's|auth":" password|auth":" none' ~/.config/code-server/config.yaml
 EOF
