@@ -470,9 +470,8 @@ if [[ "$installPrograms" =~ "code-server" ]]; then
   - mount -a
   # Install Code-server
   - sed -i 's/#- snap install code-server/- snap install code-server/' $CLOUD_INNIT_ABSOLUTE
-  # - systemctl enable --now code-server@\$USER
-  # - sed -i 's|bind-addr":" 127.0.0.1|bind-addr":" 0.0.0.0|' ~/.config/code-server/config.yaml
-  # - sed -i 's|auth":" password|auth":" none' ~/.config/code-server/config.yaml
+  - sed -i 's|bind-addr":" 127.0.0.1|bind-addr":" 0.0.0.0|' /var/snap/code-server/current/config.yaml
+  # - sed -i 's|auth":" password|auth":" none' /var/snap/code-server/current/config.yaml
 EOF
 fi
 
