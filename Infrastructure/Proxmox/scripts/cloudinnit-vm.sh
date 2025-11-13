@@ -467,8 +467,8 @@ if [[ "$installPrograms" =~ "code-server" ]]; then
   - chown -R $OS_USER:$OS_USER /home/$OS_USER/apps/code-server
   - sudo sed -i '\$a //nas.lan/personal/Development /home/$OS_USER/apps/code-server cifs username=$NAS_USERNAME,password=$NAS_PASSWORD,uid=$OS_USER,gid=$OS_USER,_netdev 0 0' /etc/fstab
   # Install Code-server
-  # - curl -fsSL https://code-server.dev/install.sh | sh
-  # - sed -i 's|"bind-addr: 127.0.0.1:8080"|"bind-addr: 0.0.0.0:8080"' ~/.config/code-server/config.yaml
+  - curl -fsSL https://code-server.dev/install.sh | sh
+  - sed -i 's|"bind-addr: 127.0.0.1:8080"|"bind-addr: 0.0.0.0:8080"' ~/.config/code-server/config.yaml
   # - sed -i 's|"auth: password"|"auth: none"' ~/.config/code-server/config.yaml
   # - sudo systemctl enable --now code-server@$USER
 EOF
