@@ -470,12 +470,10 @@ EOF
   cat <<'EOF' >> $CLOUD_INNIT_ABSOLUTE
   # Install Code-server
   - curl -fsSL https://code-server.dev/install.sh | sh
-  - sed -i 's|bind-addr: 127.0.0.1|bind-addr: 0.0.0.0|' ~/.config/code-server/config.yaml
+  - sed -i 's|bind-addr":" 127.0.0.1|bind-addr":" 0.0.0.0|' ~/.config/code-server/config.yaml
   # - sed -i 's|"auth: password"|"auth: none"' ~/.config/code-server/config.yaml
   # - sudo systemctl enable --now code-server@$USER
 EOF
-
-
 fi
 
 # Install Ansible and dependencies
