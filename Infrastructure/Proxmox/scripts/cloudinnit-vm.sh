@@ -303,7 +303,7 @@ fi
 
 if [[ "$installPrograms" =~ "code-server" ]]; then
   while true; do
-    if NAS_USERNAME=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nSMB username" 8 58 --title "SMB USERNAME" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
+    if NAS_USERNAME=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nSMB username for mounting GitRepos" 8 58 --title "MOUNT SMB GITREPOS" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
       if [[ -z $NAS_USERNAME ]]; then
         whiptail --backtitle "Install - Ubuntu VM" --msgbox "Username cannot be empty" 8 58
       else
@@ -315,7 +315,7 @@ if [[ "$installPrograms" =~ "code-server" ]]; then
   done
 
   while true; do
-    if NAS_PASSWORD=$(whiptail --backtitle "Install - Ubuntu VM" --passwordbox "\nSMB password" 8 58 --title "SMB PASSWORD" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
+    if NAS_PASSWORD=$(whiptail --backtitle "Install - Ubuntu VM" --passwordbox "\nSMB password for mounting GitRepos" 8 58 --title "MOUNT SMB GITREPOS" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
       if [[ -z $NAS_PASSWORD ]]; then
         whiptail --backtitle "Install - Ubuntu VM" --msgbox "Password cannot be empty" 8 58
       elif [[ "$NAS_PASSWORD" == *" "* ]]; then
