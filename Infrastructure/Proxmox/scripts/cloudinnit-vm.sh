@@ -471,7 +471,7 @@ if [[ "$installPrograms" =~ "code-server" ]]; then
   - mount -a
   # Configure Code-server
   - sed -i 's| 127.0.0.1| 0.0.0.0|' /var/snap/code-server/current/config.yaml
-  - sed -i 's| password| none' /var/snap/code-server/current/config.yaml
+  - sed -i 's| password| none|' /var/snap/code-server/current/config.yaml
 EOF
 fi
 
