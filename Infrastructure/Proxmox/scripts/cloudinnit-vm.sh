@@ -385,6 +385,7 @@ apt:
 packages:
   - qemu-guest-agent
   - python3-pip
+  - cifs-utils
   #- prometheus-node-exporter
   #- ansible
   #- openjdk-21-jre-headless
