@@ -365,8 +365,6 @@ qm set $NEXTID --scsi0 local-lvm:vm-$NEXTID-disk-0,discard=on,ssd=1 --ide2 local
 qm disk resize $NEXTID scsi0 "${DISK_SIZE}G" && qm set $NEXTID --boot order=scsi0
 
 # Configure Cloudinit datails
-
-rm $CLOUD_INNIT_ABSOLUTE
 touch $CLOUD_INNIT_ABSOLUTE
 
 cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
@@ -482,7 +480,7 @@ if [[ "$installPrograms" =~ "code-server" ]]; then
   # Configure Code-server
   - curl -fOL https://github.com/coder/code-server/releases/download/v$CODE_SERVER_VERSION/code-server_${CODE_SERVER_VERSION}_amd64.deb
   - dpkg -i code-server_${CODE_SERVER_VERSION}_amd64.deb
-  - systemctl enable --now code-server@\$USER
+  - systemctl enable --now code-server@$OS_USER
   - sed -i 's| 127.0.0.1| 0.0.0.0|' /home/$OS_USER/.config/code-server/config.yaml
   - sed -i 's| password| none|' /home/$OS_USER/.config/code-server/config.yaml
 EOF
