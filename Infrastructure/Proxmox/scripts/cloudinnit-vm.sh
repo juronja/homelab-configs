@@ -366,7 +366,7 @@ hostname: $VM_NAME
 manage_etc_hosts: true
 fqdn: $VM_NAME
 users:
-  - default
+  #- default
   - name: $OS_USER
     groups: users, sudo, docker # Add docker group here so user is in docker group from start
     shell: /bin/bash # Set a default shell
