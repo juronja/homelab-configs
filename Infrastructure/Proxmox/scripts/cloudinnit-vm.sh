@@ -292,44 +292,41 @@ if [[ "$installPrograms" =~ "docker" ]]; then
   fi
 fi
 
-# if [[ "$installPrograms" =~ "code-server" ]]; then
-#   while true; do
-#     if NAS_USERNAME=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nSMB username" 8 58 --title "SMB USERNAME" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
-#       if [[ -z $NAS_USERNAME ]]; then
-#         whiptail --backtitle "Install - Ubuntu VM" --msgbox "Username cannot be empty" 8 58
-#       else
-#         break # Username is not empty, break out of the loop
-#       fi
-#     else
-#       exit_script
-#     fi
-#   done
+if [[ "$installPrograms" =~ "code-server" ]]; then
+  while true; do
+    if NAS_USERNAME=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nSMB username" 8 58 --title "SMB USERNAME" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
+      if [[ -z $NAS_USERNAME ]]; then
+        whiptail --backtitle "Install - Ubuntu VM" --msgbox "Username cannot be empty" 8 58
+      else
+        break # Username is not empty, break out of the loop
+      fi
+    else
+      exit_script
+    fi
+  done
 
-#   while true; do
-#     if NAS_PASSWORD=$(whiptail --backtitle "Install - Ubuntu VM" --passwordbox "\nSMB password" 8 58 --title "SMB PASSWORD" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
-#       if [[ -z $NAS_PASSWORD ]]; then
-#         whiptail --backtitle "Install - Ubuntu VM" --msgbox "Password cannot be empty" 8 58
-#       elif [[ "$NAS_PASSWORD" == *" "* ]]; then
-#         whiptail --backtitle "Install - Ubuntu VM" --msgbox "Password cannot contain spaces. Please try again." 8 58
-#       elif [ ${#NAS_PASSWORD} -lt 8 ]; then
-#         whiptail --backtitle "Install - Ubuntu VM" --msgbox "Password must be at least 8 characters long. Please try again." 8 58
-#       else
-#         break # Password is valid, break out of the loop
-#       fi
-#     else
-#       exit_script
-#     fi
-#   done
-# fi
-
+  while true; do
+    if NAS_PASSWORD=$(whiptail --backtitle "Install - Ubuntu VM" --passwordbox "\nSMB password" 8 58 --title "SMB PASSWORD" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
+      if [[ -z $NAS_PASSWORD ]]; then
+        whiptail --backtitle "Install - Ubuntu VM" --msgbox "Password cannot be empty" 8 58
+      elif [[ "$NAS_PASSWORD" == *" "* ]]; then
+        whiptail --backtitle "Install - Ubuntu VM" --msgbox "Password cannot contain spaces. Please try again." 8 58
+      elif [ ${#NAS_PASSWORD} -lt 8 ]; then
+        whiptail --backtitle "Install - Ubuntu VM" --msgbox "Password must be at least 8 characters long. Please try again." 8 58
+      else
+        break # Password is valid, break out of the loop
+      fi
+    else
+      exit_script
+    fi
+  done
+fi
 
 # Constant variables for app installs
 PortainerComposeUrl="https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/Infrastructure/Portainer/Enterprise/compose.yaml"
 JenkinsDockerfileUrl="https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/CI-CD/Jenkins/Dockerfile"
 JenkinsComposeUrl="https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/CI-CD/Jenkins/compose.yaml"
 CodeServerComposeUrl="https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/Applications/Code-server/compose.yaml"
-NAS_USERNAME="juronja"
-NAS_PASSWORD="pass"
 
 # Proxmox variables
 RAM=$(($RAM_COUNT * 1024))
