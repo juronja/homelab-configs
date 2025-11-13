@@ -475,7 +475,7 @@ if [[ "$installPrograms" =~ "code-server" ]]; then
   # sed -i 's/#- snap install code-server/- snap install code-server/' $CLOUD_INNIT_ABSOLUTE
   cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
   # Mount SMB
-  - mkdir -m 750 /home/$OS_USER/apps/code-server/GitRepos
+  - mkdir -p -m 750 /home/$OS_USER/apps/code-server/GitRepos
   - chown -R $OS_USER:$OS_USER /home/$OS_USER/apps/code-server/GitRepos
   - sed -i '\$a //nas.lan/personal/Development /home/$OS_USER/apps/code-server/GitRepos cifs username=$NAS_USERNAME,password=$NAS_PASSWORD,uid=$OS_USER,gid=$OS_USER,_netdev 0 0' /etc/fstab
   - mount -a
