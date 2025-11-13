@@ -475,12 +475,11 @@ if [[ "$installPrograms" =~ "code-server" ]]; then
   # sed -i 's/#- snap install code-server/- snap install code-server/' $CLOUD_INNIT_ABSOLUTE
   cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
   # Mount SMB
-  - mkdir -p -m 750 /home/$OS_USER/apps/code-server/GitRepos
-  - chown -R $OS_USER:$OS_USER /home/$OS_USER/apps/code-server/GitRepos
-  - sed -i '\$a //nas.lan/personal/Development /home/$OS_USER/apps/code-server/GitRepos cifs username=$NAS_USERNAME,password=$NAS_PASSWORD,uid=$OS_USER,gid=$OS_USER,_netdev 0 0' /etc/fstab
+  - mkdir -m 750 /home/$OS_USER/GitRepos
+  - chown -R $OS_USER:$OS_USER /home/$OS_USER/GitRepos
+  - sed -i '\$a //nas.lan/personal/Development /home/$OS_USER/ cifs username=$NAS_USERNAME,password=$NAS_PASSWORD,uid=$OS_USER,gid=$OS_USER,_netdev 0 0' /etc/fstab
   - mount -a
   # Configure Code-server
-  - cd /home/$OS_USER/apps/code-server/
   - curl -fOL https://github.com/coder/code-server/releases/download/v$CODE_SERVER_VERSION/code-server_${CODE_SERVER_VERSION}_amd64.deb
   - dpkg -i code-server_${CODE_SERVER_VERSION}_amd64.deb
   - systemctl enable --now code-server@\$USER
