@@ -481,7 +481,7 @@ if [[ "$installPrograms" =~ "code-server" ]]; then
   - curl -fOL https://github.com/coder/code-server/releases/download/v$CODE_SERVER_VERSION/code-server_${CODE_SERVER_VERSION}_amd64.deb
   - dpkg -i code-server_${CODE_SERVER_VERSION}_amd64.deb
   - systemctl enable --now code-server@$OS_USER
-  - sleep 5s
+  - sleep 3s
   - sed -i 's| 127.0.0.1| 0.0.0.0|' /home/$OS_USER/.config/code-server/config.yaml
   - sed -i 's| password| none|' /home/$OS_USER/.config/code-server/config.yaml
 EOF
