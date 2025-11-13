@@ -462,16 +462,16 @@ fi
 
 # Install Code-server
 if [[ "$installPrograms" =~ "code-server" ]]; then
+  sed -i 's/#- snap install code-server/- snap install code-server/' $CLOUD_INNIT_ABSOLUTE
   cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
   # Mount SMB
   - mkdir -m 750 /home/$OS_USER/code-server-repos
   - chown -R $OS_USER:$OS_USER /home/$OS_USER/code-server-repos
   - sed -i '\$a //nas.lan/personal/Development /home/$OS_USER/code-server-repos cifs username=$NAS_USERNAME,password=$NAS_PASSWORD,uid=$OS_USER,gid=$OS_USER,_netdev 0 0' /etc/fstab
   - mount -a
-  # Install Code-server
-  - sed -i 's/#- snap install code-server/- snap install code-server/' $CLOUD_INNIT_ABSOLUTE
-  - sed -i 's|bind-addr":" 127.0.0.1|bind-addr":" 0.0.0.0|' /var/snap/code-server/current/config.yaml
-  # - sed -i 's|auth":" password|auth":" none' /var/snap/code-server/current/config.yaml
+  # Configure Code-server
+  - sed -i 's| 127.0.0.1| 0.0.0.0|' /var/snap/code-server/current/config.yaml
+  - sed -i 's| password| none' /var/snap/code-server/current/config.yaml
 EOF
 fi
 
