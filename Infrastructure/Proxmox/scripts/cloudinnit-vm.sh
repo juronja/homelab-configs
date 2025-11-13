@@ -480,11 +480,11 @@ if [[ "$installPrograms" =~ "code-server" ]]; then
   - sed -i '\$a //nas.lan/personal/Development /home/$OS_USER/code-server-repos cifs username=$NAS_USERNAME,password=$NAS_PASSWORD,uid=$OS_USER,gid=$OS_USER,_netdev 0 0' /etc/fstab
   - mount -a
   # Configure Code-server
-  - echo "$CODE_SERVER_VERSION"
   - curl -fOL https://github.com/coder/code-server/releases/download/v$CODE_SERVER_VERSION/code-server_${CODE_SERVER_VERSION}_amd64.deb
   - dpkg -i code-server_${CODE_SERVER_VERSION}_amd64.deb
-  - sed -i 's| 127.0.0.1| 0.0.0.0|' /var/snap/code-server/current/config.yaml
-  - sed -i 's| password| none|' /var/snap/code-server/current/config.yaml
+  - systemctl enable --now code-server@\$USER
+  - sed -i 's| 127.0.0.1| 0.0.0.0|' /home/$OS_USER/.config/code-server/config.yaml
+  - sed -i 's| password| none|' /home/$OS_USER/.config/code-server/config.yaml
 EOF
 fi
 
