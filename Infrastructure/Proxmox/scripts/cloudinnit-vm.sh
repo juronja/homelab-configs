@@ -393,6 +393,7 @@ snap:
   commands:
   #- snap install aws-cli --classic
   #- snap install kubectl --classic
+  #- snap install code-server
 runcmd:
   # Configure automatic updates
   - sed -i 's|//Unattended-Upgrade::Automatic-Reboot-Time "02:00"|Unattended-Upgrade::Automatic-Reboot-Time "06:00"|' /etc/apt/apt.conf.d/50unattended-upgrades
@@ -468,7 +469,7 @@ if [[ "$installPrograms" =~ "code-server" ]]; then
   - sed -i '\$a //nas.lan/personal/Development /home/$OS_USER/code-server-repos cifs username=$NAS_USERNAME,password=$NAS_PASSWORD,uid=$OS_USER,gid=$OS_USER,_netdev 0 0' /etc/fstab
   - mount -a
   # Install Code-server
-  - curl -fsSL https://code-server.dev/install.sh | sh
+  - sed -i 's/#- snap install code-server/- snap install code-server/' $CLOUD_INNIT_ABSOLUTE
   # - systemctl enable --now code-server@\$USER
   # - sed -i 's|bind-addr":" 127.0.0.1|bind-addr":" 0.0.0.0|' ~/.config/code-server/config.yaml
   # - sed -i 's|auth":" password|auth":" none' ~/.config/code-server/config.yaml
