@@ -326,7 +326,7 @@ fi
 PortainerComposeUrl="https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/Infrastructure/Portainer/Enterprise/compose.yaml"
 JenkinsDockerfileUrl="https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/CI-CD/Jenkins/Dockerfile"
 JenkinsComposeUrl="https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/CI-CD/Jenkins/compose.yaml"
-CodeServerComposeUrl="https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/Applications/Code-server/compose.yaml"
+CODE_SERVER_VERSION="$(curl -fsSL https://api.github.com/repos/coder/code-server/releases | awk 'match($0,/.*"html_url": "(.*\/releases\/tag\/.*)".*/)' | head -n 1 | awk -F '"' '{print $4}')"
 
 # Proxmox variables
 RAM=$(($RAM_COUNT * 1024))
@@ -462,7 +462,7 @@ fi
 
 # Install Code-server
 if [[ "$installPrograms" =~ "code-server" ]]; then
-  sed -i 's/#- snap install code-server/- snap install code-server/' $CLOUD_INNIT_ABSOLUTE
+  # sed -i 's/#- snap install code-server/- snap install code-server/' $CLOUD_INNIT_ABSOLUTE
   cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
   # Mount SMB
   - mkdir -m 750 /home/$OS_USER/code-server-repos
@@ -470,6 +470,7 @@ if [[ "$installPrograms" =~ "code-server" ]]; then
   - sed -i '\$a //nas.lan/personal/Development /home/$OS_USER/code-server-repos cifs username=$NAS_USERNAME,password=$NAS_PASSWORD,uid=$OS_USER,gid=$OS_USER,_netdev 0 0' /etc/fstab
   - mount -a
   # Configure Code-server
+  - curl -fOL https://github.com/coder/code-server/releases/download/v$CODE_SERVER_VERSION/code-server_${CODE_SERVER_VERSION}_amd64.deb
   - sed -i 's| 127.0.0.1| 0.0.0.0|' /var/snap/code-server/current/config.yaml
   - sed -i 's| password| none|' /var/snap/code-server/current/config.yaml
 EOF
