@@ -465,13 +465,18 @@ if [[ "$installPrograms" =~ "code-server" ]]; then
   # Mount SMB
   - mkdir -m 750 /home/$OS_USER/code-server-repos
   - chown -R $OS_USER:$OS_USER /home/$OS_USER/code-server-repos
-  - sudo sed -i '\$a //nas.lan/personal/Development /home/$OS_USER/code-server-repos cifs username=$NAS_USERNAME,password=$NAS_PASSWORD,uid=$OS_USER,gid=$OS_USER,_netdev 0 0' /etc/fstab
+  - sed -i '\$a //nas.lan/personal/Development /home/$OS_USER/code-server-repos cifs username=$NAS_USERNAME,password=$NAS_PASSWORD,uid=$OS_USER,gid=$OS_USER,_netdev 0 0' /etc/fstab
+  - mount -a
+EOF
+  cat <<'EOF' >> $CLOUD_INNIT_ABSOLUTE
   # Install Code-server
-  - su - juronja -c 'curl -fsSL https://code-server.dev/install.sh | sh'
-  # - sudo systemctl enable --now code-server@\$USER
+  - curl -fOL https://github.com/coder/code-server/releases/download/v$VERSION/code-server_${VERSION}_amd64.deb
+  - dpkg -i code-server_${VERSION}_amd64.deb
+  - systemctl enable --now code-server@$USER
   # - sed -i 's|bind-addr":" 127.0.0.1|bind-addr":" 0.0.0.0|' ~/.config/code-server/config.yaml
   # - sed -i 's|auth":" password|auth":" none' ~/.config/code-server/config.yaml
 EOF
+
 fi
 
 # Install Ansible and dependencies
