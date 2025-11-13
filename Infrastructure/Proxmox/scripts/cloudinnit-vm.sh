@@ -82,6 +82,15 @@ get_latest_minecraft_release() {
     return 0
 }
 
+# Get latests Code-server version
+code_server_latest_version() {
+  local VERSION
+  VERSION="$(curl -fsSLI -o /dev/null -w "%{url_effective}" https://github.com/coder/code-server/releases/latest)"
+  VERSION="${VERSION#https://github.com/coder/code-server/releases/tag/}"
+  VERSION="${VERSION#v}"
+  echo "$VERSION"
+}
+
 
 # This function checks if the script is running through SSH and prompts the user to confirm if they want to proceed or exit.
 ssh_check() {
@@ -326,7 +335,7 @@ fi
 PortainerComposeUrl="https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/Infrastructure/Portainer/Enterprise/compose.yaml"
 JenkinsDockerfileUrl="https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/CI-CD/Jenkins/Dockerfile"
 JenkinsComposeUrl="https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/CI-CD/Jenkins/compose.yaml"
-CODE_SERVER_VERSION="$(curl -fsSL https://api.github.com/repos/coder/code-server/releases | awk 'match($0,/.*"html_url": "(.*\/releases\/tag\/.*)".*/)' | head -n 1 | awk -F '"' '{print $4}')"
+
 
 # Proxmox variables
 RAM=$(($RAM_COUNT * 1024))
@@ -462,6 +471,7 @@ fi
 
 # Install Code-server
 if [[ "$installPrograms" =~ "code-server" ]]; then
+  CODE_SERVER_VERSION=$(code_server_latest_version)
   # sed -i 's/#- snap install code-server/- snap install code-server/' $CLOUD_INNIT_ABSOLUTE
   cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
   # Mount SMB
