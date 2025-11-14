@@ -1,0 +1,45 @@
+name: dev-mongodb # Will be used for auto naming (network, volume names)
+services:
+  db:
+    image: mongo
+    container_name: dev-mongodb
+    restart: unless-stopped
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 5s
+      timeout: 10s
+      retries: 5
+    logging:
+      options:
+        max-size: "1000m"
+        max-file: "3"
+    environment: # Add .env variables to this container
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ADMIN_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ADMIN_PASS}
+    volumes:
+      - mongodb:/data/db #Volume mapping for persistency
+  db_ui:
+    image: mongo-express
+    container_name: dev-mongo-express
+    restart: unless-stopped
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_ADMIN_USER}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_ADMIN_PASS}
+#      ME_CONFIG_BASICAUTH_USERNAME: basicusername
+#      ME_CONFIG_BASICAUTH_PASSWORD: basicusernamepass
+      ME_CONFIG_MONGODB_SERVER: ub-mongodb
+    ports: 
+      - 3181:8081
+    volumes:
+      - mongo-express:/app/db #Volume mapping for persistency
+
+volumes: # It will prepend the project name
+  mongodb:
+  mongo-express:
