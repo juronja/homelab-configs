@@ -478,7 +478,7 @@ if [[ "$installPrograms" =~ "code-server" ]]; then
   # Mount SMB
   - mkdir -m 750 /home/$OS_USER/GitRepos
   - chown -R $OS_USER:$OS_USER /home/$OS_USER/GitRepos
-  - sed -i '\$a //nas.lan/personal/Development /home/$OS_USER/GitRepos cifs username=$NAS_USERNAME,password=$NAS_PASSWORD,uid=$OS_USER,gid=$OS_USER,_netdev 0 0' /etc/fstab
+  - sed -i '\$a //nas.lan/personal/Development/GitRepos/ /home/$OS_USER/GitRepos cifs username=$NAS_USERNAME,password=$NAS_PASSWORD,uid=$OS_USER,gid=$OS_USER,_netdev 0 0' /etc/fstab
   - mount -a
   # Configure Code-server
   - curl -fOL https://github.com/coder/code-server/releases/download/v$CODE_SERVER_VERSION/code-server_${CODE_SERVER_VERSION}_amd64.deb
