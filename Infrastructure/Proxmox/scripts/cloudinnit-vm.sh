@@ -400,6 +400,7 @@ snap:
   commands:
   #- snap install aws-cli --classic
   #- snap install kubectl --classic
+  #- snap install node --classic
 runcmd:
   # Configure automatic updates
   - sed -i 's|//Unattended-Upgrade::Automatic-Reboot-Time "02:00"|Unattended-Upgrade::Automatic-Reboot-Time "06:00"|' /etc/apt/apt.conf.d/50unattended-upgrades
@@ -469,6 +470,7 @@ fi
 # Install Code-server
 if [[ "$installPrograms" =~ "code-server" ]]; then
   CODE_SERVER_VERSION=$(code_server_latest_version)
+  sed -i 's/#- snap install node --classic/- snap install node --classic/' $CLOUD_INNIT_ABSOLUTE
   cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
   # Mount SMB
   - mkdir -m 750 /home/$OS_USER/GitRepos
