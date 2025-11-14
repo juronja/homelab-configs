@@ -365,6 +365,7 @@ qm set $NEXTID --scsi0 local-lvm:vm-$NEXTID-disk-0,discard=on,ssd=1 --ide2 local
 qm disk resize $NEXTID scsi0 "${DISK_SIZE}G" && qm set $NEXTID --boot order=scsi0
 
 # Configure Cloudinit datails
+rm $CLOUD_INNIT_ABSOLUTE
 touch $CLOUD_INNIT_ABSOLUTE
 
 cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
