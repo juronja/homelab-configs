@@ -216,16 +216,15 @@
 		}
 	}
 }
-*.lan {
-	tls internal
-    
-	@owui host openwebui.lan
-	handle @owui {
-		reverse_proxy openwebui.fromproxy:8080
-	}
 
-	@code host code.lan
-	handle @code {
-		reverse_proxy code.fromproxy:8080
-	}
+openwebui.lan {
+	tls internal
+
+	reverse_proxy openwebui.fromproxy:8080
+}
+
+code.lan {
+	tls internal
+
+	reverse_proxy code.fromproxy:8080
 }
