@@ -54,7 +54,7 @@
         ping: https://ha.homelabtales.com
     - Open WebUI:
         icon: open-webui.svg
-        href: http://openwebui.lan:8080
+        href: https://openwebui.lan
         ping: openwebui.lan
     - Prometheus:
         icon: prometheus.svg
@@ -64,6 +64,10 @@
         icon: grafana.svg
         href: http://homelab.lan:9091
         ping: homelab.lan
+    - Code Server:
+        icon: code-server.webp
+        href: https://code.lan
+        ping: code.lan
 
 - Media:
     - Audiobookshelf:
