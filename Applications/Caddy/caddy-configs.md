@@ -1,6 +1,7 @@
 # Caddy configurations
 
 ## Cloudflare CA certificates
+
 Copy the cloudflare certs to a folder.
 
 ```shell
