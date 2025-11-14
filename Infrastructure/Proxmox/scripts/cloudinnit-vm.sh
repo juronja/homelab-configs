@@ -470,8 +470,10 @@ fi
 
 # Install Code-server
 if [[ "$installPrograms" =~ "code-server" ]]; then
+  
   CODE_SERVER_VERSION=$(code_server_latest_version)
-  sed -i 's/#- snap install node --classic/- snap install node --classic/' $CLOUD_INNIT_ABSOLUTE
+
+  # sed -i 's/#- snap install node --classic/- snap install node --classic/' $CLOUD_INNIT_ABSOLUTE
   cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
   # Mount SMB
   - mkdir -m 750 /home/$OS_USER/GitRepos
@@ -507,7 +509,6 @@ if [[ "$installPrograms" =~ "minecraft" ]]; then
   
   FINAL_SERVER_JAR_URL=$(get_latest_minecraft_release)
 
-  # Instructions for cloud-init
   sed -i 's/#- openjdk-21-jre-headless/- openjdk-21-jre-headless/' $CLOUD_INNIT_ABSOLUTE
   cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
   # Download server jar
