@@ -9,14 +9,14 @@
 3. Mount network drive with nas/share username and the right domain
 
 ```bash
-apt update && apt install cifs-utils && mkdir /apps/code-server
-mount -t cifs //nas.lan/personal/Development /apps/code-server -o username=NAS_USERNAME,password=NAS_PASSWORD,uid=LINUX_USERNAME,gid=LINUX_USERNAME
+apt update && apt install cifs-utils && mkdir /GitRepos
+mount -t cifs //nas.lan/personal/Development/GitRepos /GitRepos -o username=NAS_USERNAME,password=NAS_PASSWORD,uid=LINUX_USERNAME,gid=LINUX_USERNAME
 ```
 
 ### Mount on system reboot with fstab (Recommended)
 
 ```shell
-sudo sed -i '$a //nas.lan/personal/Development /home/juronja/apps/code-server cifs username=NAS_USERNAME,password=NAS_PASSWORD,uid=LINUX_USERNAME,gid=LINUX_USERNAME,_netdev 0 0' /etc/fstab
+sudo sed -i '$a //nas.lan/personal/Development/GitRepos /home/juronja/GitRepos cifs username=NAS_USERNAME,password=NAS_PASSWORD,uid=LINUX_USERNAME,gid=LINUX_USERNAME,_netdev 0 0' /etc/fstab
 ```
 
 ### Mount on system reboot with crontab
@@ -25,5 +25,13 @@ sudo sed -i '$a //nas.lan/personal/Development /home/juronja/apps/code-server ci
 crontab -e
 
 # Add this line:
-@reboot mount -t cifs //nas.lan/personal/Development /apps/code-server -o username=NAS_USERNAME,password=NAS_PASSWORD,uid=LINUX_USERNAME,gid=LINUX_USERNAME
+@reboot mount -t cifs //nas.lan/personal/Development/GitRepos /GitRepos -o username=NAS_USERNAME,password=NAS_PASSWORD,uid=LINUX_USERNAME,gid=LINUX_USERNAME
 ```
+
+## BACKUP this files
+
+settings
+/home/juronja/.local/share/code-server/User/settings.json
+
+VSCode Extensions & Extensions Configurations
+/home/juronja/.local/share/code-server/extensions
