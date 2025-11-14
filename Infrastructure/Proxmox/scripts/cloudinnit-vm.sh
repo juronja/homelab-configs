@@ -199,7 +199,7 @@ while true; do
 done
 
 while true; do
-  if SSH_PUB_KEY=$(whiptail --backtitle "Install - Ubuntu VM" --title "CLOUD-INIT SSH-KEY" --inputbox "\nPaste the Public SSH Key to use.\nLeave empty for no SSH \n" --cancel-button "Exit Script" 12 58 3>&1 1>&2 2>&3); then
+  if SSH_PUB_KEY=$(whiptail --backtitle "Install - Ubuntu VM" --title "CLOUD-INIT SSH-KEY" --inputbox "\nPaste the Public SSH Key to use.\nLeave empty for no SSH \n" --cancel-button "Exit Script" 8 58 3>&1 1>&2 2>&3); then
     if [[ -z $SSH_PUB_KEY ]]; then
       ssh=0
       break
