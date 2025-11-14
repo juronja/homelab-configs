@@ -222,9 +222,10 @@
 	@owui host openwebui.lan
 	handle @owui {
 		reverse_proxy openwebui.fromproxy:8080
-		header {
-			# Prevent the site from being embedded in an iframe, mitigating clickjacking.
-			X-Frame-Options DENY
-		}
+	}
+
+	@code host code.lan
+	handle @code {
+		reverse_proxy code.fromproxy:8080
 	}
 }
