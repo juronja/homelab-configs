@@ -1,6 +1,7 @@
 # Useful TrueNAS configurations
 
-## S.M.A.R.T.
+## SMART
+
 ```bash
 sudo smartctl --scan #check SMART for all devices
 sudo smartctl --info --attributes --log=selftest /dev/sda #check SMART (info, attributes, selftest)
