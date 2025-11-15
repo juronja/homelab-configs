@@ -10,7 +10,6 @@ node_modules
 dist
 dist-ssr
 *.local
-*.env
 *.suo
 *.ntvs*
 *.njsproj
@@ -28,5 +27,6 @@ dist-ssr
 *.tfstate*
 *.tfvars
 
-# Telegraf
+# Custom files that must be backed up / copied when cloning repos!!
+*.env
 # telegraf.conf # there is currently no sensitive data inside
