@@ -47,7 +47,6 @@ winget install -e --id WireGuard.WireGuard
 winget install -e --id RustDesk.RustDesk
 winget install -e --id Ollama.Ollama
 
-winget install -e --name "Blender 4.5 LTS" -s msstore
 winget install -e --id calibre.calibre
 
 winget install -e --id OBSProject.OBSStudio
