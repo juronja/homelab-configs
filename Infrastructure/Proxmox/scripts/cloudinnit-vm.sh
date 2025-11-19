@@ -11,10 +11,10 @@ NODE=$(hostname)
 # Functions
 
 # Colors
-YW=$(echo "\033[33m")
+# YW=$(echo "\033[33m")
 BL=$(echo "\033[36m")
-RD=$(echo "\033[01;31m")
-GN=$(echo "\033[1;92m")
+# RD=$(echo "\033[01;31m")
+# GN=$(echo "\033[1;92m")
 
 # Formatting
 CL=$(echo "\033[m")
@@ -397,6 +397,7 @@ packages:
   #- prometheus-node-exporter
   #- ansible
   #- openjdk-21-jre-headless
+  #- shellcheck
 snap:
   commands:
   #- snap install aws-cli --classic
@@ -474,6 +475,7 @@ if [[ "$installPrograms" =~ "code-server" ]]; then
   CODE_SERVER_VERSION=$(code_server_latest_version)
 
   # sed -i 's/#- snap install node --classic/- snap install node --classic/' $CLOUD_INNIT_ABSOLUTE
+  sed -i 's/#- shellcheck/- shellcheck/' $CLOUD_INNIT_ABSOLUTE
   cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
   # Mount SMB
   - mkdir -m 750 /home/$OS_USER/GitRepos
