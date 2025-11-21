@@ -34,5 +34,6 @@ scrape_configs:
   - job_name: "hosting-prod-node"
     static_configs:
       - targets: ["hosting-prod.lan:9100"]
-
-
+  - job_name: "code-server-node"
+    static_configs:
+      - targets: ["code.fromproxy:9100"]
