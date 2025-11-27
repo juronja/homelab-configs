@@ -52,10 +52,10 @@
         icon: home-assistant.svg
         href: https://ha.homelabtales.com
         ping: https://ha.homelabtales.com
-    - Open WebUI:
-        icon: open-webui.svg
-        href: https://openwebui.lan
-        ping: openwebui.lan
+    - n8n:
+        icon: n8n.svg
+        href: https://n8n.homelabtales.com/
+        ping: n8n.homelabtales.com
     - Prometheus:
         icon: prometheus.svg
         href: http://homelab.lan:9090
@@ -64,6 +64,10 @@
         icon: grafana.svg
         href: http://homelab.lan:9091
         ping: homelab.lan
+    - Open WebUI:
+        icon: open-webui.svg
+        href: https://openwebui.lan
+        ping: openwebui.lan
     - Code Server:
         icon: code-server.webp
         href: https://code.lan
