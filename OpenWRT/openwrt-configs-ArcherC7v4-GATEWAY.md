@@ -387,7 +387,7 @@ uci set network.@switch_vlan[-1].device='switch0'
 uci set network.@switch_vlan[-1].vlan='5'
 uci set network.@switch_vlan[-1].vid='5'
 uci set network.@switch_vlan[-1].description='prod'
-uci set network.@switch_vlan[-1].ports='0t 2t 3t 4t 5t'
+uci set network.@switch_vlan[-1].ports='0t 2t'
 uci commit
 # Create a bridge device
 uci add network device
@@ -422,12 +422,12 @@ uci set firewall.@forwarding[-1].src='prod'
 uci set firewall.@forwarding[-1].dest='wan'
 uci commit
 # Add a firewall traffic rule for network so they can use DNS and DHCP
-# uci add firewall rule
-# uci set firewall.@rule[-1].name='iot DHCP and DNS'
-# uci set firewall.@rule[-1].src='iot'
-# uci set firewall.@rule[-1].dest_port='53 67 68'
-# uci set firewall.@rule[-1].target='ACCEPT'
-# uci commit
+uci add firewall rule
+uci set firewall.@rule[-1].name='prod DHCP and DNS'
+uci set firewall.@rule[-1].src='prod'
+uci set firewall.@rule[-1].dest_port='53 67 68'
+uci set firewall.@rule[-1].target='ACCEPT'
+uci commit
 # also allow HA to TV
 # uci add firewall rule
 # uci set firewall.@rule[-1].name='allow HA to TV'
