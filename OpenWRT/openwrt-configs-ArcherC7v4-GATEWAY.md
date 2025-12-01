@@ -18,7 +18,7 @@ uci set system.@system[0].hostname=GW-TP-Link-Archer-C7v4 #Change te device name
 
 ### Set as Router mode
 
-Official documentation: https://openwrt.org/docs/guide-user/network/openwrt_as_routerdevice
+Official documentation: <https://openwrt.org/docs/guide-user/network/openwrt_as_routerdevice>
 
 #### Static IP settings, DHCP, Firewall syn-flood, disable wan ipv6
 
@@ -54,7 +54,6 @@ reboot
 
 :warning: **Warning:** Double check which radio is 2g or 5g and replace accordingly.
 
-
 ```bash
 uci set wireless.radio1=wifi-device
 uci set wireless.radio1.band='2g'
@@ -83,7 +82,6 @@ wifi up #Turns Wifi ON
 #### Enable LAN Wifi band 5G/802.11ac/n
 
 :warning: **Warning:** Double check which radio is 2g or 5g and replace accordingly.
-
 
 ```bash
 uci set wireless.radio0=wifi-device
@@ -146,15 +144,16 @@ config redirect
         option dest_port '50413'
 
 ```
+
 Restart firewall for effect
+
 ```shell
 service firewall restart
 ```
 
 #### Cloudflare & Proxy Manager conditional port forwarding rules
 
-Cloudflare IPs: https://www.cloudflare.com/en-in/ips/
-
+Cloudflare IPs: <https://www.cloudflare.com/en-in/ips/>
 
 Download the script and run:
 
@@ -181,7 +180,6 @@ uci set firewall.@ipset[-1].loadfile='/root/cloudflare-ips.txt' # create file!!
 uci commit
 ```
 
-
 Additional entries for proxy in `/etc/config/firewall`
 
 ```yml
@@ -207,9 +205,10 @@ config redirect
         option src_dport '443'
         option dest_ip '192.168.84.x' # Adjust to proxy IP
 
-
 ```
+
 Restart firewall for effect
+
 ```shell
 service firewall restart
 ```
@@ -219,6 +218,7 @@ service firewall restart
 Device specific VLAN creation via uci.
 
 #### IOT VLAN
+
 ```shell
 # Add Switch VLAN, this will auto create a device in Network > Interfaces > Devices for usage.
 uci add network switch_vlan
@@ -298,6 +298,7 @@ service network restart
 ```
 
 #### Guest VLAN
+
 ```shell
 # Add Switch VLAN, this will auto create a device in Network > Interfaces > Devices for usage.
 uci add network switch_vlan
@@ -377,9 +378,74 @@ uci commit
 service network restart
 ```
 
+#### PROD VLAN
+
+```shell
+# Add Switch VLAN, this will auto create a device in Network > Interfaces > Devices for usage.
+uci add network switch_vlan
+uci set network.@switch_vlan[-1].device='switch0'
+uci set network.@switch_vlan[-1].vlan='5'
+uci set network.@switch_vlan[-1].vid='5'
+uci set network.@switch_vlan[-1].description='prod'
+uci set network.@switch_vlan[-1].ports='0t 2t 3t 4t 5t'
+uci commit
+# Create a bridge device
+uci add network device
+uci set network.@device[-1].type='bridge'
+uci set network.@device[-1].name='br-prod'
+uci add_list network.@device[-1].ports='eth0.5'
+uci commit
+# Create new interface
+uci set network.prod=interface
+uci set network.prod.proto="static"
+uci set network.prod.device='br-prod'
+uci set network.prod.ipaddr="10.9.5.1"
+uci set network.prod.netmask="255.255.255.0"
+uci set dhcp.prod=dhcp
+uci set dhcp.prod.interface='prod'
+uci set dhcp.prod.start='20'
+uci set dhcp.prod.limit='200'
+uci set dhcp.prod.leasetime='12h'
+uci add_list dhcp.prod.dhcp_option='6,1.1.1.2,9.9.9.9' #Public DNS
+uci commit
+# Add firewall entry
+uci add firewall zone
+uci set firewall.@zone[-1].name='prod'
+uci set firewall.@zone[-1].input='DROP' # Drop connections to router
+uci set firewall.@zone[-1].output='ACCEPT'
+uci set firewall.@zone[-1].forward='REJECT' # Lateral Movement Prevention
+uci commit
+# Connect firewall and create forwarding rule
+uci add_list firewall.@zone[-1].network='prod'
+uci add firewall forwarding
+uci set firewall.@forwarding[-1].src='prod'
+uci set firewall.@forwarding[-1].dest='wan'
+uci commit
+# Add a firewall traffic rule for network so they can use DNS and DHCP
+# uci add firewall rule
+# uci set firewall.@rule[-1].name='iot DHCP and DNS'
+# uci set firewall.@rule[-1].src='iot'
+# uci set firewall.@rule[-1].dest_port='53 67 68'
+# uci set firewall.@rule[-1].target='ACCEPT'
+# uci commit
+# also allow HA to TV
+# uci add firewall rule
+# uci set firewall.@rule[-1].name='allow HA to TV'
+# uci add_list firewall.@rule[-1].proto='tcp'
+# uci set firewall.@rule[-1].src='iot'
+# uci add_list firewall.@rule[-1].src_ip='192.168.3.X'
+# uci set firewall.@rule[-1].dest='lan'
+# uci add_list firewall.@rule[-1].dest_ip='192.168.84.X'
+# uci set firewall.@rule[-1].target='ACCEPT'
+
+uci commit
+service network restart
+```
+
 ## Add static leases
 
 VM homelab example
+
 ```shell
 uci add dhcp host
 uci set dhcp.@host[-1].name='lt-jure'
@@ -388,6 +454,3 @@ uci set dhcp.@host[-1].ip='RESERVEIPADDRESS'
 uci commit
 
 ```
-
-
-
