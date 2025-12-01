@@ -7,7 +7,7 @@
 
 Common steps when installing proxmox for the first time. Use this script:
 
-https://community-scripts.github.io/ProxmoxVE/scripts?id=post-pve-install
+<https://community-scripts.github.io/ProxmoxVE/scripts?id=post-pve-install>
 
 ## Firewall setup
 
@@ -53,7 +53,7 @@ pvesh set /nodes/$NODE/lxc/{{LXCID}}/firewall/options --enable 1
 
 ## Enable VLANs on nodes vmbr0
 
-Go to node System > Network > vmbr0 and tick the VLAN aware option, also limit VLAN IDs in advanced options (2-4).
+Go to node System > Network > vmbr0 and tick the VLAN aware option.
 
 ## Drive share for Truenas Rsync
 
@@ -83,7 +83,7 @@ Order 3: Any
 
 ## Clustering
 
-Official docs: https://pve.proxmox.com/wiki/Cluster_Manager
+Official docs: <https://pve.proxmox.com/wiki/Cluster_Manager>
 
 ### Kill a node and cluster
 
