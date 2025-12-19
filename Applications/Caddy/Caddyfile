@@ -72,6 +72,29 @@
 		}
 	}
 
+	@ori host ori-the-shrimpcat.homelabtales.com
+	handle @ori {
+		reverse_proxy hosting-prod.lan:8433
+		header {
+			# Prevent the site from being embedded in an iframe, mitigating clickjacking.
+			X-Frame-Options DENY
+			# This will deny website access to the listed hardware features for security purposes.
+			Permissions-Policy autoplay=(), camera=(), microphone=(), midi=(), usb=()
+			# Block XSS attacks to some degree using a report-only CSP.
+			Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' cdn.jsdelivr.net 'unsafe-inline'; img-src 'self' data:; font-src 'self' cdn.jsdelivr.net; connect-src 'self'; frame-ancestors 'none';"
+		}
+		request_body {
+			max_size 100KB
+		}
+		rate_limit {
+			zone limit_by_ip {
+				key {remote_host}
+				events 10
+				window 5s
+			}
+		}
+	}
+
 	@jenkins host jenkins.homelabtales.com
 	handle @jenkins {
 		reverse_proxy homelab.lan:8080
@@ -227,4 +250,10 @@ code.lan {
 	tls internal
 
 	reverse_proxy code.fromproxy:8080
+}
+
+node.lan {
+	tls internal
+
+	reverse_proxy code.fromproxy:3000
 }
