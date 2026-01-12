@@ -1,7 +1,7 @@
 ---
 - name: Update VMs
   hosts: all
-  become: yes # This line tells Ansible to use privilege escalation (sudo) for all tasks
+  # become: yes # This line tells Ansible to use privilege escalation (sudo) for all tasks | moved this to hosts config
   tasks:
   - name: apt update and upgrade
     apt:

@@ -9,8 +9,13 @@ ubuntu:
     hosting-prod:
       ansible_host: hosting-prod.lan
       ansible_ssh_private_key_file: ~/.ssh/id_hosting-prod
+    code-server:
+      ansible_host: 192.168.84.13 #code.fromproxy
+      ansible_ssh_private_key_file: ~/.ssh/id_code-server
   vars:
     ansible_user: juronja
+    ansible_become: yes
+
 proxmox:
   hosts:
     pve-9700.lan
@@ -18,3 +23,4 @@ proxmox:
   vars:
     ansible_ssh_private_key_file: ~/.ssh/id_proxmoxes
     ansible_user: root
+    ansible_become: no
