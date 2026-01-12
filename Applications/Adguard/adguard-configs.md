@@ -6,8 +6,8 @@
 
 Change the default with this ones. They are more secure because of DNSSEC.
 
-https://dns10.quad9.net/dns-query
-https://security.cloudflare-dns.com/dns-query
+<https://dns10.quad9.net/dns-query>
+<https://security.cloudflare-dns.com/dns-query>
 
 ### DNS server configuration
 
@@ -20,7 +20,3 @@ https://security.cloudflare-dns.com/dns-query
 Add Steven Black's List
 
 ### DNS Rewrites
-
-
-
-
