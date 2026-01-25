@@ -65,7 +65,7 @@ fi
 
 if RAM_COUNT=$(whiptail --backtitle "Install - Windows Server VM" --title "RAM COUNT" --radiolist "\nAllocate number of RAM. (Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 3 \
     "8" "GB" ON \
-    "16" "GB" OF F \
+    "16" "GB" OFF \
     "32" "GB" OFF \
     3>&1 1>&2 2>&3); then
         echo -e "Allocated RAM: $RAM_COUNT GB"
