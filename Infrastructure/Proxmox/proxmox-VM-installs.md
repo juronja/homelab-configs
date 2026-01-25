@@ -11,7 +11,6 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/juronja/homelab-configs/
 ```
 
 - POST INSTALL - Edit SSH KEY cloud-innit before starting
-And you are done!
 
 ## TrueNAS VM
 
@@ -53,14 +52,14 @@ STEPS:
 
 2. Load virtio drivers when installing
 
-    - **disk** (amd64>w11)
-    - **network** (NetKVM>w11>amd64)
+    - **disk** (amd64/w11)
+    - **network** (NetKVM/w11/amd64)
 
 3. Use local domain (account) when asked to sign in
 
 4. Install guest-agent and other virtio drivers, run the wizard in the iso drive
 
-    - **qemu-ga-x86_64**
+    - **guest-agent/qemu-ga-x86_64.msi**
     - **virtio-win-gt-x64.msi**
 
 ### PCIe Passthrough a GPU (WIP)
@@ -79,3 +78,24 @@ STEPS:
 echo "options vfio_iommu_type1 allow_unsafe_interrupts=1" > /etc/modprobe.d/iommu_unsafe_interrupts.conf
 echo "options kvm ignore_msrs=1" > /etc/modprobe.d/kvm.conf
 ```
+
+## Windows Server Domain Controller VM
+
+Copy this line in the Proxmox Shell.
+
+```bash
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/Infrastructure/Proxmox/scripts/windows-domain-controller-vm.sh)"
+```
+
+STEPS:
+
+1. Choose Enterprise edition
+
+2. Load virtio drivers when installing
+
+    - **disk** (amd64/2k25)
+
+3. Install guest-agent and other virtio drivers, run the wizard in the iso drive
+
+    - **guest-agent/qemu-ga-x86_64.msi**
+    - **virtio-win-gt-x64.msi**
