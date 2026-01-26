@@ -102,19 +102,22 @@ STEPS:
 
 4. Run post install & reboot:
 
-```powershell
-# Set static IP
-$netAdapter = Get-NetAdapter | Where-Object Status -eq "Up"
-New-NetIPAddress -InterfaceIndex $netAdapter.ifIndex -IPAddress "10.9.6.2" -PrefixLength 24 -DefaultGateway "10.9.6.1"
-Set-DnsClientServerAddress -InterfaceIndex $netAdapter.ifIndex -ServerAddresses ("127.0.0.1", "1.1.1.2", "9.9.9.9")
+    ```powershell
+    # Set static IP
+    $netAdapter = Get-NetAdapter | Where-Object Status -eq "Up"
+    New-NetIPAddress -InterfaceIndex $netAdapter.ifIndex -IPAddress "10.9.6.2" -PrefixLength 24 -DefaultGateway "10.9.6.1"
+    Set-DnsClientServerAddress -InterfaceIndex $netAdapter.ifIndex -ServerAddresses ("127.0.0.1", "1.1.1.2")
 
-# Renames the computer
-# -PassThru shows you the result in the console
-# -Restart initiates the reboot immediately
-$newName = Read-Host "Enter the new name for this Domain Controller"
-Rename-Computer -NewName $newName -Restart -PassThru
+    # Renames the computer
+    # -PassThru shows you the result in the console
+    # -Restart initiates the reboot immediately
+    $newName = Read-Host "Enter the new name for this server machine:"
+    Rename-Computer -NewName $newName -Restart -PassThru
 
+    ```
 
-```
+5. Run server domain controller config:
 
-4. Run server domain controller config:
+    ```powershell
+    Install-WindowsFeature -Name AD-Domain-Services, DNS -IncludeManagementTools
+    ```
