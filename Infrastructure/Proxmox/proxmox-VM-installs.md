@@ -109,15 +109,27 @@ STEPS:
     Set-DnsClientServerAddress -InterfaceIndex $netAdapter.ifIndex -ServerAddresses ("127.0.0.1", "1.1.1.2")
 
     # Renames the computer
-    # -PassThru shows you the result in the console
     # -Restart initiates the reboot immediately
     $newName = Read-Host "Enter the new name for this server machine:"
-    Rename-Computer -NewName $newName -Restart -PassThru
-
+    Rename-Computer -NewName $newName -Restart
     ```
 
-5. Run server domain controller config:
+5. Add Features and promote server as DC
 
     ```powershell
     Install-WindowsFeature -Name AD-Domain-Services, DNS -IncludeManagementTools
+    ```
+
+    ```powershell
+    $dsrmPassword = Read-Host "Enter DSRM Password:" -AsSecureString
+    Install-ADDSForest `
+    -DomainName "ad.lan" `
+    -DomainNetbiosName "AD" `
+    -InstallDns:$true `
+    -SafeModeAdministratorPassword $dsrmPassword `
+    -DatabasePath "C:\Windows\NTDS" `
+    -LogPath "C:\Windows\NTDS" `
+    -SysvolPath "C:\Windows\SYSVOL" `
+    -NoRebootOnCompletion:$false `
+    -Force:$true
     ```
