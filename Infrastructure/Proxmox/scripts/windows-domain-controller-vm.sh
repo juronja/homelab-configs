@@ -54,6 +54,17 @@ else
     exit-script
 fi
 
+if VM_NAME=$(whiptail --backtitle "Install - Windows Server VM" --inputbox "\nSet the name of the VM" 8 58 "wdc1" --title "NAME" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
+  if [[ -z $VM_NAME ]]; then
+    VM_NAME="wdc1"
+    echo -e "Name: $VM_NAME"
+  else
+    echo -e "Name: $VM_NAME"
+  fi
+else
+  exit_script
+fi
+
 if CORE_COUNT=$(whiptail --backtitle "Install - Windows Server VM" --title "CORE COUNT" --radiolist "\nAllocate number of CPU Cores. (Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 3 \
     "4" "cores" ON \
     "8" "cores" OFF \
@@ -84,7 +95,7 @@ else
 fi
 
 # Constant variables
-NAME="wdc-1"
+# NAME="wdc-1"
 CPU="x86-64-v3"
 VMID=$NEXTID
 RAM=$(($RAM_COUNT * 1024))
@@ -94,4 +105,4 @@ IMG_LOCATION="/var/lib/vz/template/iso/"
 wget -nc --directory-prefix=$IMG_LOCATION https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso
 
 # Create a VM
-qm create $VMID --ostype win11 --cores $CORE_COUNT --cpu $CPU --memory $RAM --balloon 0 --name $NAME --bios ovmf --efidisk0 local-lvm:1,efitype=4m,pre-enrolled-keys=1 --machine q35 --tpmstate0 local-lvm:1,version=v2.0 --scsihw virtio-scsi-single --scsi0 local-lvm:$DISK_SIZE,ssd=on,iothread=on --ide0 local:iso/$WIN_ISO,media=cdrom --ide1 local:iso/virtio-win.iso,media=cdrom --net0 virtio,bridge=vmbr0,firewall=1 --ipconfig0 ip=dhcp,ip6=dhcp --agent enabled=1 --onboot 1 --boot order="ide0;scsi0"
+qm create $VMID --ostype win11 --cores $CORE_COUNT --cpu $CPU --memory $RAM --balloon 0 --name $VM_NAME --bios ovmf --efidisk0 local-lvm:1,efitype=4m,pre-enrolled-keys=1 --machine q35 --tpmstate0 local-lvm:1,version=v2.0 --scsihw virtio-scsi-single --scsi0 local-lvm:$DISK_SIZE,ssd=on,iothread=on --ide0 local:iso/$WIN_ISO,media=cdrom --ide1 local:iso/virtio-win.iso,media=cdrom --net0 virtio,bridge=vmbr0,firewall=1 --ipconfig0 ip=dhcp,ip6=dhcp --agent enabled=1 --onboot 1 --boot order="ide0;scsi0"
