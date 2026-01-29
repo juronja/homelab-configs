@@ -103,15 +103,7 @@ STEPS:
 4. Run post install & reboot:
 
     ```powershell
-    # Set static IP
-    $netAdapter = Get-NetAdapter | Where-Object Status -eq "Up"
-    New-NetIPAddress -InterfaceIndex $netAdapter.ifIndex -IPAddress "10.9.6.2" -PrefixLength 24 -DefaultGateway "10.9.6.1"
-    Set-DnsClientServerAddress -InterfaceIndex $netAdapter.ifIndex -ServerAddresses ("127.0.0.1", "1.1.1.2")
-
-    # Renames the computer
-    # -Restart initiates the reboot immediately
-    $newName = Read-Host "Enter the new name for this server machine:"
-    Rename-Computer -NewName $newName -Restart
+    irm https://raw.githubusercontent.com/juronja/homelab-configs/main/OS-Windows/scripts/win-wdc-post-install.ps1 | iex
     ```
 
 5. Add Features and promote server as DC
@@ -121,7 +113,7 @@ STEPS:
     ```
 
     ```powershell
-    $dsrmPassword = Read-Host "Enter DSRM Password:" -AsSecureString
+    $dsrmPassword = Read-Host "Enter DSRM Password" -AsSecureString
     Install-ADDSForest `
     -DomainName "ad.lan" `
     -DomainNetbiosName "AD" `
