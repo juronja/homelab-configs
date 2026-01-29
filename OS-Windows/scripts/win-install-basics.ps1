@@ -124,14 +124,12 @@ Confirm-Step -Description "Managing AppX packages and Winget applications..." -A
         "Microsoft.WindowsSoundRecorder",
         "Clipchamp.Clipchamp",
         "MicrosoftCorporationII.QuickAssist",
-        # "microsoft.windowscommunicationsapps", # Mail app
         "MicrosoftWindows.Client.WebExperience", # Widget app
         "Microsoft.Teams",
         "Microsoft.Copilot",
         "Microsoft.WindowsAlarms",
         "Microsoft.WindowsCamera",
         "Microsoft.GamingApp",
-        "Microsoft.XboxGamingOverlay",
         "Microsoft.XboxSpeechToTextOverlay",
         "Microsoft.Xbox.TCUI",
         "MSTeams"
@@ -221,7 +219,7 @@ Confirm-Step -Description "Downloading and setting desktop backgrounds from GitH
 }
 
 # Step 7: Rename computer
-Confirm-Step -Description "Downloading and setting desktop backgrounds from GitHub (files starting with 'bkg-')..." -Action {
+Confirm-Step -Description "Rename the computer" -Action {
 # --- Computer Rename ---
 $newName = ""
 # Loop until a valid name is provided
@@ -232,8 +230,9 @@ while ([string]::IsNullOrWhiteSpace($newName)) {
         Write-Host "Error: Computer name cannot be empty." -ForegroundColor Red
     }
 }
-Write-Host "Renaming computer to $newName and restarting..." -ForegroundColor Yellow
+Write-Host "Renaming computer to $newName" -ForegroundColor Yellow
 Rename-Computer -NewName $newName -Force
+Write-Host "✔️ Computer renamed." -ForegroundColor Green
 }
 
     # --- SCRIPT END ---
