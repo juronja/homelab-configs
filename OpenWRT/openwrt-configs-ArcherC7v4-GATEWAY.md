@@ -27,14 +27,14 @@ Official documentation: <https://openwrt.org/docs/guide-user/network/openwrt_as_
 uci set network.lan.proto='static'
 uci set network.lan.ipaddr='192.168.84.1'
 uci set network.lan.netmask='255.255.255.0'
-uci add_list network.lan.dns='1.1.1.2'
-uci add_list network.lan.dns='9.9.9.9'
+uci add_list network.wan.dns='1.1.1.2'
+uci add_list network.wan.dns='9.9.9.9'
 uci set dhcp.lan=dhcp
 uci set dhcp.lan.interface='lan'
 uci set dhcp.lan.start='50'
 uci set dhcp.lan.limit='150'
 uci set dhcp.lan.leasetime='12h'
-uci set dhcp.lan.dhcp_option='6,192.168.84.253' #Adguard server address
+uci set dhcp.lan.dhcp_option='6,192.168.84.253' #Adguard DNS
 uci set dhcp.lan.ra='disable'
 uci set dhcp.lan.dhcpv6='disable'
 uci set dhcp.lan.ndp='disable'
@@ -245,7 +245,6 @@ uci set dhcp.iot.interface='iot'
 uci set dhcp.iot.start='20'
 uci set dhcp.iot.limit='200'
 uci set dhcp.iot.leasetime='12h'
-uci add_list dhcp.iot.dhcp_option='6,1.1.1.2,9.9.9.9' #Public DNS
 uci commit
 # Add firewall entry
 uci add firewall zone
@@ -325,7 +324,6 @@ uci set dhcp.guest.interface='guest'
 uci set dhcp.guest.start='10'
 uci set dhcp.guest.limit='200'
 uci set dhcp.guest.leasetime='12h'
-uci add_list dhcp.guest.dhcp_option='6,1.1.1.2,9.9.9.9' #Public DNS
 uci commit
 # Add firewall entry
 uci add firewall zone
@@ -406,7 +404,6 @@ uci set dhcp.prod.interface='prod'
 uci set dhcp.prod.start='20'
 uci set dhcp.prod.limit='200'
 uci set dhcp.prod.leasetime='12h'
-uci add_list dhcp.prod.dhcp_option='6,1.1.1.2,9.9.9.9' #Public DNS
 uci commit
 # Add firewall entry
 uci add firewall zone
