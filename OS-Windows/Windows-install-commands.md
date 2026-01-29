@@ -4,20 +4,14 @@
 
 ## Basics
 
-```shell
+```powershell
 irm https://raw.githubusercontent.com/juronja/homelab-configs/main/OS-Windows/scripts/win-install-basics.ps1 | iex
 
 ```
 
 ## Optional Preferences
 
-```shell
-# Renames the computer
-Rename-Computer -NewName "PC-Pernica"
-
-# Dynamic Lightning - turn uff because it is screwing with the Logitech G hub settings
-Set-itemproperty "HKLM:\SOFTWARE\Microsoft\Lighting" -Name "AmbientLightingEnabled" -Value "0" -Type DWord #-Force
-
+```powershell
 # Remove UK language (work in progress better test it)
 (Get-WinUserLanguageList | Where-Object LanguageTag -ne 'en-GB') | Set-WinUserLanguageList -Force
 
@@ -31,7 +25,7 @@ wsl --install -d Ubuntu
 
 ⚠️ `msstore` sources should autoupdate
 
-```shell
+```powershell
 winget install -e --id XP9CDQW6ML4NQN -s msstore # Plex
 winget install -e --id Plex.Plexamp
 winget install -e --id 9NCBCSZSJRSB -s msstore --accept-package-agreements # Spotify
@@ -75,44 +69,44 @@ winget install -e --id Postman.PostmanAgent
 
 ### Static IP
 
-```shell
+```powershell
 Get-NetIPConfiguration
 ```
 
-```shell
+```powershell
 New-NetIPAddress -InterfaceIndex 6 -IPAddress 192.168.84.2 -PrefixLength 24 -DefaultGateway 192.168.84.1
 ```
 
-```shell
+```powershell
 Set-DnsClientServerAddress -InterfaceIndex 6 -ServerAddresses 192.168.84.253
 
 ```
 
 ### Disable IPv6
 
-```shell
+```powershell
 Get-NetAdapterBinding -ComponentID ms_tcpip6
 ```
 
-```shell
+```powershell
 Disable-NetAdapterBinding -Name "Ethernet" -ComponentID ms_tcpip6 
 
 ```
 
 ## Map network drives
 
-```shell
+```powershell
 New-PSDrive -Name "M" -Root "\\nas.lan\media" -Persist -Scope Global -PSProvider "FileSystem"
 ```
 
-```shell
+```powershell
 New-PSDrive -Name "P" -Root "\\nas.lan\personal" -Persist -Scope Global -PSProvider "FileSystem" -Credential juronja
 
 ```
 
 ## Set Environment Variables
 
-```shell
+```powershell
 setx ENV_LOCAL true
 setx MONGO_ADMIN_USER "admin_user"
 setx MONGO_ADMIN_PASS "pass"
