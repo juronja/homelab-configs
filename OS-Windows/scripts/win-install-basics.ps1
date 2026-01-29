@@ -220,8 +220,23 @@ Confirm-Step -Description "Downloading and setting desktop backgrounds from GitH
     }
 }
 
+# Step 7: Rename computer
+Confirm-Step -Description "Downloading and setting desktop backgrounds from GitHub (files starting with 'bkg-')..." -Action {
+# --- Computer Rename ---
+$newName = ""
+# Loop until a valid name is provided
+while ([string]::IsNullOrWhiteSpace($newName)) {
+    $newName = Read-Host "Enter the new name for this server machine (Required)"
+    
+    if ([string]::IsNullOrWhiteSpace($newName)) {
+        Write-Host "Error: Computer name cannot be empty." -ForegroundColor Red
+    }
+}
+Write-Host "Renaming computer to $newName and restarting..." -ForegroundColor Yellow
+Rename-Computer -NewName $newName -Force
+}
 
-# --- SCRIPT END ---
+    # --- SCRIPT END ---
 Write-Host "`n==========================================================" -ForegroundColor Green
 Write-Host "Script finished." -ForegroundColor Green
 Write-Host "Some changes require a system reboot to take full effect." -ForegroundColor Yellow
