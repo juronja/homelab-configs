@@ -42,10 +42,18 @@ Host amazon-server
   IdentityFile ~/.ssh/id_amazon.pem
 ```
 
-### Upload your Public key to your Linux Server (Windows)
+### Upload your Public key Windows->Ubuntu
 
-```bash
-scp $env:USERPROFILE/.ssh/id_ubuntu-nameofserver.pub username@{IP}:~/.ssh/authorized_keys
+```powershell
+scp $env:USERPROFILE/.ssh/id_nameofserver.pub username@{IP}:~/.ssh/authorized_keys
+```
+
+### Upload your Public key Windows->WindowsServer
+
+```powershell
+$pubKey = Get-Content "$env:USERPROFILE\.ssh\id_nameofserver.pub"
+
+ssh Administrator@{IP} "powershell -Command ""New-Item -ItemType Directory -Force -Path `$env:ProgramData\ssh; Add-Content -Path `$env:ProgramData\ssh\administrators_authorized_keys -Value '$pubKey'; icacls `$env:ProgramData\ssh\administrators_authorized_keys /inheritance:r /grant 'Administrators:F' /grant 'SYSTEM:F'"""
 ```
 
 ### Disable password authentication in Linux. Uncomment "PasswordAuthentication" and change to "no"
