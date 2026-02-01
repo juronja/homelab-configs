@@ -7,5 +7,6 @@
     apt:
       force_apt_get: true
       update_cache: true
-      upgrade: yes
+      upgrade: dist # upgrades also dependencies and kernel
       cache_valid_time: 3600
+      autoremove: yes # cleans up old kernels/packages
