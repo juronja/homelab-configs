@@ -106,14 +106,24 @@ STEPS:
 
     You can unmount the ISO and virtio drives now.
 
-4. Run post install & reboot:
+4. Set static IP and Computer name & Reboot
 
     ```powershell
-    irm https://raw.githubusercontent.com/juronja/homelab-configs/main/OS-Windows/windows-domain-controller/scripts/win-wdc-post-install.ps1 | iex
+    irm https://raw.githubusercontent.com/juronja/homelab-configs/main/OS-Windows/windows-domain-controller/scripts/win-wdc-post-install-1.ps1 | iex
     ```
 
-5. Add Features and promote server as DC
+5. Add Features
 
     ```powershell
-    irm https://raw.githubusercontent.com/juronja/homelab-configs/main/OS-Windows/windows-domain-controller/scripts/win-wdc-setup-ad.ps1 | iex
+    irm https://raw.githubusercontent.com/juronja/homelab-configs/main/OS-Windows/windows-domain-controller/scripts/win-wdc-post-install-2.ps1 | iex
     ```
+
+6. Promote server as DC
+
+    ```powershell
+    irm https://raw.githubusercontent.com/juronja/homelab-configs/main/OS-Windows/windows-domain-controller/scripts/win-wdc-post-install-3.ps1 | iex
+    ```
+
+7. Enable Remote Desktop
+
+    System > Remote Desktop
