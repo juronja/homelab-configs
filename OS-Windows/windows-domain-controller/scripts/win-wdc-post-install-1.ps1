@@ -23,6 +23,11 @@ Write-Host "Configuring adapter: $($netAdapter.Name)..." -ForegroundColor Cyan
 New-NetIPAddress -InterfaceIndex $netAdapter.ifIndex -IPAddress $ipAddress -PrefixLength 24 -DefaultGateway $gateway
 Set-DnsClientServerAddress -InterfaceIndex $netAdapter.ifIndex -ServerAddresses ("127.0.0.1", "1.1.1.2")
 
+# Install necessary roles and management tools
+Write-Host "Installing AD, DNS services roles and management tools ... This can take a few minutes (Patience)" -ForegroundColor Cyan
+Install-WindowsFeature -Name AD-Domain-Services, DNS -IncludeManagementTools
+Write-Host "Roles and management tools installed successfully." -ForegroundColor Green
+
 # --- OpenSSH Setup ---
 # Write-Host "Setting up OpenSSH..." -ForegroundColor Cyan
 # Set-Service -Name sshd -StartupType 'Automatic'
