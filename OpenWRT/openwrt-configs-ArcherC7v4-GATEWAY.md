@@ -176,7 +176,7 @@ uci add firewall ipset
 uci set firewall.@ipset[-1].name='cloudflare-ips'
 uci set firewall.@ipset[-1].match='src_net'
 uci set firewall.@ipset[-1].enabled='1'
-uci set firewall.@ipset[-1].loadfile='/root/cloudflare-ips.txt' # create file!!
+uci set firewall.@ipset[-1].loadfile='/root/cloudflare-ips.txt' # create file first!!
 uci commit
 ```
 
@@ -249,7 +249,7 @@ uci commit
 # Add firewall entry
 uci add firewall zone
 uci set firewall.@zone[-1].name='iot'
-uci set firewall.@zone[-1].input='ACCEPT'
+uci set firewall.@zone[-1].input='REJECT'
 uci set firewall.@zone[-1].output='ACCEPT'
 uci set firewall.@zone[-1].forward='ACCEPT'
 uci commit
@@ -260,12 +260,12 @@ uci set firewall.@forwarding[-1].src='iot'
 uci set firewall.@forwarding[-1].dest='wan'
 uci commit
 # Add a firewall traffic rule for network so they can use DNS and DHCP
-# uci add firewall rule
-# uci set firewall.@rule[-1].name='iot DHCP and DNS'
-# uci set firewall.@rule[-1].src='iot'
-# uci set firewall.@rule[-1].dest_port='53 67 68'
-# uci set firewall.@rule[-1].target='ACCEPT'
-# uci commit
+uci add firewall rule
+uci set firewall.@rule[-1].name='iot DHCP and DNS'
+uci set firewall.@rule[-1].src='iot'
+uci set firewall.@rule[-1].dest_port='53 67'
+uci set firewall.@rule[-1].target='ACCEPT'
+uci commit
 # also allow HA to TV
 uci add firewall rule
 uci set firewall.@rule[-1].name='allow HA to TV'
@@ -342,7 +342,7 @@ uci commit
 uci add firewall rule
 uci set firewall.@rule[-1].name='allow guest to DNS DHCP'
 uci set firewall.@rule[-1].src='guest'
-uci set firewall.@rule[-1].dest_port='53 67 68'
+uci set firewall.@rule[-1].dest_port='53 67'
 uci set firewall.@rule[-1].target='ACCEPT'
 uci commit
 # also allow guest devices to plex
@@ -408,7 +408,7 @@ uci commit
 # Add firewall entry
 uci add firewall zone
 uci set firewall.@zone[-1].name='prod'
-uci set firewall.@zone[-1].input='DROP' # Drop connections to router
+uci set firewall.@zone[-1].input='REJECT' # Drop connections to router
 uci set firewall.@zone[-1].output='ACCEPT'
 uci set firewall.@zone[-1].forward='REJECT' # Lateral Movement Prevention
 uci commit
@@ -422,18 +422,18 @@ uci commit
 uci add firewall rule
 uci set firewall.@rule[-1].name='prod DHCP and DNS'
 uci set firewall.@rule[-1].src='prod'
-uci set firewall.@rule[-1].dest_port='53 67 68'
+uci set firewall.@rule[-1].dest_port='53 67'
 uci set firewall.@rule[-1].target='ACCEPT'
 uci commit
 # also allow HA to TV
-# uci add firewall rule
-# uci set firewall.@rule[-1].name='allow HA to TV'
-# uci add_list firewall.@rule[-1].proto='tcp'
-# uci set firewall.@rule[-1].src='iot'
-# uci add_list firewall.@rule[-1].src_ip='192.168.3.X'
-# uci set firewall.@rule[-1].dest='lan'
-# uci add_list firewall.@rule[-1].dest_ip='192.168.84.X'
-# uci set firewall.@rule[-1].target='ACCEPT'
+uci add firewall rule
+uci set firewall.@rule[-1].name='allow HA to TV'
+uci add_list firewall.@rule[-1].proto='tcp'
+uci set firewall.@rule[-1].src='iot'
+uci add_list firewall.@rule[-1].src_ip='192.168.3.X'
+uci set firewall.@rule[-1].dest='lan'
+uci add_list firewall.@rule[-1].dest_ip='192.168.84.X'
+uci set firewall.@rule[-1].target='ACCEPT'
 
 uci commit
 service network restart
