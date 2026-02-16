@@ -40,6 +40,8 @@ qm set 101 -scsi2 /dev/disk/by-id/ata-Hitachi_HTS727575A9E364_J3390084GMAGND
 
 ## Windows 11 VM
 
+❗Load ISO into Proxmox first!
+
 Copy this line in the Proxmox Shell.
 
 ```bash
@@ -81,6 +83,8 @@ echo "options kvm ignore_msrs=1" > /etc/modprobe.d/kvm.conf
 
 ## Windows Server Domain Controller VM
 
+❗Load ISO into Proxmox first!
+
 Copy this line in the Proxmox Shell.
 
 ```bash
@@ -99,6 +103,8 @@ STEPS:
 
     - **guest-agent/qemu-ga-x86_64.msi**
     - **virtio-win-gt-x64.msi**
+
+    You can unmount the ISO and virtio drives now.
 
 4. Run post install & reboot:
 
@@ -119,9 +125,6 @@ STEPS:
     -DomainNetbiosName "AD" `
     -InstallDns:$true `
     -SafeModeAdministratorPassword $dsrmPassword `
-    -DatabasePath "C:\Windows\NTDS" `
-    -LogPath "C:\Windows\NTDS" `
-    -SysvolPath "C:\Windows\SYSVOL" `
     -NoRebootOnCompletion:$false `
     -Force:$true
     ```
