@@ -3,9 +3,9 @@
 Example: Audiobookshelf <> Google Cloud Oauth
 
 Docs:
+
 - [Google Cloud setup article](https://www.itix.fr/blog/use-google-account-openid-connect-provider/) I sourced from
 - [Audiobookshelf docs](https://www.audiobookshelf.org/guides/oidc_authentication/)
-
 
 ## Google Cloud Console configs
 
@@ -35,5 +35,3 @@ https://abs.yoursite.com/auth/openid/mobile-redirect
 4. Change Button Text (Optional)
 5. In **Match existing users by** select `Match by email`
 6. Enable **Auto Register** to auto create new users
-
-
