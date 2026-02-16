@@ -20,22 +20,28 @@ Copy this line in the Proxmox Shell.
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/Infrastructure/Proxmox/scripts/truenas-vm.sh)"
 ```
 
-After installed, import PCI Device to be able to access the disks.
+After installed, import PCI Device to be able to access the disks
 
 ### Attach Motherboard Hard disks manually
 
-Find out the unique ID for hard disks. Filtering results having "ata-"" and "nvme-"" but excluding results containing "part".
+Find out the unique ID for hard disks. Filtering results having "ata-" or "nvme-" or "usb-" but excluding results containing "part"
 
 ```bash
-ls /dev/disk/by-id | grep -E '^ata-|^nvme-' | grep -v 'part'
+ls /dev/disk/by-id | grep -E '^ata-|^nvme-|^usb-' | grep -v 'part'
+```
+
+Get serial ID
+
+```bash
+udevadm info --query=property --value --property=ID_SERIAL_SHORT "/dev/disk/by-id/usb-_Mobile_Drive_00000000384B-0:0"
 ```
 
 Attach the disks -scsi1, -scsi2, -scsi3, etc
 
 ```bash
-qm set 101 -scsi1 /dev/disk/by-id/ata-Hitachi_HTS547564A9E384_J2180053HELJ4C
+qm set 100 -scsi1 /dev/disk/by-id/usb-_Mobile_Drive_00000000384B-0:0,serial=64CDSPSMS
 
-qm set 101 -scsi2 /dev/disk/by-id/ata-Hitachi_HTS727575A9E364_J3390084GMAGND
+qm set 100 -scsi2 /dev/disk/by-id/ata-Hitachi_HTS727575A9E364_J3390084GMAGND,serial=64CDSPSMS
 ```
 
 ## Windows 11 VM
@@ -106,24 +112,18 @@ STEPS:
 
     You can unmount the ISO and virtio drives now.
 
-4. Set static IP and Computer name & Reboot
+4. Set static IP, Add AD, DNS Features and set Computer name and Reboot
 
     ```powershell
     irm https://raw.githubusercontent.com/juronja/homelab-configs/main/OS-Windows/windows-domain-controller/scripts/win-wdc-post-install-1.ps1 | iex
     ```
 
-5. Add Features
+5. Promote server as DC
 
     ```powershell
     irm https://raw.githubusercontent.com/juronja/homelab-configs/main/OS-Windows/windows-domain-controller/scripts/win-wdc-post-install-2.ps1 | iex
     ```
 
-6. Promote server as DC
+6. Enable Remote Desktop
 
-    ```powershell
-    irm https://raw.githubusercontent.com/juronja/homelab-configs/main/OS-Windows/windows-domain-controller/scripts/win-wdc-post-install-3.ps1 | iex
-    ```
-
-7. Enable Remote Desktop
-
-    System > Remote Desktop
+    Server Manager > Local Server > Remote Desktop > Allow RDC
