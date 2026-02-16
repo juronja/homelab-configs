@@ -109,22 +109,11 @@ STEPS:
 4. Run post install & reboot:
 
     ```powershell
-    irm https://raw.githubusercontent.com/juronja/homelab-configs/main/OS-Windows/scripts/win-wdc-post-install.ps1 | iex
+    irm https://raw.githubusercontent.com/juronja/homelab-configs/main/OS-Windows/windows-domain-controller/scripts/win-wdc-post-install.ps1 | iex
     ```
 
 5. Add Features and promote server as DC
 
     ```powershell
-    Install-WindowsFeature -Name AD-Domain-Services, DNS -IncludeManagementTools
-    ```
-
-    ```powershell
-    $dsrmPassword = Read-Host "Enter DSRM Password" -AsSecureString
-    Install-ADDSForest `
-    -DomainName "ad.lan" `
-    -DomainNetbiosName "AD" `
-    -InstallDns:$true `
-    -SafeModeAdministratorPassword $dsrmPassword `
-    -NoRebootOnCompletion:$false `
-    -Force:$true
+    irm https://raw.githubusercontent.com/juronja/homelab-configs/main/OS-Windows/windows-domain-controller/scripts/win-wdc-setup-ad.ps1 | iex
     ```
