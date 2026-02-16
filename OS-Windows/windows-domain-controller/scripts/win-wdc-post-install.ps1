@@ -40,5 +40,5 @@ while ([string]::IsNullOrWhiteSpace($newName)) {
         Write-Host "Error: Computer name cannot be empty." -ForegroundColor Red
     }
 }
-Write-Host "Renaming computer to $newName and restarting..." -ForegroundColor Yellow
+Write-Host "Renaming computer to $newName and restarting..." -ForegroundColor Cyan
 Rename-Computer -NewName $newName -Restart -Force
