@@ -24,11 +24,11 @@ New-NetIPAddress -InterfaceIndex $netAdapter.ifIndex -IPAddress $ipAddress -Pref
 Set-DnsClientServerAddress -InterfaceIndex $netAdapter.ifIndex -ServerAddresses ("127.0.0.1", "1.1.1.2")
 
 # --- OpenSSH Setup ---
-Write-Host "Setting up OpenSSH..." -ForegroundColor Cyan
-Set-Service -Name sshd -StartupType 'Automatic'
-Set-NetFirewallRule -Name "OpenSSH*" -Profile Domain, Private
-New-ItemProperty -Path "HKLM:\SOFTWARE\OpenSSH" -Name "DefaultShell" -Value "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe" -PropertyType String -Force
-Start-Service sshd
+# Write-Host "Setting up OpenSSH..." -ForegroundColor Cyan
+# Set-Service -Name sshd -StartupType 'Automatic'
+# Set-NetFirewallRule -Name "OpenSSH*" -Profile Domain, Private
+# New-ItemProperty -Path "HKLM:\SOFTWARE\OpenSSH" -Name "DefaultShell" -Value "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe" -PropertyType String -Force
+# Start-Service sshd
 
 # --- Computer Rename ---
 $newName = ""
