@@ -16,6 +16,9 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/juronja/homelab-configs/
 
 ### Basic Cloud init install
 
+```bash
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/Infrastructure/Proxmox/scripts/ubuntu-vm-cloudinit-basic.sh)"
+```
 
 - POST INSTALL - Edit SSH KEY cloud-init before starting
 
