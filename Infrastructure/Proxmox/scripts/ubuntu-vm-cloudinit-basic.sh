@@ -243,10 +243,3 @@ if [[ $udp == 1 ]]; then
 fi
 
 printf "\n${BL}## Script finished! Start the VM .. ##${CL}\n\n"
-
-if [[ "$installContainers" =~ "portainer" ]]; then
-  printf "Portainer will be available at: ${BL}https://$(echo "$OS_IPv4_CIDR" | awk -F'./' '{print $1}'):9443${CL}\n\n"
-fi
-if [[ "$installContainers" =~ "jenkins" ]]; then
-  printf "Jenkins will be available at: ${BL}http://$(echo "$OS_IPv4_CIDR" | awk -F'./' '{print $1}'):8080${CL}\n\n"
-fi
