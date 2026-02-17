@@ -221,7 +221,7 @@ while true; do
       OS_IPv4_CIDR="dhcp"
       break
     elif [ "$OS_IPv4_CIDR" = "dhcp" ]; then
-      break 
+      break
     elif [[ "$OS_IPv4_CIDR" =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}/([0-9]|[1-2][0-9]|3[0-2])$ ]]; then
       echo -e "IPv4 Address: $OS_IPv4_CIDR"
       break
@@ -353,7 +353,7 @@ GROUP_LOCAL="local-ssh-ping"
 wget -nc --directory-prefix=$IMG_LOCATION https://cloud-images.ubuntu.com/$UBUNTU_RLS/current/$UBUNTU_RLS-server-cloudimg-amd64.img
 
 # Create a VM
-qm create $NEXTID --ostype l26 --cores $CORE_COUNT --cpu $CPU --numa 1 --memory $RAM --balloon 0 --name $VM_NAME --scsihw virtio-scsi-single --net0 virtio,bridge=vmbr0,firewall=1 --serial0 socket --vga serial0 --ipconfig0 ip=$OS_IPv4_CIDR$OS_IPv4_GW_FULL --agent enabled=1 --onboot 1
+qm create $NEXTID --ostype l26 --cores $CORE_COUNT --cpu $CPU --numa 1 --memory $RAM --name $VM_NAME --scsihw virtio-scsi-single --net0 virtio,bridge=vmbr0,firewall=1 --serial0 socket --vga serial0 --ipconfig0 ip=$OS_IPv4_CIDR$OS_IPv4_GW_FULL --agent enabled=1 --onboot 1
 
 # Import cloud image disk
 qm disk import $NEXTID $IMG_LOCATION$UBUNTU_RLS-server-cloudimg-amd64.img local-lvm --format qcow2
@@ -471,7 +471,7 @@ fi
 
 # Install Code-server
 if [[ "$installPrograms" =~ "code-server" ]]; then
-  
+
   CODE_SERVER_VERSION=$(code_server_latest_version)
 
   # sed -i 's/#- snap install node --classic/- snap install node --classic/' $CLOUD_INNIT_ABSOLUTE
@@ -509,7 +509,7 @@ fi
 
 # Install Minecraft server
 if [[ "$installPrograms" =~ "minecraft" ]]; then
-  
+
   FINAL_SERVER_JAR_URL=$(get_latest_minecraft_release)
 
   sed -i 's/#- openjdk-21-jre-headless/- openjdk-21-jre-headless/' $CLOUD_INNIT_ABSOLUTE
@@ -523,7 +523,7 @@ if [[ "$installPrograms" =~ "minecraft" ]]; then
   - java -Xmx1024M -Xms1024M -jar server.jar nogui
   # Accept EULA and start server
   - sed -i 's/eula=false/eula=true/' eula.txt
-  - java -Xmx1024M -Xms1024M -jar server.jar nogui  
+  - java -Xmx1024M -Xms1024M -jar server.jar nogui
 EOF
 fi
 
