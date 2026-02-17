@@ -4,11 +4,18 @@ How to setup various VMs in Proxmox.
 
 ## Ubuntu Cloud init VM
 
+### Custom Cloud init install
+
 Copy this line in the Proxmox Shell.
 
 ```bash
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/Infrastructure/Proxmox/scripts/cloudinit-vm.sh)"
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/Infrastructure/Proxmox/scripts/ubuntu-vm-cloudinit-custom.sh)"
 ```
+
+⚠️ A custom cloud init file will be created in snippets folder. This file is critical for restoring backups on another Proxmox node or when doing migrations.
+
+### Basic Cloud init install
+
 
 - POST INSTALL - Edit SSH KEY cloud-init before starting
 
