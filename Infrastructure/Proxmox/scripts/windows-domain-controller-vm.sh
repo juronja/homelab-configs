@@ -44,14 +44,17 @@ echo "Starting VM script .."
 # Whiptail inputs
 
 while read -r LSOUTPUT; do
-  ISOARRAY+=("$LSOUTPUT" "" "OFF")
+  TRUNCATED="${LSOUTPUT:0:65}"
+  if [ ${#LSOUTPUT} -gt 65 ]; then
+    TRUNCATED="${TRUNCATED}..."
+  fi
+  ISOARRAY+=("$LSOUTPUT" "$TRUNCATED" "OFF")
 done < <(ls /var/lib/vz/template/iso)
 
-
-if WIN_ISO=$(whiptail --backtitle "Install - Windows Server VM" --title "ISO FILE NAME" --radiolist "\nSelect the ISO to install. (Use Spacebar to select)\n" --cancel-button "Exit Script" 18 90 8 "${ISOARRAY[@]}" 3>&1 1>&2 2>&3 | tr -d '"'); then
-    echo -e "Selected iso: $WIN_ISO"
+if WIN_ISO=$(whiptail --backtitle "Install - Windows Server VM" --title "ISO FILE NAME" --radiolist "\nSelect the ISO to install. (Use Spacebar to select)\n" --notags --cancel-button "Exit Script" 18 78 8 "${ISOARRAY[@]}" 3>&1 1>&2 2>&3 | tr -d '"'); then
+  echo -e "Selected iso: $WIN_ISO"
 else
-    exit-script
+  exit-script
 fi
 
 if VM_NAME=$(whiptail --backtitle "Install - Windows Server VM" --inputbox "\nSet the name of the VM" 8 58 "wdc1" --title "NAME" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
@@ -66,32 +69,32 @@ else
 fi
 
 if CORE_COUNT=$(whiptail --backtitle "Install - Windows Server VM" --title "CORE COUNT" --radiolist "\nAllocate number of CPU Cores. (Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 3 \
-    "4" "cores" ON \
-    "8" "cores" OFF \
-    3>&1 1>&2 2>&3); then
-        echo -e "Allocated Cores: $CORE_COUNT"
+  "4" "cores" ON \
+  "8" "cores" OFF \
+  3>&1 1>&2 2>&3); then
+  echo -e "Allocated Cores: $CORE_COUNT"
 else
-    exit-script
+  exit-script
 fi
 
 if RAM_COUNT=$(whiptail --backtitle "Install - Windows Server VM" --title "RAM COUNT" --radiolist "\nAllocate number of RAM. (Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 3 \
-    "8" "GB" ON \
-    "16" "GB" OFF \
-    "32" "GB" OFF \
-    3>&1 1>&2 2>&3); then
-        echo -e "Allocated RAM: $RAM_COUNT GB"
+  "8" "GB" ON \
+  "16" "GB" OFF \
+  "32" "GB" OFF \
+  3>&1 1>&2 2>&3); then
+  echo -e "Allocated RAM: $RAM_COUNT GB"
 else
-    exit-script
+  exit-script
 fi
 
 if DISK_SIZE=$(whiptail --backtitle "Install - Windows Server VM" --title "DISK SIZE" --radiolist "\nSelect disk size. (Use Spacebar to select)\n" --cancel-button "Exit Script" 12 58 3 \
-    "64" "GB" ON \
-    "128" "GB" OFF \
-    "256" "GB" OFF \
-    3>&1 1>&2 2>&3); then
-        echo -e "Disk size: $DISK_SIZE GB"
+  "64" "GB" ON \
+  "128" "GB" OFF \
+  "256" "GB" OFF \
+  3>&1 1>&2 2>&3); then
+  echo -e "Disk size: $DISK_SIZE GB"
 else
-    exit-script
+  exit-script
 fi
 
 # Constant variables
