@@ -342,17 +342,7 @@ snap:
   #- snap install aws-cli --classic
   #- snap install kubectl --classic
   #- snap install node --classic
-# write_files:
-#   # Configure automatic updates
-#   - path: /etc/apt/apt.conf.d/20auto-upgrades
-#     owner: root:root
-#     permissions: '0644'
-#     content: |
-#       APT::Periodic::Update-Package-Lists "1";
-#       APT::Periodic::Unattended-Upgrade "1";
 runcmd:
-  # Configure automatic updates
-  - sed -i 's|//Unattended-Upgrade::Automatic-Reboot-Time "02:00"|Unattended-Upgrade::Automatic-Reboot-Time "06:00"|' /etc/apt/apt.conf.d/50unattended-upgrades
   # Disable IPv6
   - sed -i 's/IPV6=yes/IPV6=no/' /etc/default/ufw
   # Create custom app folder for deployments
