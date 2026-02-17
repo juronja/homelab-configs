@@ -17,3 +17,5 @@ Follow [these](https://github.com/juronja/homelab-configs/blob/main/Infrastructu
 
 - Allow Clients to reach WDC Server ports (88 123 135 389 445 464 3268 49152-65535)
 - DNS forward to WDC controller (don't use WDC as DNS). Whitelist domain if needed.
+
+![wdc-sample-network](wdc-sample-network.png)
