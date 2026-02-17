@@ -58,7 +58,7 @@ if UBUNTU_RLS=$(whiptail --backtitle "Install - Ubuntu VM" --title "UBUNTU RELEA
   "noble" "24.04 LTS" ON \
   "jammy" "22.04 LTS" OFF \
   3>&1 1>&2 2>&3); then
-    echo -e "Release version: $UBUNTU_RLS"
+  echo -e "Release version: $UBUNTU_RLS"
 else
   exit_script
 fi
@@ -69,7 +69,7 @@ if CORE_COUNT=$(whiptail --backtitle "Install - Ubuntu VM" --title "CORE COUNT" 
   "6" "cores" OFF \
   "8" "cores" OFF \
   3>&1 1>&2 2>&3); then
-    echo -e "Allocated Cores: $CORE_COUNT"
+  echo -e "Allocated Cores: $CORE_COUNT"
 else
   exit_script
 fi
@@ -80,7 +80,7 @@ if RAM_COUNT=$(whiptail --backtitle "Install - Ubuntu VM" --title "RAM COUNT" --
   "8" "GB" OFF \
   "12" "GB" OFF \
   3>&1 1>&2 2>&3); then
-    echo -e "Allocated RAM: $RAM_COUNT GB"
+  echo -e "Allocated RAM: $RAM_COUNT GB"
 else
   exit_script
 fi
@@ -91,7 +91,7 @@ if DISK_SIZE=$(whiptail --backtitle "Install - Ubuntu VM" --title "DISK SIZE" --
   "64" "GB" OFF \
   "128" "GB" OFF \
   3>&1 1>&2 2>&3); then
-    echo -e "Allocated disk size: $DISK_SIZE GB"
+  echo -e "Allocated disk size: $DISK_SIZE GB"
 else
   exit_script
 fi
@@ -108,7 +108,7 @@ else
 fi
 
 while true; do
-  if OS_USER=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nCloud-innit username" 8 58 --title "CLOUD-INIT USERNAME" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
+  if OS_USER=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nCloud-init username" 8 58 --title "CLOUD-INIT USERNAME" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
     if [[ -z $OS_USER ]]; then
       whiptail --backtitle "Install - Ubuntu VM" --msgbox "Username cannot be empty" 8 58
     else
@@ -120,7 +120,7 @@ while true; do
 done
 
 while true; do
-  if OS_PASS=$(whiptail --backtitle "Install - Ubuntu VM" --passwordbox "\nCloud-innit password" 8 58 --title "CLOUD-INIT PASSWORD" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
+  if OS_PASS=$(whiptail --backtitle "Install - Ubuntu VM" --passwordbox "\nCloud-init password" 8 58 --title "CLOUD-INIT PASSWORD" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
     if [[ -z $OS_PASS ]]; then
       whiptail --backtitle "Install - Ubuntu VM" --msgbox "Password cannot be empty" 8 58
     elif [[ "$OS_PASS" == *" "* ]]; then
@@ -177,7 +177,7 @@ if [[ $OS_IPv4_CIDR != "dhcp" ]]; then
   while true; do
     if OS_IPv4_GW=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nEnter gateway IP address" 8 58 "$SUGGESTED_GW" --title "CLOUD-INIT IPv4 GATEWAY" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
       if [[ -z $OS_IPv4_GW ]]; then
-          whiptail --backtitle "Install - Ubuntu VM" --msgbox "Gateway IP address cannot be empty" 8 58
+        whiptail --backtitle "Install - Ubuntu VM" --msgbox "Gateway IP address cannot be empty" 8 58
       elif [[ ! "$OS_IPv4_GW" =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then
         whiptail --backtitle "Install - Ubuntu VM" --msgbox "Invalid IP address format" 8 58
       else
@@ -197,13 +197,13 @@ if whiptail --backtitle "Install - Ubuntu VM" --title "PROXMOX FIREWALL" --yesno
   if tcpPorts=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nWrite comma seperated TCP ports to expose on WAN" 10 58 "7474,3131," --title "EXPOSE TCP PORTS" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
     tcp=1
     echo "Will open TCP Ports: $tcpPorts"
-    else
+  else
     echo "TCP ports skipped .."
   fi
   if udpPorts=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nWrite comma seperated UDP ports to expose on WAN" 10 58 "8082," --title "EXPOSE UDP PORTS" --cancel-button "Skip" 3>&1 1>&2 2>&3); then
     udp=1
     echo "Will open UDP Ports: $udpPorts"
-    else
+  else
     echo "UDP ports skipped .."
   fi
 else
@@ -218,7 +218,7 @@ if installPrograms=$(whiptail --backtitle "Install - Ubuntu VM" --title "INSTALL
   "ansible" "" OFF \
   "cifs-utils" "" OFF \
   3>&1 1>&2 2>&3); then
-    echo -e "Install programs: $installPrograms"
+  echo -e "Install programs: $installPrograms"
 else
   echo "Programs install skipped .."
 fi
@@ -234,7 +234,7 @@ if [[ "$installPrograms" =~ "docker" ]]; then
     "portainer" "" OFF \
     "jenkins" "" OFF \
     3>&1 1>&2 2>&3); then
-      echo -e "Install containers: $installContainers"
+    echo -e "Install containers: $installContainers"
   else
     echo "Container install skipped .."
   fi
@@ -275,20 +275,19 @@ PortainerComposeUrl="https://raw.githubusercontent.com/juronja/homelab-configs/r
 JenkinsDockerfileUrl="https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/CI-CD/Jenkins/Dockerfile"
 JenkinsComposeUrl="https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/CI-CD/Jenkins/compose.yaml"
 
-
 # Proxmox variables
 RAM=$(($RAM_COUNT * 1024))
 IMG_LOCATION="/var/lib/vz/template/iso/"
 CPU="x86-64-v3"
-CLOUD_INNIT_ABSOLUTE="/var/lib/vz/snippets/ubuntu-$VM_NAME-cloud-init.yml"
-CLOUD_INNIT_LOCAL="snippets/ubuntu-$VM_NAME-cloud-init.yml"
+CLOUD_INIT_ABSOLUTE="/var/lib/vz/snippets/ubuntu-$VM_NAME-cloud-init.yml"
+CLOUD_INIT_LOCAL="snippets/ubuntu-$VM_NAME-cloud-init.yml"
 CLUSTER_FW_ENABLED=$(pvesh get /cluster/firewall/options --output-format json | sed -n 's/.*"enable": *\([0-9]*\).*/\1/p')
 LOCAL_NETWORK=$(pve-firewall localnet | grep local_network | cut -d':' -f2 | sed 's/ //g')
 ALIAS_HOME_NETWORK="home_network"
 ALIAS_PROXY="proxy"
 GROUP_LOCAL="local-ssh-ping"
 
-# Download the Ubuntu cloud innit image
+# Download the Ubuntu cloud init image
 wget -nc --directory-prefix=$IMG_LOCATION https://cloud-images.ubuntu.com/$UBUNTU_RLS/current/$UBUNTU_RLS-server-cloudimg-amd64.img
 
 # Create a VM
@@ -304,10 +303,10 @@ qm set $NEXTID --scsi0 local-lvm:vm-$NEXTID-disk-0,discard=on,ssd=1 --ide2 local
 qm disk resize $NEXTID scsi0 "${DISK_SIZE}G" && qm set $NEXTID --boot order=scsi0
 
 # Configure Cloudinit datails
-rm $CLOUD_INNIT_ABSOLUTE
-touch $CLOUD_INNIT_ABSOLUTE
+rm $CLOUD_INIT_ABSOLUTE
+touch $CLOUD_INIT_ABSOLUTE
 
-cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
+cat <<EOF >>$CLOUD_INIT_ABSOLUTE
 #cloud-config
 hostname: $VM_NAME
 manage_etc_hosts: true
@@ -351,12 +350,12 @@ EOF
 
 # SSH manage
 if [[ $ssh != 0 ]]; then
-  sed -i "s|#- SSH_PUB_KEY|- \"$SSH_PUB_KEY\"|" $CLOUD_INNIT_ABSOLUTE
+  sed -i "s|#- SSH_PUB_KEY|- \"$SSH_PUB_KEY\"|" $CLOUD_INIT_ABSOLUTE
 fi
 
 # Docker install
 if [[ "$installPrograms" =~ "docker" ]]; then
-  cat <<'EOF' >> $CLOUD_INNIT_ABSOLUTE
+  cat <<'EOF' >>$CLOUD_INIT_ABSOLUTE
   # Add Docker's official GPG key
   - curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc && chmod a+r /etc/apt/keyrings/docker.asc
   # Add the repository to Apt sources
@@ -365,7 +364,7 @@ if [[ "$installPrograms" =~ "docker" ]]; then
   # Install Docker
   - apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
 EOF
-  cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
+  cat <<EOF >>$CLOUD_INIT_ABSOLUTE
   # Append user to docker group
   - usermod -aG docker $OS_USER
   # Create the daemon.json for insecure (http) logins configs if needed for Nexus
@@ -374,14 +373,14 @@ EOF
 fi
 # Add insecure registries
 if [[ $registries == 1 ]]; then
-  cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
+  cat <<EOF >>$CLOUD_INIT_ABSOLUTE
   # Add insecure registries
   - 'printf "{\n    \"insecure-registries\" : [ \"$insecReg\" ]\n}" | tee /etc/docker/daemon.json > /dev/null'
 EOF
 fi
 # Install Portainer
 if [[ "$installPrograms" =~ "docker" ]] && [[ "$installContainers" =~ "portainer" ]]; then
-  cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
+  cat <<EOF >>$CLOUD_INIT_ABSOLUTE
   # Install Portainer
   - mkdir /home/$OS_USER/apps/portainer
   - wget -nc --directory-prefix=/home/$OS_USER/apps/portainer $PortainerComposeUrl
@@ -391,7 +390,7 @@ EOF
 fi
 # Install Jenkins
 if [[ "$installPrograms" =~ "docker" ]] && [[ "$installContainers" =~ "jenkins" ]]; then
-  cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
+  cat <<EOF >>$CLOUD_INIT_ABSOLUTE
   # Install Jenkins
   - mkdir /home/$OS_USER/apps/jenkins
   - wget -nc --directory-prefix=/home/$OS_USER/apps/jenkins $JenkinsDockerfileUrl
@@ -403,7 +402,7 @@ fi
 
 # Install Prometheus Node Exporter
 if [[ "$installPrograms" =~ "prometheus-node-exporter" ]]; then
-  sed -i 's/#- prometheus-node-exporter/- prometheus-node-exporter/' $CLOUD_INNIT_ABSOLUTE
+  sed -i 's/#- prometheus-node-exporter/- prometheus-node-exporter/' $CLOUD_INIT_ABSOLUTE
 fi
 
 # Install Code-server
@@ -411,10 +410,10 @@ if [[ "$installPrograms" =~ "code-server" ]]; then
 
   CODE_SERVER_VERSION=$(code_server_latest_version)
 
-  # sed -i 's/#- snap install node --classic/- snap install node --classic/' $CLOUD_INNIT_ABSOLUTE
-  sed -i 's/#- shellcheck/- shellcheck/' $CLOUD_INNIT_ABSOLUTE
-  sed -i 's/#- shfmt/- shfmt/' $CLOUD_INNIT_ABSOLUTE
-  cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
+  # sed -i 's/#- snap install node --classic/- snap install node --classic/' $CLOUD_INIT_ABSOLUTE
+  sed -i 's/#- shellcheck/- shellcheck/' $CLOUD_INIT_ABSOLUTE
+  sed -i 's/#- shfmt/- shfmt/' $CLOUD_INIT_ABSOLUTE
+  cat <<EOF >>$CLOUD_INIT_ABSOLUTE
   # Mount SMB
   - mkdir -m 750 /home/$OS_USER/GitRepos
   - chown -R $OS_USER:$OS_USER /home/$OS_USER/GitRepos
@@ -433,10 +432,10 @@ fi
 
 # Install Ansible and dependencies
 if [[ "$installPrograms" =~ "ansible" ]]; then
-  sed -i 's/#- ansible/- ansible/' $CLOUD_INNIT_ABSOLUTE
-  sed -i 's/#- snap install aws-cli --classic/- snap install aws-cli --classic/' $CLOUD_INNIT_ABSOLUTE
-  sed -i 's/#- snap install kubectl --classic/- snap install kubectl --classic/' $CLOUD_INNIT_ABSOLUTE
-  cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
+  sed -i 's/#- ansible/- ansible/' $CLOUD_INIT_ABSOLUTE
+  sed -i 's/#- snap install aws-cli --classic/- snap install aws-cli --classic/' $CLOUD_INIT_ABSOLUTE
+  sed -i 's/#- snap install kubectl --classic/- snap install kubectl --classic/' $CLOUD_INIT_ABSOLUTE
+  cat <<EOF >>$CLOUD_INIT_ABSOLUTE
   # Install Ansible
   - mkdir -m 750 /home/$OS_USER/apps/ansible
   - chown -R $OS_USER:$OS_USER /home/$OS_USER/apps/ansible
@@ -447,10 +446,10 @@ fi
 
 # Install Cifs Utils
 if [[ "$installPrograms" =~ "cifs-utils" ]]; then
-  sed -i 's/#- cifs-utils/- cifs-utils/' $CLOUD_INNIT_ABSOLUTE
+  sed -i 's/#- cifs-utils/- cifs-utils/' $CLOUD_INIT_ABSOLUTE
 fi
 
-qm set $NEXTID --cicustom "user=local:$CLOUD_INNIT_LOCAL"
+qm set $NEXTID --cicustom "user=local:$CLOUD_INIT_LOCAL"
 
 # Configure Cluster level firewall rules if not enabled
 if [[ $CLUSTER_FW_ENABLED != 1 ]]; then
@@ -464,7 +463,7 @@ if [[ $CLUSTER_FW_ENABLED != 1 ]]; then
   pvesh create /cluster/firewall/groups/$GROUP_LOCAL --action ACCEPT --type in --source $ALIAS_HOME_NETWORK --macro Ping --enable 1
   pvesh create /cluster/firewall/groups/$GROUP_LOCAL --action ACCEPT --type in --source $ALIAS_HOME_NETWORK --macro SSH --enable 1
   echo "Cluster Firewall configurations set successfully .."
-  else
+else
   echo "Cluster Firewall configurations already present .."
 fi
 

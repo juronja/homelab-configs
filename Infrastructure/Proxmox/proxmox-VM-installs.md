@@ -2,15 +2,15 @@
 
 How to setup various VMs in Proxmox.
 
-## Ubuntu Cloud innit VM
+## Ubuntu Cloud init VM
 
 Copy this line in the Proxmox Shell.
 
 ```bash
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/Infrastructure/Proxmox/scripts/cloudinnit-vm.sh)"
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/Infrastructure/Proxmox/scripts/cloudinit-vm.sh)"
 ```
 
-- POST INSTALL - Edit SSH KEY cloud-innit before starting
+- POST INSTALL - Edit SSH KEY cloud-init before starting
 
 ## TrueNAS VM
 
