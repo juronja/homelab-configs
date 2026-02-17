@@ -20,67 +20,6 @@ BL=$(echo "\033[36m")
 CL=$(echo "\033[m")
 
 # FUNCTIONS
-get_latest_minecraft_release() {
-    # Install dependency
-    if ! command -v jq &> /dev/null; then
-      echo "jq is not installed. Attempting to install jq..."
-      apt-get update
-      apt-get install jq -y
-    fi
-
-    # Get the entire version manifest JSON
-    local MINECRAFT_MANIFEST_JSON
-    MINECRAFT_MANIFEST_JSON=$(curl -s "https://piston-meta.mojang.com/mc/game/version_manifest.json")
-
-    # Check if curl was successful and returned data
-    if [ -z "$MINECRAFT_MANIFEST_JSON" ]; then
-      echo "Error: Could not fetch JSON data from the version manifest URL. Please check your network connection or the URL."
-      return 1 # Indicate an error
-    fi
-
-    # Get latest release version ID
-    local LATEST_RELEASE_ID
-    LATEST_RELEASE_ID=$(echo "$MINECRAFT_MANIFEST_JSON" | jq -r '.latest.release')
-
-    # Check if the latest release ID was found
-    if [ -z "$LATEST_RELEASE_ID" ]; then
-        echo "Error: Failed to retrieve the latest Minecraft release version ID. JSON parsing might have failed or the 'latest.release' key is missing."
-        return 1
-    fi
-
-    # Get the URL for the latest release version
-    local LATEST_RELEASE_URL
-    LATEST_RELEASE_URL=$(echo "$MINECRAFT_MANIFEST_JSON" | jq -r ".versions[] | select(.id == \"$LATEST_RELEASE_ID\") | .url")
-
-    # Check if the URL was found
-    if [ -z "$LATEST_RELEASE_URL" ]; then
-        echo "Error: Failed to find the URL for version $LATEST_RELEASE_ID in the manifest."
-        return 1
-    fi
-
-    # Get the MANIFEST for the latest release version
-    local LATEST_RELEASE_MANIFEST_JSON
-    LATEST_RELEASE_MANIFEST_JSON=$(curl -s "$LATEST_RELEASE_URL")
-
-    # Check if the specific release manifest was fetched successfully
-    if [ -z "$LATEST_RELEASE_MANIFEST_JSON" ]; then
-        echo "Error: Could not fetch specific release manifest from $LATEST_RELEASE_URL."
-        return 1
-    fi
-
-    local SERVER_JAR_URL
-    SERVER_JAR_URL=$(echo "$LATEST_RELEASE_MANIFEST_JSON" | jq -r '.downloads.server.url')
-
-    # Check if the server JAR URL was found
-    if [ -z "$SERVER_JAR_URL" ]; then
-        echo "Error: Could not find the server.jar URL in the specific release manifest."
-        return 1
-    fi
-
-    # For this function, we'll just echo the SERVER_JAR_URL as the primary output
-    echo "$SERVER_JAR_URL"
-    return 0
-}
 
 # Get latests Code-server version
 code_server_latest_version() {
@@ -90,7 +29,6 @@ code_server_latest_version() {
   VERSION="${VERSION#v}"
   echo "$VERSION"
 }
-
 
 # This function checks if the script is running through SSH and prompts the user to confirm if they want to proceed or exit.
 ssh_check() {
@@ -147,10 +85,11 @@ else
   exit_script
 fi
 
-if DISK_SIZE=$(whiptail --backtitle "Install - Ubuntu VM" --title "DISK SIZE" --radiolist "\nAllocate disk size. (Spacebar to select)\n" --cancel-button "Exit Script" 12 58 3 \
+if DISK_SIZE=$(whiptail --backtitle "Install - Ubuntu VM" --title "DISK SIZE" --radiolist "\nAllocate disk size. (Spacebar to select)\n" --cancel-button "Exit Script" 12 58 4 \
   "32" "GB" OFF \
   "48" "GB" ON \
   "64" "GB" OFF \
+  "128" "GB" OFF \
   3>&1 1>&2 2>&3); then
     echo -e "Allocated disk size: $DISK_SIZE GB"
 else
@@ -277,7 +216,7 @@ if installPrograms=$(whiptail --backtitle "Install - Ubuntu VM" --title "INSTALL
   "prometheus-node-exporter" "" OFF \
   "code-server" "" OFF \
   "ansible" "" OFF \
-  "minecraft" "" OFF \
+  "cifs-utils" "" OFF \
   3>&1 1>&2 2>&3); then
     echo -e "Install programs: $installPrograms"
 else
@@ -393,16 +332,24 @@ apt:
 packages:
   - qemu-guest-agent
   - python3-pip
-  - cifs-utils
+  #- cifs-utils
   #- prometheus-node-exporter
   #- ansible
-  #- openjdk-21-jre-headless
   #- shellcheck
+  #- shfmt
 snap:
   commands:
   #- snap install aws-cli --classic
   #- snap install kubectl --classic
   #- snap install node --classic
+# write_files:
+#   # Configure automatic updates
+#   - path: /etc/apt/apt.conf.d/20auto-upgrades
+#     owner: root:root
+#     permissions: '0644'
+#     content: |
+#       APT::Periodic::Update-Package-Lists "1";
+#       APT::Periodic::Unattended-Upgrade "1";
 runcmd:
   # Configure automatic updates
   - sed -i 's|//Unattended-Upgrade::Automatic-Reboot-Time "02:00"|Unattended-Upgrade::Automatic-Reboot-Time "06:00"|' /etc/apt/apt.conf.d/50unattended-upgrades
@@ -476,6 +423,7 @@ if [[ "$installPrograms" =~ "code-server" ]]; then
 
   # sed -i 's/#- snap install node --classic/- snap install node --classic/' $CLOUD_INNIT_ABSOLUTE
   sed -i 's/#- shellcheck/- shellcheck/' $CLOUD_INNIT_ABSOLUTE
+  sed -i 's/#- shfmt/- shfmt/' $CLOUD_INNIT_ABSOLUTE
   cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
   # Mount SMB
   - mkdir -m 750 /home/$OS_USER/GitRepos
@@ -507,24 +455,9 @@ if [[ "$installPrograms" =~ "ansible" ]]; then
 EOF
 fi
 
-# Install Minecraft server
-if [[ "$installPrograms" =~ "minecraft" ]]; then
-
-  FINAL_SERVER_JAR_URL=$(get_latest_minecraft_release)
-
-  sed -i 's/#- openjdk-21-jre-headless/- openjdk-21-jre-headless/' $CLOUD_INNIT_ABSOLUTE
-  cat <<EOF >> $CLOUD_INNIT_ABSOLUTE
-  # Download server jar
-  - mkdir /home/$OS_USER/apps/minecraft
-  - wget -nc --directory-prefix=/home/$OS_USER/apps/minecraft $FINAL_SERVER_JAR_URL
-  - cd /home/$OS_USER/apps/minecraft
-  - chown -R $OS_USER:$OS_USER .
-  # Install server to get eula
-  - java -Xmx1024M -Xms1024M -jar server.jar nogui
-  # Accept EULA and start server
-  - sed -i 's/eula=false/eula=true/' eula.txt
-  - java -Xmx1024M -Xms1024M -jar server.jar nogui
-EOF
+# Install Cifs Utils
+if [[ "$installPrograms" =~ "cifs-utils" ]]; then
+  sed -i 's/#- cifs-utils/- cifs-utils/' $CLOUD_INNIT_ABSOLUTE
 fi
 
 qm set $NEXTID --cicustom "user=local:$CLOUD_INNIT_LOCAL"
