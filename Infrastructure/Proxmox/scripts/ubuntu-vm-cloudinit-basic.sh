@@ -128,42 +128,42 @@ fi
 #   fi
 # done
 
-# while true; do
-#   if OS_IPv4_CIDR=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nSet a Static IPv4 CIDR Address (/24)" 8 58 "dhcp" --title "CLOUD-INIT IPv4 CIDR" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
-#     if [ -z $OS_IPv4_CIDR ]; then
-#       OS_IPv4_CIDR="dhcp"
-#       break
-#     elif [ "$OS_IPv4_CIDR" = "dhcp" ]; then
-#       break
-#     elif [[ "$OS_IPv4_CIDR" =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}/([0-9]|[1-2][0-9]|3[0-2])$ ]]; then
-#       echo -e "IPv4 Address: $OS_IPv4_CIDR"
-#       break
-#     else
-#       whiptail --backtitle "Install - Ubuntu VM" --msgbox "$OS_IPv4_CIDR is an invalid IPv4 CIDR address. Please enter a valid IPv4 CIDR address or 'dhcp'" 8 58
-#     fi
-#   else
-#     exit_script
-#   fi
-# done
+while true; do
+  if OS_IPv4_CIDR=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nSet a Static IPv4 CIDR Address (/24)" 8 58 "dhcp" --title "CLOUD-INIT IPv4 CIDR" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
+    if [ -z $OS_IPv4_CIDR ]; then
+      OS_IPv4_CIDR="dhcp"
+      break
+    elif [ "$OS_IPv4_CIDR" = "dhcp" ]; then
+      break
+    elif [[ "$OS_IPv4_CIDR" =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}/([0-9]|[1-2][0-9]|3[0-2])$ ]]; then
+      echo -e "IPv4 Address: $OS_IPv4_CIDR"
+      break
+    else
+      whiptail --backtitle "Install - Ubuntu VM" --msgbox "$OS_IPv4_CIDR is an invalid IPv4 CIDR address. Please enter a valid IPv4 CIDR address or 'dhcp'" 8 58
+    fi
+  else
+    exit_script
+  fi
+done
 
-# if [[ $OS_IPv4_CIDR != "dhcp" ]]; then
-#   SUGGESTED_GW=$(echo "$OS_IPv4_CIDR" | sed 's/\.[0-9]\{1,3\}\/\([0-9]\+\)$/.1/')
-#   while true; do
-#     if OS_IPv4_GW=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nEnter gateway IP address" 8 58 "$SUGGESTED_GW" --title "CLOUD-INIT IPv4 GATEWAY" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
-#       if [[ -z $OS_IPv4_GW ]]; then
-#         whiptail --backtitle "Install - Ubuntu VM" --msgbox "Gateway IP address cannot be empty" 8 58
-#       elif [[ ! "$OS_IPv4_GW" =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then
-#         whiptail --backtitle "Install - Ubuntu VM" --msgbox "Invalid IP address format" 8 58
-#       else
-#         OS_IPv4_GW_FULL=",gw=$OS_IPv4_GW"
-#         echo -e "Gateway IP Address: $OS_IPv4_GW"
-#         break # Exit the loop after a valid gateway IP is entered
-#       fi
-#     else
-#       exit_script
-#     fi
-#   done
-# fi
+if [[ $OS_IPv4_CIDR != "dhcp" ]]; then
+  SUGGESTED_GW=$(echo "$OS_IPv4_CIDR" | sed 's/\.[0-9]\{1,3\}\/\([0-9]\+\)$/.1/')
+  while true; do
+    if OS_IPv4_GW=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nEnter gateway IP address" 8 58 "$SUGGESTED_GW" --title "CLOUD-INIT IPv4 GATEWAY" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
+      if [[ -z $OS_IPv4_GW ]]; then
+        whiptail --backtitle "Install - Ubuntu VM" --msgbox "Gateway IP address cannot be empty" 8 58
+      elif [[ ! "$OS_IPv4_GW" =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then
+        whiptail --backtitle "Install - Ubuntu VM" --msgbox "Invalid IP address format" 8 58
+      else
+        OS_IPv4_GW_FULL=",gw=$OS_IPv4_GW"
+        echo -e "Gateway IP Address: $OS_IPv4_GW"
+        break # Exit the loop after a valid gateway IP is entered
+      fi
+    else
+      exit_script
+    fi
+  done
+fi
 
 # WHIPTAIL FIREWALL RULES
 if whiptail --backtitle "Install - Ubuntu VM" --title "PROXMOX FIREWALL" --yesno --defaultno "Do you want to enable Proxmox FIREWALL?" 10 62; then
