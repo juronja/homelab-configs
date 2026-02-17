@@ -98,36 +98,6 @@ else
   exit_script
 fi
 
-# while true; do
-#   if OS_USER=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nCloud-init username" 8 58 --title "CLOUD-INIT USERNAME" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
-#     if [[ -z $OS_USER ]]; then
-#       whiptail --backtitle "Install - Ubuntu VM" --msgbox "Username cannot be empty" 8 58
-#     else
-#       break # Username is not empty, break out of the loop
-#     fi
-#   else
-#     exit_script
-#   fi
-# done
-
-# while true; do
-#   if OS_PASS=$(whiptail --backtitle "Install - Ubuntu VM" --passwordbox "\nCloud-init password" 8 58 --title "CLOUD-INIT PASSWORD" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
-#     if [[ -z $OS_PASS ]]; then
-#       whiptail --backtitle "Install - Ubuntu VM" --msgbox "Password cannot be empty" 8 58
-#     elif [[ "$OS_PASS" == *" "* ]]; then
-#       whiptail --backtitle "Install - Ubuntu VM" --msgbox "Password cannot contain spaces. Please try again." 8 58
-#     elif [ ${#OS_PASS} -lt 8 ]; then
-#       whiptail --backtitle "Install - Ubuntu VM" --msgbox "Password must be at least 8 characters long. Please try again." 8 58
-#     else
-#       # Using SHA-512 (algorithm 6) for strong hashing
-#       HASHED_OS_PASS=$(echo -n "$OS_PASS" | openssl passwd -6 -stdin)
-#       break # Password is valid, break out of the loop
-#     fi
-#   else
-#     exit_script
-#   fi
-# done
-
 while true; do
   if OS_IPv4_CIDR=$(whiptail --backtitle "Install - Ubuntu VM" --inputbox "\nSet a Static IPv4 CIDR Address (/24)" 8 58 "dhcp" --title "CLOUD-INIT IPv4 CIDR" --cancel-button "Exit Script" 3>&1 1>&2 2>&3); then
     if [ -z $OS_IPv4_CIDR ]; then
