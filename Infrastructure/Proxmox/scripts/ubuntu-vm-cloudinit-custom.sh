@@ -279,8 +279,9 @@ JenkinsComposeUrl="https://raw.githubusercontent.com/juronja/homelab-configs/ref
 RAM=$(($RAM_COUNT * 1024))
 IMG_LOCATION="/var/lib/vz/template/iso/"
 CPU="x86-64-v3"
-CLOUD_INIT_ABSOLUTE="/var/lib/vz/snippets/$NEXTID-$VM_NAME-ubuntu-cloud-init.yml"
-CLOUD_INIT_LOCAL="snippets/$NEXTID-$VM_NAME-ubuntu-cloud-init.yml"
+STORAGE_ID="cloud-configs"
+CLOUD_INIT_ABSOLUTE="/mnt/pve/$STORAGE_ID/snippets/$NEXTID-$VM_NAME-ubuntu-cloud-init.yml"
+CLOUD_INIT_PVE_PATH="$STORAGE_ID:snippets/$NEXTID-$VM_NAME-ubuntu-cloud-init.yml"
 CLUSTER_FW_ENABLED=$(pvesh get /cluster/firewall/options --output-format json | sed -n 's/.*"enable": *\([0-9]*\).*/\1/p')
 LOCAL_NETWORK=$(pve-firewall localnet | grep local_network | cut -d':' -f2 | sed 's/ //g')
 ALIAS_HOME_NETWORK="home_network"
@@ -449,7 +450,7 @@ if [[ "$installPrograms" =~ "cifs-utils" ]]; then
   sed -i 's/#- cifs-utils/- cifs-utils/' $CLOUD_INIT_ABSOLUTE
 fi
 
-qm set $NEXTID --cicustom "user=local:$CLOUD_INIT_LOCAL"
+qm set $NEXTID --cicustom "user=local:$CLOUD_INIT_PVE_PATH"
 
 # Configure Cluster level firewall rules if not enabled
 if [[ $CLUSTER_FW_ENABLED != 1 ]]; then
