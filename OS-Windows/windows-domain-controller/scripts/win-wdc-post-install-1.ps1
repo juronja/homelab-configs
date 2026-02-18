@@ -47,8 +47,8 @@ msiexec.exe /i "E:\virtio-win-gt-x64.msi" /q
 msiexec.exe /i "E:\guest-agent\qemu-ga-x86_64.msi" /q
 
 # Installing Wazuh agent
-#Write-Host "Do you want to install a Wazuh agent?" -ForegroundColor Cyan
-winget install Wazuh.WazuhAgent --override '/i /q WAZUH_MANAGER="wazuh.lan" WAZUH_AGENT_GROUP="default" WAZUH_AGENT_NAME="win-client-1"'
+#-e Write-Host "Do you want to install a Wazuh agent?" -ForegroundColor Cyan
+winget install -e --id Wazuh.WazuhAgent -s winget --override "/i /q WAZUH_MANAGER=`"wazuh.lan`" WAZUH_AGENT_GROUP=`"default`" WAZUH_AGENT_NAME=`"win-client-1`""
 Write-Host "✔️ Wazuh Agent installed." -ForegroundColor Green
 
 
