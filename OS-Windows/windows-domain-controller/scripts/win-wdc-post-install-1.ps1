@@ -38,7 +38,7 @@ while ([string]::IsNullOrWhiteSpace($newName)) {
 # Set static IP and Gateway
 Write-Host "Configuring adapter: $($netAdapter.Name)..." -ForegroundColor Cyan
 New-NetIPAddress -InterfaceIndex $netAdapter.ifIndex -IPAddress $ipAddress -PrefixLength $ipPrefix -DefaultGateway $gateway
-Set-DnsClientServerAddress -InterfaceIndex $netAdapter.ifIndex -ServerAddresses ("127.0.0.1")
+Set-DnsClientServerAddress -InterfaceIndex $netAdapter.ifIndex -ServerAddresses ("127.0.0.1","1.1.1.2")
 Write-Host "✔️ Configuring adapter successfull." -ForegroundColor Green
 
 # Install necessary roles and management tools
@@ -47,7 +47,9 @@ Install-WindowsFeature -Name AD-Domain-Services, DNS, Web-Server -IncludeManagem
 Write-Host "✔️ Roles and management tools installed successfully." -ForegroundColor Green
 
 # Set DNS Forwarding to gateway
+Write-Host "Setting DNS Forwarding" -ForegroundColor Cyan
 Set-DnsServerForwarder -IPAddress $gateway
+Write-Host "✔️ DNS Forwarding set." -ForegroundColor Green
 
 # Installing Wazuh agent
 $confirmation = Read-Host "Do you want to install the Wazuh agent? (y/n)"
