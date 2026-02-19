@@ -97,12 +97,14 @@ else
   exit-script
 fi
 
-if VLANTAG=$(whiptail --backtitle "Install - Windows Server VM" --inputbox "Set a Vlan(leave blank for default)" 8 58 --title "VLAN" --cancel-button Exit-Script 3>&1 1>&2 2>&3); then
-  if [ -z $VLANTAG ]; then
-    VLANTAG="Default"
-    echo -e "Vlan tag: $VLANTAG"
+if VLAN1=$(whiptail --backtitle "Install - Windows Server VM" --inputbox "Set a Vlan(leave blank for default)" 8 58 --title "VLAN" --cancel-button Exit-Script 3>&1 1>&2 2>&3); then
+  if [ -z $VLAN1 ]; then
+    VLAN1="Default"
+    VLAN=""
+    echo -e "Vlan tag: $VLAN1"
   else
-    echo -e "Vlan tag: $VLANTAG"
+    VLAN=",tag=$VLAN1"
+    echo -e "Vlan tag: $VLAN1"
   fi
 else
   exit-script
@@ -119,4 +121,4 @@ IMG_LOCATION="/var/lib/vz/template/iso/"
 wget -nc --directory-prefix=$IMG_LOCATION https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso
 
 # Create a VM
-qm create $VMID --ostype win11 --cores $CORE_COUNT --cpu $CPU --memory $RAM --name $VM_NAME --bios ovmf --efidisk0 local-lvm:1,efitype=4m,pre-enrolled-keys=1 --machine q35 --tpmstate0 local-lvm:1,version=v2.0 --scsihw virtio-scsi-single --scsi0 local-lvm:$DISK_SIZE,ssd=on,iothread=on --ide0 local:iso/$WIN_ISO,media=cdrom --ide1 local:iso/virtio-win.iso,media=cdrom --net0 virtio,bridge=vmbr0,tag=$VLANTAG,firewall=1 --ipconfig0 ip=dhcp,ip6=dhcp --agent enabled=1 --onboot 1 --boot order="ide0;scsi0"
+qm create $VMID --ostype win11 --cores $CORE_COUNT --cpu $CPU --memory $RAM --name $VM_NAME --bios ovmf --efidisk0 local-lvm:1,efitype=4m,pre-enrolled-keys=1 --machine q35 --tpmstate0 local-lvm:1,version=v2.0 --scsihw virtio-scsi-single --scsi0 local-lvm:$DISK_SIZE,ssd=on,iothread=on --ide0 local:iso/$WIN_ISO,media=cdrom --ide1 local:iso/virtio-win.iso,media=cdrom --net0 virtio,bridge=vmbr0,tag=$VLAN,firewall=1 --ipconfig0 ip=dhcp,ip6=dhcp --agent enabled=1 --onboot 1 --boot order="ide0;scsi0"
