@@ -46,10 +46,10 @@ Write-Host "Installing AD, DNS, IIS services roles and management tools ... This
 Install-WindowsFeature -Name AD-Domain-Services, DNS, Web-Server -IncludeManagementTools
 Write-Host "✔️ Roles and management tools installed successfully." -ForegroundColor Green
 
-# # Set DNS Forwarding to gateway
-# Write-Host "Setting DNS Forwarding" -ForegroundColor Cyan
-# Set-DnsServerForwarder -IPAddress $gateway
-# Write-Host "✔️ DNS Forwarding set." -ForegroundColor Green
+# Set DNS Forwarding to gateway
+Write-Host "Setting DNS Forwarding" -ForegroundColor Cyan
+Set-DnsServerForwarder -IPAddress $gateway -Force
+Write-Host "✔️ DNS Forwarding set." -ForegroundColor Green
 
 # Installing Wazuh agent
 $confirmation = Read-Host "Do you want to install the Wazuh agent? (y/n)"
