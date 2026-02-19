@@ -22,10 +22,14 @@ if ($null -eq $netAdapter) {
 # Computer name
 $newName = ""
 while ([string]::IsNullOrWhiteSpace($newName)) {
-    $newName = Read-Host "Enter the new name for this server machine (Required)"
+    $inputName = Read-Host "Enter the new name for this server machine (Required)"
 
-    if ([string]::IsNullOrWhiteSpace($newName)) {
+    if ([string]::IsNullOrWhiteSpace($inputName)) {
         Write-Host "Error: Computer name cannot be empty." -ForegroundColor Red
+    } else {
+        # Trim surrounding whitespace and replace internal spaces with "-"
+        $newName = $inputName.Trim().Replace(" ", "-")
+        Write-Host "Computer name set to: $newName" -ForegroundColor Cyan
     }
 }
 
@@ -34,7 +38,8 @@ while ([string]::IsNullOrWhiteSpace($newName)) {
 # Set static IP and Gateway and DNS
 Write-Host "Configuring adapter: $($netAdapter.Name)..." -ForegroundColor Cyan
 New-NetIPAddress -InterfaceIndex $netAdapter.ifIndex -IPAddress $ipAddress -PrefixLength $ipPrefix -DefaultGateway $gateway
-Set-DnsClientServerAddress -InterfaceIndex $netAdapter.ifIndex -ServerAddresses ("127.0.0.1", "1.1.1.2")
+Set-DnsClientServerAddress -InterfaceIndex $netAdapter.ifIndex -ServerAddresses ("127.0.0.1")
+Set-DnsServerForwarder -IPAddress $gateway
 Write-Host "✔️ Configuring adapter successfull." -ForegroundColor Green
 
 # Install necessary roles and management tools
@@ -44,12 +49,42 @@ Write-Host "✔️ Roles and management tools installed successfully." -Foregrou
 
 # Install virtio
 msiexec.exe /i "E:\virtio-win-gt-x64.msi" /q
+Start-Sleep -Seconds 2
 msiexec.exe /i "E:\guest-agent\qemu-ga-x86_64.msi" /q
+Start-Sleep -Seconds 5
 
 # Installing Wazuh agent
-#-e Write-Host "Do you want to install a Wazuh agent?" -ForegroundColor Cyan
-winget install -e --id Wazuh.WazuhAgent -s winget --override "/i /q WAZUH_MANAGER=wazuh.lan WAZUH_AGENT_GROUP=default WAZUH_AGENT_NAME=win-client-1"
-Write-Host "✔️ Wazuh Agent installed." -ForegroundColor Green
+$confirmation = Read-Host "Do you want to install the Wazuh agent? (y/n)"
+
+if ($confirmation -match "^(y|yes)$") {
+    Write-Host "--- Starting Installation ---" -ForegroundColor Cyan
+    winget install -e --id Wazuh.WazuhAgent -s winget --override "/q WAZUH_MANAGER=wazuh.lan WAZUH_AGENT_GROUP=default WAZUH_AGENT_NAME=$newName"
+
+    # Enable IIS logs
+    $configPath = "C:\Program Files (x86)\ossec-agent\ossec.conf"
+
+    # Load the XML content
+    [xml]$xmlConfig = Get-Content $configPath
+
+    $newLog = $xmlConfig.CreateElement("localfile")
+    $location = $xmlConfig.CreateElement("location")
+    $location.InnerText = "C:\inetpub\logs\LogFiles\W3SVC1\*.log"
+    $newLog.AppendChild($location) > $null
+
+    $format = $xmlConfig.CreateElement("log_format")
+    $format.InnerText = "iis"
+    $newLog.AppendChild($format) > $null
+
+    # Find the last existing <localfile> node to maintain the grouping. Insert the new log immediately after the last existing localfile
+    $lastLocalFile = $xmlConfig.ossec_config.localfile | Select-Object -Last 1
+    $xmlConfig.ossec_config.InsertAfter($newLog, $lastLocalFile) > $null
+
+    $xmlConfig.Save($configPath)
+
+    Write-Host "✔️ Wazuh Agent installed." -ForegroundColor Green
+} else {
+    Write-Host "Skipping Wazuh Agent installation." -ForegroundColor Yellow
+}
 
 
 # --- OpenSSH Setup ---
