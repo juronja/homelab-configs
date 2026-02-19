@@ -56,9 +56,11 @@ Start-Sleep -Seconds 5
 # Installing Wazuh agent
 $confirmation = Read-Host "Do you want to install the Wazuh agent? (y/n)"
 
+$wazuhFQDN = Read-Host "Enter the Wazuh FQDN (eg. wazuh.lan)"
+
 if ($confirmation -match "^(y|yes)$") {
     Write-Host "--- Starting Installation ---" -ForegroundColor Cyan
-    winget install -e --id Wazuh.WazuhAgent -s winget --override "/q WAZUH_MANAGER=wazuh.lan WAZUH_AGENT_GROUP=default WAZUH_AGENT_NAME=$newName"
+    winget install -e --id Wazuh.WazuhAgent -s winget --override "/q WAZUH_MANAGER=$wazuhFQDN WAZUH_AGENT_GROUP=default WAZUH_AGENT_NAME=$newName"
 
     # Enable IIS logs
     $configPath = "C:\Program Files (x86)\ossec-agent\ossec.conf"
