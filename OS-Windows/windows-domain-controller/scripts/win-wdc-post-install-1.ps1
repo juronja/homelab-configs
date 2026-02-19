@@ -35,6 +35,11 @@ while ([string]::IsNullOrWhiteSpace($newName)) {
 
 # --- Actions ---
 
+# Install necessary roles and management tools
+Write-Host "Installing AD, DNS, IIS services roles and management tools ... This can take a few minutes (Patience)" -ForegroundColor Cyan
+Install-WindowsFeature -Name AD-Domain-Services, DNS, Web-Server -IncludeManagementTools
+Write-Host "✔️ Roles and management tools installed successfully." -ForegroundColor Green
+
 # Set static IP and Gateway and DNS
 Write-Host "Configuring adapter: $($netAdapter.Name)..." -ForegroundColor Cyan
 New-NetIPAddress -InterfaceIndex $netAdapter.ifIndex -IPAddress $ipAddress -PrefixLength $ipPrefix -DefaultGateway $gateway
@@ -42,24 +47,13 @@ Set-DnsClientServerAddress -InterfaceIndex $netAdapter.ifIndex -ServerAddresses 
 Set-DnsServerForwarder -IPAddress $gateway
 Write-Host "✔️ Configuring adapter successfull." -ForegroundColor Green
 
-# Install necessary roles and management tools
-Write-Host "Installing AD, DNS, IIS services roles and management tools ... This can take a few minutes (Patience)" -ForegroundColor Cyan
-Install-WindowsFeature -Name AD-Domain-Services, DNS, Web-Server -IncludeManagementTools
-Write-Host "✔️ Roles and management tools installed successfully." -ForegroundColor Green
-
-# Install virtio
-msiexec.exe /i "E:\virtio-win-gt-x64.msi" /q
-Start-Sleep -Seconds 2
-msiexec.exe /i "E:\guest-agent\qemu-ga-x86_64.msi" /q
-Start-Sleep -Seconds 5
-
 # Installing Wazuh agent
 $confirmation = Read-Host "Do you want to install the Wazuh agent? (y/n)"
 
-$wazuhFQDN = Read-Host "Enter the Wazuh FQDN (eg. wazuh.lan)"
-
 if ($confirmation -match "^(y|yes)$") {
     Write-Host "--- Starting Installation ---" -ForegroundColor Cyan
+
+    $wazuhFQDN = Read-Host "Enter the Wazuh FQDN (eg. wazuh.lan)"
     winget install -e --id Wazuh.WazuhAgent -s winget --override "/q WAZUH_MANAGER=$wazuhFQDN WAZUH_AGENT_GROUP=default WAZUH_AGENT_NAME=$newName"
 
     # Enable IIS logs
@@ -87,7 +81,6 @@ if ($confirmation -match "^(y|yes)$") {
 } else {
     Write-Host "Skipping Wazuh Agent installation." -ForegroundColor Yellow
 }
-
 
 # --- OpenSSH Setup ---
 # Write-Host "Setting up OpenSSH..." -ForegroundColor Cyan
