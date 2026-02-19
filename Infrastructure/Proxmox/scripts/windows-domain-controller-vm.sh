@@ -104,7 +104,7 @@ if VLAN1=$(whiptail --backtitle "Install - Windows Server VM" --inputbox "Set a 
     echo -e "Vlan tag: $VLAN1"
   else
     VLAN=",tag=$VLAN1"
-    echo -e "Vlan tag: $VLAN1"
+    echo -e "Vlan tag: $VLAN1 $VLAN"
   fi
 else
   exit-script
