@@ -7,8 +7,8 @@ $ipAddress = Read-Host "Enter the static IP Address for this Server"
 $ipPrefix = Read-Host "Enter the prefix CIDR (24,16,...)"
 $gateway = Read-Host "Enter the Default Gateway"
 # Basic check to ensure inputs aren't empty
-if ([string]::IsNullOrWhiteSpace($ipAddress) -or [string]::IsNullOrWhiteSpace($gateway)) {
-    Write-Error "IP Address and Gateway are required. Script aborted."
+if ([string]::IsNullOrWhiteSpace($ipAddress) -or [string]::IsNullOrWhiteSpace($ipPrefix) -or [string]::IsNullOrWhiteSpace($gateway)) {
+    Write-Error "IP Address, Prefix and Gateway are required. Script aborted."
     return
 }
 
@@ -35,17 +35,19 @@ while ([string]::IsNullOrWhiteSpace($newName)) {
 
 # --- Actions ---
 
+# Set static IP and Gateway
+Write-Host "Configuring adapter: $($netAdapter.Name)..." -ForegroundColor Cyan
+New-NetIPAddress -InterfaceIndex $netAdapter.ifIndex -IPAddress $ipAddress -PrefixLength $ipPrefix -DefaultGateway $gateway
+Set-DnsClientServerAddress -InterfaceIndex $netAdapter.ifIndex -ServerAddresses ("127.0.0.1")
+Write-Host "✔️ Configuring adapter successfull." -ForegroundColor Green
+
 # Install necessary roles and management tools
 Write-Host "Installing AD, DNS, IIS services roles and management tools ... This can take a few minutes (Patience)" -ForegroundColor Cyan
 Install-WindowsFeature -Name AD-Domain-Services, DNS, Web-Server -IncludeManagementTools
 Write-Host "✔️ Roles and management tools installed successfully." -ForegroundColor Green
 
-# Set static IP and Gateway and DNS
-Write-Host "Configuring adapter: $($netAdapter.Name)..." -ForegroundColor Cyan
-New-NetIPAddress -InterfaceIndex $netAdapter.ifIndex -IPAddress $ipAddress -PrefixLength $ipPrefix -DefaultGateway $gateway
-Set-DnsClientServerAddress -InterfaceIndex $netAdapter.ifIndex -ServerAddresses ("127.0.0.1")
+# Set DNS Forwarding to gateway
 Set-DnsServerForwarder -IPAddress $gateway
-Write-Host "✔️ Configuring adapter successfull." -ForegroundColor Green
 
 # Installing Wazuh agent
 $confirmation = Read-Host "Do you want to install the Wazuh agent? (y/n)"
