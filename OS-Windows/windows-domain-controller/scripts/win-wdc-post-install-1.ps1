@@ -48,7 +48,7 @@ Write-Host "✔️ Roles and management tools installed successfully." -Foregrou
 
 # Set DNS Forwarding to gateway
 Write-Host "Setting DNS Forwarding" -ForegroundColor Cyan
-Set-DnsServerForwarder -IPAddress $gateway -Force
+Set-DnsServerForwarder -IPAddress $gateway
 Write-Host "✔️ DNS Forwarding set." -ForegroundColor Green
 
 # Installing Wazuh agent
