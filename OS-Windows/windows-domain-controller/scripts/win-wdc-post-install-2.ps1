@@ -39,7 +39,7 @@ function Compare-SecureString {
 # Domain Information Gathering ---
 $domainName = Read-Host "Enter the Root Domain Name (e.g., ad.lan)"
 if ([string]::IsNullOrWhiteSpace($domainName)) {
-    Write-Host "Error: Domain Name cannot be empty." -ForegroundColor Red
+    Write-Host "❌ Domain Name cannot be empty." -ForegroundColor Red
     return
 }
 
@@ -61,9 +61,9 @@ do {
     if ( Compare-SecureString $pass $passConfirm ) {
       $dsrmPassword = $pass
       $passMatch = $true
-      Write-Host "Passwords match!" -ForegroundColor Green
+      Write-Host "✔️ Passwords match!" -ForegroundColor Green
     } else {
-        Write-Host "Error: Passwords are empty or do not match. Please try again." -ForegroundColor Red
+        Write-Host "❌ Passwords are empty or do not match. Please try again." -ForegroundColor Red
     }
 } until ($passMatch)
 

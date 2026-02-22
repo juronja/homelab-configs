@@ -7,14 +7,14 @@ $ipAddress = Read-Host "Enter the static IP Address for this Server"
 $ipPrefix = Read-Host "Enter the prefix CIDR (24,16,...)"
 $gateway = Read-Host "Enter the Default Gateway"
 if ([string]::IsNullOrWhiteSpace($ipAddress) -or [string]::IsNullOrWhiteSpace($ipPrefix) -or [string]::IsNullOrWhiteSpace($gateway)) {
-    Write-Error "IP Address, Prefix and Gateway are required. Script aborted."
+    Write-Error "❌ IP Address, Prefix and Gateway are required. Script aborted."
     return
 }
 
 # Finds the active network adapter
 $netAdapter = Get-NetAdapter | Where-Object Status -eq "Up" | Select-Object -First 1
 if ($null -eq $netAdapter) {
-    Write-Error "No active network adapter found."
+    Write-Error "❌ No active network adapter found."
     return
 }
 
@@ -24,7 +24,7 @@ while ([string]::IsNullOrWhiteSpace($newName)) {
     $inputName = Read-Host "Enter the new name for this server machine (Required)"
 
     if ([string]::IsNullOrWhiteSpace($inputName)) {
-        Write-Host "Error: Computer name cannot be empty." -ForegroundColor Red
+        Write-Host "❌ Computer name cannot be empty." -ForegroundColor Red
     } else {
         # Trim surrounding whitespace and replace internal spaces with "-"
         $newName = $inputName.Trim().Replace(" ", "-")
@@ -64,7 +64,7 @@ Write-Host "✔️ DNS Forwarding set." -ForegroundColor Green
 $confirmation = Read-Host "Do you want to install the Wazuh agent? (y/n)"
 
 if ($confirmation -match "^(y|yes)$") {
-    Write-Host "--- Starting Installation ---" -ForegroundColor Cyan
+    Write-Host "Installing Wazuh..." -ForegroundColor Cyan
 
     $wazuhFQDN = Read-Host "Enter the Wazuh FQDN (eg. wazuh.lan)"
     winget install -e --id Wazuh.WazuhAgent -s winget --override "/q WAZUH_MANAGER=$wazuhFQDN WAZUH_AGENT_GROUP=default WAZUH_AGENT_NAME=$newName"
