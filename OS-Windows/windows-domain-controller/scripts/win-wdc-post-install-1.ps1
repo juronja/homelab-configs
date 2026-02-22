@@ -2,11 +2,10 @@
 
 Write-Host "Getting user input ... " -ForegroundColor Cyan
 
-# Network
+# Network variables
 $ipAddress = Read-Host "Enter the static IP Address for this Server"
 $ipPrefix = Read-Host "Enter the prefix CIDR (24,16,...)"
 $gateway = Read-Host "Enter the Default Gateway"
-# Basic check to ensure inputs aren't empty
 if ([string]::IsNullOrWhiteSpace($ipAddress) -or [string]::IsNullOrWhiteSpace($ipPrefix) -or [string]::IsNullOrWhiteSpace($gateway)) {
     Write-Error "IP Address, Prefix and Gateway are required. Script aborted."
     return
@@ -19,7 +18,7 @@ if ($null -eq $netAdapter) {
     return
 }
 
-# Computer name
+# Computer name variable
 $newName = ""
 while ([string]::IsNullOrWhiteSpace($newName)) {
     $inputName = Read-Host "Enter the new name for this server machine (Required)"
@@ -35,7 +34,7 @@ while ([string]::IsNullOrWhiteSpace($newName)) {
 
 # --- Actions ---
 
-# Set static IP and Gateway
+# Static IP and Gateway Setup
 Write-Host "Configuring adapter: $($netAdapter.Name)..." -ForegroundColor Cyan
 New-NetIPAddress -InterfaceIndex $netAdapter.ifIndex -IPAddress $ipAddress -PrefixLength $ipPrefix -DefaultGateway $gateway
 Set-DnsClientServerAddress -InterfaceIndex $netAdapter.ifIndex -ServerAddresses ("127.0.0.1","1.1.1.2")
@@ -46,12 +45,22 @@ Write-Host "Installing AD, DNS, IIS services roles and management tools ... This
 Install-WindowsFeature -Name AD-Domain-Services, DNS, Web-Server -IncludeManagementTools
 Write-Host "✔️ Roles and management tools installed successfully." -ForegroundColor Green
 
-# Set DNS Forwarding to gateway
+# DNS Forwarding to gateway Setup
 Write-Host "Setting DNS Forwarding" -ForegroundColor Cyan
 Set-DnsServerForwarder -IPAddress $gateway
 Write-Host "✔️ DNS Forwarding set." -ForegroundColor Green
 
-# Installing Wazuh agent
+# # SPICE agent Setup
+# winget install -e --id RedHat.VirtViewer
+
+# # OpenSSH Setup
+# Write-Host "Setting up OpenSSH..." -ForegroundColor Cyan
+# Set-Service -Name sshd -StartupType 'Automatic'
+# Set-NetFirewallRule -Name "OpenSSH*" -Profile Domain, Private
+# New-ItemProperty -Path "HKLM:\SOFTWARE\OpenSSH" -Name "DefaultShell" -Value "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe" -PropertyType String -Force
+# Start-Service sshd
+
+# Wazuh agent Setup
 $confirmation = Read-Host "Do you want to install the Wazuh agent? (y/n)"
 
 if ($confirmation -match "^(y|yes)$") {
@@ -86,13 +95,6 @@ if ($confirmation -match "^(y|yes)$") {
     Write-Host "Skipping Wazuh Agent installation." -ForegroundColor Yellow
 }
 
-# --- OpenSSH Setup ---
-# Write-Host "Setting up OpenSSH..." -ForegroundColor Cyan
-# Set-Service -Name sshd -StartupType 'Automatic'
-# Set-NetFirewallRule -Name "OpenSSH*" -Profile Domain, Private
-# New-ItemProperty -Path "HKLM:\SOFTWARE\OpenSSH" -Name "DefaultShell" -Value "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe" -PropertyType String -Force
-# Start-Service sshd
-
-# --- Computer Rename ---
+# Computer Rename
 Write-Host "Renaming computer to $newName and restarting..." -ForegroundColor Cyan
 Rename-Computer -NewName $newName -Restart -Force
