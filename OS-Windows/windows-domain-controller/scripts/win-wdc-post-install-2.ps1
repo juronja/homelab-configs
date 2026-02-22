@@ -1,38 +1,69 @@
 # Promote the server as Domain Controller (New Forest)
-# Get password input from user
-$passMatch = $false
+
+# Compare password function
+# Safely compares two SecureString objects without decrypting them.
+# Outputs $true if they are equal, or $false otherwise.
+function Compare-SecureString {
+  param(
+    [Security.SecureString]$secureString1,
+    [Security.SecureString]$secureString2
+  )
+  $bstr1 = $bstr2 = [IntPtr]::Zero
+  try {
+    $bstr1 = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($secureString1)
+    $bstr2 = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($secureString2)
+    $length1 = [Runtime.InteropServices.Marshal]::ReadInt32($bstr1,-4)
+    $length2 = [Runtime.InteropServices.Marshal]::ReadInt32($bstr2,-4)
+    if ( $length1 -eq 0 -or $length1 -ne $length2 ) {
+      return $false
+    }
+    for ( $i = 0; $i -lt $length1; ++$i ) {
+      $b1 = [Runtime.InteropServices.Marshal]::ReadByte($bstr1,$i)
+      $b2 = [Runtime.InteropServices.Marshal]::ReadByte($bstr2,$i)
+      if ( $b1 -ne $b2 ) {
+        return $false
+      }
+    }
+    return $true
+  }
+  finally {
+    if ( $bstr1 -ne [IntPtr]::Zero ) {
+      [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($bstr1)
+    }
+    if ( $bstr2 -ne [IntPtr]::Zero ) {
+      [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($bstr2)
+    }
+  }
+}
+
+# Domain Information Gathering ---
+$domainName = Read-Host "Enter the Root Domain Name (e.g., ad.lan)"
+if ([string]::IsNullOrWhiteSpace($domainName)) {
+    Write-Host "Error: Domain Name cannot be empty." -ForegroundColor Red
+    return
+}
+
+# Suggest NetBIOS (everything before the first dot, uppercased)
+$suggestedNetBios = $domainName.Split('.')[0].ToUpper()
+$domainNetbiosName = Read-Host "Enter the NetBIOS Name (Press Enter for '$suggestedNetBios')"
+if ([string]::IsNullOrWhiteSpace($domainNetbiosName)) {
+    $domainNetbiosName = $suggestedNetBios
+}
+
+# Get Password
 $dsrmPassword = $null
+$passMatch = $false
 
 do {
-    $p1 = Read-Host "Enter DSRM Password" -AsSecureString
-    $p2 = Read-Host "Confirm DSRM Password" -AsSecureString
+    $pass = Read-Host "Enter DSRM Password" -AsSecureString
+    $passConfirm = Read-Host "Confirm DSRM Password" -AsSecureString
 
-    # Check if either is empty
-    if ($p1.Length -eq 0 -or $p2.Length -eq 0) {
-        Write-Host "Error: Password cannot be empty." -ForegroundColor Red
-        continue
-    }
-
-    # Compare the two SecureStrings (with .NET)
-    $bstr1 = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($p1)
-    $bstr2 = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($p2)
-    
-    try {
-        $str1 = [Runtime.InteropServices.Marshal]::PtrToStringAuto($bstr1)
-        $str2 = [Runtime.InteropServices.Marshal]::PtrToStringAuto($bstr2)
-        
-        if ($str1 -eq $str2) {
-            $dsrmPassword = $p1
-            $passMatch = $true
-            Write-Host "Passwords match!" -ForegroundColor Green
-        } else {
-            Write-Host "Error: Passwords do not match. Please try again." -ForegroundColor Red
-        }
-    }
-    finally {
-        # Clean up memory for security
-        [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($bstr1)
-        [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($bstr2)
+    if ( Compare-SecureString $pass $passConfirm ) {
+      $dsrmPassword = $pass
+      $passMatch = $true
+      Write-Host "Passwords match!" -ForegroundColor Green
+    } else {
+        Write-Host "Error: Passwords are empty or do not match. Please try again." -ForegroundColor Red
     }
 } until ($passMatch)
 
