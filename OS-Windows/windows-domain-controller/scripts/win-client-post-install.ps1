@@ -30,9 +30,10 @@ while ([string]::IsNullOrWhiteSpace($domainName)) {
 
 # --- Actions ---
 
-Write-Host "Joining domain..." -ForegroundColor Cyan
+# Join AD, Computer Rename
+Write-Host "Renaming computer to $newName and joining $domainName..." -ForegroundColor Cyan
 Add-Computer -DomainName $domainName -NewName $newName -Credential (Get-Credential) -Force
-Write-Host "✔️ Domain join and rename staged." -ForegroundColor Green
+Write-Host "✔️ Domain join and rename done." -ForegroundColor Green
 
 # Wazuh agent Setup
 $confirmation = Read-Host "Do you want to install the Wazuh agent? (y/n)"
@@ -48,7 +49,7 @@ if ($confirmation -match "^(y|yes)$") {
     Write-Host "Skipping Wazuh Agent installation." -ForegroundColor Yellow
 }
 
-# Computer Rename
-Write-Host "Renaming computer to $newName and restarting..." -ForegroundColor Cyan
-# Rename-Computer -NewName $newName -Restart -Force
+Write-Host "✔️ Script finished, restarting..." -ForegroundColor Green
+Start-Sleep -Seconds 3
+
 Restart-Computer -Force
