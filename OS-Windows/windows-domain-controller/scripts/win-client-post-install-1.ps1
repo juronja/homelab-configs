@@ -16,7 +16,23 @@ while ([string]::IsNullOrWhiteSpace($newName)) {
     }
 }
 
+# AD Domain Input
+$domainName = ""
+while ([string]::IsNullOrWhiteSpace($domainName)) {
+    $inputDomain = Read-Host "Enter the AD domain to join (e.g., ad.lan)"
+    if ([string]::IsNullOrWhiteSpace($inputDomain)) {
+        Write-Host "❌ Domain cannot be empty." -ForegroundColor Red
+    } else {
+        $domainName = $inputDomain.Trim()
+        Write-Host "AD domain set to: $domainName" -ForegroundColor Cyan
+    }
+}
+
 # --- Actions ---
+
+Write-Host "Joining domain..." -ForegroundColor Cyan
+Add-Computer -DomainName $domainName -NewName $newName -Credential (Get-Credential) -Force
+Write-Host "✔️ Domain join and rename staged." -ForegroundColor Green
 
 # Wazuh agent Setup
 $confirmation = Read-Host "Do you want to install the Wazuh agent? (y/n)"
@@ -34,4 +50,5 @@ if ($confirmation -match "^(y|yes)$") {
 
 # Computer Rename
 Write-Host "Renaming computer to $newName and restarting..." -ForegroundColor Cyan
-Rename-Computer -NewName $newName -Restart -Force
+# Rename-Computer -NewName $newName -Restart -Force
+Restart-Computer -Force
