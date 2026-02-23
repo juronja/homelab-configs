@@ -121,19 +121,3 @@ STEPS:
     - **virtio-win-gt-x64.msi**
 
     You can unmount the ISO and virtio drives now.
-
-4. Setup Static IP, AD, DNS Features, Computer name, Wazuh and Reboot
-
-    ```powershell
-    irm https://raw.githubusercontent.com/juronja/homelab-configs/main/OS-Windows/windows-domain-controller/scripts/win-wdc-post-install-1.ps1 | iex
-    ```
-
-5. Promote server as DC
-
-    ```powershell
-    irm https://raw.githubusercontent.com/juronja/homelab-configs/main/OS-Windows/windows-domain-controller/scripts/win-wdc-post-install-2.ps1 | iex
-    ```
-
-6. Enable Remote Desktop
-
-    Server Manager > Local Server > Remote Desktop > Allow RDC
