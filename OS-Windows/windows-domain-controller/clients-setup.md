@@ -12,14 +12,10 @@ Describes how to setup a windows machine and join AD.
 ## Install / Setup Windows
 
 1. Install Windows with local `Admin` account
-2. Rename PC & Install Wazuh
+2. Rename PC, Join AD & Install Wazuh
+
+    Run this script inside Terminal (Administrator)
 
     ```powershell
-    irm https://raw.githubusercontent.com/juronja/homelab-configs/main/OS-Windows/windows-domain-controller/scripts/win-client-post-install-1.ps1 | iex
-    ```
-
-3. Join client to AD domain
-
-    ```powershell
-    irm https://raw.githubusercontent.com/juronja/homelab-configs/main/OS-Windows/windows-domain-controller/scripts/win-client-post-install-2.ps1 | iex
+    irm https://raw.githubusercontent.com/juronja/homelab-configs/main/OS-Windows/windows-domain-controller/scripts/win-client-post-install.ps1 | iex
     ```
