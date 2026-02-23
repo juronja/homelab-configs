@@ -50,6 +50,11 @@ Write-Host "Setting DNS Forwarding" -ForegroundColor Cyan
 Set-DnsServerForwarder -IPAddress $gateway
 Write-Host "✔️ DNS Forwarding set." -ForegroundColor Green
 
+# Set the time zone to Ljubljana
+Write-Host "Setting Time Zone to CEST" -ForegroundColor Cyan
+Set-TimeZone -Id "Central Europe Standard Time"
+Write-Host "✔️ Time Zone set to CEST." -ForegroundColor Green
+
 # # SPICE agent Setup
 # winget install -e --id RedHat.VirtViewer
 
