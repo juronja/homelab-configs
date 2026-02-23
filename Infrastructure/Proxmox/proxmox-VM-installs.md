@@ -122,7 +122,7 @@ STEPS:
 
     You can unmount the ISO and virtio drives now.
 
-4. Set static IP, Add AD, DNS Features and set Computer name and Reboot
+4. Setup Static IP, AD, DNS Features, Computer name, Wazuh and Reboot
 
     ```powershell
     irm https://raw.githubusercontent.com/juronja/homelab-configs/main/OS-Windows/windows-domain-controller/scripts/win-wdc-post-install-1.ps1 | iex
