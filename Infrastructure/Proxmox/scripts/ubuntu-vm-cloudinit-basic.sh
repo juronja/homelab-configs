@@ -160,8 +160,9 @@ IMG_LOCATION="/var/lib/vz/template/iso/"
 CPU="x86-64-v3"
 CLUSTER_FW_ENABLED=$(pvesh get /cluster/firewall/options --output-format json | sed -n 's/.*"enable": *\([0-9]*\).*/\1/p')
 LOCAL_NETWORK=$(pve-firewall localnet | grep local_network | cut -d':' -f2 | sed 's/ //g')
-ALIAS_HOME_NETWORK="home_network"
-ALIAS_PROXY="proxy"
+HOME_NETWORK_ALIAS="home_network"
+PROXY_ALIAS="proxy"
+PROXY_CIDR="192.168.84.254"
 GROUP_LOCAL="local-ssh-ping"
 
 # Download the Ubuntu cloud init image
@@ -182,14 +183,14 @@ qm disk resize $NEXTID scsi0 "${DISK_SIZE}G" && qm set $NEXTID --boot order=scsi
 # Configure Cluster level firewall rules if not enabled
 if [[ $CLUSTER_FW_ENABLED != 1 ]]; then
   pvesh set /cluster/firewall/options --enable 1
-  pvesh create /cluster/firewall/aliases --name $ALIAS_HOME_NETWORK --cidr $LOCAL_NETWORK
-  pvesh create /cluster/firewall/aliases --name $ALIAS_PROXY --cidr 192.168.84.254
+  pvesh create /cluster/firewall/aliases --name $HOME_NETWORK_ALIAS --cidr $LOCAL_NETWORK
+  pvesh create /cluster/firewall/aliases --name $PROXY_ALIAS --cidr $PROXY_CIDR
   pvesh create /cluster/firewall/groups --group $GROUP_LOCAL
   sleep 2
-  pvesh create /cluster/firewall/rules --action ACCEPT --type in --iface vmbr0 --source $ALIAS_HOME_NETWORK --macro Ping --enable 1
-  pvesh create /cluster/firewall/groups/$GROUP_LOCAL --action ACCEPT --type in --source $ALIAS_HOME_NETWORK --proto tcp --enable 1
-  pvesh create /cluster/firewall/groups/$GROUP_LOCAL --action ACCEPT --type in --source $ALIAS_HOME_NETWORK --macro Ping --enable 1
-  pvesh create /cluster/firewall/groups/$GROUP_LOCAL --action ACCEPT --type in --source $ALIAS_HOME_NETWORK --macro SSH --enable 1
+  pvesh create /cluster/firewall/rules --action ACCEPT --type in --iface vmbr0 --source $HOME_NETWORK_ALIAS --macro Ping --enable 1
+  pvesh create /cluster/firewall/groups/$GROUP_LOCAL --action ACCEPT --type in --source $HOME_NETWORK_ALIAS --proto tcp --enable 1
+  pvesh create /cluster/firewall/groups/$GROUP_LOCAL --action ACCEPT --type in --source $HOME_NETWORK_ALIAS --macro Ping --enable 1
+  pvesh create /cluster/firewall/groups/$GROUP_LOCAL --action ACCEPT --type in --source $HOME_NETWORK_ALIAS --macro SSH --enable 1
   echo "Cluster Firewall configurations set successfully .."
 else
   echo "Cluster Firewall configurations already present .."
@@ -204,11 +205,11 @@ if [[ $fw == 1 ]]; then
 fi
 
 if [[ $tcp == 1 ]]; then
-  pvesh create /nodes/$NODE/qemu/$NEXTID/firewall/rules --action ACCEPT --type in --iface net0 --proto tcp --source $ALIAS_PROXY --dport $tcpPorts --enable 1
+  pvesh create /nodes/$NODE/qemu/$NEXTID/firewall/rules --action ACCEPT --type in --iface net0 --proto tcp --source $PROXY_ALIAS --dport $tcpPorts --enable 1
   echo "TCP ports exposed successfully .."
 fi
 if [[ $udp == 1 ]]; then
-  pvesh create /nodes/$NODE/qemu/$NEXTID/firewall/rules --action ACCEPT --type in --iface net0 --proto udp --source $ALIAS_PROXY --dport $udpPorts --enable 1
+  pvesh create /nodes/$NODE/qemu/$NEXTID/firewall/rules --action ACCEPT --type in --iface net0 --proto udp --source $PROXY_ALIAS --dport $udpPorts --enable 1
   echo "UDP ports exposed successfully .."
 fi
 
