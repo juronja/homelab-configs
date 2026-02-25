@@ -20,7 +20,7 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/juronja/homelab-configs/
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/juronja/homelab-configs/refs/heads/main/Infrastructure/Proxmox/scripts/ubuntu-vm-cloudinit-basic.sh)"
 ```
 
-- POST INSTALL - Edit SSH KEY cloud-init before starting
+- ⚠️ POST INSTALL - Add SSH KEY in cloud-init before starting VM
 
 ## TrueNAS VM
 
