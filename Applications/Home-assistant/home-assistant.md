@@ -17,8 +17,6 @@ homeassistant:
 
 ## Customize.yaml
 
-test
-
 ```yml
 sensor.solar_cells_energy_total:
   device_class: energy
