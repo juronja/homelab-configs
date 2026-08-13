@@ -8,7 +8,9 @@
 ## Configuration.yaml
 
 ```yml
-# Jure - customization for specific entities
+## Custom setting by Jure ##
+
+# add file for customization for specific entities
 homeassistant:
   customize: !include customize.yaml
 ```
@@ -16,8 +18,11 @@ homeassistant:
 ## Customize.yaml
 
 ```yml
-sensor.toplotna_energy_total:
-  state_class: total_increasing
+sensor.solar_cells_energy_total:
   device_class: energy
+  state_class: total_increasing
   unit_of_measurement: kWh
+sensor.solar_cells_power_total:
+  device_class: power
+  unit_of_measurement: W
 ```
