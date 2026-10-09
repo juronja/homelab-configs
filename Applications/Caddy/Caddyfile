@@ -15,7 +15,8 @@
 	handle @ha {
 		reverse_proxy ha.lan:8123
 		header {
-			#
+			# Prevent search engines from indexing the site
+			X-Robots-Tag "noindex, nofollow, noarchive"
 		}
 		rate_limit /auth/authorize* {
 			zone limit_by_ip {
@@ -30,6 +31,8 @@
 	handle @audiobook {
 		reverse_proxy nas.lan:30067
 		header {
+      # Prevent search engines from indexing the site
+      X-Robots-Tag "noindex, nofollow, noarchive"
 			# Prevent the site from being embedded in an iframe, mitigating clickjacking.
 			X-Frame-Options DENY
 			# This will deny website access to the listed hardware features for security purposes.
@@ -99,6 +102,8 @@
 	handle @jenkins {
 		reverse_proxy homelab.lan:8080
 		header {
+      # Prevent search engines from indexing the site
+      X-Robots-Tag "noindex, nofollow, noarchive"
 			# Prevent the site from being embedded in an iframe, mitigating clickjacking.
 			X-Frame-Options DENY
 			# This will deny website access to the listed hardware features for security purposes.
@@ -220,7 +225,9 @@
 	handle @n8n {
 		reverse_proxy n8n.lan:5678
 		header {
-			# Prevent the site from being embedded in an iframe, mitigating clickjacking.
+      # Prevent search engines from indexing the site
+      X-Robots-Tag "noindex, nofollow, noarchive"
+      # Prevent the site from being embedded in an iframe, mitigating clickjacking.
 			X-Frame-Options DENY
 			# This will deny website access to the listed hardware features for security purposes.
 			Permissions-Policy autoplay=(), camera=(), microphone=(), midi=(), usb=()
