@@ -425,15 +425,6 @@ uci set firewall.@rule[-1].src='prod'
 uci set firewall.@rule[-1].dest_port='53 67'
 uci set firewall.@rule[-1].target='ACCEPT'
 uci commit
-# also allow HA to TV
-uci add firewall rule
-uci set firewall.@rule[-1].name='allow HA to TV'
-uci add_list firewall.@rule[-1].proto='tcp'
-uci set firewall.@rule[-1].src='iot'
-uci add_list firewall.@rule[-1].src_ip='192.168.3.X'
-uci set firewall.@rule[-1].dest='lan'
-uci add_list firewall.@rule[-1].dest_ip='192.168.84.X'
-uci set firewall.@rule[-1].target='ACCEPT'
 
 uci commit
 service network restart
